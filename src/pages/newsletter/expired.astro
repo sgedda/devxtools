@@ -1,0 +1,85 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH 
+  ? import.meta.env.CF_PAGES_BRANCH !== 'main'
+  : Astro.url.hostname !== 'devxtools.dev' && Astro.url.hostname !== 'localhost';
+---
+
+<Layout 
+  title="Link Expired" 
+  description="This newsletter link has expired or is invalid."
+>
+  {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" slot="head" />}
+  
+  <div class="container">
+    <div class="message-card">
+      <div class="icon warning">⚠</div>
+      <h1>Link Expired or Invalid</h1>
+      <p class="lead">
+        This link has expired or is no longer valid.
+      </p>
+      <p>
+        Confirmation links expire after 24 hours for security. If you'd like to subscribe, 
+        please submit the newsletter signup form again from our website.
+      </p>
+      <div class="actions">
+        <a href="/" class="button">Back to Home</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .message-card {
+    max-width: 600px;
+    margin: 4rem auto;
+    text-align: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+  }
+
+  .icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .icon.warning {
+    background: rgba(210, 153, 34, 0.1);
+    color: var(--warning);
+    border: 2px solid var(--warning);
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+</style>

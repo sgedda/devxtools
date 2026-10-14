@@ -131,33 +131,122 @@ Visit `http://localhost:4321` to preview your changes.
 | `npm run build`        | Build production site to `./dist/`         |
 | `npm run preview`      | Preview build locally before deploying     |
 | `npm run validate`     | Validate all tool catalog entries          |
+| `npm test`             | Run tests                                  |
+| `npm run test:watch`   | Run tests in watch mode                    |
+
+### Local Testing with Cloudflare Pages Functions
+
+To test the newsletter signup functionality locally:
+
+```bash
+npm run build
+npx wrangler pages dev dist
+```
+
+This starts a local server with Pages Functions support. The signup form will work, but you'll need environment variables configured (see below).
+
+For development without Resend integration, the form will degrade gracefully when `RESEND_API_KEY` is not set.
 
 ## Deployment
 
-This site is designed to deploy as a static site to Cloudflare Pages or Vercel.
+This site is designed to deploy as a static site with serverless functions to Cloudflare Pages.
 
 ### Cloudflare Pages
 
 1. Connect your GitHub repository to Cloudflare Pages
 2. Set build command: `npm run build`
 3. Set build output directory: `dist`
-4. Deploy
+4. Configure environment variables and secrets (see below)
+5. Create a KV namespace for rate limiting (optional but recommended)
+6. Deploy
 
-### Vercel
+#### Required Secrets (Cloudflare Pages Environment Variables)
 
-1. Connect your GitHub repository to Vercel
-2. Framework preset: Astro
-3. Build command: `npm run build`
-4. Output directory: `dist`
-5. Deploy
+Before the newsletter signup will work in production, configure these in the Cloudflare Pages dashboard:
+
+**Required:**
+- `RESEND_API_KEY` - Your Resend API key (get one at [resend.com](https://resend.com))
+- `NEWSLETTER_SECRET` - A random secret string for signing tokens (generate with `openssl rand -hex 32`)
+
+**Optional (with defaults):**
+- `NEWSLETTER_FROM_EMAIL` - Sender email address (default: `newsletter@devxtools.dev`)
+- `NEWSLETTER_SEGMENT_ID` - Resend segment ID for confirmed subscribers (default: `31d28ce6-349c-4504-9dcf-65ad1562666f`)
+
+**Optional KV Binding:**
+- `NEWSLETTER_KV` - Bind a KV namespace for rate limiting and pending confirmations. Without this, rate limiting is disabled and expired confirmation links can't be detected (less secure but functional).
+
+To create and bind a KV namespace:
+```bash
+wrangler kv:namespace create NEWSLETTER_KV
+# Note the ID, then add in Cloudflare Pages settings:
+# Variable name: NEWSLETTER_KV
+# KV namespace: [select the created namespace]
+```
+
+#### Newsletter Configuration
+
+The newsletter uses double opt-in:
+1. User submits their email
+2. They receive a confirmation email with a 24-hour expiry link
+3. Clicking the link confirms their subscription and adds them to the Resend segment
+4. Every email includes an unsubscribe link
+
+**For broadcast emails sent through Resend**, include Resend's unsubscribe placeholder in your email template:
+```html
+<a href="{{unsubscribe}}">Unsubscribe</a>
+```
+
+Resend will automatically replace this with a working unsubscribe link.
 
 ## Continuous Integration
 
 The repository includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that:
 
 - Validates all tool catalog entries against the schema
+- Runs tests for newsletter utilities
 - Builds the site
 - Runs on every PR and push to main
+
+## Newsletter System
+
+The site includes a newsletter signup feature with:
+
+- **Double opt-in**: Users must confirm their email before being subscribed
+- **Rate limiting**: Prevents abuse (3 requests per minute per IP)
+- **Honeypot field**: Silent spam protection
+- **Token-based confirmation**: Secure, expiring confirmation links (24 hours)
+- **Unsubscribe support**: One-click unsubscribe from any email
+
+The signup form appears:
+- In the footer of every page
+- At the end of guide and comparison articles
+
+### Architecture
+
+- **Frontend**: Astro component with progressive enhancement
+- **Backend**: Cloudflare Pages Functions (serverless)
+- **Email service**: Resend API for contact management and email delivery
+- **Storage**: Cloudflare KV for rate limiting and pending confirmations (optional)
+
+### Testing the Newsletter
+
+Run the test suite:
+```bash
+npm test
+```
+
+Test locally with Pages Functions:
+```bash
+npm run build
+npx wrangler pages dev dist --kv NEWSLETTER_KV
+```
+
+You'll need a `.dev.vars` file with test credentials:
+```
+RESEND_API_KEY=re_test_...
+NEWSLETTER_SECRET=your-test-secret-here
+NEWSLETTER_FROM_EMAIL=test@devxtools.dev
+```
 
 ## Contributing
 

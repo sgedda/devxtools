@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -172,6 +173,8 @@ const mockifyer = getToolBySlug('mockifyer');
           </ul>
         </section>
       </div>
+      
+      <NewsletterSignup variant="article" />
       
       <footer class="guide-footer">
         <a href="/guides/" class="button">← Back to Guides</a>

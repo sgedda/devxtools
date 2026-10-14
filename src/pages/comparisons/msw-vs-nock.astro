@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -198,6 +199,8 @@ nock('https://api.example.com')
           </a>
         </p>
       </section>
+      
+      <NewsletterSignup variant="article" />
       
       <footer class="comparison-footer">
         <p>

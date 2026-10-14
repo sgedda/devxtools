@@ -1,0 +1,104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH 
+  ? import.meta.env.CF_PAGES_BRANCH !== 'main'
+  : Astro.url.hostname !== 'devxtools.dev' && Astro.url.hostname !== 'localhost';
+---
+
+<Layout 
+  title="Subscription Confirmed" 
+  description="Your DevX Tools newsletter subscription has been confirmed."
+>
+  {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" slot="head" />}
+  
+  <div class="container">
+    <div class="message-card">
+      <div class="icon success">✓</div>
+      <h1>Subscription Confirmed!</h1>
+      <p class="lead">
+        Thanks for confirming your subscription to the DevX Tools newsletter.
+      </p>
+      <p>
+        You'll receive occasional emails about new guides, comparisons, and developer tools. 
+        We respect your inbox and you can unsubscribe at any time.
+      </p>
+      <div class="actions">
+        <a href="/" class="button">Back to Home</a>
+        <a href="/catalog/" class="button-secondary">Browse Catalog</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .message-card {
+    max-width: 600px;
+    margin: 4rem auto;
+    text-align: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+  }
+
+  .icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .icon.success {
+    background: rgba(63, 185, 80, 0.1);
+    color: var(--success);
+    border: 2px solid var(--success);
+  }
+
+  h1 {
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .button-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .button-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>
