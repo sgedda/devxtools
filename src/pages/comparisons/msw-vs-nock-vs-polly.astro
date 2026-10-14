@@ -6,11 +6,53 @@ import { getToolBySlug } from '../../lib/tools';
 const msw = getToolBySlug('msw');
 const nock = getToolBySlug('nock');
 const polly = getToolBySlug('pollyjs');
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "MSW vs Nock vs Polly.js (2026): Which API Mocking Library?",
+      "description": "Compare MSW, Nock, and Polly.js for HTTP mocking in JavaScript and TypeScript projects.",
+      "url": "https://devxtools.dev/comparisons/msw-vs-nock-vs-polly/",
+      "datePublished": "2026-10-14",
+      "dateModified": "2026-10-14",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://devxtools.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Comparisons",
+          "item": "https://devxtools.dev/comparisons/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "MSW vs Nock vs Polly.js",
+          "item": "https://devxtools.dev/comparisons/msw-vs-nock-vs-polly/"
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <Layout 
-  title="MSW vs Nock vs Polly.js" 
+  title="MSW vs Nock vs Polly.js (2026): Which API Mocking Library?" 
   description="Compare MSW, Nock, and Polly.js for HTTP mocking in JavaScript and TypeScript projects."
+  jsonLd={jsonLd}
 >
   <div class="container">
     <article class="comparison">
@@ -228,7 +270,7 @@ const polly = new Polly('My Test', &#123;
           <a href="/tools/nock/">Nock</a> • 
           <a href="/tools/pollyjs/">Polly.js</a>
         </p>
-        <a href="/comparisons//" class="button">← Back to Comparisons</a>
+        <a href="/comparisons/" class="button">← Back to Comparisons</a>
       </footer>
     </article>
   </div>

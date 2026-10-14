@@ -7,6 +7,30 @@ import { formatTimeAgo, formatDownloads } from '../lib/format';
 const tools = getAllTools();
 const categories = Object.entries(CATEGORY_LABELS);
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "DevX Tools",
+      "url": "https://devxtools.dev/",
+      "description": "A curated guide to API mocking, testing, and test data generation tools for developers.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "DevX Tools",
+        "url": "https://devxtools.dev/"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "DevX Tools",
+      "url": "https://devxtools.dev/",
+      "logo": "https://devxtools.dev/og-image.png",
+      "description": "Curated directory of API mocking and test data tools for modern development workflows"
+    }
+  ]
+};
+
 // Featured mocking tools
 const mockingTools = tools
   .filter(t => 
@@ -25,8 +49,9 @@ const e2eTools = tools
 ---
 
 <Layout 
-  title="DevX Tools" 
+  title="DevX Tools: API Mocking & Test Data Tools Compared" 
   description="A curated guide to API mocking, testing, and test data generation tools for developers."
+  jsonLd={jsonLd}
 >
   <div class="container">
     <section class="hero">
@@ -60,7 +85,7 @@ const e2eTools = tools
       <h2>Browse by Category</h2>
       <div class="category-grid">
         {categories.map(([key, label]) => (
-          <a href={`/catalog?category=${key}`} class="category-card">
+          <a href={`/catalog/?category=${key}`} class="category-card">
             <h3>{label}</h3>
             <p>{tools.filter(t => t.categories.includes(key as any)).length} tools</p>
           </a>
@@ -73,7 +98,7 @@ const e2eTools = tools
       <p class="section-intro">Intercept, mock, and simulate API responses for reliable testing and development</p>
       <div class="featured-tool-list">
         {mockingTools.map(tool => (
-          <a href={`/tools/${tool.slug}`} class="featured-tool-card">
+          <a href={`/tools/${tool.slug}/`} class="featured-tool-card">
             <div class="tool-header">
               <h3>{tool.name}</h3>
               <div class="tool-stats">
@@ -121,7 +146,7 @@ const e2eTools = tools
       <p class="section-intro">Automate end-to-end testing across web and mobile platforms</p>
       <div class="featured-tool-list">
         {e2eTools.map(tool => (
-          <a href={`/tools/${tool.slug}`} class="featured-tool-card">
+          <a href={`/tools/${tool.slug}/`} class="featured-tool-card">
             <div class="tool-header">
               <h3>{tool.name}</h3>
               <div class="tool-stats">
@@ -184,7 +209,7 @@ const e2eTools = tools
         </a>
       </div>
       <div style="text-align: center; margin-top: 2rem;">
-        <a href="/guides//" class="button">All Guides →</a>
+        <a href="/guides/" class="button">All Guides →</a>
       </div>
     </section>
   </div>

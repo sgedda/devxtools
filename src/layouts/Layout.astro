@@ -6,9 +6,11 @@ interface Props {
   description: string;
   canonicalURL?: string;
   ogImage?: string;
+  noindex?: boolean;
+  jsonLd?: any;
 }
 
-const { title, description, canonicalURL, ogImage = '/og-image.png' } = Astro.props;
+const { title, description, canonicalURL, ogImage = '/og-image.png', noindex = false, jsonLd } = Astro.props;
 const siteTitle = title === 'DevX Tools' ? title : `${title} | DevX Tools`;
 
 // Normalize canonical URL with trailing slash
@@ -28,7 +30,9 @@ const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={normalizedCanonical} />
     <meta name="generator" content={Astro.generator} />
-    {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" />}
+    {(isPreviewDeploy || noindex) && <meta name="robots" content="noindex, nofollow" />}
+    
+    <slot name="head" />
     
     <title>{siteTitle}</title>
     <meta name="description" content={description} />
@@ -46,6 +50,8 @@ const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
     <header>

@@ -14,14 +14,53 @@ const { slug } = Astro.params;
 const tool = getToolBySlug(slug!);
 
 if (!tool) {
-  return Astro.redirect('/404');
+  return new Response(null, { status: 404 });
 }
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": tool.name,
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": tool.runtimes.join(", "),
+      "url": `https://devxtools.dev/tools/${tool.slug}/`,
+      "description": tool.description,
+      ...(tool.repo && { "codeRepository": tool.repo }),
+      ...(tool.license && { "license": tool.license })
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://devxtools.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Catalog",
+          "item": "https://devxtools.dev/catalog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": tool.name,
+          "item": `https://devxtools.dev/tools/${tool.slug}/`
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <Layout 
-  title={tool.name}
-  description={tool.description}
-  canonicalURL={`https://devxtools.dev/tools/${tool.slug}`}
+  title={`${tool.name}: Setup, Example & Alternatives`}
+  description={tool.bestFor}
+  jsonLd={jsonLd}
 >
   <div class="container">
     <article class="tool-page">
@@ -32,6 +71,12 @@ if (!tool) {
         </div>
         <p class="tool-tagline">{tool.bestFor}</p>
       </header>
+      
+      {tool.affiliation && (
+        <aside class="affiliation-disclosure">
+          <strong>⚠️ Disclosure:</strong> {tool.affiliation}
+        </aside>
+      )}
       
       <section class="tool-description">
         <h2>Overview</h2>
@@ -143,6 +188,21 @@ if (!tool) {
     font-size: 1.25rem;
     color: var(--accent);
     margin: 0;
+  }
+  
+  .affiliation-disclosure {
+    background: rgba(210, 153, 34, 0.1);
+    border: 1px solid var(--warning);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin: 2rem 0;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .affiliation-disclosure strong {
+    color: var(--warning);
   }
   
   .tool-description {

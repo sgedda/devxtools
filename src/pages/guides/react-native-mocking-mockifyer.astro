@@ -6,12 +6,53 @@ import { getToolBySlug } from '../../lib/tools';
 const msw = getToolBySlug('msw');
 const mirage = getToolBySlug('miragejs');
 const mockifyer = getToolBySlug('mockifyer');
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "How to Mock APIs in React Native (MSW, Mirage & Mockifyer)",
+      "description": "Compare MSW, MirageJS, and Mockifyer for mocking HTTP requests in React Native applications.",
+      "url": "https://devxtools.dev/guides/react-native-mocking-mockifyer/",
+      "datePublished": "2026-10-14",
+      "dateModified": "2026-10-14",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://devxtools.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Guides",
+          "item": "https://devxtools.dev/guides/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Mocking APIs in React Native",
+          "item": "https://devxtools.dev/guides/react-native-mocking-mockifyer/"
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <Layout 
-  title="Mocking APIs in React Native" 
+  title="How to Mock APIs in React Native (MSW, Mirage & Mockifyer)" 
   description="Compare MSW, MirageJS, and Mockifyer for mocking HTTP requests in React Native applications."
-  canonicalURL="https://devxtools.dev/guides/react-native-mocking-mockifyer/"
+  jsonLd={jsonLd}
 >
   <div class="container">
     <article class="guide">

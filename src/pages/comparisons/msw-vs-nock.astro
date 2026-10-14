@@ -6,12 +6,53 @@ import { getToolBySlug } from '../../lib/tools';
 const msw = getToolBySlug('msw');
 const nock = getToolBySlug('nock');
 const polly = getToolBySlug('pollyjs');
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "MSW vs Nock (2026): Differences, Code & When to Use Each",
+      "description": "Compare MSW and Nock, the two most popular HTTP mocking libraries for JavaScript and TypeScript.",
+      "url": "https://devxtools.dev/comparisons/msw-vs-nock/",
+      "datePublished": "2026-10-14",
+      "dateModified": "2026-10-14",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://devxtools.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Comparisons",
+          "item": "https://devxtools.dev/comparisons/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "MSW vs Nock",
+          "item": "https://devxtools.dev/comparisons/msw-vs-nock/"
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <Layout 
-  title="MSW vs Nock" 
+  title="MSW vs Nock (2026): Differences, Code & When to Use Each" 
   description="Compare MSW and Nock, the two most popular HTTP mocking libraries for JavaScript and TypeScript."
-  canonicalURL="https://devxtools.dev/comparisons/msw-vs-nock/"
+  jsonLd={jsonLd}
 >
   <div class="container">
     <article class="comparison">

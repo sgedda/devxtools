@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Page Not Found" 
+  description="The page you're looking for doesn't exist."
+>
+  <div class="container">
+    <div class="not-found">
+      <div class="error-code">404</div>
+      <h1>Page Not Found</h1>
+      <p class="lead">
+        Sorry, we couldn't find the page you're looking for.
+      </p>
+      <p class="suggestions">
+        You might want to try:
+      </p>
+      <ul>
+        <li><a href="/catalog/">Browse the tool catalog</a></li>
+        <li><a href="/comparisons/">Read tool comparisons</a></li>
+        <li><a href="/guides/">Check out our guides</a></li>
+        <li><a href="/">Return to homepage</a></li>
+      </ul>
+      <div class="actions">
+        <a href="/" class="button">Back to Home</a>
+        <a href="/catalog/" class="button button-secondary">Browse Catalog</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .not-found {
+    max-width: 700px;
+    margin: 4rem auto;
+    text-align: center;
+  }
+
+  .error-code {
+    font-size: 8rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.2;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .lead {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .suggestions {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin: 2rem 0 1rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 2rem;
+  }
+
+  li {
+    margin: 0.75rem 0;
+  }
+
+  li a {
+    font-size: 1.1rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .button-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--bg-secondary);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .button-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .error-code {
+      font-size: 5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .actions {
+      flex-direction: column;
+    }
+  }
+</style>

@@ -7,25 +7,6 @@ const tools = getAllTools();
 const languages = getUniqueLanguages();
 const categories = getUniqueCategories();
 
-// Get current filters from URL
-const categoryParam = Astro.url.searchParams.get('category');
-const languageParam = Astro.url.searchParams.get('language');
-const specParam = Astro.url.searchParams.get('spec');
-
-// Filter tools based on URL params
-let filteredTools = tools;
-if (categoryParam) {
-  filteredTools = filteredTools.filter(t => t.categories.includes(categoryParam as any));
-}
-if (languageParam) {
-  filteredTools = filteredTools.filter(t => t.languages.includes(languageParam));
-}
-if (specParam === 'has-spec') {
-  filteredTools = filteredTools.filter(t => t.specSupport && t.specSupport.length > 0);
-} else if (specParam && specParam !== 'any') {
-  filteredTools = filteredTools.filter(t => t.specSupport?.includes(specParam));
-}
-
 // Always use canonical /catalog/ URL regardless of filters
 const canonicalURL = 'https://devxtools.dev/catalog/';
 ---
@@ -38,21 +19,19 @@ const canonicalURL = 'https://devxtools.dev/catalog/';
   <div class="container">
     <h1>Tool Catalog</h1>
     <p class="subtitle">
-      Explore {tools.length} tools for API mocking, test data generation, and more.
-      {(categoryParam || languageParam || specParam) && 
-        <span> (Showing {filteredTools.length} filtered results)</span>
-      }
+      Explore <span id="tool-count">{tools.length}</span> tools for API mocking, test data generation, and more.
+      <span id="filter-status"></span>
     </p>
     
     <div class="filters">
       <div class="filter-group">
         <label>Category</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !categoryParam }]}>All</a>
+        <div class="filter-links" data-filter-type="category">
+          <a href="/catalog/" data-filter-value="">All</a>
           {categories.map(cat => (
             <a 
               href={`/catalog/?category=${cat}`}
-              class:list={[{ active: categoryParam === cat }]}
+              data-filter-value={cat}
             >
               {CATEGORY_LABELS[cat as keyof typeof CATEGORY_LABELS]}
             </a>
@@ -62,12 +41,12 @@ const canonicalURL = 'https://devxtools.dev/catalog/';
       
       <div class="filter-group">
         <label>Language</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !languageParam }]}>All</a>
+        <div class="filter-links" data-filter-type="language">
+          <a href="/catalog/" data-filter-value="">All</a>
           {languages.map(lang => (
             <a 
               href={`/catalog/?language=${lang}`}
-              class:list={[{ active: languageParam === lang }]}
+              data-filter-value={lang}
             >
               {lang}
             </a>
@@ -77,30 +56,31 @@ const canonicalURL = 'https://devxtools.dev/catalog/';
       
       <div class="filter-group">
         <label>Spec Support</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !specParam }]}>Any</a>
-          <a href="/catalog/?spec=has-spec" class:list={[{ active: specParam === 'has-spec' }]}>
+        <div class="filter-links" data-filter-type="spec">
+          <a href="/catalog/" data-filter-value="">Any</a>
+          <a href="/catalog/?spec=has-spec" data-filter-value="has-spec">
             Has Spec Support
           </a>
-          <a href="/catalog/?spec=OpenAPI" class:list={[{ active: specParam === 'OpenAPI' }]}>
+          <a href="/catalog/?spec=OpenAPI" data-filter-value="OpenAPI">
             OpenAPI
           </a>
         </div>
       </div>
       
-      {(categoryParam || languageParam || specParam) && (
-        <div class="filter-group">
-          <a href="/catalog/" class="button button-secondary">Reset Filters</a>
-        </div>
-      )}
+      <div class="filter-group">
+        <a href="/catalog/" id="reset-filters" class="button button-secondary" style="display: none;">Reset Filters</a>
+      </div>
     </div>
     
     <div class="tool-list">
-      {filteredTools.length === 0 ? (
-        <p class="no-results">No tools match your filters. <a href="/catalog/">View all tools</a></p>
-      ) : (
-        filteredTools.map(tool => (
-          <article class="tool-item">
+      <p class="no-results" id="no-results" style="display: none;">No tools match your filters. <a href="/catalog/">View all tools</a></p>
+      {tools.map(tool => (
+          <article 
+            class="tool-item"
+            data-categories={tool.categories.join(',')}
+            data-languages={tool.languages.join(',')}
+            data-spec-support={tool.specSupport ? tool.specSupport.join(',') : ''}
+          >
             <div class="tool-header">
               <h2><a href={`/tools/${tool.slug}/`}>{tool.name}</a></h2>
               {tool.license && <span class="license">{tool.license}</span>}
@@ -146,9 +126,92 @@ const canonicalURL = 'https://devxtools.dev/catalog/';
             </div>
           </article>
         ))
-      )}
+      }
     </div>
   </div>
+  
+  <script>
+    // Client-side filtering
+    const params = new URLSearchParams(window.location.search);
+    const categoryFilter = params.get('category') || '';
+    const languageFilter = params.get('language') || '';
+    const specFilter = params.get('spec') || '';
+    
+    function applyFilters() {
+      const tools = document.querySelectorAll('.tool-item');
+      let visibleCount = 0;
+      
+      tools.forEach(tool => {
+        const categories = tool.getAttribute('data-categories')?.split(',') || [];
+        const languages = tool.getAttribute('data-languages')?.split(',') || [];
+        const specSupport = tool.getAttribute('data-spec-support')?.split(',').filter(Boolean) || [];
+        
+        let matches = true;
+        
+        if (categoryFilter && !categories.includes(categoryFilter)) {
+          matches = false;
+        }
+        
+        if (languageFilter && !languages.includes(languageFilter)) {
+          matches = false;
+        }
+        
+        if (specFilter === 'has-spec' && specSupport.length === 0) {
+          matches = false;
+        } else if (specFilter && specFilter !== 'has-spec' && !specSupport.includes(specFilter)) {
+          matches = false;
+        }
+        
+        if (matches) {
+          tool.style.display = '';
+          visibleCount++;
+        } else {
+          tool.style.display = 'none';
+        }
+      });
+      
+      // Update count and filter status
+      const countEl = document.getElementById('tool-count');
+      const statusEl = document.getElementById('filter-status');
+      const noResultsEl = document.getElementById('no-results');
+      const resetBtn = document.getElementById('reset-filters');
+      
+      if (countEl) countEl.textContent = visibleCount.toString();
+      
+      if (categoryFilter || languageFilter || specFilter) {
+        if (statusEl) statusEl.textContent = ` (Showing ${visibleCount} filtered results)`;
+        if (resetBtn) resetBtn.style.display = '';
+      } else {
+        if (statusEl) statusEl.textContent = '';
+        if (resetBtn) resetBtn.style.display = 'none';
+      }
+      
+      if (noResultsEl) {
+        noResultsEl.style.display = visibleCount === 0 ? '' : 'none';
+      }
+    }
+    
+    // Set active states
+    document.querySelectorAll('.filter-links a').forEach(link => {
+      const filterValue = link.getAttribute('data-filter-value');
+      const filterType = link.parentElement?.getAttribute('data-filter-type');
+      
+      if (filterType === 'category' && filterValue === categoryFilter) {
+        link.classList.add('active');
+      } else if (filterType === 'language' && filterValue === languageFilter) {
+        link.classList.add('active');
+      } else if (filterType === 'spec' && filterValue === specFilter) {
+        link.classList.add('active');
+      } else if (!filterValue && 
+                 ((filterType === 'category' && !categoryFilter) ||
+                  (filterType === 'language' && !languageFilter) ||
+                  (filterType === 'spec' && !specFilter))) {
+        link.classList.add('active');
+      }
+    });
+    
+    applyFilters();
+  </script>
 </Layout>
 
 <style>
