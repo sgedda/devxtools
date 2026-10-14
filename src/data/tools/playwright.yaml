@@ -14,7 +14,8 @@ runtimes:
   - Browser
   - Python
   - .NET
-section: testing
+sections:
+  - testing
 platforms:
   - Web
 categories:

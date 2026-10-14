@@ -9,7 +9,8 @@ languages:
 runtimes:
   - Node.js
   - CLI
-section: api-development
+sections:
+  - api-development
 categories:
   - openapi-tooling
 specSupport:

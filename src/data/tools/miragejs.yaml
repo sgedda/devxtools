@@ -9,7 +9,8 @@ languages:
 runtimes:
   - Browser
   - Node.js
-section: mocking-test-data
+sections:
+  - mocking-test-data
 categories:
   - http-interception
   - mock-server

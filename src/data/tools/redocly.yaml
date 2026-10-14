@@ -10,7 +10,8 @@ runtimes:
   - Node.js
   - CLI
   - Web
-section: api-development
+sections:
+  - api-development
 categories:
   - openapi-tooling
 specSupport:

@@ -86,10 +86,16 @@ export const CATEGORY_ICONS: Record<string, string> = {
   'sdk-generator': 'code-2',
   'e2e-testing': 'route',
   'load-testing': 'zap',
+  'error-monitoring': 'alert-circle',
+  'distributed-tracing': 'git-branch',
+  'log-aggregation': 'layers',
+  'application-logging': 'file-text',
+  'network-debugging': 'activity',
 };
 
 export const SECTION_ICONS: Record<string, string> = {
   'mocking-test-data': 'flask-conical',
   'api-development': 'code',
   'testing': 'bug',
+  'observability': 'eye',
 };

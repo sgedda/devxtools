@@ -15,7 +15,8 @@ runtimes:
   - CLI
   - Docker
   - Multi-language
-section: api-development
+sections:
+  - api-development
 categories:
   - sdk-generator
 specSupport:

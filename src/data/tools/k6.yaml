@@ -9,7 +9,8 @@ languages:
 runtimes:
   - CLI
   - Docker
-section: testing
+sections:
+  - testing
 categories:
   - load-testing
 bestFor: Developer-centric load testing with JavaScript scripting and Grafana integration

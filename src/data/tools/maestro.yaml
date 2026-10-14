@@ -11,7 +11,8 @@ runtimes:
   - Android
   - React Native
   - Flutter
-section: testing
+sections:
+  - testing
 platforms:
   - iOS
   - Android

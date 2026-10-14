@@ -163,7 +163,7 @@ const guides = [
         </a>
       </div>
       
-      <div class="mt-8 grid gap-4 md:grid-cols-3">
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <a 
           href="/mocking-test-data/"
           class="group rounded-xl border border-zinc-200 p-6 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800 dark:hover:border-indigo-500/60"
@@ -174,7 +174,7 @@ const guides = [
           <div class="mt-4 text-xl font-semibold text-zinc-900 dark:text-white">Mocking & Test Data</div>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">HTTP mocking, mock servers, contract testing, and test data generation.</p>
           <div class="mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400">
-            {tools.filter(t => t.section === 'mocking-test-data').length} tools →
+            {tools.filter(t => t.sections.includes('mocking-test-data')).length} tools →
           </div>
         </a>
         
@@ -188,7 +188,7 @@ const guides = [
           <div class="mt-4 text-xl font-semibold text-zinc-900 dark:text-white">API Development</div>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">API clients, OpenAPI tooling, and SDK generation for API-first development.</p>
           <div class="mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400">
-            {tools.filter(t => t.section === 'api-development').length} tools →
+            {tools.filter(t => t.sections.includes('api-development')).length} tools →
           </div>
         </a>
         
@@ -202,7 +202,21 @@ const guides = [
           <div class="mt-4 text-xl font-semibold text-zinc-900 dark:text-white">Testing</div>
           <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">End-to-end testing and load testing for web and mobile applications.</p>
           <div class="mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400">
-            {tools.filter(t => t.section === 'testing').length} tools →
+            {tools.filter(t => t.sections.includes('testing')).length} tools →
+          </div>
+        </a>
+        
+        <a 
+          href="/observability/"
+          class="group rounded-xl border border-zinc-200 p-6 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800 dark:hover:border-indigo-500/60"
+        >
+          <span class="grid h-12 w-12 place-items-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+            <Icon name="eye" size={24} />
+          </span>
+          <div class="mt-4 text-xl font-semibold text-zinc-900 dark:text-white">Observability & Logging</div>
+          <p class="mt-2 text-sm text-zinc-600 dark:text-zinc-400">Error monitoring, distributed tracing, log aggregation, and network debugging.</p>
+          <div class="mt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+            {tools.filter(t => t.sections.includes('observability')).length} tools →
           </div>
         </a>
       </div>

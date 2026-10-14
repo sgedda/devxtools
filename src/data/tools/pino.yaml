@@ -1,0 +1,22 @@
+name: Pino
+slug: pino
+website: https://getpino.io
+repo: https://github.com/pinojs/pino
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Node.js
+sections:
+  - observability
+categories:
+  - application-logging
+bestFor: Extremely fast JSON logger for Node.js with low overhead and structured logging
+description: Low-overhead JSON logger built for Node.js applications. Optimized for performance with asynchronous logging, automatic serializers, and support for log levels, child loggers, and transports.
+whenToUse: When you need high-performance logging in Node.js, want structured JSON logs for parsing and analysis, or need minimal impact on application performance.
+githubStars: 14700
+lastActivity: 2026-09-28T11:42:17Z
+npmPackage: pino
+weeklyDownloads: 13842760
+lastChecked: 2026-10-14

@@ -9,7 +9,8 @@ languages:
 runtimes:
   - Node.js
   - CLI
-section: testing
+sections:
+  - testing
 categories:
   - load-testing
 specSupport:

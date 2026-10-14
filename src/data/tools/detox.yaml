@@ -10,7 +10,8 @@ runtimes:
   - iOS
   - Android
   - React Native
-section: testing
+sections:
+  - testing
 platforms:
   - iOS
   - Android

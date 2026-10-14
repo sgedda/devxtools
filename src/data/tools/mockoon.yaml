@@ -10,7 +10,8 @@ runtimes:
   - Desktop
   - CLI
   - Docker
-section: mocking-test-data
+sections:
+  - mocking-test-data
 categories:
   - mock-server
 specSupport:

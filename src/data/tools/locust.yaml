@@ -8,7 +8,8 @@ languages:
 runtimes:
   - Python
   - CLI
-section: testing
+sections:
+  - testing
 categories:
   - load-testing
 bestFor: Python-based load testing with web UI for monitoring and distributed execution

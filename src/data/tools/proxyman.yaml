@@ -1,0 +1,22 @@
+name: Proxyman
+slug: proxyman
+website: https://proxyman.io
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - macOS
+  - iOS
+  - Windows
+sections:
+  - observability
+categories:
+  - network-debugging
+platforms:
+  - Web
+  - iOS
+  - Android
+bestFor: Modern HTTP debugging proxy for macOS with native UI and advanced features
+description: Native macOS HTTP debugging proxy with beautiful UI. Features include automatic certificate installation, WebSocket debugging, GraphQL inspector, request/response diffing, and iOS app integration.
+whenToUse: When you prefer native macOS tools over Java-based proxies, need modern UI for HTTP debugging, or want seamless iOS device debugging with automatic certificate setup.
+lastChecked: 2026-10-14

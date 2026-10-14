@@ -8,7 +8,8 @@ languages:
 runtimes:
   - Kubernetes
   - Docker
-section: mocking-test-data
+sections:
+  - mocking-test-data
 categories:
   - spec-based-mocking
   - contract-testing

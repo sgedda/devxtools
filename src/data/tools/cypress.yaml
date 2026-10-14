@@ -9,7 +9,8 @@ languages:
 runtimes:
   - Node.js
   - Browser
-section: testing
+sections:
+  - testing
 platforms:
   - Web
 categories:

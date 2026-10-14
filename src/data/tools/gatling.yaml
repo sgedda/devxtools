@@ -9,7 +9,8 @@ languages:
   - Kotlin
 runtimes:
   - JVM
-section: testing
+sections:
+  - testing
 categories:
   - load-testing
 bestFor: Enterprise-grade load testing with detailed metrics and beautiful HTML reports

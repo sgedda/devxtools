@@ -65,7 +65,7 @@ const specs = Array.from(allSpecs).sort();
                   />
                   {label}
                   <span class="ml-auto text-xs text-zinc-400">
-                    {tools.filter(t => t.section === key).length}
+                    {tools.filter(t => t.sections.includes(key as any)).length}
                   </span>
                 </label>
               ))}
@@ -193,7 +193,7 @@ const specs = Array.from(allSpecs).sort();
               data-name={tool.name.toLowerCase()}
               data-description={tool.description.toLowerCase()}
               data-best-for={tool.bestFor.toLowerCase()}
-              data-section={tool.section}
+              data-sections={tool.sections.join(',')}
               data-categories={tool.categories.join(',')}
               data-languages={tool.languages.join(',')}
               data-specs={tool.specSupport?.join(',') || ''}
@@ -351,8 +351,9 @@ const specs = Array.from(allSpecs).sort();
         
         const matchesSearch = !searchQuery || searchText.includes(searchQuery);
         
-        const section = card.dataset.section;
-        const matchesSection = filters.sections.size === 0 || filters.sections.has(section);
+        const sections = card.dataset.sections ? card.dataset.sections.split(',') : [];
+        const matchesSection = filters.sections.size === 0 || 
+          sections.some(s => filters.sections.has(s));
         
         const categories = card.dataset.categories.split(',');
         const matchesCategory = filters.categories.size === 0 || 

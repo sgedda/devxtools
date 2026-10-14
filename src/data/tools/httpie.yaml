@@ -9,7 +9,8 @@ runtimes:
   - CLI
   - Desktop
   - Web
-section: api-development
+sections:
+  - api-development
 categories:
   - api-client
 bestFor: Human-friendly CLI for making HTTP requests with intuitive syntax and beautiful output

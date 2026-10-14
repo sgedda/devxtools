@@ -8,7 +8,8 @@ runtimes:
   - Desktop
   - Web
   - CLI
-section: api-development
+sections:
+  - api-development
 categories:
   - api-client
 specSupport:

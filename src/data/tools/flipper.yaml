@@ -1,0 +1,27 @@
+name: Flipper
+slug: flipper
+website: https://fbflipper.com
+repo: https://github.com/facebook/flipper
+license: MIT
+languages:
+  - TypeScript
+  - C++
+runtimes:
+  - React Native
+  - iOS
+  - Android
+sections:
+  - observability
+categories:
+  - network-debugging
+  - application-logging
+platforms:
+  - React Native
+  - iOS
+  - Android
+bestFor: Extensible mobile debugging platform with network inspector and plugin system
+description: Platform for debugging iOS, Android, and React Native apps built by Meta. Features network inspection, layout inspection, logs viewer, crash reporter, and extensible plugin architecture.
+whenToUse: When you need comprehensive mobile debugging with network inspection, want to use or build custom debugging plugins, or need layout inspection alongside network logs.
+githubStars: 13300
+lastActivity: 2026-09-18T14:52:29Z
+lastChecked: 2026-10-14

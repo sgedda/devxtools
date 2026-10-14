@@ -6,7 +6,8 @@ languages:
   - N/A
 runtimes:
   - Hosted
-section: mocking-test-data
+sections:
+  - mocking-test-data
 categories:
   - hosted-mocks
   - mock-server

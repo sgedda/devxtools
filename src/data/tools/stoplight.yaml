@@ -7,7 +7,8 @@ languages:
 runtimes:
   - Web
   - Desktop
-section: api-development
+sections:
+  - api-development
 categories:
   - openapi-tooling
 specSupport:

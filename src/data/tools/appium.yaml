@@ -15,7 +15,8 @@ runtimes:
   - Android
   - Web
   - Desktop
-section: testing
+sections:
+  - testing
 platforms:
   - iOS
   - Android

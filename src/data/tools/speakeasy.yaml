@@ -7,7 +7,8 @@ languages:
   - Go
 runtimes:
   - CLI
-section: api-development
+sections:
+  - api-development
 categories:
   - sdk-generator
 specSupport:

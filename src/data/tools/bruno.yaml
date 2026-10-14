@@ -9,7 +9,8 @@ languages:
 runtimes:
   - Desktop
   - CLI
-section: api-development
+sections:
+  - api-development
 categories:
   - api-client
 specSupport:
