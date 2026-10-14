@@ -43,7 +43,7 @@ const categories = Object.entries(CATEGORY_LABELS);
       <h2>Browse by Category</h2>
       <div class="category-grid">
         {categories.map(([key, label]) => (
-          <a href={`/catalog?category=${key}`} class="category-card">
+          <a href={`/catalog/?category=${key}`} class="category-card">
             <h3>{label}</h3>
             <p>{tools.filter(t => t.categories.includes(key as any)).length} tools</p>
           </a>
@@ -55,7 +55,7 @@ const categories = Object.entries(CATEGORY_LABELS);
       <h2>Popular Tools</h2>
       <div class="tool-grid">
         {tools.slice(0, 6).map(tool => (
-          <a href={`/tools/${tool.slug}`} class="tool-card">
+          <a href={`/tools/${tool.slug}/`} class="tool-card">
             <h3>{tool.name}</h3>
             <p class="tool-best-for">{tool.bestFor}</p>
             <div class="tool-meta">
@@ -88,7 +88,7 @@ const categories = Object.entries(CATEGORY_LABELS);
         </a>
       </div>
       <div style="text-align: center; margin-top: 2rem;">
-        <a href="/guides//" class="button">All Guides →</a>
+        <a href="/guides/" class="button">All Guides →</a>
       </div>
     </section>
   </div>

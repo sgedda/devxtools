@@ -6,15 +6,13 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description, canonicalURL, ogImage = '/og-image.png' } = Astro.props;
+const { title, description, canonicalURL, ogImage } = Astro.props;
 const siteTitle = title === 'DevX Tools' ? title : `${title} | DevX Tools`;
 
-// Normalize canonical URL with trailing slash
 const normalizedCanonical = canonicalURL || `https://devxtools.dev${Astro.url.pathname}${Astro.url.pathname.endsWith('/') ? '' : '/'}`;
 
-// Check if this is a preview deploy (not devxtools.dev)
-const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH 
-  ? import.meta.env.CF_PAGES_BRANCH !== 'main'
+const isPreviewDeploy = import.meta.env.PUBLIC_CF_PAGES_BRANCH 
+  ? import.meta.env.PUBLIC_CF_PAGES_BRANCH !== 'main'
   : Astro.url.hostname !== 'devxtools.dev' && Astro.url.hostname !== 'localhost';
 ---
 
@@ -36,14 +34,14 @@ const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH
     <meta property="og:url" content={normalizedCanonical} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.site)} />}
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={normalizedCanonical} />
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    {ogImage && <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />}
   </head>
   <body>
     <header>

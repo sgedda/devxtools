@@ -7,26 +7,6 @@ const tools = getAllTools();
 const languages = getUniqueLanguages();
 const categories = getUniqueCategories();
 
-// Get current filters from URL
-const categoryParam = Astro.url.searchParams.get('category');
-const languageParam = Astro.url.searchParams.get('language');
-const specParam = Astro.url.searchParams.get('spec');
-
-// Filter tools based on URL params
-let filteredTools = tools;
-if (categoryParam) {
-  filteredTools = filteredTools.filter(t => t.categories.includes(categoryParam as any));
-}
-if (languageParam) {
-  filteredTools = filteredTools.filter(t => t.languages.includes(languageParam));
-}
-if (specParam === 'has-spec') {
-  filteredTools = filteredTools.filter(t => t.specSupport && t.specSupport.length > 0);
-} else if (specParam && specParam !== 'any') {
-  filteredTools = filteredTools.filter(t => t.specSupport?.includes(specParam));
-}
-
-// Always use canonical /catalog/ URL regardless of filters
 const canonicalURL = 'https://devxtools.dev/catalog/';
 ---
 
@@ -38,118 +18,219 @@ const canonicalURL = 'https://devxtools.dev/catalog/';
   <div class="container">
     <h1>Tool Catalog</h1>
     <p class="subtitle">
-      Explore {tools.length} tools for API mocking, test data generation, and more.
-      {(categoryParam || languageParam || specParam) && 
-        <span> (Showing {filteredTools.length} filtered results)</span>
-      }
+      Explore <span id="tool-count">{tools.length}</span> tools for API mocking, test data generation, and more.
     </p>
     
     <div class="filters">
       <div class="filter-group">
         <label>Category</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !categoryParam }]}>All</a>
+        <div class="filter-links" id="category-filters">
+          <button class="filter-btn active" data-filter="category" data-value="">All</button>
           {categories.map(cat => (
-            <a 
-              href={`/catalog/?category=${cat}`}
-              class:list={[{ active: categoryParam === cat }]}
-            >
+            <button class="filter-btn" data-filter="category" data-value={cat}>
               {CATEGORY_LABELS[cat as keyof typeof CATEGORY_LABELS]}
-            </a>
+            </button>
           ))}
         </div>
       </div>
       
       <div class="filter-group">
         <label>Language</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !languageParam }]}>All</a>
+        <div class="filter-links" id="language-filters">
+          <button class="filter-btn active" data-filter="language" data-value="">All</button>
           {languages.map(lang => (
-            <a 
-              href={`/catalog/?language=${lang}`}
-              class:list={[{ active: languageParam === lang }]}
-            >
+            <button class="filter-btn" data-filter="language" data-value={lang}>
               {lang}
-            </a>
+            </button>
           ))}
         </div>
       </div>
       
       <div class="filter-group">
         <label>Spec Support</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !specParam }]}>Any</a>
-          <a href="/catalog/?spec=has-spec" class:list={[{ active: specParam === 'has-spec' }]}>
+        <div class="filter-links" id="spec-filters">
+          <button class="filter-btn active" data-filter="spec" data-value="">Any</button>
+          <button class="filter-btn" data-filter="spec" data-value="has-spec">
             Has Spec Support
-          </a>
-          <a href="/catalog/?spec=OpenAPI" class:list={[{ active: specParam === 'OpenAPI' }]}>
+          </button>
+          <button class="filter-btn" data-filter="spec" data-value="OpenAPI">
             OpenAPI
-          </a>
+          </button>
         </div>
       </div>
       
-      {(categoryParam || languageParam || specParam) && (
-        <div class="filter-group">
-          <a href="/catalog/" class="button button-secondary">Reset Filters</a>
-        </div>
-      )}
+      <div class="filter-group" id="reset-filter-group" style="display: none;">
+        <button id="reset-filters" class="button button-secondary">Reset Filters</button>
+      </div>
     </div>
     
-    <div class="tool-list">
-      {filteredTools.length === 0 ? (
-        <p class="no-results">No tools match your filters. <a href="/catalog/">View all tools</a></p>
-      ) : (
-        filteredTools.map(tool => (
-          <article class="tool-item">
-            <div class="tool-header">
-              <h2><a href={`/tools/${tool.slug}/`}>{tool.name}</a></h2>
-              {tool.license && <span class="license">{tool.license}</span>}
+    <p class="no-results" id="no-results" style="display: none;">No tools match your filters.</p>
+    
+    <div class="tool-list" id="tool-list">
+      {tools.map(tool => (
+        <article 
+          class="tool-item" 
+          data-categories={tool.categories.join(',')}
+          data-languages={tool.languages.join(',')}
+          data-specs={tool.specSupport?.join(',') || ''}
+        >
+          <div class="tool-header">
+            <h2><a href={`/tools/${tool.slug}/`}>{tool.name}</a></h2>
+            {tool.license && <span class="license">{tool.license}</span>}
+          </div>
+          
+          <p class="tool-description">{tool.description}</p>
+          
+          <div class="tool-meta">
+            <div class="meta-section">
+              <strong>Best for:</strong> {tool.bestFor}
             </div>
             
-            <p class="tool-description">{tool.description}</p>
+            <div class="meta-section">
+              <strong>Languages:</strong>
+              {tool.languages.map(lang => (
+                <span class="badge">{lang}</span>
+              ))}
+            </div>
             
-            <div class="tool-meta">
+            <div class="meta-section">
+              <strong>Categories:</strong>
+              {tool.categories.map(cat => (
+                <span class="badge">{CATEGORY_LABELS[cat]}</span>
+              ))}
+            </div>
+            
+            {tool.specSupport && tool.specSupport.length > 0 && (
               <div class="meta-section">
-                <strong>Best for:</strong> {tool.bestFor}
-              </div>
-              
-              <div class="meta-section">
-                <strong>Languages:</strong>
-                {tool.languages.map(lang => (
-                  <span class="badge">{lang}</span>
+                <strong>Spec Support:</strong>
+                {tool.specSupport.map(spec => (
+                  <span class="badge badge-success">{spec}</span>
                 ))}
               </div>
-              
-              <div class="meta-section">
-                <strong>Categories:</strong>
-                {tool.categories.map(cat => (
-                  <span class="badge">{CATEGORY_LABELS[cat]}</span>
-                ))}
-              </div>
-              
-              {tool.specSupport && tool.specSupport.length > 0 && (
-                <div class="meta-section">
-                  <strong>Spec Support:</strong>
-                  {tool.specSupport.map(spec => (
-                    <span class="badge badge-success">{spec}</span>
-                  ))}
-                </div>
-              )}
-            </div>
-            
-            <div class="tool-links">
-              <a href={tool.website} target="_blank" rel="noopener noreferrer">Website →</a>
-              {tool.repo && (
-                <a href={tool.repo} target="_blank" rel="noopener noreferrer">Repository →</a>
-              )}
-              <a href={`/tools/${tool.slug}/`}>Details →</a>
-            </div>
-          </article>
-        ))
-      )}
+            )}
+          </div>
+          
+          <div class="tool-links">
+            <a href={tool.website} target="_blank" rel="noopener noreferrer">Website →</a>
+            {tool.repo && (
+              <a href={tool.repo} target="_blank" rel="noopener noreferrer">Repository →</a>
+            )}
+            <a href={`/tools/${tool.slug}/`}>Details →</a>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </Layout>
+
+<script>
+  const filters = {
+    category: '',
+    language: '',
+    spec: ''
+  };
+
+  function updateFilters() {
+    const toolItems = document.querySelectorAll('.tool-item') as NodeListOf<HTMLElement>;
+    let visibleCount = 0;
+
+    toolItems.forEach(item => {
+      const categories = item.dataset.categories?.split(',') || [];
+      const languages = item.dataset.languages?.split(',') || [];
+      const specs = item.dataset.specs?.split(',').filter(s => s) || [];
+
+      const matchesCategory = !filters.category || categories.includes(filters.category);
+      const matchesLanguage = !filters.language || languages.includes(filters.language);
+      const matchesSpec = !filters.spec || 
+        (filters.spec === 'has-spec' && specs.length > 0) ||
+        specs.includes(filters.spec);
+
+      const isVisible = matchesCategory && matchesLanguage && matchesSpec;
+      item.style.display = isVisible ? '' : 'none';
+      if (isVisible) visibleCount++;
+    });
+
+    const toolCount = document.getElementById('tool-count');
+    if (toolCount) toolCount.textContent = visibleCount.toString();
+
+    const noResults = document.getElementById('no-results');
+    if (noResults) noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+
+    const resetGroup = document.getElementById('reset-filter-group');
+    const hasFilters = filters.category || filters.language || filters.spec;
+    if (resetGroup) resetGroup.style.display = hasFilters ? 'block' : 'none';
+
+    updateURL();
+  }
+
+  function updateURL() {
+    const params = new URLSearchParams();
+    if (filters.category) params.set('category', filters.category);
+    if (filters.language) params.set('language', filters.language);
+    if (filters.spec) params.set('spec', filters.spec);
+    
+    const newURL = params.toString() ? `/catalog/?${params.toString()}` : '/catalog/';
+    window.history.replaceState({}, '', newURL);
+  }
+
+  function initFiltersFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    filters.category = params.get('category') || '';
+    filters.language = params.get('language') || '';
+    filters.spec = params.get('spec') || '';
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      const filterType = (btn as HTMLElement).dataset.filter;
+      const filterValue = (btn as HTMLElement).dataset.value || '';
+      if (filterType && filters[filterType as keyof typeof filters] === filterValue) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    updateFilters();
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filterType = (btn as HTMLElement).dataset.filter as keyof typeof filters;
+      const filterValue = (btn as HTMLElement).dataset.value || '';
+
+      filters[filterType] = filterValue;
+
+      const filterGroup = btn.parentElement;
+      if (filterGroup) {
+        filterGroup.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      }
+      btn.classList.add('active');
+
+      updateFilters();
+    });
+  });
+
+  const resetBtn = document.getElementById('reset-filters');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      filters.category = '';
+      filters.language = '';
+      filters.spec = '';
+
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        const filterValue = (btn as HTMLElement).dataset.value;
+        if (!filterValue) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      updateFilters();
+    });
+  }
+
+  initFiltersFromURL();
+</script>
 
 <style>
   .subtitle {
@@ -188,23 +269,24 @@ const canonicalURL = 'https://devxtools.dev/catalog/';
     gap: 0.5rem;
   }
   
-  .filter-links a {
+  .filter-btn {
     padding: 0.5rem 1rem;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--text-secondary);
     font-size: 0.95rem;
-    text-decoration: none;
+    cursor: pointer;
     transition: all 0.2s;
+    font-family: inherit;
   }
   
-  .filter-links a:hover {
+  .filter-btn:hover {
     border-color: var(--accent);
     color: var(--accent);
   }
   
-  .filter-links a.active {
+  .filter-btn.active {
     background: var(--accent);
     border-color: var(--accent);
     color: white;
