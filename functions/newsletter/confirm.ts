@@ -1,8 +1,9 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyToken } from '../lib/newsletter-utils';
+import { verifyToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
+  NEWSLETTER_FROM_EMAIL: string;
   NEWSLETTER_SEGMENT_ID: string;
   NEWSLETTER_SECRET: string;
   NEWSLETTER_KV: KVNamespace;
@@ -24,30 +25,61 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
 
-    // Check if confirmation is still valid (if KV is available)
+    // Check if confirmation is still valid and retrieve attribution (if KV is available)
+    let attribution: { page?: string | null; placement?: string | null } = {};
     if (env.NEWSLETTER_KV) {
-      const pending = await env.NEWSLETTER_KV.get(`pending:${email}`);
-      if (!pending) {
+      const pendingData = await env.NEWSLETTER_KV.get(`pending:${email}`);
+      if (!pendingData) {
         // Already confirmed or expired
         return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
       }
+      
+      try {
+        const pending = JSON.parse(pendingData);
+        attribution = pending.attribution || {};
+      } catch (error) {
+        console.error('Failed to parse pending data:', error);
+      }
     }
 
-    // Update contact to mark as subscribed
-    const updateResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
-      method: 'PATCH',
+    // Create contact as subscribed (this is the first time we create them in Resend)
+    const createResponse = await fetch('https://api.resend.com/contacts', {
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        email,
         unsubscribed: false,
       }),
     });
 
-    if (!updateResponse.ok) {
-      console.error('Failed to update contact subscription status');
-      throw new Error('Failed to update contact subscription status');
+    // If contact already exists, update them to mark as subscribed
+    if (!createResponse.ok) {
+      const createData = await createResponse.json() as any;
+      
+      if (createData.message === 'Contact already exists.') {
+        // Contact exists, update their subscription status
+        const updateResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            unsubscribed: false,
+          }),
+        });
+
+        if (!updateResponse.ok) {
+          console.error('Failed to update contact subscription status');
+          throw new Error('Failed to update contact subscription status');
+        }
+      } else {
+        console.error('Failed to create contact:', createData);
+        throw new Error('Failed to create contact');
+      }
     }
 
     // Add contact to segment
@@ -66,9 +98,58 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       throw new Error('Failed to add contact to segment');
     }
 
-    // Only remove pending entry after both API calls succeed
+    // Only remove pending entry and store attribution after both API calls succeed
     if (env.NEWSLETTER_KV) {
       await env.NEWSLETTER_KV.delete(`pending:${email}`);
+      
+      // Store attribution for confirmed subscriber
+      if (attribution.page || attribution.placement) {
+        await env.NEWSLETTER_KV.put(
+          `attribution:${email}`,
+          JSON.stringify({
+            email,
+            page: attribution.page || null,
+            placement: attribution.placement || null,
+            confirmedAt: Date.now(),
+          })
+        );
+      }
+    }
+
+    // Send welcome email
+    const unsubscribeToken = await generateUnsubscribeToken(
+      email,
+      env.NEWSLETTER_SECRET,
+      env.NEWSLETTER_KV
+    );
+    const welcomeUnsubscribeUrl = new URL('/newsletter/unsubscribe', url.origin);
+    welcomeUnsubscribeUrl.searchParams.set('token', unsubscribeToken);
+
+    const fromEmail = env.NEWSLETTER_FROM_EMAIL || 'newsletter@devxtools.dev';
+    const welcomeEmailResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: fromEmail,
+        to: email,
+        subject: 'Welcome to DevX Tools!',
+        html: `
+          <p>Hi there,</p>
+          <p>Thanks for confirming your subscription to the DevX Tools newsletter! 🎉</p>
+          <p>You'll now receive updates about developer experience tools, comparisons, and guides straight to your inbox.</p>
+          <p style="margin-top: 24px; font-size: 12px; color: #999;">
+            Not interested anymore? <a href="${welcomeUnsubscribeUrl.toString()}">Unsubscribe here</a>.
+          </p>
+        `,
+      }),
+    });
+
+    if (!welcomeEmailResponse.ok) {
+      const welcomeError = await welcomeEmailResponse.json();
+      console.error('Failed to send welcome email:', welcomeError);
     }
 
     return Response.redirect(new URL('/newsletter/confirmed', url.origin).toString(), 302);

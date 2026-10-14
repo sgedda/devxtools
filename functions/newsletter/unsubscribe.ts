@@ -1,9 +1,10 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyToken } from '../lib/newsletter-utils';
+import { verifyUnsubscribeToken } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
   NEWSLETTER_SECRET: string;
+  NEWSLETTER_KV: KVNamespace;
 }
 
 export const onRequestGet: PagesFunction<Env> = async (context) => {
@@ -16,7 +17,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    const email = await verifyToken(token, env.NEWSLETTER_SECRET, false);
+    const email = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     
     if (!email) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
