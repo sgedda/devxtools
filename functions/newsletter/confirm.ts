@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
+import { verifyUnsubscribeToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
@@ -19,28 +19,45 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    const email = await verifyToken(token, env.NEWSLETTER_SECRET, true);
+    // Extract token ID to look up pending confirmation
+    const [tokenId] = token.split('.');
     
-    if (!email) {
+    if (!tokenId || !env.NEWSLETTER_KV) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
-
-    // Check if confirmation is still valid and retrieve attribution (if KV is available)
-    let attribution: { page?: string | null; placement?: string | null } = {};
-    if (env.NEWSLETTER_KV) {
-      const pendingData = await env.NEWSLETTER_KV.get(`pending:${email}`);
-      if (!pendingData) {
-        // Already confirmed or expired
-        return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
-      }
-      
-      try {
-        const pending = JSON.parse(pendingData);
-        attribution = pending.attribution || {};
-      } catch (error) {
-        console.error('Failed to parse pending data:', error);
-      }
+    
+    // Retrieve pending confirmation data by token ID
+    const pendingData = await env.NEWSLETTER_KV.get(`confirm:${tokenId}`);
+    if (!pendingData) {
+      // Already confirmed, expired, or invalid token
+      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
+    
+    let email: string;
+    let attribution: { page?: string | null; placement?: string | null } = {};
+    
+    try {
+      const pending = JSON.parse(pendingData);
+      email = pending.email;
+      attribution = pending.attribution || {};
+      
+      if (!email) {
+        throw new Error('No email in pending data');
+      }
+    } catch (error) {
+      console.error('Failed to parse pending confirmation data:', error);
+      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    }
+    
+    // Verify token signature (defense in depth)
+    const verifiedEmail = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
+    if (!verifiedEmail) {
+      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    }
+    
+    // Delete both the confirmation token and unsubscribe token mapping (single-use)
+    await env.NEWSLETTER_KV.delete(`confirm:${tokenId}`);
+    await env.NEWSLETTER_KV.delete(`unsubscribe:${tokenId}`);
 
     // Create contact as subscribed (this is the first time we create them in Resend)
     const createResponse = await fetch('https://api.resend.com/contacts', {
@@ -98,25 +115,20 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       throw new Error('Failed to add contact to segment');
     }
 
-    // Only remove pending entry and store attribution after both API calls succeed
-    if (env.NEWSLETTER_KV) {
-      await env.NEWSLETTER_KV.delete(`pending:${email}`);
-      
-      // Store attribution for confirmed subscriber
-      if (attribution.page || attribution.placement) {
-        await env.NEWSLETTER_KV.put(
-          `attribution:${email}`,
-          JSON.stringify({
-            email,
-            page: attribution.page || null,
-            placement: attribution.placement || null,
-            confirmedAt: Date.now(),
-          })
-        );
-      }
+    // Store attribution for confirmed subscriber (pending already deleted above)
+    if (env.NEWSLETTER_KV && (attribution.page || attribution.placement)) {
+      await env.NEWSLETTER_KV.put(
+        `attribution:${email}`,
+        JSON.stringify({
+          email,
+          page: attribution.page || null,
+          placement: attribution.placement || null,
+          confirmedAt: Date.now(),
+        })
+      );
     }
 
-    // Send welcome email
+    // Send welcome email - critical step, log failures prominently
     const unsubscribeToken = await generateUnsubscribeToken(
       email,
       env.NEWSLETTER_SECRET,
@@ -126,6 +138,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     welcomeUnsubscribeUrl.searchParams.set('token', unsubscribeToken);
 
     const fromEmail = env.NEWSLETTER_FROM_EMAIL || 'newsletter@devxtools.dev';
+    
+    console.log(`[NEWSLETTER] Sending welcome email to ${email} from ${fromEmail}`);
+    
     const welcomeEmailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -149,7 +164,13 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     if (!welcomeEmailResponse.ok) {
       const welcomeError = await welcomeEmailResponse.json();
-      console.error('Failed to send welcome email:', welcomeError);
+      console.error(`[NEWSLETTER] CRITICAL: Failed to send welcome email to ${email}:`, JSON.stringify(welcomeError));
+      console.error(`[NEWSLETTER] Response status: ${welcomeEmailResponse.status}`);
+      // Don't throw - we've already subscribed them successfully
+      // But make the failure very visible in logs
+    } else {
+      const welcomeResult = await welcomeEmailResponse.json();
+      console.log(`[NEWSLETTER] Welcome email sent successfully to ${email}:`, welcomeResult);
     }
 
     return Response.redirect(new URL('/newsletter/confirmed', url.origin).toString(), 302);

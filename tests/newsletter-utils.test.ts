@@ -134,6 +134,15 @@ describe('Newsletter Utilities', () => {
       expect(result).toEqual({ allowed: true });
       expect(mockKV.put).toHaveBeenCalled();
     });
+
+    it('should handle KV errors gracefully', async () => {
+      (mockKV.get as any).mockRejectedValue(new Error('KV error'));
+      
+      const result = await checkRateLimit(mockKV, '1.2.3.4');
+      
+      // Should fail open (allow request) on error
+      expect(result).toEqual({ allowed: true });
+    });
   });
 
   describe('generateToken and verifyToken', () => {
