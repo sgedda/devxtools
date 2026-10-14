@@ -286,40 +286,40 @@ describe('Newsletter API Integration Tests', () => {
   });
 
   describe('Rate Limiting', () => {
-    it('should rate limit before validation', async () => {
-      const { checkRateLimit } = await import('../functions/lib/newsletter-utils');
+    it('should rate limit before validation (best-effort KV)', async () => {
+      const { checkRateLimit, RATE_LIMIT_MAX } = await import('../functions/lib/newsletter-utils');
       
-      const mockStub = {
-        fetch: vi.fn(),
-      };
-
-      const mockRateLimiter = {
-        idFromName: vi.fn().mockReturnValue('mock-id'),
-        get: vi.fn().mockReturnValue(mockStub),
+      const mockKV = {
+        get: vi.fn(),
+        put: vi.fn(),
+        delete: vi.fn(),
       } as any;
 
-      // First 3 requests - should be allowed
-      for (let i = 0; i < 3; i++) {
-        mockStub.fetch.mockResolvedValue(
-          new Response(JSON.stringify({ allowed: true }), {
-            headers: { 'Content-Type': 'application/json' },
-          })
+      // Note: This is best-effort due to KV eventual consistency
+      // Primary protection is WAF rule (see CLOUDFLARE_SETUP.md)
+
+      // First request
+      (mockKV.get as any).mockResolvedValue(null);
+      let result = await checkRateLimit(mockKV, '1.2.3.4');
+      expect(result.allowed).toBe(true);
+
+      // Simulate multiple attempts
+      const now = Date.now();
+      const resetAt = now + 60000;
+      
+      for (let i = 1; i < RATE_LIMIT_MAX; i++) {
+        (mockKV.get as any).mockResolvedValue(
+          JSON.stringify({ count: i, resetAt })
         );
-        const result = await checkRateLimit(mockRateLimiter, '1.2.3.4');
+        result = await checkRateLimit(mockKV, '1.2.3.4');
         expect(result.allowed).toBe(true);
       }
 
-      // 4th request - should be blocked
-      mockStub.fetch.mockResolvedValue(
-        new Response(JSON.stringify({ 
-          allowed: false, 
-          error: 'Too many requests. Please try again later.' 
-        }), {
-          headers: { 'Content-Type': 'application/json' },
-        })
+      // Final request should be blocked
+      (mockKV.get as any).mockResolvedValue(
+        JSON.stringify({ count: RATE_LIMIT_MAX, resetAt })
       );
-      
-      const result = await checkRateLimit(mockRateLimiter, '1.2.3.4');
+      result = await checkRateLimit(mockKV, '1.2.3.4');
       expect(result.allowed).toBe(false);
       expect(result.error).toBe('Too many requests. Please try again later.');
     });

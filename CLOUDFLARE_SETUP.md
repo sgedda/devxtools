@@ -1,62 +1,126 @@
-# Cloudflare Pages Configuration for Newsletter
+# Cloudflare Configuration for Newsletter
 
 This document explains the Cloudflare-specific configuration required for the newsletter signup feature.
 
-## Required: Durable Object for Rate Limiting
+## Rate Limiting Strategy
 
-The newsletter signup uses a **Durable Object** for reliable rate limiting that works consistently across all Cloudflare edge locations. This is necessary because KV's eventual consistency makes it unsuitable for atomic counter operations.
+The newsletter uses a **two-layer rate limiting approach**:
 
-### Why Durable Objects?
+1. **Primary**: Cloudflare WAF rate limiting rule (reliable, edge-enforced)
+2. **Secondary**: KV-based limiter in code (best-effort, defense in depth)
 
-The previous implementation used KV for rate limiting, which suffered from race conditions due to eventual consistency. Multiple rapid requests would all read the same initial count before any writes propagated, allowing abuse. Durable Objects provide:
+### Why Two Layers?
 
-- **Strong consistency**: Each IP gets its own DO instance with atomic state updates
-- **No race conditions**: Read-modify-write operations are serialized
-- **Reliable counting**: Works correctly even with rapid concurrent requests
+KV's eventual consistency causes race conditions with atomic counters. The WAF rule provides reliable rate limiting at the edge, while the KV check adds defense in depth.
 
-### Configuration in Cloudflare Dashboard
+## Required: WAF Rate Limiting Rule
 
-1. Go to your Cloudflare Pages project settings
-2. Navigate to **Settings** → **Functions** → **Durable Object bindings**
-3. Add a new Durable Object binding:
-   - **Variable name**: `RATE_LIMITER`
-   - **Durable Object class name**: `RateLimiterDurableObject`
-   - **Durable Object namespace**: Create new or select existing
+Create a WAF rate limiting rule in the Cloudflare dashboard. The free plan allows **one rate limiting rule**.
 
-The DO class is exported from `functions/_middleware.ts` and defined in `functions/lib/rate-limiter-do.ts`.
+### Configuration Steps
 
-### Configuration via wrangler.toml (Alternative)
+1. Go to Cloudflare Dashboard
+2. Select your domain (e.g., `devxtools.dev`)
+3. Navigate to **Security** → **WAF** → **Rate limiting rules**
+4. Click **Create rate limiting rule**
 
-If you're using `wrangler.toml` for local development:
+### Rule Configuration
 
-```toml
-name = "devxtools"
-compatibility_date = "2024-01-01"
+**Rule name**: `Newsletter Signup Rate Limit`
 
-[[durable_objects.bindings]]
-name = "RATE_LIMITER"
-class_name = "RateLimiterDurableObject"
-script_name = "devxtools"
+**If incoming requests match**:
+```
+Field: URI Path
+Operator: equals
+Value: /api/newsletter/signup
+
+AND
+
+Field: HTTP Method
+Operator: equals  
+Value: POST
 ```
 
-### How It Works
+**With the same value of**:
+```
+Field: IP Address
+```
 
-1. Each IP address gets its own Durable Object instance
-2. The DO maintains a counter and reset timestamp
-3. Each request atomically increments the counter
-4. Rate limit: 3 requests per minute per IP
-5. After 1 minute, the counter resets
+**Requests exceeding**:
+```
+Requests: 3
+Period: 1 minute
+```
 
-### Fallback Behavior
+**Then take action**:
+```
+Action: Block
+Duration: 1 minute
+With response:
+  - Status code: 429
+  - Response body: (default "Rate limit exceeded")
+```
 
-If the `RATE_LIMITER` binding is not configured:
-- Rate limiting is disabled (logs a warning)
-- Signup still works, but without rate protection
-- This is "fail open" behavior to prevent complete breakage
+**Mitigation timeout**: 1 minute
 
-## Existing Configuration (Already Set Up)
+### Screenshot Reference
 
-These environment variables and bindings should already be configured from the initial setup:
+Your configuration should look like this:
+
+```
+┌─────────────────────────────────────────────────┐
+│ When incoming requests match...                 │
+│                                                 │
+│ (URI Path equals "/api/newsletter/signup"      │
+│  AND HTTP Method equals "POST")                 │
+│                                                 │
+│ With the same value of...                       │
+│ • IP Address                                    │
+│                                                 │
+│ Requests exceeding...                           │
+│ • 3 requests per 1 minute                       │
+│                                                 │
+│ Then...                                         │
+│ • Block for 1 minute                            │
+│ • HTTP status: 429                              │
+└─────────────────────────────────────────────────┘
+```
+
+### Verification
+
+Test the WAF rule after deployment:
+
+```bash
+# Requests 1-3 should succeed (200 or 400 for validation)
+for i in {1..3}; do
+  curl -w "\nStatus: %{http_code}\n" \
+    -X POST https://devxtools.dev/api/newsletter/signup \
+    -H "Content-Type: application/json" \
+    -d '{"email":"test@example.com","consent":true}'
+  sleep 1
+done
+
+# Request 4 should be blocked by WAF (429)
+curl -w "\nStatus: %{http_code}\n" \
+  -X POST https://devxtools.dev/api/newsletter/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","consent":true}'
+```
+
+Expected: Request 4 returns `429 Too Many Requests`
+
+## Defense in Depth: KV Rate Limiter
+
+The code also implements a KV-based rate limiter as a secondary check. This is **best-effort** due to KV's eventual consistency:
+
+- **May allow some requests past the limit** due to race conditions
+- **Primary protection is the WAF rule** (reliable)
+- **Adds defense** if WAF rule is misconfigured or disabled
+- **No additional configuration needed** (uses existing `NEWSLETTER_KV` binding)
+
+## Existing Configuration
+
+These should already be configured from the initial newsletter setup:
 
 ### Environment Variables (Required)
 
@@ -73,102 +137,204 @@ NEWSLETTER_SEGMENT_ID=31d28ce6-349c-4504...     # Resend segment ID for General
 - **KV namespace**: Your existing KV namespace
 
 Used for:
-- Pending confirmations (24h TTL)
-- Unsubscribe token mappings
-- Confirmation token mappings
-- Attribution data
+- Pending confirmations (`confirm:{tokenId}`, 24h TTL)
+- Unsubscribe token mappings (`unsubscribe:{tokenId}`)
+- Attribution data (`attribution:{email}`)
+- Best-effort rate limiting (`rate:{ip}`, 60s TTL)
 
 ## Local Development
 
-To test locally with Durable Objects:
-
-1. Install Wrangler: `npm install -g wrangler`
-2. Build the project: `npm run build`
-3. Run with bindings:
-   ```bash
-   npx wrangler pages dev dist \
-     --kv NEWSLETTER_KV \
-     --do RATE_LIMITER=RateLimiterDurableObject
-   ```
-4. Create `.dev.vars` with secrets:
-   ```
-   RESEND_API_KEY=re_test_...
-   NEWSLETTER_SECRET=test-secret-here
-   NEWSLETTER_FROM_EMAIL=test@devxtools.dev
-   ```
-
-## Testing Rate Limiting
-
-After configuring the Durable Object:
+To test locally:
 
 ```bash
-# Should succeed (requests 1-3)
-for i in {1..3}; do
-  curl -X POST https://devxtools.dev/api/newsletter/signup \
-    -H "Content-Type: application/json" \
-    -d '{"email":"test@example.com","consent":true}'
-  sleep 1
+npm run build
+npx wrangler pages dev dist --kv NEWSLETTER_KV
+```
+
+Create `.dev.vars` with test credentials:
+```
+RESEND_API_KEY=re_test_...
+NEWSLETTER_SECRET=test-secret-here
+NEWSLETTER_FROM_EMAIL=test@devxtools.dev
+NEWSLETTER_SEGMENT_ID=31d28ce6-349c-4504-9dcf-65ad1562666f
+```
+
+**Note**: Local development won't have WAF protection. The KV rate limiter will work but may have race conditions with rapid concurrent requests. This is acceptable for local testing.
+
+## Production Testing Checklist
+
+After deploying and configuring the WAF rule:
+
+### 1. Rate Limiting
+
+```bash
+# Test WAF rule enforcement
+for i in {1..4}; do
+  echo "Request $i:"
+  curl -w "Status: %{http_code}\n\n" \
+    -X POST https://devxtools.dev/api/newsletter/signup \
+    -d "email=test$i@example.com&consent=on"
+  sleep 2
 done
-
-# Should return 429 (request 4)
-curl -X POST https://devxtools.dev/api/newsletter/signup \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","consent":true}'
 ```
 
-Expected output for 4th request:
-```json
-{"error":"Too many requests. Please try again later."}
-```
+Expected:
+- Requests 1-3: `200` or `400` (validation)
+- Request 4: `429` (blocked by WAF)
+
+### 2. No Contact Writes During Signup
+
+After a signup POST (before confirmation):
+- ✅ Go to Resend dashboard → Contacts
+- ✅ Search for the signup email
+- ✅ **Expected**: Either NOT found, or if found (due to email send), marked as `unsubscribed: true` and NOT in any segments
+- ✅ **Critical**: Contact should NOT be subscribed or in General segment yet
+
+### 3. Confirmation Flow
+
+Click the confirmation link:
+- ✅ Contact created/updated as `unsubscribed: false`
+- ✅ Contact added to General segment
+- ✅ Welcome email received
+- ✅ Cloudflare logs show: `[NEWSLETTER] Welcome email sent successfully`
+
+### 4. Security: Malicious Unsubscribe Prevention
+
+**Attack scenario**: Try to unsubscribe someone else via signup
+
+1. In Resend, create a test contact as subscribed
+2. Submit signup form with that email (don't confirm)
+3. Check Resend dashboard
+4. ✅ **Critical**: Contact should still be subscribed (signup didn't unsubscribe them)
+
+**Before this fix**: Signup would mark the contact as `unsubscribed: true`  
+**After this fix**: Signup makes ZERO contact API writes
 
 ## Troubleshooting
 
-### Rate limiting not working
+### Rate Limiting Not Working
 
-**Symptom**: Can submit unlimited requests without getting 429
+**Symptoms**:
+- Can submit unlimited signup requests
+- Never see 429 errors
 
-**Causes**:
-1. ✅ Fixed: KV eventual consistency (old issue)
-2. ❌ `RATE_LIMITER` binding not configured
-3. ❌ Durable Object class not exported from `_middleware.ts`
-4. ❌ Cloudflare not routing requests through the DO
+**Causes & Fixes**:
 
-**Fix**: Verify the binding exists in Cloudflare dashboard under Functions → Durable Object bindings
+1. ❌ **WAF rule not created/enabled**
+   - Fix: Create the WAF rule as documented above
+   - Verify rule is enabled (toggle should be blue/on)
 
-### "RATE_LIMITER binding not configured" warning in logs
+2. ❌ **WAF rule path mismatch**
+   - Fix: Ensure path is exactly `/api/newsletter/signup` (case-sensitive)
+   - Include the leading `/`
 
-**Cause**: The binding is missing or misconfigured
+3. ❌ **Wrong HTTP method**
+   - Fix: Rule must match `POST` method only
 
-**Fix**: Add the binding in Cloudflare Pages settings as described above
+4. ❌ **Testing from same IP too slowly**
+   - Fix: Send requests within 1 minute (< 20 seconds apart)
+   - WAF resets counter after 1 minute
 
-### Durable Object errors in production
+5. ℹ️ **KV rate limiter race conditions**
+   - This is expected - KV is best-effort only
+   - Primary protection is the WAF rule
 
-**Cause**: DO deployment issues or binding misconfiguration
+### Confirming WAF Rule is Active
 
-**Check**:
-- Verify the DO class name matches exactly: `RateLimiterDurableObject`
-- Check that `functions/_middleware.ts` exports the class
-- Ensure the binding variable name is exactly `RATE_LIMITER` (case-sensitive)
+Check Cloudflare's **Security Events** log:
+
+1. Dashboard → Security → Events
+2. Filter by `Rate limiting rule`
+3. Should see blocked requests after hitting limit
+
+### Testing WAF Rule Locally
+
+WAF rules only work on Cloudflare's edge, not locally. For local testing:
+- KV rate limiter provides basic protection
+- May allow more than 3 requests due to race conditions
+- Test production WAF rule after deploying
 
 ## Cost Implications
 
-Durable Objects pricing:
-- **$0.15 per million requests** to Durable Objects
-- Newsletter signups: ~3 DO requests per user (rate limit checks)
-- **Estimated cost**: $0.45 per million signups
-- Much cheaper than the potential abuse without rate limiting
+### WAF Rate Limiting Rule
 
-KV pricing:
-- Still used for pending confirmations and attribution
-- **$0.50 per million reads**, $5 per million writes
-- Newsletter flow: ~5 KV operations per confirmed signup
-- **Estimated cost**: ~$0.50 per million confirmed signups
+- **Free plan**: 1 rule included (we use it for newsletter signup)
+- **Pro plan**: 10 rules included
+- **No per-request cost**: Edge-enforced, no Workers/Functions invocations
 
-Total estimated cost: **~$1 per million confirmed signups**
+### KV Operations
 
-## Migration from KV Rate Limiting
+Newsletter flow uses ~5-7 KV operations per confirmed signup:
+- Signup: Write `confirm:{token}` (1 write)
+- Signup: Rate limit check (1 read, 1 write)
+- Confirm: Read `confirm:{token}` (1 read), delete (1 write)
+- Confirm: Write `attribution:{email}` if provided (1 write)
+- Confirm: Read/write `unsubscribe:{token}` (1 read, 1 write)
 
-The old KV-based rate limiting has been replaced with Durable Objects. No migration is needed:
-- Old `rate:{ip}` keys in KV will expire naturally (60s TTL)
-- New requests will use Durable Objects
-- No data loss or downtime during transition
+**KV Pricing** (Free tier includes 100k reads/day, 1k writes/day):
+- $0.50 per million reads
+- $5.00 per million writes
+
+**Estimated cost**: ~$0.50 per million confirmed signups
+
+### Total Cost
+
+**~$0.50 per million confirmed signups** (essentially free under most traffic)
+
+Compare to cost of abuse without rate limiting:
+- Spam attacks overwhelming Resend quota
+- Reputation damage from malicious re-subscriptions
+- Potential GDPR fines for non-consensual emails
+
+## Advanced: Custom WAF Rules
+
+If you need more sophisticated rate limiting:
+
+### Geographic Rate Limits
+
+Add country-specific limits for high-spam regions:
+
+```
+(URI Path equals "/api/newsletter/signup" 
+ AND HTTP Method equals "POST"
+ AND IP Source Country in {CN, RU, ...})
+
+Requests: 1 per 5 minutes
+Action: Block for 1 hour
+```
+
+### Email Domain Blocking
+
+Block disposable email domains:
+
+```
+(URI Path equals "/api/newsletter/signup"
+ AND Body contains "@tempmail.com")
+
+Action: Block
+```
+
+**Note**: Body inspection requires Enterprise plan
+
+## Monitoring
+
+Track newsletter signup rate limiting in Cloudflare Analytics:
+
+1. Dashboard → Analytics → Security
+2. Filter by **Rate Limiting** events
+3. View blocked requests, top IPs, trends
+
+Set up alerts:
+- Dashboard → Notifications → Add
+- Event: Rate limit exceeded
+- Threshold: > 10 blocks per hour
+
+This helps identify attack patterns or legitimate traffic spikes.
+
+## Migration from Durable Objects
+
+If you previously used the Durable Object approach:
+- No migration needed - just create the WAF rule
+- Old Durable Object bindings can be removed
+- Code automatically uses KV-based limiter
+- No data loss or downtime
