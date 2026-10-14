@@ -31,9 +31,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         // Already confirmed or expired
         return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
       }
-      
-      // Remove pending entry
-      await env.NEWSLETTER_KV.delete(`pending:${email}`);
     }
 
     // Update contact to mark as subscribed
@@ -50,24 +47,28 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     if (!updateResponse.ok) {
       console.error('Failed to update contact subscription status');
+      throw new Error('Failed to update contact subscription status');
     }
 
     // Add contact to segment
     const segmentId = env.NEWSLETTER_SEGMENT_ID || '31d28ce6-349c-4504-9dcf-65ad1562666f';
-    const segmentResponse = await fetch(`https://api.resend.com/segments/${segmentId}/contacts`, {
+    const segmentResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${segmentId}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.RESEND_API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email,
-      }),
     });
 
     if (!segmentResponse.ok) {
       const segmentError = await segmentResponse.json();
       console.error('Failed to add contact to segment:', segmentError);
+      throw new Error('Failed to add contact to segment');
+    }
+
+    // Only remove pending entry after both API calls succeed
+    if (env.NEWSLETTER_KV) {
+      await env.NEWSLETTER_KV.delete(`pending:${email}`);
     }
 
     return Response.redirect(new URL('/newsletter/confirmed', url.origin).toString(), 302);
