@@ -1,0 +1,201 @@
+---
+interface Props {
+  variant?: 'footer' | 'article';
+}
+
+const { variant = 'footer' } = Astro.props;
+---
+
+<div class={`newsletter-signup newsletter-${variant}`}>
+  <div class="newsletter-content">
+    {variant === 'article' && (
+      <h2 class="newsletter-heading">Stay Updated</h2>
+    )}
+    <p class="newsletter-description">
+      {variant === 'article' 
+        ? 'Get notified when we publish new guides and comparisons. No spam, unsubscribe anytime.'
+        : 'Get occasional emails about new dev/test tools and guides'}
+    </p>
+    <form class="newsletter-form" method="POST" action="/api/newsletter/signup">
+      <div class="form-fields">
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          aria-label="Email address"
+          class="newsletter-input"
+        />
+        <input
+          type="text"
+          name="website"
+          class="honeypot"
+          tabindex="-1"
+          autocomplete="off"
+          aria-hidden="true"
+        />
+        <button type="submit" class="newsletter-button">Subscribe</button>
+      </div>
+      <div class="newsletter-status" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .newsletter-signup {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .newsletter-article {
+    margin: 3rem 0;
+  }
+
+  .newsletter-footer {
+    margin-bottom: 1rem;
+  }
+
+  .newsletter-heading {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .newsletter-description {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .newsletter-form {
+    width: 100%;
+  }
+
+  .form-fields {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 1rem;
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .newsletter-button {
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 1rem;
+  }
+
+  .newsletter-button:hover {
+    background: var(--accent-hover);
+  }
+
+  .newsletter-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .newsletter-status {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    min-height: 1.5em;
+  }
+
+  .newsletter-status.success {
+    color: var(--success);
+  }
+
+  .newsletter-status.error {
+    color: var(--warning);
+  }
+
+  @media (max-width: 600px) {
+    .form-fields {
+      flex-direction: column;
+    }
+
+    .newsletter-input {
+      width: 100%;
+    }
+
+    .newsletter-button {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const forms = document.querySelectorAll('.newsletter-form');
+    
+    forms.forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formElement = e.target as HTMLFormElement;
+        const statusDiv = formElement.querySelector('.newsletter-status') as HTMLDivElement;
+        const submitButton = formElement.querySelector('.newsletter-button') as HTMLButtonElement;
+        const emailInput = formElement.querySelector('[name="email"]') as HTMLInputElement;
+        
+        if (!statusDiv || !submitButton || !emailInput) return;
+        
+        submitButton.disabled = true;
+        statusDiv.textContent = 'Subscribing...';
+        statusDiv.className = 'newsletter-status';
+        
+        try {
+          const formData = new FormData(formElement);
+          const response = await fetch('/api/newsletter/signup', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok) {
+            statusDiv.textContent = result.message || 'Check your email to confirm your subscription!';
+            statusDiv.className = 'newsletter-status success';
+            emailInput.value = '';
+          } else {
+            statusDiv.textContent = result.error || 'Something went wrong. Please try again.';
+            statusDiv.className = 'newsletter-status error';
+          }
+        } catch (error) {
+          statusDiv.textContent = 'Network error. Please try again.';
+          statusDiv.className = 'newsletter-status error';
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+    });
+  });
+</script>

@@ -1,4 +1,6 @@
 ---
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
 interface Props {
   title: string;
   description: string;
@@ -67,12 +69,15 @@ const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH
     
     <footer>
       <div class="container">
-        <p>&copy; 2026 DevX Tools. A curated guide to API mocking and test data tools.</p>
-        <p>
-          <a href="https://github.com/sgedda/devxtools" target="_blank" rel="noopener noreferrer">
-            Contribute on GitHub
-          </a>
-        </p>
+        <NewsletterSignup variant="footer" />
+        <div class="footer-links">
+          <p>&copy; 2026 DevX Tools. A curated guide to API mocking and test data tools.</p>
+          <p>
+            <a href="https://github.com/sgedda/devxtools" target="_blank" rel="noopener noreferrer">
+              Contribute on GitHub
+            </a>
+          </p>
+        </div>
       </div>
     </footer>
   </body>
@@ -161,8 +166,12 @@ const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH
     border-top: 1px solid var(--border);
     padding: 2rem 0;
     margin-top: 4rem;
-    text-align: center;
     color: var(--text-secondary);
+  }
+  
+  .footer-links {
+    text-align: center;
+    margin-top: 1.5rem;
   }
   
   footer a {
