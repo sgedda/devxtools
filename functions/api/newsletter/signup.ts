@@ -4,6 +4,8 @@ import {
   checkHoneypot,
   checkRateLimit,
   generateToken,
+  generateUnsubscribeToken,
+  parseRequestBody,
 } from '../../lib/newsletter-utils';
 
 interface Env {
@@ -25,9 +27,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    const formData = await request.formData();
-    const email = formData.get('email') as string;
-    const honeypot = formData.get('website') as string;
+    const body = await parseRequestBody(request);
+    
+    if (!body) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request body' }),
+        { 
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+    
+    const { email, website: honeypot } = body;
 
     // Honeypot check - silently accept but don't process
     if (checkHoneypot(honeypot)) {
@@ -68,37 +80,22 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Create or find contact in Resend (unsubscribed by default for double opt-in)
-    const resendResponse = await fetch('https://api.resend.com/contacts', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email,
-        unsubscribed: true,
-      }),
-    });
+    // Don't create the contact yet - wait for confirmation to prevent
+    // double opt-in gap where unconfirmed contacts appear in Resend
 
-    const resendData = await resendResponse.json() as any;
-
-    // If contact already exists, that's fine
-    if (!resendResponse.ok && resendData.message !== 'Contact already exists.') {
-      console.error('Resend contact creation failed:', resendData);
-      return new Response(
-        JSON.stringify({ error: 'Failed to process subscription. Please try again.' }),
-        { 
-          status: 500,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-    }
-
-    // Generate confirmation token
-    const token = await generateToken(email, env.NEWSLETTER_SECRET);
+    // Generate confirmation token (short-lived, 24 hours)
+    const confirmToken = await generateToken(email, env.NEWSLETTER_SECRET);
     const confirmUrl = new URL('/newsletter/confirm', request.url);
-    confirmUrl.searchParams.set('token', token);
+    confirmUrl.searchParams.set('token', confirmToken);
+
+    // Generate unsubscribe token (long-lived, opaque)
+    const unsubscribeToken = await generateUnsubscribeToken(
+      email,
+      env.NEWSLETTER_SECRET,
+      env.NEWSLETTER_KV
+    );
+    const unsubscribeUrl = new URL('/newsletter/unsubscribe', request.url);
+    unsubscribeUrl.searchParams.set('token', unsubscribeToken);
 
     // Store pending confirmation if KV is available (24 hour expiry)
     if (env.NEWSLETTER_KV) {
@@ -111,8 +108,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
     // Send confirmation email
     const fromEmail = env.NEWSLETTER_FROM_EMAIL || 'newsletter@devxtools.dev';
-    const unsubscribeUrl = new URL('/newsletter/unsubscribe', request.url);
-    unsubscribeUrl.searchParams.set('token', token);
 
     const emailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
