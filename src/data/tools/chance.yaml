@@ -1,0 +1,16 @@
+name: Chance
+slug: chance
+website: https://chancejs.com
+repo: https://github.com/chancejs/chancejs
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Node.js
+  - Browser
+categories:
+  - test-data-generation
+bestFor: Minimalist random generator for strings, numbers, and complex data structures
+description: Random generator helper for JavaScript. Can generate random numbers, characters, strings, names, addresses, and more with a simple API.
+lastChecked: 2026-10-14

@@ -1,0 +1,428 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getToolBySlug } from '../../lib/tools';
+
+const msw = getToolBySlug('msw');
+const nock = getToolBySlug('nock');
+const polly = getToolBySlug('pollyjs');
+---
+
+<Layout 
+  title="MSW vs Nock vs Polly.js" 
+  description="Compare MSW, Nock, and Polly.js for HTTP mocking in JavaScript and TypeScript projects."
+>
+  <div class="container">
+    <article class="comparison">
+      <header>
+        <h1>MSW vs Nock vs Polly.js</h1>
+        <p class="subtitle">Choosing the right HTTP mocking library for JavaScript and TypeScript</p>
+      </header>
+      
+      <section class="intro">
+        <p>
+          When testing code that makes HTTP requests, you need a way to mock those requests without hitting real servers. 
+          Three popular JavaScript libraries tackle this problem with different approaches: MSW, Nock, and Polly.js.
+        </p>
+      </section>
+      
+      <section class="comparison-table-section">
+        <h2>Quick Comparison</h2>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>MSW</th>
+                <th>Nock</th>
+                <th>Polly.js</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Interception Level</strong></td>
+                <td>Service Worker (Browser) / Native modules (Node)</td>
+                <td>Node.js HTTP module</td>
+                <td>Multiple adapters (Fetch, XHR, Node HTTP)</td>
+              </tr>
+              <tr>
+                <td><strong>Browser Support</strong></td>
+                <td>✅ Yes</td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>Node.js Support</strong></td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>Record/Replay</strong></td>
+                <td>❌ No</td>
+                <td>✅ Yes</td>
+                <td>✅ Yes</td>
+              </tr>
+              <tr>
+                <td><strong>Learning Curve</strong></td>
+                <td>Medium</td>
+                <td>Low</td>
+                <td>Medium</td>
+              </tr>
+              <tr>
+                <td><strong>Best For</strong></td>
+                <td>Modern full-stack apps</td>
+                <td>Simple Node.js tests</td>
+                <td>Record/replay workflows</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      <section class="tool-deep-dive">
+        <h2>MSW (Mock Service Worker)</h2>
+        {msw && <p class="tool-description">{msw.description}</p>}
+        
+        <h3>Pros</h3>
+        <ul>
+          <li>Works in both browser and Node.js with the same API</li>
+          <li>Uses Service Workers for network-level interception (no patching)</li>
+          <li>Great for testing at a higher level (closer to production)</li>
+          <li>Can be used in development for local API mocking</li>
+        </ul>
+        
+        <h3>Cons</h3>
+        <ul>
+          <li>Requires Service Worker setup in browser tests</li>
+          <li>No built-in record/replay functionality</li>
+          <li>Steeper learning curve than Nock</li>
+        </ul>
+        
+        <div class="code-example">
+          <h4>Example Usage</h4>
+          <pre><code>import &#123; http, HttpResponse &#125; from 'msw'
+import &#123; setupServer &#125; from 'msw/node'
+
+const server = setupServer(
+  http.get('/api/user', () => &#123;
+    return HttpResponse.json(&#123; id: 1, name: 'John' &#125;)
+  &#125;)
+)
+
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())</code></pre>
+        </div>
+      </section>
+      
+      <section class="tool-deep-dive">
+        <h2>Nock</h2>
+        {nock && <p class="tool-description">{nock.description}</p>}
+        
+        <h3>Pros</h3>
+        <ul>
+          <li>Simple, straightforward API</li>
+          <li>Built-in recording mode for capturing real API responses</li>
+          <li>Powerful request matching and assertions</li>
+          <li>Battle-tested and widely adopted</li>
+        </ul>
+        
+        <h3>Cons</h3>
+        <ul>
+          <li>Node.js only (no browser support)</li>
+          <li>Intercepts at the HTTP module level (patching)</li>
+          <li>Can interfere with other HTTP-based tools</li>
+        </ul>
+        
+        <div class="code-example">
+          <h4>Example Usage</h4>
+          <pre><code>import nock from 'nock'
+
+nock('https://api.example.com')
+  .get('/user/1')
+  .reply(200, &#123; id: 1, name: 'John' &#125;)
+
+// Your test code here
+// Nock automatically intercepts matching requests</code></pre>
+        </div>
+      </section>
+      
+      <section class="tool-deep-dive">
+        <h2>Polly.js</h2>
+        {polly && <p class="tool-description">{polly.description}</p>}
+        
+        <h3>Pros</h3>
+        <ul>
+          <li>Built by Netflix for production use</li>
+          <li>Powerful record/replay capabilities</li>
+          <li>Works in both browser and Node.js</li>
+          <li>Multiple adapters for different environments</li>
+        </ul>
+        
+        <h3>Cons</h3>
+        <ul>
+          <li>More complex setup than Nock or MSW</li>
+          <li>Less actively maintained (Netflix open-sourced it)</li>
+          <li>Larger API surface to learn</li>
+        </ul>
+        
+        <div class="code-example">
+          <h4>Example Usage</h4>
+          <pre><code>import &#123; Polly &#125; from '@pollyjs/core'
+import FetchAdapter from '@pollyjs/adapter-fetch'
+import LocalStoragePersister from '@pollyjs/persister-local-storage'
+
+Polly.register(FetchAdapter)
+Polly.register(LocalStoragePersister)
+
+const polly = new Polly('My Test', &#123;
+  adapters: ['fetch'],
+  persister: 'local-storage'
+&#125;)
+
+// Polly records and replays automatically</code></pre>
+        </div>
+      </section>
+      
+      <section class="recommendations">
+        <h2>Which Should You Choose?</h2>
+        
+        <div class="recommendation-card">
+          <h3>Choose MSW if...</h3>
+          <ul>
+            <li>You're building a modern React, Vue, or Angular app</li>
+            <li>You want the same mocking solution for both browser and Node.js</li>
+            <li>You prefer network-level interception without patching</li>
+            <li>You want to use mocks in development (not just tests)</li>
+          </ul>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3>Choose Nock if...</h3>
+          <ul>
+            <li>You're only testing Node.js code</li>
+            <li>You want the simplest possible API</li>
+            <li>You need powerful request matching and recording</li>
+            <li>You're working on a backend service or API</li>
+          </ul>
+        </div>
+        
+        <div class="recommendation-card">
+          <h3>Choose Polly.js if...</h3>
+          <ul>
+            <li>You need sophisticated record/replay workflows</li>
+            <li>You're working in a complex environment with many adapters</li>
+            <li>You want to capture real API traffic and replay it in tests</li>
+            <li>You don't mind a more complex setup process</li>
+          </ul>
+        </div>
+      </section>
+      
+      <footer class="comparison-footer">
+        <p>
+          <strong>Related:</strong> 
+          <a href="/tools/msw/">MSW</a> • 
+          <a href="/tools/nock/">Nock</a> • 
+          <a href="/tools/pollyjs/">Polly.js</a>
+        </p>
+        <a href="/comparisons//" class="button">← Back to Comparisons</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .comparison {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  header {
+    margin-bottom: 2rem;
+  }
+  
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  
+  .intro {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .intro p {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  
+  section {
+    margin-bottom: 3rem;
+  }
+  
+  .comparison-table-section {
+    overflow-x: auto;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .comparison-table th,
+  .comparison-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .comparison-table thead {
+    background: var(--bg);
+  }
+  
+  .comparison-table th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+  }
+  
+  .comparison-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .tool-deep-dive {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+  }
+  
+  .tool-deep-dive h2 {
+    margin-top: 0;
+    color: var(--accent);
+  }
+  
+  .tool-description {
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: 6px;
+  }
+  
+  .tool-deep-dive h3 {
+    color: var(--text);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-deep-dive ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-deep-dive li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+  
+  .code-example {
+    margin-top: 1.5rem;
+  }
+  
+  .code-example h4 {
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  
+  code {
+    color: var(--text);
+    font-family: 'Monaco', 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  
+  .recommendations {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .recommendation-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  
+  .recommendation-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent);
+  }
+  
+  .recommendation-card ul {
+    margin: 0 0 0 1.5rem;
+  }
+  
+  .recommendation-card li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .comparison-footer {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .comparison-footer p {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+  
+  @media (max-width: 768px) {
+    .comparison-table {
+      font-size: 0.875rem;
+    }
+    
+    .comparison-table th,
+    .comparison-table td {
+      padding: 0.75rem 0.5rem;
+    }
+    
+    .comparison-footer {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+  }
+</style>

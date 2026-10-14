@@ -1,0 +1,281 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getAllTools } from '../lib/tools';
+import { CATEGORY_LABELS } from '../lib/schema';
+
+const tools = getAllTools();
+const categories = Object.entries(CATEGORY_LABELS);
+---
+
+<Layout 
+  title="DevX Tools" 
+  description="A curated guide to API mocking, testing, and test data generation tools for developers."
+>
+  <div class="container">
+    <section class="hero">
+      <h1>The Developer's Guide to API Mocking & Test Data</h1>
+      <p class="hero-subtitle">
+        Find the right tools for mocking APIs, generating test data, and building reliable tests.
+        Curated for modern development workflows.
+      </p>
+      <div class="hero-actions">
+        <a href="/catalog/" class="button">Browse Catalog</a>
+        <a href="/picker/" class="button button-secondary">Pick a Tool</a>
+      </div>
+    </section>
+    
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-number">{tools.length}</div>
+        <div class="stat-label">Tools Cataloged</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">{categories.length}</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Open Source First</div>
+      </div>
+    </section>
+    
+    <section class="categories">
+      <h2>Browse by Category</h2>
+      <div class="category-grid">
+        {categories.map(([key, label]) => (
+          <a href={`/catalog?category=${key}`} class="category-card">
+            <h3>{label}</h3>
+            <p>{tools.filter(t => t.categories.includes(key as any)).length} tools</p>
+          </a>
+        ))}
+      </div>
+    </section>
+    
+    <section class="featured">
+      <h2>Popular Tools</h2>
+      <div class="tool-grid">
+        {tools.slice(0, 6).map(tool => (
+          <a href={`/tools/${tool.slug}`} class="tool-card">
+            <h3>{tool.name}</h3>
+            <p class="tool-best-for">{tool.bestFor}</p>
+            <div class="tool-meta">
+              {tool.categories.slice(0, 2).map(cat => (
+                <span class="badge">{CATEGORY_LABELS[cat]}</span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/catalog/" class="button">View All Tools →</a>
+      </div>
+    </section>
+    
+    <section class="guides">
+      <h2>Latest Guides</h2>
+      <div class="guide-list">
+        <a href="/guides/msw-vs-nock-vs-polly/" class="guide-item">
+          <h3>MSW vs Nock vs Polly.js: Which HTTP Mocking Tool?</h3>
+          <p>Compare three popular JavaScript HTTP mocking libraries and find the right fit for your project.</p>
+        </a>
+        <a href="/guides/spec-first-mocking-prism-openapi/" class="guide-item">
+          <h3>Spec-First Mocking with Prism and OpenAPI</h3>
+          <p>Generate mock servers directly from your OpenAPI specifications.</p>
+        </a>
+        <a href="/guides/react-native-mocking-mockifyer/" class="guide-item">
+          <h3>Mocking APIs in React Native with Mockifyer</h3>
+          <p>Record and replay HTTP interactions in React Native apps.</p>
+        </a>
+      </div>
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="/guides//" class="button">All Guides →</a>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 4rem 0;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #58a6ff 0%, #79c0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+  
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .button-secondary {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  
+  .button-secondary:hover {
+    background: var(--border);
+  }
+  
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 3rem 0;
+  }
+  
+  .stat {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  
+  .stat-label {
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+  }
+  
+  .categories, .featured, .guides {
+    margin: 4rem 0;
+  }
+  
+  h2 {
+    margin-bottom: 2rem;
+  }
+  
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .category-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .category-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  
+  .category-card h3 {
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  
+  .category-card p {
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .tool-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+  }
+  
+  .tool-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  
+  .tool-card h3 {
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+  
+  .tool-best-for {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .tool-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .guide-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .guide-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+  }
+  
+  .guide-item:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+  
+  .guide-item h3 {
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  
+  .guide-item p {
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+    }
+  }
+</style>

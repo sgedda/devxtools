@@ -1,0 +1,20 @@
+name: Pact
+slug: pact
+website: https://pact.io
+repo: https://github.com/pact-foundation/pact-js
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+  - Java
+  - Ruby
+  - Go
+  - .NET
+  - Python
+runtimes:
+  - Multi-language
+categories:
+  - contract-testing
+bestFor: Consumer-driven contract testing to ensure APIs meet consumer expectations
+description: Contract testing framework that verifies interactions between microservices. Define expectations on the consumer side and verify them on the provider side.
+lastChecked: 2026-10-14

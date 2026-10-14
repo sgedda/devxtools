@@ -1,0 +1,17 @@
+name: Mockifyer
+slug: mockifyer
+website: https://github.com/sgedda/mockifyer
+repo: https://github.com/sgedda/mockifyer
+license: MIT
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Node.js
+  - React Native
+categories:
+  - record-replay
+  - http-interception
+bestFor: Record/replay mocking for JavaScript, TypeScript, and React Native apps
+description: Lightweight HTTP mocking tool with record and replay capabilities. Captures real API responses and plays them back in tests. Works with React Native.
+lastChecked: 2026-10-14

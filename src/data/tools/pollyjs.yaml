@@ -1,0 +1,17 @@
+name: Polly.js
+slug: pollyjs
+website: https://netflix.github.io/pollyjs
+repo: https://github.com/Netflix/pollyjs
+license: Apache-2.0
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Node.js
+  - Browser
+categories:
+  - record-replay
+  - http-interception
+bestFor: Recording and replaying HTTP interactions in Node.js and browser tests
+description: Record, replay, and stub HTTP interactions. Built by Netflix, works with multiple adapters including Fetch, XHR, and Node HTTP.
+lastChecked: 2026-10-14

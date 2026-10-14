@@ -1,0 +1,328 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getAllTools, getUniqueLanguages, getUniqueCategories } from '../lib/tools';
+import { CATEGORY_LABELS } from '../lib/schema';
+
+const tools = getAllTools();
+const languages = getUniqueLanguages();
+const categories = getUniqueCategories();
+
+// Get current filters from URL
+const categoryParam = Astro.url.searchParams.get('category');
+const languageParam = Astro.url.searchParams.get('language');
+const specParam = Astro.url.searchParams.get('spec');
+
+// Filter tools based on URL params
+let filteredTools = tools;
+if (categoryParam) {
+  filteredTools = filteredTools.filter(t => t.categories.includes(categoryParam as any));
+}
+if (languageParam) {
+  filteredTools = filteredTools.filter(t => t.languages.includes(languageParam));
+}
+if (specParam === 'has-spec') {
+  filteredTools = filteredTools.filter(t => t.specSupport && t.specSupport.length > 0);
+} else if (specParam && specParam !== 'any') {
+  filteredTools = filteredTools.filter(t => t.specSupport?.includes(specParam));
+}
+
+// Always use canonical /catalog/ URL regardless of filters
+const canonicalURL = 'https://devxtools.dev/catalog/';
+---
+
+<Layout 
+  title="Catalog" 
+  description="Browse our complete catalog of API mocking and test data generation tools."
+  canonicalURL={canonicalURL}
+>
+  <div class="container">
+    <h1>Tool Catalog</h1>
+    <p class="subtitle">
+      Explore {tools.length} tools for API mocking, test data generation, and more.
+      {(categoryParam || languageParam || specParam) && 
+        <span> (Showing {filteredTools.length} filtered results)</span>
+      }
+    </p>
+    
+    <div class="filters">
+      <div class="filter-group">
+        <label>Category</label>
+        <div class="filter-links">
+          <a href="/catalog/" class:list={[{ active: !categoryParam }]}>All</a>
+          {categories.map(cat => (
+            <a 
+              href={`/catalog/?category=${cat}`}
+              class:list={[{ active: categoryParam === cat }]}
+            >
+              {CATEGORY_LABELS[cat as keyof typeof CATEGORY_LABELS]}
+            </a>
+          ))}
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <label>Language</label>
+        <div class="filter-links">
+          <a href="/catalog/" class:list={[{ active: !languageParam }]}>All</a>
+          {languages.map(lang => (
+            <a 
+              href={`/catalog/?language=${lang}`}
+              class:list={[{ active: languageParam === lang }]}
+            >
+              {lang}
+            </a>
+          ))}
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <label>Spec Support</label>
+        <div class="filter-links">
+          <a href="/catalog/" class:list={[{ active: !specParam }]}>Any</a>
+          <a href="/catalog/?spec=has-spec" class:list={[{ active: specParam === 'has-spec' }]}>
+            Has Spec Support
+          </a>
+          <a href="/catalog/?spec=OpenAPI" class:list={[{ active: specParam === 'OpenAPI' }]}>
+            OpenAPI
+          </a>
+        </div>
+      </div>
+      
+      {(categoryParam || languageParam || specParam) && (
+        <div class="filter-group">
+          <a href="/catalog/" class="button button-secondary">Reset Filters</a>
+        </div>
+      )}
+    </div>
+    
+    <div class="tool-list">
+      {filteredTools.length === 0 ? (
+        <p class="no-results">No tools match your filters. <a href="/catalog/">View all tools</a></p>
+      ) : (
+        filteredTools.map(tool => (
+          <article class="tool-item">
+            <div class="tool-header">
+              <h2><a href={`/tools/${tool.slug}/`}>{tool.name}</a></h2>
+              {tool.license && <span class="license">{tool.license}</span>}
+            </div>
+            
+            <p class="tool-description">{tool.description}</p>
+            
+            <div class="tool-meta">
+              <div class="meta-section">
+                <strong>Best for:</strong> {tool.bestFor}
+              </div>
+              
+              <div class="meta-section">
+                <strong>Languages:</strong>
+                {tool.languages.map(lang => (
+                  <span class="badge">{lang}</span>
+                ))}
+              </div>
+              
+              <div class="meta-section">
+                <strong>Categories:</strong>
+                {tool.categories.map(cat => (
+                  <span class="badge">{CATEGORY_LABELS[cat]}</span>
+                ))}
+              </div>
+              
+              {tool.specSupport && tool.specSupport.length > 0 && (
+                <div class="meta-section">
+                  <strong>Spec Support:</strong>
+                  {tool.specSupport.map(spec => (
+                    <span class="badge badge-success">{spec}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div class="tool-links">
+              <a href={tool.website} target="_blank" rel="noopener noreferrer">Website →</a>
+              {tool.repo && (
+                <a href={tool.repo} target="_blank" rel="noopener noreferrer">Repository →</a>
+              )}
+              <a href={`/tools/${tool.slug}/`}>Details →</a>
+            </div>
+          </article>
+        ))
+      )}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+  
+  .filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .filter-group label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .filter-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .filter-links a {
+    padding: 0.5rem 1rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .filter-links a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  
+  .filter-links a.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  
+  .button-secondary {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  
+  .button-secondary:hover {
+    background: var(--border);
+  }
+  
+  .tool-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .tool-item {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+  
+  .tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .tool-header a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  
+  .tool-header a:hover {
+    color: var(--accent);
+  }
+  
+  .license {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    background: var(--bg);
+    border-radius: 12px;
+  }
+  
+  .tool-description {
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  
+  .tool-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: var(--bg);
+    border-radius: 6px;
+  }
+  
+  .meta-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .meta-section strong {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    min-width: 100px;
+  }
+  
+  .tool-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .tool-links a {
+    color: var(--accent);
+    font-size: 0.95rem;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+    }
+    
+    .filter-links {
+      width: 100%;
+    }
+    
+    .tool-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,328 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getToolBySlug } from '../../lib/tools';
+
+const msw = getToolBySlug('msw');
+const mirage = getToolBySlug('miragejs');
+const mockifyer = getToolBySlug('mockifyer');
+---
+
+<Layout 
+  title="Mocking APIs in React Native" 
+  description="Compare MSW, MirageJS, and Mockifyer for mocking HTTP requests in React Native applications."
+  canonicalURL="https://devxtools.dev/guides/react-native-mocking-mockifyer/"
+>
+  <div class="container">
+    <article class="guide">
+      <header>
+        <div class="breadcrumb">
+          <a href="/guides/">Guides</a> / Tutorial
+        </div>
+        <h1>Mocking APIs in React Native</h1>
+        <p class="subtitle">Comparing approaches for HTTP mocking in React Native apps</p>
+      </header>
+      
+      <div class="disclosure">
+        <strong>Disclosure:</strong> This site is maintained by the creator of <a href="/tools/mockifyer/">Mockifyer</a>, 
+        one of the tools discussed below. This guide aims to provide an objective comparison of all available options.
+      </div>
+      
+      <div class="guide-content">
+        <section>
+          <h2>The Challenge</h2>
+          <p>
+            Mocking HTTP requests in React Native presents unique challenges. Unlike web development where 
+            you can use Service Workers (MSW's browser approach), React Native runs in a JavaScript environment 
+            without browser APIs. You need tools that work with React Native's networking layer.
+          </p>
+        </section>
+        
+        <section>
+          <h2>Three Main Approaches</h2>
+          
+          <div class="tool-comparison">
+            <div class="tool-option">
+              <h3>1. MSW (Mock Service Worker)</h3>
+              {msw && <p class="tool-tagline">{msw.bestFor}</p>}
+              
+              <h4>How it works in React Native</h4>
+              <p>
+                MSW's Node.js adapter can intercept HTTP requests in React Native by patching global fetch 
+                and XMLHttpRequest. Works out of the box in most React Native setups.
+              </p>
+              
+              <h4>Pros</h4>
+              <ul>
+                <li>Same API you'd use in web apps</li>
+                <li>Large community and excellent documentation</li>
+                <li>Active development and maintenance</li>
+                <li>Works with Expo and bare React Native</li>
+              </ul>
+              
+              <h4>Cons</h4>
+              <ul>
+                <li>No built-in record/replay functionality</li>
+                <li>All mocks must be written manually</li>
+                <li>Can be tricky with some native networking libraries</li>
+              </ul>
+              
+              <p><a href="/tools/msw/">Learn more about MSW →</a></p>
+            </div>
+            
+            <div class="tool-option">
+              <h3>2. MirageJS</h3>
+              {mirage && <p class="tool-tagline">{mirage.bestFor}</p>}
+              
+              <h4>How it works in React Native</h4>
+              <p>
+                MirageJS creates an in-memory API server and intercepts requests at the network level. 
+                Includes a mini database for stateful mocking.
+              </p>
+              
+              <h4>Pros</h4>
+              <ul>
+                <li>In-memory database for realistic interactions</li>
+                <li>Great for prototyping before backend exists</li>
+                <li>Stateful mocking out of the box</li>
+                <li>Works in both development and testing</li>
+              </ul>
+              
+              <h4>Cons</h4>
+              <ul>
+                <li>Larger learning curve than MSW</li>
+                <li>More setup required</li>
+                <li>No record/replay functionality</li>
+              </ul>
+              
+              <p><a href="/tools/miragejs/">Learn more about MirageJS →</a></p>
+            </div>
+            
+            <div class="tool-option">
+              <h3>3. Mockifyer</h3>
+              {mockifyer && <p class="tool-tagline">{mockifyer.bestFor}</p>}
+              
+              <h4>How it works in React Native</h4>
+              <p>
+                Mockifyer specializes in record/replay workflows. Record real API traffic in development, 
+                then replay it in tests or when working offline.
+              </p>
+              
+              <h4>Pros</h4>
+              <ul>
+                <li>Record real API responses (no manual mock writing)</li>
+                <li>Built specifically for React Native</li>
+                <li>Lightweight and simple API</li>
+                <li>Great for prototyping and demos</li>
+              </ul>
+              
+              <h4>Cons</h4>
+              <ul>
+                <li>Smaller community than MSW or Mirage</li>
+                <li>Less documentation and examples</li>
+                <li>Primarily focused on record/replay (not manual mocking)</li>
+              </ul>
+              
+              <p><a href="/tools/mockifyer/">Learn more about Mockifyer →</a></p>
+            </div>
+          </div>
+        </section>
+        
+        <section>
+          <h2>Which Should You Choose?</h2>
+          
+          <div class="recommendation-card">
+            <h3>Choose MSW if...</h3>
+            <ul>
+              <li>You're already using MSW in your web app and want consistency</li>
+              <li>You need a well-documented, widely-adopted solution</li>
+              <li>You're comfortable writing mocks manually</li>
+              <li>You want the largest community and best long-term support</li>
+            </ul>
+          </div>
+          
+          <div class="recommendation-card">
+            <h3>Choose MirageJS if...</h3>
+            <ul>
+              <li>You're building a prototype before the backend exists</li>
+              <li>You need stateful mocking (database-like behavior)</li>
+              <li>You want to use the same mocks in development and testing</li>
+              <li>You prefer a more complete "fake backend" approach</li>
+            </ul>
+          </div>
+          
+          <div class="recommendation-card">
+            <h3>Choose Mockifyer if...</h3>
+            <ul>
+              <li>You want to record real API traffic and replay it</li>
+              <li>You prefer minimal mock writing (capture real responses)</li>
+              <li>You're building demos or need offline mode</li>
+              <li>You want something built specifically for React Native</li>
+            </ul>
+          </div>
+        </section>
+        
+        <section>
+          <h2>Coming Soon</h2>
+          <p>This guide will be expanded with:</p>
+          <ul>
+            <li>Step-by-step setup for each tool</li>
+            <li>Code examples and best practices</li>
+            <li>Integration with popular testing frameworks (Jest, Detox)</li>
+            <li>Handling authentication and dynamic data</li>
+          </ul>
+        </section>
+      </div>
+      
+      <footer class="guide-footer">
+        <a href="/guides/" class="button">← Back to Guides</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .guide {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .breadcrumb {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .breadcrumb a {
+    color: var(--accent);
+  }
+  
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+  }
+  
+  .disclosure {
+    background: var(--warning);
+    color: var(--bg);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    font-size: 0.95rem;
+  }
+  
+  .disclosure strong {
+    font-weight: 700;
+  }
+  
+  .disclosure a {
+    color: var(--bg);
+    text-decoration: underline;
+  }
+  
+  .disclosure a:hover {
+    color: var(--bg-secondary);
+  }
+  
+  .guide-content {
+    margin: 3rem 0;
+  }
+  
+  .guide-content section {
+    margin-bottom: 3rem;
+  }
+  
+  .guide-content h2 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .guide-content p {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .tool-option {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+  }
+  
+  .tool-option h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+  
+  .tool-tagline {
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-bottom: 1.5rem;
+  }
+  
+  .tool-option h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+    font-size: 1.1rem;
+  }
+  
+  .tool-option ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-option li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+  
+  .recommendation-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .recommendation-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent);
+  }
+  
+  .recommendation-card ul {
+    margin: 0 0 0 1.5rem;
+  }
+  
+  .recommendation-card li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .guide-content ul {
+    margin-left: 2rem;
+  }
+  
+  .guide-content li {
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  .guide-footer {
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+  
+  @media (max-width: 768px) {
+    .tool-option {
+      padding: 1.5rem;
+    }
+  }
+</style>

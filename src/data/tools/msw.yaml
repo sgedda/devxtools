@@ -1,0 +1,18 @@
+name: MSW
+slug: msw
+website: https://mswjs.io
+repo: https://github.com/mswjs/msw
+license: MIT
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Node.js
+  - Browser
+categories:
+  - http-interception
+specSupport:
+  - OpenAPI
+bestFor: Seamlessly mocking APIs in tests and development with client-side interception
+description: Mock Service Worker intercepts requests at the network level using Service Workers in browsers and native Node.js modules. No server setup required, works in any framework.
+lastChecked: 2026-10-14

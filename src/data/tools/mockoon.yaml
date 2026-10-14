@@ -1,0 +1,19 @@
+name: Mockoon
+slug: mockoon
+website: https://mockoon.com
+repo: https://github.com/mockoon/mockoon
+license: MIT
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Desktop
+  - CLI
+  - Docker
+categories:
+  - mock-server
+specSupport:
+  - OpenAPI
+bestFor: Creating mock APIs with a desktop GUI and deploying them via CLI or Docker
+description: Desktop application and CLI for creating and running mock APIs locally. Features templating, proxy mode, CORS, HTTPS, and OpenAPI import/export.
+lastChecked: 2026-10-14

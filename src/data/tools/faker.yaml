@@ -1,0 +1,16 @@
+name: Faker
+slug: faker
+website: https://fakerjs.dev
+repo: https://github.com/faker-js/faker
+license: MIT
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Node.js
+  - Browser
+categories:
+  - test-data-generation
+bestFor: Generating massive amounts of realistic fake data for testing
+description: Generate fake but realistic data including names, addresses, emails, phone numbers, dates, and more. Localized for 60+ locales.
+lastChecked: 2026-10-14

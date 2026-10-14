@@ -1,0 +1,17 @@
+name: MirageJS
+slug: miragejs
+website: https://miragejs.com
+repo: https://github.com/miragejs/miragejs
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Browser
+  - Node.js
+categories:
+  - http-interception
+  - mock-server
+bestFor: Building complete frontend applications without a backend using an in-memory database
+description: An API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
+lastChecked: 2026-10-14

@@ -1,0 +1,257 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalURL?: string;
+  ogImage?: string;
+}
+
+const { title, description, canonicalURL, ogImage = '/og-image.png' } = Astro.props;
+const siteTitle = title === 'DevX Tools' ? title : `${title} | DevX Tools`;
+
+// Normalize canonical URL with trailing slash
+const normalizedCanonical = canonicalURL || `https://devxtools.dev${Astro.url.pathname}${Astro.url.pathname.endsWith('/') ? '' : '/'}`;
+
+// Check if this is a preview deploy (not devxtools.dev)
+const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH 
+  ? import.meta.env.CF_PAGES_BRANCH !== 'main'
+  : Astro.url.hostname !== 'devxtools.dev' && Astro.url.hostname !== 'localhost';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={normalizedCanonical} />
+    <meta name="generator" content={Astro.generator} />
+    {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" />}
+    
+    <title>{siteTitle}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={normalizedCanonical} />
+    <meta property="og:title" content={siteTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={normalizedCanonical} />
+    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="container">
+          <a href="/" class="logo">DevX Tools</a>
+          <ul>
+            <li><a href="/catalog/">Catalog</a></li>
+            <li><a href="/comparisons/">Comparisons</a></li>
+            <li><a href="/guides/">Guides</a></li>
+            <li><a href="/picker/">Pick a Tool</a></li>
+            <li><a href="/changelog/">Changelog</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    
+    <main>
+      <slot />
+    </main>
+    
+    <footer>
+      <div class="container">
+        <p>&copy; 2026 DevX Tools. A curated guide to API mocking and test data tools.</p>
+        <p>
+          <a href="https://github.com/sgedda/devxtools" target="_blank" rel="noopener noreferrer">
+            Contribute on GitHub
+          </a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #0f1419;
+    --bg-secondary: #1a1f2e;
+    --text: #e6edf3;
+    --text-secondary: #8b949e;
+    --accent: #58a6ff;
+    --accent-hover: #79c0ff;
+    --border: #30363d;
+    --success: #3fb950;
+    --warning: #d29922;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+  }
+  
+  nav {
+    display: flex;
+    align-items: center;
+  }
+  
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+  }
+  
+  nav ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  
+  nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  nav a:hover, .logo:hover {
+    color: var(--accent-hover);
+  }
+  
+  main {
+    min-height: calc(100vh - 200px);
+    padding: 3rem 0;
+  }
+  
+  footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    margin-top: 4rem;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+  
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    color: var(--accent-hover);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: var(--accent-hover);
+  }
+  
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  
+  .button:hover {
+    background: var(--accent-hover);
+    color: white;
+  }
+  
+  .card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .badge-success {
+    border-color: var(--success);
+    color: var(--success);
+  }
+  
+  @media (max-width: 768px) {
+    nav ul {
+      gap: 1rem;
+      font-size: 0.875rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
+    
+    .container {
+      padding: 0 1rem;
+    }
+  }
+</style>

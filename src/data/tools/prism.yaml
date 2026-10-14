@@ -1,0 +1,20 @@
+name: Prism
+slug: prism
+website: https://stoplight.io/open-source/prism
+repo: https://github.com/stoplightio/prism
+license: Apache-2.0
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Node.js
+  - CLI
+  - Docker
+categories:
+  - spec-based-mocking
+  - mock-server
+specSupport:
+  - OpenAPI
+bestFor: Generating mock servers directly from OpenAPI specifications
+description: Turn any OpenAPI specification into a mock server with dynamic examples, validation, and request/response matching. Built by Stoplight.
+lastChecked: 2026-10-14
