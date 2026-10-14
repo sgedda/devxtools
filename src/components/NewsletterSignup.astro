@@ -16,7 +16,7 @@ const { variant = 'footer' } = Astro.props;
         ? 'Get notified when we publish new guides and comparisons. No spam, unsubscribe anytime.'
         : 'Get occasional emails about new dev/test tools and guides'}
     </p>
-    <form class="newsletter-form" method="POST" action="/api/newsletter/signup">
+    <form class="newsletter-form" method="POST" action="/api/newsletter/signup" data-placement={variant}>
       <div class="form-fields">
         <input
           type="email"
@@ -34,6 +34,8 @@ const { variant = 'footer' } = Astro.props;
           autocomplete="off"
           aria-hidden="true"
         />
+        <input type="hidden" name="page" value="" />
+        <input type="hidden" name="placement" value={variant} />
         <button type="submit" class="newsletter-button">Subscribe</button>
       </div>
       <div class="newsletter-status" role="status" aria-live="polite"></div>
@@ -158,6 +160,12 @@ const { variant = 'footer' } = Astro.props;
     const forms = document.querySelectorAll('.newsletter-form');
     
     forms.forEach(form => {
+      // Set the page path on load
+      const pageInput = form.querySelector('[name="page"]') as HTMLInputElement;
+      if (pageInput) {
+        pageInput.value = window.location.pathname;
+      }
+      
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
