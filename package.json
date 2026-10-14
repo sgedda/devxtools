@@ -24,6 +24,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261014.1",
     "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
     "autoprefixer": "^10.6.1",
     "postcss": "^8.5.30",
     "tailwindcss": "^4.3.3",
