@@ -25,12 +25,20 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
 
-    // Check if confirmation is still valid (if KV is available)
+    // Check if confirmation is still valid and retrieve attribution (if KV is available)
+    let attribution: { page?: string | null; placement?: string | null } = {};
     if (env.NEWSLETTER_KV) {
-      const pending = await env.NEWSLETTER_KV.get(`pending:${email}`);
-      if (!pending) {
+      const pendingData = await env.NEWSLETTER_KV.get(`pending:${email}`);
+      if (!pendingData) {
         // Already confirmed or expired
         return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      }
+      
+      try {
+        const pending = JSON.parse(pendingData);
+        attribution = pending.attribution || {};
+      } catch (error) {
+        console.error('Failed to parse pending data:', error);
       }
     }
 
@@ -90,9 +98,22 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       throw new Error('Failed to add contact to segment');
     }
 
-    // Only remove pending entry after both API calls succeed
+    // Only remove pending entry and store attribution after both API calls succeed
     if (env.NEWSLETTER_KV) {
       await env.NEWSLETTER_KV.delete(`pending:${email}`);
+      
+      // Store attribution for confirmed subscriber
+      if (attribution.page || attribution.placement) {
+        await env.NEWSLETTER_KV.put(
+          `attribution:${email}`,
+          JSON.stringify({
+            email,
+            page: attribution.page || null,
+            placement: attribution.placement || null,
+            confirmedAt: Date.now(),
+          })
+        );
+      }
     }
 
     // Send welcome email

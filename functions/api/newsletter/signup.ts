@@ -27,6 +27,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   try {
+    // Rate limiting first - count all attempts including invalid ones
+    const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const rateLimitResult = await checkRateLimit(env.NEWSLETTER_KV, clientIP);
+    
+    if (!rateLimitResult.allowed) {
+      return new Response(
+        JSON.stringify({ error: rateLimitResult.error }),
+        { 
+          status: 429,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+    }
+
     const body = await parseRequestBody(request);
     
     if (!body) {
@@ -39,7 +53,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
     
-    const { email, website: honeypot } = body;
+    const { email, website: honeypot, page, placement } = body;
 
     // Honeypot check - silently accept but don't process
     if (checkHoneypot(honeypot)) {
@@ -66,20 +80,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Rate limiting
-    const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-    const rateLimitResult = await checkRateLimit(env.NEWSLETTER_KV, clientIP);
-    
-    if (!rateLimitResult.allowed) {
-      return new Response(
-        JSON.stringify({ error: rateLimitResult.error }),
-        { 
-          status: 429,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
-    }
-
     // Don't create the contact yet - wait for confirmation to prevent
     // double opt-in gap where unconfirmed contacts appear in Resend
 
@@ -97,11 +97,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const unsubscribeUrl = new URL('/newsletter/unsubscribe', request.url);
     unsubscribeUrl.searchParams.set('token', unsubscribeToken);
 
-    // Store pending confirmation if KV is available (24 hour expiry)
+    // Store pending confirmation with attribution if KV is available (24 hour expiry)
     if (env.NEWSLETTER_KV) {
       await env.NEWSLETTER_KV.put(
         `pending:${email}`,
-        JSON.stringify({ email, timestamp: Date.now() }),
+        JSON.stringify({ 
+          email, 
+          timestamp: Date.now(),
+          attribution: {
+            page: page || null,
+            placement: placement || null,
+          }
+        }),
         { expirationTtl: 86400 }
       );
     }

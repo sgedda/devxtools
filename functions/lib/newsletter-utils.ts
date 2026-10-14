@@ -245,9 +245,14 @@ export async function verifyUnsubscribeToken(
   }
 }
 
+export interface SignupAttribution {
+  page?: string;
+  placement?: string;
+}
+
 export async function parseRequestBody(
   request: Request
-): Promise<{ email?: string; consent?: boolean; website?: string } | null> {
+): Promise<{ email?: string; consent?: boolean; website?: string; page?: string; placement?: string } | null> {
   const contentType = request.headers.get('content-type') || '';
   
   try {
@@ -257,6 +262,8 @@ export async function parseRequestBody(
         email: body.email,
         consent: body.consent,
         website: body.website,
+        page: body.page,
+        placement: body.placement,
       };
     } else {
       const formData = await request.formData();
@@ -265,6 +272,8 @@ export async function parseRequestBody(
         email: formData.get('email') as string,
         consent: consentValue === 'true' || consentValue === true,
         website: formData.get('website') as string,
+        page: formData.get('page') as string,
+        placement: formData.get('placement') as string,
       };
     }
   } catch (error) {

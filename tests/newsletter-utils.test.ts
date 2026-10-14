@@ -312,6 +312,8 @@ describe('Newsletter Utilities', () => {
         email: 'test@example.com',
         consent: true,
         website: '',
+        page: null,
+        placement: null,
       });
     });
 
