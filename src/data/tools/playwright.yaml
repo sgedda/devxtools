@@ -14,9 +14,11 @@ runtimes:
   - Browser
   - Python
   - .NET
+section: testing
+platforms:
+  - Web
 categories:
   - e2e-testing
-  - ui-testing
 bestFor: Cross-browser end-to-end testing with auto-wait and mobile device emulation
 description: Modern end-to-end testing framework with full browser automation, API testing, and support for multiple languages. Auto-waits for elements to be ready, runs tests in parallel, and supports Chromium, Firefox, and WebKit.
 whenToUse: When you need reliable cross-browser testing with modern features like auto-waiting, video recording, and network interception.

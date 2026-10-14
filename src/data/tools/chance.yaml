@@ -9,6 +9,7 @@ languages:
 runtimes:
   - Node.js
   - Browser
+section: mocking-test-data
 categories:
   - test-data-generation
 bestFor: Minimalist random generator for strings, numbers, and complex data structures

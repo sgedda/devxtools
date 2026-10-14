@@ -1,0 +1,20 @@
+name: Gatling
+slug: gatling
+website: https://gatling.io
+repo: https://github.com/gatling/gatling
+license: Apache-2.0
+languages:
+  - Scala
+  - Java
+  - Kotlin
+runtimes:
+  - JVM
+section: testing
+categories:
+  - load-testing
+bestFor: Enterprise-grade load testing with detailed metrics and beautiful HTML reports
+description: High-performance load testing framework for web applications. Write tests as code in Scala, Java, or Kotlin. Features detailed metrics, real-time monitoring, and comprehensive HTML reports.
+whenToUse: When you need enterprise-level load testing with detailed analytics, work in JVM ecosystems, or want powerful scripting capabilities.
+githubStars: 6800
+lastActivity: 2026-10-10T14:19:56Z
+lastChecked: 2026-10-14

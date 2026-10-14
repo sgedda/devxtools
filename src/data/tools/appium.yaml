@@ -15,9 +15,13 @@ runtimes:
   - Android
   - Web
   - Desktop
+section: testing
+platforms:
+  - iOS
+  - Android
+  - Web
 categories:
   - e2e-testing
-  - ui-testing
 bestFor: Cross-platform mobile and desktop automation using WebDriver protocol with any language
 description: Open source automation framework based on WebDriver protocol for testing mobile, desktop, and web applications. Supports native, hybrid, and mobile web apps across iOS, Android, Windows, and Mac.
 whenToUse: When you need cross-platform mobile testing in your preferred programming language or want to leverage existing WebDriver/Selenium knowledge.

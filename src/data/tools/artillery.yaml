@@ -1,0 +1,24 @@
+name: Artillery
+slug: artillery
+website: https://www.artillery.io
+repo: https://github.com/artilleryio/artillery
+license: MPL-2.0
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Node.js
+  - CLI
+section: testing
+categories:
+  - load-testing
+specSupport:
+  - OpenAPI
+bestFor: Modern load testing with YAML-based scenarios and built-in WebSocket support
+description: Cloud-native load testing toolkit for APIs, microservices, and async messaging systems. YAML-based test scenarios with support for HTTP, WebSocket, Socket.io, and more.
+whenToUse: When you prefer YAML-based test definitions, need WebSocket or Socket.io load testing, or want distributed cloud-based load generation.
+githubStars: 8200
+lastActivity: 2026-10-11T09:28:14Z
+npmPackage: artillery
+weeklyDownloads: 163420
+lastChecked: 2026-10-14

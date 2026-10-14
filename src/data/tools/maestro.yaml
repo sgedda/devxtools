@@ -11,9 +11,14 @@ runtimes:
   - Android
   - React Native
   - Flutter
+section: testing
+platforms:
+  - iOS
+  - Android
+  - React Native
+  - Flutter
 categories:
   - e2e-testing
-  - ui-testing
 bestFor: Simple YAML-based mobile UI testing for iOS and Android with fast, reliable execution
 description: Mobile UI testing framework that uses declarative YAML flows for testing iOS and Android apps. Built for simplicity and speed, with flake-resistant tests that work consistently across simulators and real devices.
 whenToUse: When you need straightforward, maintainable mobile UI tests without complex setup or learning curve. Ideal for React Native and Flutter apps.

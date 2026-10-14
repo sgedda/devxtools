@@ -7,6 +7,7 @@ languages:
 runtimes:
   - Hosted
   - API
+section: mocking-test-data
 categories:
   - test-data-generation
 bestFor: Generating large datasets in multiple formats via web interface or API

@@ -9,6 +9,7 @@ languages:
 runtimes:
   - Node.js
   - Browser
+section: mocking-test-data
 categories:
   - http-interception
 specSupport:

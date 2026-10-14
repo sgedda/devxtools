@@ -1,0 +1,25 @@
+name: Spectral
+slug: spectral
+website: https://stoplight.io/open-source/spectral
+repo: https://github.com/stoplightio/spectral
+license: Apache-2.0
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Node.js
+  - CLI
+section: api-development
+categories:
+  - openapi-tooling
+specSupport:
+  - OpenAPI
+  - AsyncAPI
+bestFor: Flexible JSON/YAML linter for OpenAPI and custom API specifications
+description: Powerful, flexible linter for OpenAPI, AsyncAPI, and any JSON/YAML documents. Create custom rulesets to enforce API design standards and best practices.
+whenToUse: When you need to enforce API design standards, want customizable linting rules, or need to validate OpenAPI specs in CI/CD pipelines.
+githubStars: 2700
+lastActivity: 2026-10-09T14:17:35Z
+npmPackage: '@stoplight/spectral-cli'
+weeklyDownloads: 782450
+lastChecked: 2026-10-14

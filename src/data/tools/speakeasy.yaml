@@ -1,0 +1,20 @@
+name: Speakeasy
+slug: speakeasy
+website: https://www.speakeasy.com
+repo: https://github.com/speakeasy-api/speakeasy
+license: Apache-2.0
+languages:
+  - Go
+runtimes:
+  - CLI
+section: api-development
+categories:
+  - sdk-generator
+specSupport:
+  - OpenAPI
+bestFor: Enterprise-grade SDK generation with idiomatic code and automatic publishing
+description: Modern SDK generator focused on producing idiomatic, production-ready SDKs with excellent developer experience. Supports TypeScript, Python, Go, Java, and more with automatic publishing.
+whenToUse: When you need high-quality, idiomatic SDKs with excellent documentation, want automated SDK publishing workflows, or need enterprise support.
+githubStars: 1800
+lastActivity: 2026-10-12T19:33:14Z
+lastChecked: 2026-10-14

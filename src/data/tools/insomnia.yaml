@@ -1,0 +1,23 @@
+name: Insomnia
+slug: insomnia
+website: https://insomnia.rest
+repo: https://github.com/Kong/insomnia
+license: Apache-2.0
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Desktop
+  - CLI
+section: api-development
+categories:
+  - api-client
+specSupport:
+  - OpenAPI
+  - GraphQL
+bestFor: Developer-focused API client with GraphQL support and OpenAPI design tools
+description: Open source API client with powerful environment management, GraphQL support, and design-first workflow. Built by Kong, integrates well with Kong Gateway.
+whenToUse: When you need strong GraphQL support, Kong Gateway integration, or prefer an open-source API client with a clean interface.
+githubStars: 38900
+lastActivity: 2026-10-12T18:45:21Z
+lastChecked: 2026-10-14

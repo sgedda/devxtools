@@ -9,6 +9,7 @@ languages:
 runtimes:
   - Node.js
   - Browser
+section: mocking-test-data
 categories:
   - test-data-generation
 bestFor: Generating massive amounts of realistic fake data for testing

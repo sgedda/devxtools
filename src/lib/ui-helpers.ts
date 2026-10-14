@@ -81,6 +81,15 @@ export const CATEGORY_ICONS: Record<string, string> = {
   'test-data-generation': 'database',
   'hosted-mocks': 'cloud',
   'record-replay': 'disc-3',
+  'api-client': 'send',
+  'openapi-tooling': 'file-json',
+  'sdk-generator': 'code-2',
   'e2e-testing': 'route',
-  'ui-testing': 'mouse-pointer-click',
+  'load-testing': 'zap',
+};
+
+export const SECTION_ICONS: Record<string, string> = {
+  'mocking-test-data': 'flask-conical',
+  'api-development': 'code',
+  'testing': 'bug',
 };

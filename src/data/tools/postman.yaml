@@ -1,0 +1,20 @@
+name: Postman
+slug: postman
+website: https://www.postman.com
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - Desktop
+  - Web
+  - CLI
+section: api-development
+categories:
+  - api-client
+specSupport:
+  - OpenAPI
+  - GraphQL
+bestFor: Comprehensive API development platform with collaboration, testing, and documentation features
+description: Industry-leading API platform for designing, testing, documenting, and monitoring APIs. Features include visual request builder, automated testing, mock servers, team collaboration, and API governance.
+whenToUse: When you need a full-featured API development environment with team collaboration, documentation generation, and enterprise features.
+lastChecked: 2026-10-14
