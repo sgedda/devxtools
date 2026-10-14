@@ -54,10 +54,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     if (!verifiedEmail) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
-    
-    // Delete both the confirmation token and unsubscribe token mapping (single-use)
-    await env.NEWSLETTER_KV.delete(`confirm:${tokenId}`);
-    await env.NEWSLETTER_KV.delete(`unsubscribe:${tokenId}`);
 
     // Create contact as subscribed (this is the first time we create them in Resend)
     const createResponse = await fetch('https://api.resend.com/contacts', {
@@ -114,6 +110,11 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       console.error('Failed to add contact to segment:', segmentError);
       throw new Error('Failed to add contact to segment');
     }
+    
+    // Delete both the confirmation token and unsubscribe token mapping (single-use)
+    // Only delete after all Resend operations succeed to allow retry on failure
+    await env.NEWSLETTER_KV.delete(`confirm:${tokenId}`);
+    await env.NEWSLETTER_KV.delete(`unsubscribe:${tokenId}`);
 
     // Store attribution for confirmed subscriber (pending already deleted above)
     if (env.NEWSLETTER_KV && (attribution.page || attribution.placement)) {

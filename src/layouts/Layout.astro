@@ -234,7 +234,7 @@ const currentPath = Astro.url.pathname;
               aria-hidden="true"
             />
             <input type="hidden" name="consent" value="true" />
-            <input type="hidden" name="source" value={Astro.url.pathname} />
+            <input type="hidden" name="page" value={Astro.url.pathname} />
             <input type="hidden" name="placement" value="footer" />
             <button 
               type="submit"
