@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><title>Catalog — DevX Tools</title><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://rsms.me"><link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<script src="data.js"></script><script src="shared.js"></script>
+<style>body{font-size:15px}</style>
+</head>
+<body class="bg-white text-zinc-800 antialiased dark:bg-zinc-950 dark:text-zinc-300"><div id="hdr"></div>
+<main class="mx-auto max-w-[1200px] px-5 pt-10">
+ <nav class="text-sm text-zinc-500"><a href="index.html" class="hover:text-zinc-900 dark:hover:text-white">Home</a> / <span class="text-zinc-900 dark:text-white">Catalog</span></nav>
+ <h1 class="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Tool catalog</h1>
+ <p class="mt-2 text-zinc-600 dark:text-zinc-400">Explore <span id=tc></span> tools for API mocking, test data generation, and testing.</p>
+ <div class="mt-8 flex flex-col gap-8 lg:flex-row">
+  <aside class="lg:w-64 shrink-0"><button onclick="filt.classList.toggle('hidden')" class="lg:hidden flex w-full items-center justify-between rounded-lg border border-zinc-300 px-4 py-2.5 font-medium dark:border-zinc-700"><span class="flex items-center gap-2"><i data-lucide="sliders-horizontal" class="h-4 w-4"></i>Filters <span id="fc" class="text-indigo-600"></span></span><i data-lucide="chevron-down" class="h-4 w-4"></i></button>
+   <div id="filt" class="hidden lg:block mt-3 lg:mt-0 space-y-2 lg:sticky lg:top-24"></div></aside>
+  <section class="flex-1 min-w-0">
+   <div class="flex flex-wrap items-center gap-3"><label class="flex flex-1 min-w-[200px] items-center gap-2 rounded-lg border border-zinc-300 px-3 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-zinc-700"><i data-lucide="search" class="h-4 w-4 text-zinc-400"></i><input id="q" oninput="render()" placeholder="Search by name or feature…" class="h-10 flex-1 bg-transparent outline-none"></label>
+    <select id="sort" onchange="render()" class="h-10 rounded-lg border border-zinc-300 bg-white px-3 text-[15px] dark:border-zinc-700 dark:bg-zinc-900" aria-label="Sort"><option value="stars">Most stars</option><option value="az">A–Z</option><option value="upd">Recently updated</option></select>
+    <div class="flex rounded-lg border border-zinc-300 p-0.5 dark:border-zinc-700"><button id="vg" onclick="setV('g')" class="rounded-md p-2" aria-label="Grid view"><i data-lucide="layout-grid" class="h-4 w-4"></i></button><button id="vl" onclick="setV('l')" class="rounded-md p-2" aria-label="List view"><i data-lucide="list" class="h-4 w-4"></i></button></div></div>
+   <div class="mt-4 flex items-center justify-between text-sm text-zinc-500"><span id="cnt"></span><button onclick="clearAll()" class="font-medium text-indigo-600 dark:text-indigo-400">Clear filters</button></div>
+   <div id="grid" class="mt-4"></div></section></div></main><div id="ftr"></div>
+<script>
+const F={cat:new Set(),lang:new Set(),spec:new Set()};let V='g';
+const langs=[...new Set(TOOLS.flatMap(t=>t.lang))].filter(x=>x!=='N/A').sort(),specs=[...new Set(TOOLS.flatMap(t=>t.spec))];
+const grp=(k,title,items,open)=>`<details ${open?'open':''} class="group rounded-lg border border-zinc-200 dark:border-zinc-800"><summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-medium text-zinc-900 dark:text-white">${title}<i data-lucide="chevron-down" class="h-4 w-4 transition group-open:rotate-180"></i></summary><div class="space-y-1 px-4 pb-3">${items.map(i=>`<label class="flex items-center gap-2.5 py-1 text-[15px] cursor-pointer"><input type="checkbox" class="h-4 w-4 rounded accent-indigo-600" onchange="tog('${k}',this.value,this.checked)" value="${i}">${i}<span class="ml-auto text-xs text-zinc-400">${TOOLS.filter(t=>(k==='cat'?t.cat:k==='lang'?t.lang:t.spec).includes(i)).length}</span></label>`).join('')}</div></details>`;
+filt.innerHTML=grp('cat','Category',Object.keys(CATS),1)+grp('lang','Language',langs,1)+grp('spec','Spec support',specs,0);
+function tog(k,v,on){on?F[k].add(v):F[k].delete(v);render()}
+function clearAll(){Object.values(F).forEach(s=>s.clear());q.value='';filt.querySelectorAll('input').forEach(i=>i.checked=false);render()}
+function setV(v){V=v;render()}
+function render(){const s=q.value.toLowerCase();
+ const r=TOOLS.filter(t=>(!s||(t.n+t.d+t.best).toLowerCase().includes(s))&&(!F.cat.size||t.cat.some(c=>F.cat.has(c)))&&(!F.lang.size||t.lang.some(c=>F.lang.has(c)))&&(!F.spec.size||t.spec.some(c=>F.spec.has(c))));
+ const so=sort.value;r.sort((a,b)=>so==='az'?a.n.localeCompare(b.n):so==='upd'?(b.updated||'').localeCompare(a.updated||''):(b.starsN-a.starsN)||a.n.localeCompare(b.n));
+ const n=F.cat.size+F.lang.size+F.spec.size;fc.textContent=n?`(${n})`:'';cnt.textContent=`Showing ${r.length} of ${TOOLS.length} tools`;
+ [vg,vl].forEach(b=>b.className='rounded-md p-2 text-zinc-500');(V==='g'?vg:vl).className='rounded-md p-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900';
+ const tag=x=>`<span class="rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">${x}</span>`;
+ grid.className='mt-4 grid gap-4 '+(V==='g'?'sm:grid-cols-2 xl:grid-cols-3':'');
+ grid.innerHTML=r.map(t=>`<article class="flex ${V==='g'?'flex-col':'flex-col sm:flex-row sm:items-center gap-4'} rounded-xl border border-zinc-200 p-5 hover:border-zinc-300 hover:shadow-md transition dark:border-zinc-800">
+  <div class="flex-1 min-w-0"><div class="flex items-center gap-3">${logo(t)}<div class="min-w-0"><h3 class="font-semibold text-zinc-900 dark:text-white">${t.n}</h3><div class="mt-0.5">${licBadge(t.lic)}</div></div></div>
+  <p class="mt-3 text-[15px] text-zinc-600 dark:text-zinc-400 ${V==='g'?'line-clamp-3':''}">${t.best}.</p>
+  <div class="mt-3 flex flex-wrap gap-1.5">${t.cat.map(c=>`<span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">${c}</span>`).join('')}${t.lang.slice(0,3).map(tag).join('')}${t.spec.map(tag).join('')}</div><div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-zinc-500">${meta(t)}</div></div>
+  <div class="${V==='g'?'mt-5 pt-4 border-t border-zinc-100 dark:border-zinc-800':''} flex items-center gap-2"><a href="tool-hoverfly.html" class="flex-1 sm:flex-none inline-flex justify-center items-center gap-1.5 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900">View details<i data-lucide="arrow-right" class="h-4 w-4"></i></a>
+  <a href="#" class="p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800" title="Website"><i data-lucide="globe" class="h-4 w-4"></i></a>${t.repo?`<a href="#" class="p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800" title="Repository"><i data-lucide="git-fork" class="h-4 w-4"></i></a>`:''}</div></article>`).join('')||`<div class="col-span-full rounded-xl border border-dashed p-12 text-center text-zinc-500">No tools match. <button onclick="clearAll()" class="text-indigo-600">Clear filters</button></div>`;
+ lucide.createIcons()}
+tc.textContent=TOOLS.length;chrome('Catalog');render();
+</script></body></html>

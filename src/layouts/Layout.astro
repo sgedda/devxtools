@@ -1,5 +1,7 @@
 ---
-import NewsletterSignup from '../components/NewsletterSignup.astro';
+import Icon from '../components/Icon.astro';
+import { getAllTools } from '../lib/tools';
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -10,14 +12,15 @@ interface Props {
 
 const { title, description, canonicalURL, ogImage = '/og-image.png' } = Astro.props;
 const siteTitle = title === 'DevX Tools' ? title : `${title} | DevX Tools`;
+const allTools = getAllTools();
 
-// Normalize canonical URL with trailing slash
 const normalizedCanonical = canonicalURL || `https://devxtools.dev${Astro.url.pathname}${Astro.url.pathname.endsWith('/') ? '' : '/'}`;
 
-// Check if this is a preview deploy (not devxtools.dev)
 const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH 
   ? import.meta.env.CF_PAGES_BRANCH !== 'main'
   : Astro.url.hostname !== 'devxtools.dev' && Astro.url.hostname !== 'localhost';
+
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -29,238 +32,374 @@ const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH
     <link rel="canonical" href={normalizedCanonical} />
     <meta name="generator" content={Astro.generator} />
     {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" />}
+    <slot name="head" />
+    
+    <script is:inline>
+      // Initialize theme before render to prevent flash
+      if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
     
     <title>{siteTitle}</title>
     <meta name="description" content={description} />
     
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={normalizedCanonical} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={normalizedCanonical} />
     <meta name="twitter:title" content={siteTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+    <script is:inline define:vars={{ allTools }}>
+      window.__TOOLS__ = allTools;
+    </script>
   </head>
-  <body>
-    <header>
-      <nav>
-        <div class="container">
-          <a href="/" class="logo">DevX Tools</a>
-          <ul>
-            <li><a href="/catalog/">Catalog</a></li>
-            <li><a href="/comparisons/">Comparisons</a></li>
-            <li><a href="/guides/">Guides</a></li>
-            <li><a href="/picker/">Pick a Tool</a></li>
-            <li><a href="/changelog/">Changelog</a></li>
-          </ul>
+  <body class="bg-white text-zinc-800 antialiased dark:bg-zinc-950 dark:text-zinc-300">
+    <header class="sticky top-0 z-40 border-b border-zinc-200/80 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80">
+      <div class="mx-auto flex h-16 max-w-[1200px] items-center gap-4 px-5">
+        <a href="/" class="flex items-center gap-2 font-semibold text-zinc-900 dark:text-white">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 text-white">
+            <Icon name="flask-conical" size={16} />
+          </span>
+          DevX Tools
+        </a>
+        <nav class="ml-4 hidden items-center gap-1 lg:flex">
+          <a 
+            href="/catalog/" 
+            class={`px-3 py-1.5 rounded-md text-[15px] font-medium ${currentPath.startsWith('/catalog') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+          >
+            Catalog
+          </a>
+          <a 
+            href="/comparisons/" 
+            class={`px-3 py-1.5 rounded-md text-[15px] font-medium ${currentPath.startsWith('/comparisons') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+          >
+            Comparisons
+          </a>
+          <a 
+            href="/guides/" 
+            class={`px-3 py-1.5 rounded-md text-[15px] font-medium ${currentPath.startsWith('/guides') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+          >
+            Guides
+          </a>
+          <a 
+            href="/picker/" 
+            class={`px-3 py-1.5 rounded-md text-[15px] font-medium ${currentPath.startsWith('/picker') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+          >
+            Pick a Tool
+          </a>
+          <a 
+            href="/changelog/" 
+            class={`px-3 py-1.5 rounded-md text-[15px] font-medium ${currentPath.startsWith('/changelog') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+          >
+            Changelog
+          </a>
+        </nav>
+        <div class="ml-auto flex items-center gap-2">
+          <button 
+            id="search-button" 
+            class="hidden md:flex items-center gap-2 w-60 rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-sm text-zinc-500 hover:border-zinc-300 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400"
+          >
+            <Icon name="search" size={16} />
+            Search tools…
+            <kbd class="ml-auto rounded border border-zinc-300 bg-white px-1.5 text-[11px] font-mono dark:border-zinc-700 dark:bg-zinc-800">⌘K</kbd>
+          </button>
+          <button 
+            id="mobile-search-button"
+            class="md:hidden p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300" 
+            aria-label="Search"
+          >
+            <Icon name="search" size={20} />
+          </button>
+          <button 
+            id="theme-toggle" 
+            class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300" 
+            aria-label="Toggle theme"
+          >
+            <Icon name="moon" class="dark:hidden" size={20} />
+            <Icon name="sun" class="hidden dark:block" size={20} />
+          </button>
+          <a 
+            href="https://github.com/sgedda/devxtools" 
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hidden sm:inline-flex p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300" 
+            aria-label="GitHub"
+          >
+            <Icon name="git-fork" size={20} />
+          </a>
+          <button 
+            id="mobile-menu-button"
+            class="lg:hidden p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300" 
+            aria-label="Menu"
+          >
+            <Icon name="menu" size={20} />
+          </button>
         </div>
+      </div>
+      <nav id="mobile-nav" class="hidden lg:hidden border-t border-zinc-200 dark:border-zinc-800 px-5 py-3 space-y-1">
+        <a 
+          href="/catalog/" 
+          class={`block px-3 py-2.5 rounded-lg text-[15px] font-medium ${currentPath.startsWith('/catalog') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+        >
+          Catalog
+        </a>
+        <a 
+          href="/comparisons/" 
+          class={`block px-3 py-2.5 rounded-lg text-[15px] font-medium ${currentPath.startsWith('/comparisons') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+        >
+          Comparisons
+        </a>
+        <a 
+          href="/guides/" 
+          class={`block px-3 py-2.5 rounded-lg text-[15px] font-medium ${currentPath.startsWith('/guides') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+        >
+          Guides
+        </a>
+        <a 
+          href="/picker/" 
+          class={`block px-3 py-2.5 rounded-lg text-[15px] font-medium ${currentPath.startsWith('/picker') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+        >
+          Pick a Tool
+        </a>
+        <a 
+          href="/changelog/" 
+          class={`block px-3 py-2.5 rounded-lg text-[15px] font-medium ${currentPath.startsWith('/changelog') ? 'text-zinc-900 bg-zinc-100 dark:text-white dark:bg-zinc-800' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-white dark:hover:bg-zinc-800/60'}`}
+        >
+          Changelog
+        </a>
       </nav>
     </header>
-    
+
+    <div id="search-dialog" class="hidden fixed inset-0 z-50 bg-zinc-950/40 backdrop-blur-sm p-4 pt-[12vh]">
+      <div class="mx-auto max-w-xl overflow-hidden rounded-2xl bg-white shadow-2xl ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+        <div class="flex items-center gap-3 border-b border-zinc-200 px-4 dark:border-zinc-800">
+          <Icon name="search" size={20} class="text-zinc-400" />
+          <input 
+            id="search-input"
+            placeholder="Search 24 tools, categories, guides…" 
+            class="h-14 flex-1 bg-transparent text-base outline-none text-zinc-900 dark:text-white"
+          />
+          <kbd class="text-xs text-zinc-400">ESC</kbd>
+        </div>
+        <ul id="search-results" class="max-h-80 overflow-auto p-2"></ul>
+      </div>
+    </div>
+
     <main>
       <slot />
     </main>
-    
-    <footer>
-      <div class="container">
-        <NewsletterSignup variant="footer" />
-        <div class="footer-links">
-          <p>&copy; 2026 DevX Tools. A curated guide to API mocking and test data tools.</p>
-          <p>
-            <a href="https://github.com/sgedda/devxtools" target="_blank" rel="noopener noreferrer">
-              Contribute on GitHub
-            </a>
+
+    <footer class="mt-24 border-t border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900/40">
+      <div class="mx-auto max-w-[1200px] px-5 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+        <div class="lg:col-span-2">
+          <div class="flex items-center gap-2 font-semibold text-zinc-900 dark:text-white">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 text-white">
+              <Icon name="flask-conical" size={16} />
+            </span>
+            DevX Tools
+          </div>
+          <p class="mt-3 max-w-sm text-[15px] text-zinc-600 dark:text-zinc-400">
+            An independent, neutral guide to API mocking and test data tools. No sponsored rankings.
           </p>
+          <form 
+            id="newsletter-form"
+            class="mt-5 flex max-w-sm gap-2"
+            method="POST"
+            action="/api/newsletter/signup"
+          >
+            <input 
+              type="email"
+              name="email"
+              placeholder="you@company.com" 
+              required
+              class="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+            />
+            <input
+              type="text"
+              name="website"
+              class="hidden"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+            />
+            <input type="hidden" name="consent" value="true" />
+            <input type="hidden" name="source" value={Astro.url.pathname} />
+            <input type="hidden" name="placement" value="footer" />
+            <button 
+              type="submit"
+              class="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            >
+              Subscribe
+            </button>
+          </form>
+          <div id="newsletter-status" class="mt-2 text-sm"></div>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900 dark:text-white">Explore</h4>
+          <ul class="mt-3 space-y-2">
+            <li><a href="/catalog/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Catalog</a></li>
+            <li><a href="/picker/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Pick a Tool</a></li>
+            <li><a href="/comparisons/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Comparisons</a></li>
+            <li><a href="/changelog/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900 dark:text-white">Guides</h4>
+          <ul class="mt-3 space-y-2">
+            <li><a href="/guides/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">All guides</a></li>
+            <li><a href="/guides/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Tutorials</a></li>
+            <li><a href="/guides/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Best practices</a></li>
+            <li><a href="/guides/" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Comparisons</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm font-semibold text-zinc-900 dark:text-white">Project</h4>
+          <ul class="mt-3 space-y-2">
+            <li><a href="https://github.com/sgedda/devxtools" target="_blank" rel="noopener noreferrer" class="text-[15px] text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">Contribute on GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-zinc-200 dark:border-zinc-800">
+        <div class="mx-auto max-w-[1200px] px-5 py-5 text-sm text-zinc-500">
+          © 2026 DevX Tools · Last data check 2026-10-14
         </div>
       </div>
     </footer>
+
+    <script is:inline>
+      // Theme toggle
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.theme = isDark ? 'dark' : 'light';
+      });
+
+      // Mobile menu toggle
+      document.getElementById('mobile-menu-button')?.addEventListener('click', () => {
+        document.getElementById('mobile-nav')?.classList.toggle('hidden');
+      });
+
+      // Search dialog
+      const searchDialog = document.getElementById('search-dialog');
+      const searchInput = document.getElementById('search-input');
+      const searchResults = document.getElementById('search-results');
+      
+      // Load tools data for search (inline to avoid fetch)
+      const TOOLS = window.__TOOLS__ || [];
+      
+      const openSearch = () => {
+        searchDialog?.classList.remove('hidden');
+        setTimeout(() => searchInput?.focus(), 10);
+      };
+      
+      const closeSearch = () => {
+        searchDialog?.classList.add('hidden');
+        if (searchInput) searchInput.value = '';
+        if (searchResults) searchResults.innerHTML = '';
+      };
+      
+      // Perform search
+      const performSearch = (query) => {
+        if (!searchResults) return;
+        
+        if (!query.trim()) {
+          searchResults.innerHTML = '';
+          return;
+        }
+        
+        const lowerQuery = query.toLowerCase();
+        const matches = TOOLS.filter(tool => 
+          tool.name.toLowerCase().includes(lowerQuery) ||
+          tool.description.toLowerCase().includes(lowerQuery) ||
+          tool.bestFor.toLowerCase().includes(lowerQuery)
+        ).slice(0, 8);
+        
+        if (matches.length === 0) {
+          searchResults.innerHTML = '<li class="px-3 py-8 text-center text-sm text-zinc-500">No tools found</li>';
+          return;
+        }
+        
+        searchResults.innerHTML = matches.map(tool => `
+          <li>
+            <a href="/tools/${tool.slug}/" class="flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800">
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-zinc-900 dark:text-white">${tool.name}</div>
+                <div class="text-sm text-zinc-500 truncate">${tool.bestFor}</div>
+              </div>
+            </a>
+          </li>
+        `).join('');
+      };
+      
+      searchInput?.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+      });
+      
+      document.getElementById('search-button')?.addEventListener('click', openSearch);
+      document.getElementById('mobile-search-button')?.addEventListener('click', openSearch);
+      
+      searchDialog?.addEventListener('click', (e) => {
+        if (e.target === searchDialog) closeSearch();
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          openSearch();
+        }
+        if (e.key === 'Escape') closeSearch();
+      });
+
+      // Newsletter form
+      const newsletterForm = document.getElementById('newsletter-form');
+      const newsletterStatus = document.getElementById('newsletter-status');
+      
+      newsletterForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(newsletterForm);
+        const button = newsletterForm.querySelector('button[type="submit"]');
+        
+        if (button) button.disabled = true;
+        if (newsletterStatus) {
+          newsletterStatus.textContent = 'Subscribing...';
+          newsletterStatus.className = 'mt-2 text-sm text-zinc-500';
+        }
+        
+        try {
+          const response = await fetch('/api/newsletter/signup', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok) {
+            if (newsletterStatus) {
+              newsletterStatus.textContent = result.message || 'Check your email to confirm!';
+              newsletterStatus.className = 'mt-2 text-sm text-emerald-600 dark:text-emerald-400';
+            }
+            newsletterForm.querySelector('input[name="email"]').value = '';
+          } else {
+            if (newsletterStatus) {
+              newsletterStatus.textContent = result.error || 'Something went wrong';
+              newsletterStatus.className = 'mt-2 text-sm text-amber-600 dark:text-amber-400';
+            }
+          }
+        } catch (error) {
+          if (newsletterStatus) {
+            newsletterStatus.textContent = 'Network error. Please try again.';
+            newsletterStatus.className = 'mt-2 text-sm text-amber-600 dark:text-amber-400';
+          }
+        } finally {
+          if (button) button.disabled = false;
+        }
+      });
+    </script>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --bg: #0f1419;
-    --bg-secondary: #1a1f2e;
-    --text: #e6edf3;
-    --text-secondary: #8b949e;
-    --accent: #58a6ff;
-    --accent-hover: #79c0ff;
-    --border: #30363d;
-    --success: #3fb950;
-    --warning: #d29922;
-  }
-  
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
-    line-height: 1.6;
-    color: var(--text);
-    background: var(--bg);
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-  
-  header {
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
-    padding: 1rem 0;
-  }
-  
-  nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text);
-    text-decoration: none;
-  }
-  
-  nav ul {
-    display: flex;
-    gap: 2rem;
-    list-style: none;
-  }
-  
-  nav a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  
-  nav a:hover, .logo:hover {
-    color: var(--accent-hover);
-  }
-  
-  main {
-    min-height: calc(100vh - 200px);
-    padding: 3rem 0;
-  }
-  
-  footer {
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border);
-    padding: 2rem 0;
-    margin-top: 4rem;
-    color: var(--text-secondary);
-  }
-  
-  .footer-links {
-    text-align: center;
-    margin-top: 1.5rem;
-  }
-  
-  footer a {
-    color: var(--accent);
-    text-decoration: none;
-  }
-  
-  footer a:hover {
-    color: var(--accent-hover);
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    margin-bottom: 1rem;
-    line-height: 1.2;
-  }
-  
-  h1 {
-    font-size: 2.5rem;
-  }
-  
-  h2 {
-    font-size: 2rem;
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-  }
-  
-  a {
-    color: var(--accent);
-    text-decoration: none;
-  }
-  
-  a:hover {
-    color: var(--accent-hover);
-  }
-  
-  .button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: var(--accent);
-    color: white;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: background 0.2s;
-    text-decoration: none;
-  }
-  
-  .button:hover {
-    background: var(--accent-hover);
-    color: white;
-  }
-  
-  .card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-size: 0.875rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .badge-success {
-    border-color: var(--success);
-    color: var(--success);
-  }
-  
-  @media (max-width: 768px) {
-    nav ul {
-      gap: 1rem;
-      font-size: 0.875rem;
-    }
-    
-    h1 {
-      font-size: 2rem;
-    }
-    
-    .container {
-      padding: 0 1rem;
-    }
-  }
-</style>
