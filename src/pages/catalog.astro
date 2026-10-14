@@ -1,328 +1,426 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getAllTools, getUniqueLanguages, getUniqueCategories } from '../lib/tools';
-import { CATEGORY_LABELS } from '../lib/schema';
+import Icon from '../components/Icon.astro';
+import ToolLogo from '../components/ToolLogo.astro';
+import { getAllTools, getUniqueLanguages } from '../lib/tools';
+import { CATEGORY_LABELS, type ToolCategory } from '../lib/schema';
+import { formatTimeAgo, getLicenseBadgeClass } from '../lib/ui-helpers';
 
 const tools = getAllTools();
-const languages = getUniqueLanguages();
-const categories = getUniqueCategories();
+const languages = getUniqueLanguages().filter(l => l !== 'N/A');
+const categories = Object.entries(CATEGORY_LABELS);
 
-// Get current filters from URL
-const categoryParam = Astro.url.searchParams.get('category');
-const languageParam = Astro.url.searchParams.get('language');
-const specParam = Astro.url.searchParams.get('spec');
-
-// Filter tools based on URL params
-let filteredTools = tools;
-if (categoryParam) {
-  filteredTools = filteredTools.filter(t => t.categories.includes(categoryParam as any));
-}
-if (languageParam) {
-  filteredTools = filteredTools.filter(t => t.languages.includes(languageParam));
-}
-if (specParam === 'has-spec') {
-  filteredTools = filteredTools.filter(t => t.specSupport && t.specSupport.length > 0);
-} else if (specParam && specParam !== 'any') {
-  filteredTools = filteredTools.filter(t => t.specSupport?.includes(specParam));
-}
-
-// Always use canonical /catalog/ URL regardless of filters
-const canonicalURL = 'https://devxtools.dev/catalog/';
+// Get unique spec support options
+const allSpecs = new Set<string>();
+tools.forEach(tool => {
+  tool.specSupport?.forEach(spec => allSpecs.add(spec));
+});
+const specs = Array.from(allSpecs).sort();
 ---
 
 <Layout 
   title="Catalog" 
   description="Browse our complete catalog of API mocking and test data generation tools."
-  canonicalURL={canonicalURL}
 >
-  <div class="container">
-    <h1>Tool Catalog</h1>
-    <p class="subtitle">
-      Explore {tools.length} tools for API mocking, test data generation, and more.
-      {(categoryParam || languageParam || specParam) && 
-        <span> (Showing {filteredTools.length} filtered results)</span>
-      }
+  <main class="mx-auto max-w-[1200px] px-5 pt-10">
+    <nav class="text-sm text-zinc-500">
+      <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+      /
+      <span class="text-zinc-900 dark:text-white">Catalog</span>
+    </nav>
+    
+    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Tool catalog</h1>
+    <p class="mt-2 text-zinc-600 dark:text-zinc-400">
+      Explore <span id="tool-count">{tools.length}</span> tools for API mocking, test data generation, and testing.
     </p>
     
-    <div class="filters">
-      <div class="filter-group">
-        <label>Category</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !categoryParam }]}>All</a>
-          {categories.map(cat => (
-            <a 
-              href={`/catalog/?category=${cat}`}
-              class:list={[{ active: categoryParam === cat }]}
-            >
-              {CATEGORY_LABELS[cat as keyof typeof CATEGORY_LABELS]}
-            </a>
-          ))}
-        </div>
-      </div>
-      
-      <div class="filter-group">
-        <label>Language</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !languageParam }]}>All</a>
-          {languages.map(lang => (
-            <a 
-              href={`/catalog/?language=${lang}`}
-              class:list={[{ active: languageParam === lang }]}
-            >
-              {lang}
-            </a>
-          ))}
-        </div>
-      </div>
-      
-      <div class="filter-group">
-        <label>Spec Support</label>
-        <div class="filter-links">
-          <a href="/catalog/" class:list={[{ active: !specParam }]}>Any</a>
-          <a href="/catalog/?spec=has-spec" class:list={[{ active: specParam === 'has-spec' }]}>
-            Has Spec Support
-          </a>
-          <a href="/catalog/?spec=OpenAPI" class:list={[{ active: specParam === 'OpenAPI' }]}>
-            OpenAPI
-          </a>
-        </div>
-      </div>
-      
-      {(categoryParam || languageParam || specParam) && (
-        <div class="filter-group">
-          <a href="/catalog/" class="button button-secondary">Reset Filters</a>
-        </div>
-      )}
-    </div>
-    
-    <div class="tool-list">
-      {filteredTools.length === 0 ? (
-        <p class="no-results">No tools match your filters. <a href="/catalog/">View all tools</a></p>
-      ) : (
-        filteredTools.map(tool => (
-          <article class="tool-item">
-            <div class="tool-header">
-              <h2><a href={`/tools/${tool.slug}/`}>{tool.name}</a></h2>
-              {tool.license && <span class="license">{tool.license}</span>}
+    <div class="mt-8 flex flex-col gap-8 lg:flex-row">
+      <aside class="lg:w-64 shrink-0">
+        <button 
+          id="filter-toggle"
+          class="lg:hidden flex w-full items-center justify-between rounded-lg border border-zinc-300 px-4 py-2.5 font-medium dark:border-zinc-700"
+        >
+          <span class="flex items-center gap-2">
+            <Icon name="sliders-horizontal" size={16} />
+            Filters
+            <span id="filter-count" class="text-indigo-600"></span>
+          </span>
+          <Icon name="chevron-down" size={16} />
+        </button>
+        
+        <div id="filters" class="hidden lg:block mt-3 lg:mt-0 space-y-2 lg:sticky lg:top-24">
+          <details open class="group rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-medium text-zinc-900 dark:text-white">
+              Category
+              <Icon name="chevron-down" size={16} class="transition group-open:rotate-180" />
+            </summary>
+            <div class="space-y-1 px-4 pb-3">
+              {categories.map(([key, label]) => (
+                <label class="flex items-center gap-2.5 py-1 text-[15px] cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="category-filter h-4 w-4 rounded accent-indigo-600" 
+                    value={key}
+                  />
+                  {label}
+                  <span class="ml-auto text-xs text-zinc-400">
+                    {tools.filter(t => t.categories.includes(key as ToolCategory)).length}
+                  </span>
+                </label>
+              ))}
             </div>
-            
-            <p class="tool-description">{tool.description}</p>
-            
-            <div class="tool-meta">
-              <div class="meta-section">
-                <strong>Best for:</strong> {tool.bestFor}
-              </div>
-              
-              <div class="meta-section">
-                <strong>Languages:</strong>
-                {tool.languages.map(lang => (
-                  <span class="badge">{lang}</span>
-                ))}
-              </div>
-              
-              <div class="meta-section">
-                <strong>Categories:</strong>
-                {tool.categories.map(cat => (
-                  <span class="badge">{CATEGORY_LABELS[cat]}</span>
-                ))}
-              </div>
-              
-              {tool.specSupport && tool.specSupport.length > 0 && (
-                <div class="meta-section">
-                  <strong>Spec Support:</strong>
-                  {tool.specSupport.map(spec => (
-                    <span class="badge badge-success">{spec}</span>
+          </details>
+          
+          <details open class="group rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-medium text-zinc-900 dark:text-white">
+              Language
+              <Icon name="chevron-down" size={16} class="transition group-open:rotate-180" />
+            </summary>
+            <div class="space-y-1 px-4 pb-3">
+              {languages.map(lang => (
+                <label class="flex items-center gap-2.5 py-1 text-[15px] cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="language-filter h-4 w-4 rounded accent-indigo-600" 
+                    value={lang}
+                  />
+                  {lang}
+                  <span class="ml-auto text-xs text-zinc-400">
+                    {tools.filter(t => t.languages.includes(lang)).length}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </details>
+          
+          <details class="group rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-medium text-zinc-900 dark:text-white">
+              Spec support
+              <Icon name="chevron-down" size={16} class="transition group-open:rotate-180" />
+            </summary>
+            <div class="space-y-1 px-4 pb-3">
+              {specs.map(spec => (
+                <label class="flex items-center gap-2.5 py-1 text-[15px] cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="spec-filter h-4 w-4 rounded accent-indigo-600" 
+                    value={spec}
+                  />
+                  {spec}
+                  <span class="ml-auto text-xs text-zinc-400">
+                    {tools.filter(t => t.specSupport?.includes(spec)).length}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </details>
+        </div>
+      </aside>
+      
+      <section class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-3">
+          <label class="flex flex-1 min-w-[200px] items-center gap-2 rounded-lg border border-zinc-300 px-3 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-500/20 dark:border-zinc-700">
+            <Icon name="search" size={16} class="text-zinc-400" />
+            <input 
+              id="search-query"
+              placeholder="Search by name or feature…" 
+              class="h-10 flex-1 bg-transparent outline-none text-zinc-900 dark:text-white"
+            />
+          </label>
+          
+          <select 
+            id="sort-select"
+            class="h-10 rounded-lg border border-zinc-300 bg-white px-3 text-[15px] dark:border-zinc-700 dark:bg-zinc-900" 
+            aria-label="Sort"
+          >
+            <option value="stars">Most stars</option>
+            <option value="az">A–Z</option>
+            <option value="upd">Recently updated</option>
+          </select>
+          
+          <div class="flex rounded-lg border border-zinc-300 p-0.5 dark:border-zinc-700">
+            <button 
+              id="view-grid" 
+              class="rounded-md p-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900" 
+              aria-label="Grid view"
+            >
+              <Icon name="layout-grid" size={16} />
+            </button>
+            <button 
+              id="view-list" 
+              class="rounded-md p-2 text-zinc-500" 
+              aria-label="List view"
+            >
+              <Icon name="list" size={16} />
+            </button>
+          </div>
+        </div>
+        
+        <div class="mt-4 flex items-center justify-between text-sm text-zinc-500">
+          <span id="result-count">Showing {tools.length} of {tools.length} tools</span>
+          <button id="clear-filters" class="font-medium text-indigo-600 dark:text-indigo-400">
+            Clear filters
+          </button>
+        </div>
+        
+        <div id="tool-grid" class="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {tools.map(tool => (
+            <article 
+              class="tool-card flex flex-col rounded-xl border border-zinc-200 p-5 hover:border-zinc-300 hover:shadow-md transition dark:border-zinc-800"
+              data-name={tool.name.toLowerCase()}
+              data-description={tool.description.toLowerCase()}
+              data-best-for={tool.bestFor.toLowerCase()}
+              data-categories={tool.categories.join(',')}
+              data-languages={tool.languages.join(',')}
+              data-specs={tool.specSupport?.join(',') || ''}
+              data-stars={tool.githubStars || 0}
+              data-updated={tool.lastActivity || ''}
+            >
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-3">
+                  <ToolLogo tool={tool} />
+                  <div class="min-w-0">
+                    <h3 class="font-semibold text-zinc-900 dark:text-white">{tool.name}</h3>
+                    <div class="mt-0.5">
+                      {tool.license && (
+                        <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>
+                          {tool.license}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                
+                <p class="mt-3 text-[15px] text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                  {tool.bestFor}.
+                </p>
+                
+                <div class="mt-3 flex flex-wrap gap-1.5">
+                  {tool.categories.map(cat => (
+                    <span class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
+                      {CATEGORY_LABELS[cat]}
+                    </span>
+                  ))}
+                  {tool.languages.slice(0, 3).map(lang => (
+                    <span class="rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                      {lang}
+                    </span>
+                  ))}
+                  {tool.specSupport?.map(spec => (
+                    <span class="rounded-md bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                      {spec}
+                    </span>
                   ))}
                 </div>
-              )}
-            </div>
-            
-            <div class="tool-links">
-              <a href={tool.website} target="_blank" rel="noopener noreferrer">Website →</a>
-              {tool.repo && (
-                <a href={tool.repo} target="_blank" rel="noopener noreferrer">Repository →</a>
-              )}
-              <a href={`/tools/${tool.slug}/`}>Details →</a>
-            </div>
-          </article>
-        ))
-      )}
+                
+                <div class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-zinc-500">
+                  {tool.githubStars && (
+                    <span class="inline-flex items-center gap-1">
+                      <Icon name="star" size={16} />
+                      {tool.githubStars >= 1000 
+                        ? `${(tool.githubStars / 1000).toFixed(1).replace(/\.0$/, '')}k` 
+                        : tool.githubStars.toLocaleString()}
+                    </span>
+                  )}
+                  {tool.lastActivity && (
+                    <span class="inline-flex items-center gap-1">
+                      <Icon name="clock" size={16} />
+                      updated {formatTimeAgo(tool.lastActivity)}
+                    </span>
+                  )}
+                  {!tool.githubStars && !tool.lastActivity && (
+                    <span class="text-zinc-400">No public repo</span>
+                  )}
+                </div>
+              </div>
+              
+              <div class="mt-5 pt-4 border-t border-zinc-100 dark:border-zinc-800 flex items-center gap-2">
+                <a 
+                  href={`/tools/${tool.slug}/`}
+                  class="flex-1 inline-flex justify-center items-center gap-1.5 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900"
+                >
+                  View details
+                  <Icon name="arrow-right" size={16} />
+                </a>
+                <a 
+                  href={tool.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800" 
+                  title="Website"
+                >
+                  <Icon name="globe" size={16} />
+                </a>
+                {tool.repo && (
+                  <a 
+                    href={tool.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-2 rounded-lg text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800" 
+                    title="Repository"
+                  >
+                    <Icon name="git-fork" size={16} />
+                  </a>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
-  </div>
-</Layout>
+  </main>
 
-<style>
-  .subtitle {
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-  }
-  
-  .filters {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-  
-  .filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  
-  .filter-group label {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  
-  .filter-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .filter-links a {
-    padding: 0.5rem 1rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  
-  .filter-links a:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  
-  .filter-links a.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-  }
-  
-  .button-secondary {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-  
-  .button-secondary:hover {
-    background: var(--border);
-  }
-  
-  .tool-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .tool-item {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-  }
-  
-  .tool-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .tool-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  
-  .tool-header a {
-    color: var(--text);
-    text-decoration: none;
-  }
-  
-  .tool-header a:hover {
-    color: var(--accent);
-  }
-  
-  .license {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    padding: 0.25rem 0.75rem;
-    background: var(--bg);
-    border-radius: 12px;
-  }
-  
-  .tool-description {
-    color: var(--text);
-    margin-bottom: 1rem;
-  }
-  
-  .tool-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background: var(--bg);
-    border-radius: 6px;
-  }
-  
-  .meta-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    align-items: center;
-  }
-  
-  .meta-section strong {
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    min-width: 100px;
-  }
-  
-  .tool-links {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .tool-links a {
-    color: var(--accent);
-    font-size: 0.95rem;
-  }
-  
-  .no-results {
-    text-align: center;
-    padding: 3rem;
-    color: var(--text-secondary);
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-  }
-  
-  @media (max-width: 768px) {
-    .filters {
-      flex-direction: column;
+  <script is:inline>
+    let currentView = 'grid';
+    const filters = {
+      categories: new Set(),
+      languages: new Set(),
+      specs: new Set(),
+    };
+
+    function updateFilters() {
+      const searchQuery = document.getElementById('search-query').value.toLowerCase();
+      const sortValue = document.getElementById('sort-select').value;
+      const cards = Array.from(document.querySelectorAll('.tool-card'));
+      
+      // Filter cards
+      let visible = 0;
+      cards.forEach(card => {
+        const name = card.dataset.name;
+        const description = card.dataset.description;
+        const bestFor = card.dataset.bestFor;
+        const searchText = `${name} ${description} ${bestFor}`;
+        
+        const matchesSearch = !searchQuery || searchText.includes(searchQuery);
+        
+        const categories = card.dataset.categories.split(',');
+        const matchesCategory = filters.categories.size === 0 || 
+          categories.some(c => filters.categories.has(c));
+        
+        const languages = card.dataset.languages.split(',');
+        const matchesLanguage = filters.languages.size === 0 || 
+          languages.some(l => filters.languages.has(l));
+        
+        const specs = card.dataset.specs ? card.dataset.specs.split(',') : [];
+        const matchesSpec = filters.specs.size === 0 || 
+          specs.some(s => filters.specs.has(s));
+        
+        const isVisible = matchesSearch && matchesCategory && matchesLanguage && matchesSpec;
+        card.style.display = isVisible ? '' : 'none';
+        if (isVisible) visible++;
+      });
+      
+      // Sort visible cards
+      const visibleCards = cards.filter(c => c.style.display !== 'none');
+      visibleCards.sort((a, b) => {
+        if (sortValue === 'az') {
+          return a.dataset.name.localeCompare(b.dataset.name);
+        } else if (sortValue === 'upd') {
+          return (b.dataset.updated || '').localeCompare(a.dataset.updated || '');
+        } else {
+          return (parseInt(b.dataset.stars) || 0) - (parseInt(a.dataset.stars) || 0);
+        }
+      });
+      
+      const grid = document.getElementById('tool-grid');
+      visibleCards.forEach(card => grid.appendChild(card));
+      
+      // Update counts
+      const totalCount = cards.length;
+      const filterCount = filters.categories.size + filters.languages.size + filters.specs.size;
+      
+      document.getElementById('result-count').textContent = `Showing ${visible} of ${totalCount} tools`;
+      document.getElementById('filter-count').textContent = filterCount ? `(${filterCount})` : '';
+      document.getElementById('tool-count').textContent = totalCount;
+      
+      if (visible === 0) {
+        grid.innerHTML = '<div class="col-span-full rounded-xl border border-dashed p-12 text-center text-zinc-500 dark:border-zinc-700">No tools match. <button onclick="clearAllFilters()" class="text-indigo-600">Clear filters</button></div>';
+      }
     }
+
+    function clearAllFilters() {
+      filters.categories.clear();
+      filters.languages.clear();
+      filters.specs.clear();
+      
+      document.querySelectorAll('.category-filter, .language-filter, .spec-filter').forEach(input => {
+        input.checked = false;
+      });
+      
+      document.getElementById('search-query').value = '';
+      updateFilters();
+    }
+
+    function setView(view) {
+      currentView = view;
+      const grid = document.getElementById('tool-grid');
+      const gridBtn = document.getElementById('view-grid');
+      const listBtn = document.getElementById('view-list');
+      
+      if (view === 'grid') {
+        grid.className = 'mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3';
+        gridBtn.className = 'rounded-md p-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900';
+        listBtn.className = 'rounded-md p-2 text-zinc-500';
+        
+        document.querySelectorAll('.tool-card').forEach(card => {
+          card.className = 'tool-card flex flex-col rounded-xl border border-zinc-200 p-5 hover:border-zinc-300 hover:shadow-md transition dark:border-zinc-800';
+        });
+      } else {
+        grid.className = 'mt-4 grid gap-4';
+        gridBtn.className = 'rounded-md p-2 text-zinc-500';
+        listBtn.className = 'rounded-md p-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900';
+        
+        document.querySelectorAll('.tool-card').forEach(card => {
+          card.className = 'tool-card flex flex-col sm:flex-row sm:items-center gap-4 rounded-xl border border-zinc-200 p-5 hover:border-zinc-300 hover:shadow-md transition dark:border-zinc-800';
+        });
+      }
+    }
+
+    // Event listeners
+    document.getElementById('search-query').addEventListener('input', updateFilters);
+    document.getElementById('sort-select').addEventListener('change', updateFilters);
     
-    .filter-links {
-      width: 100%;
-    }
+    document.querySelectorAll('.category-filter').forEach(input => {
+      input.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          filters.categories.add(e.target.value);
+        } else {
+          filters.categories.delete(e.target.value);
+        }
+        updateFilters();
+      });
+    });
     
-    .tool-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-  }
-</style>
+    document.querySelectorAll('.language-filter').forEach(input => {
+      input.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          filters.languages.add(e.target.value);
+        } else {
+          filters.languages.delete(e.target.value);
+        }
+        updateFilters();
+      });
+    });
+    
+    document.querySelectorAll('.spec-filter').forEach(input => {
+      input.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          filters.specs.add(e.target.value);
+        } else {
+          filters.specs.delete(e.target.value);
+        }
+        updateFilters();
+      });
+    });
+    
+    document.getElementById('clear-filters').addEventListener('click', clearAllFilters);
+    document.getElementById('filter-toggle').addEventListener('click', () => {
+      document.getElementById('filters').classList.toggle('hidden');
+    });
+    
+    document.getElementById('view-grid').addEventListener('click', () => setView('grid'));
+    document.getElementById('view-list').addEventListener('click', () => setView('list'));
+    
+    window.clearAllFilters = clearAllFilters;
+  </script>
+</Layout>

@@ -1,7 +1,7 @@
 name: Mountebank
 slug: mountebank
 website: http://www.mbtest.org
-repo: https://github.com/bbyars/mountebank
+repo: https://github.com/mountebank-testing/mountebank
 license: MIT
 languages:
   - JavaScript

@@ -1,478 +1,259 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import ToolLogo from '../components/ToolLogo.astro';
 import { getAllTools } from '../lib/tools';
 import { CATEGORY_LABELS } from '../lib/schema';
-import { formatTimeAgo, formatDownloads } from '../lib/format';
+import { formatTimeAgo, getLicenseBadgeClass, CATEGORY_ICONS } from '../lib/ui-helpers';
 
 const tools = getAllTools();
 const categories = Object.entries(CATEGORY_LABELS);
 
-// Featured mocking tools
-const mockingTools = tools
-  .filter(t => 
-    t.categories.includes('http-interception') || 
-    t.categories.includes('mock-server') || 
-    t.categories.includes('spec-based-mocking') ||
-    t.categories.includes('record-replay')
-  )
+// Count tools per category
+const categoryCount = Object.fromEntries(
+  categories.map(([key, label]) => [
+    key,
+    tools.filter(t => t.categories.includes(key as any)).length
+  ])
+);
+
+// Popular tools (by GitHub stars)
+const popularTools = tools
+  .filter(t => t.githubStars && t.githubStars > 0)
   .sort((a, b) => (b.githubStars || 0) - (a.githubStars || 0))
   .slice(0, 6);
 
-// Featured E2E/UI testing tools
-const e2eTools = tools
-  .filter(t => t.categories.includes('e2e-testing') || t.categories.includes('ui-testing'))
-  .sort((a, b) => (b.githubStars || 0) - (a.githubStars || 0));
+// Calculate percentage of open source tools
+const openSourceTools = tools.filter(t => t.license && t.license !== 'Proprietary');
+const openSourcePercentage = Math.round((openSourceTools.length / tools.length) * 100);
+
+// Guide data (in production, this would come from content collections)
+const guides = [
+  {
+    category: 'Comparison',
+    title: 'MSW vs Nock vs Polly.js',
+    description: 'Compare three popular JavaScript HTTP mocking libraries and find the right fit for your project.',
+    tools: 'MSW, Nock, Polly.js',
+    url: '/guides/msw-vs-nock-vs-polly/'
+  },
+  {
+    category: 'Tutorial',
+    title: 'Spec-First Mocking with Prism and OpenAPI',
+    description: 'Generate mock servers directly from your OpenAPI specifications using Prism.',
+    tools: 'Prism',
+    url: '/guides/spec-first-mocking-prism-openapi/'
+  },
+  {
+    category: 'Tutorial',
+    title: 'Mocking APIs in React Native with Mockifyer',
+    description: 'Record and replay HTTP interactions in React Native applications for reliable testing.',
+    tools: 'Mockifyer',
+    url: '/guides/react-native-mocking-mockifyer/'
+  },
+];
 ---
 
 <Layout 
   title="DevX Tools" 
   description="A curated guide to API mocking, testing, and test data generation tools for developers."
 >
-  <div class="container">
-    <section class="hero">
-      <h1>The Developer's Guide to API Mocking & Test Data</h1>
-      <p class="hero-subtitle">
-        Find the right tools for mocking APIs, generating test data, and building reliable tests.
-        Curated for modern development workflows.
+  <section class="relative overflow-hidden border-b border-zinc-200 dark:border-zinc-800">
+    <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,.18),transparent_60%)]"></div>
+    <div class="pointer-events-none absolute inset-0 opacity-40 dark:opacity-20 [background-image:linear-gradient(#e4e4e7_1px,transparent_1px),linear-gradient(90deg,#e4e4e7_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]"></div>
+    
+    <div class="relative mx-auto max-w-[1200px] px-5 py-20 sm:py-28 text-center">
+      <a 
+        href="#" 
+        class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/70 px-3 py-1 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/70 dark:text-zinc-400"
+      >
+        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+        Data refreshed today · {tools.length} tools
+        <Icon name="arrow-right" size={14} />
+      </a>
+      
+      <h1 class="mx-auto mt-6 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-900 sm:text-6xl dark:text-white">
+        The developer's guide to <span class="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">API mocking</span> & test data
+      </h1>
+      
+      <p class="mx-auto mt-5 max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">
+        Independent, neutral comparisons of tools for mocking APIs, generating test data, and building reliable tests.
       </p>
-      <div class="hero-actions">
-        <a href="/catalog/" class="button">Browse Catalog</a>
-        <a href="/picker/" class="button button-secondary">Pick a Tool</a>
+      
+      <button 
+        id="hero-search"
+        class="mx-auto mt-9 flex w-full max-w-xl items-center gap-3 rounded-xl border border-zinc-300 bg-white px-4 py-3.5 text-left text-zinc-500 shadow-lg shadow-indigo-500/5 hover:border-indigo-400 dark:border-zinc-700 dark:bg-zinc-900"
+      >
+        <Icon name="search" size={20} />
+        <span>Search tools, e.g. "OpenAPI mock server"</span>
+        <kbd class="ml-auto hidden sm:inline rounded border border-zinc-300 px-1.5 text-xs font-mono dark:border-zinc-700">⌘K</kbd>
+      </button>
+      
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a 
+          href="/catalog/" 
+          class="inline-flex items-center gap-2 rounded-lg bg-zinc-900 px-5 py-2.5 font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900"
+        >
+          <Icon name="layout-grid" size={16} />
+          Browse catalog
+        </a>
+        <a 
+          href="/picker/" 
+          class="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-2.5 font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+        >
+          <Icon name="sparkles" size={16} class="text-indigo-500" />
+          Pick a tool for me
+        </a>
       </div>
-    </section>
-    
-    <section class="stats">
-      <div class="stat">
-        <div class="stat-number">{tools.length}</div>
-        <div class="stat-label">Tools Cataloged</div>
+      
+      <dl class="mx-auto mt-14 grid max-w-lg grid-cols-3 gap-4">
+        <div>
+          <dt class="text-sm text-zinc-500">Tools</dt>
+          <dd class="text-2xl font-semibold text-zinc-900 dark:text-white">{tools.length}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-zinc-500">Categories</dt>
+          <dd class="text-2xl font-semibold text-zinc-900 dark:text-white">{categories.length}</dd>
+        </div>
+        <div>
+          <dt class="text-sm text-zinc-500">Open source</dt>
+          <dd class="text-2xl font-semibold text-zinc-900 dark:text-white">{openSourcePercentage}%</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <main class="mx-auto max-w-[1200px] px-5">
+    <section class="pt-20">
+      <div class="flex items-end justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">Browse by category</h2>
+          <p class="mt-1 text-zinc-600 dark:text-zinc-400">Start from the problem you're solving.</p>
+        </div>
+        <a 
+          href="/catalog/" 
+          class="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400"
+        >
+          All categories
+          <Icon name="arrow-right" size={16} />
+        </a>
       </div>
-      <div class="stat">
-        <div class="stat-number">{categories.length}</div>
-        <div class="stat-label">Categories</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">100%</div>
-        <div class="stat-label">Open Source First</div>
-      </div>
-    </section>
-    
-    <section class="categories">
-      <h2>Browse by Category</h2>
-      <div class="category-grid">
+      
+      <div class="mt-8 grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {categories.map(([key, label]) => (
-          <a href={`/catalog?category=${key}`} class="category-card">
-            <h3>{label}</h3>
-            <p>{tools.filter(t => t.categories.includes(key as any)).length} tools</p>
+          <a 
+            href={`/catalog/?category=${key}`}
+            class="group rounded-xl border border-zinc-200 p-4 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800 dark:hover:border-indigo-500/60"
+          >
+            <span class="grid h-9 w-9 place-items-center rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+              <Icon name={CATEGORY_ICONS[key]} size={20} />
+            </span>
+            <div class="mt-3 font-medium text-zinc-900 dark:text-white">{label}</div>
+            <div class="text-sm text-zinc-500">{categoryCount[key]} tools</div>
           </a>
         ))}
+        <a 
+          href="/catalog/" 
+          class="rounded-xl border border-dashed border-zinc-300 p-4 grid place-items-center text-sm font-medium text-zinc-600 hover:border-indigo-400 dark:border-zinc-700 dark:text-zinc-400"
+        >
+          View catalog →
+        </a>
       </div>
     </section>
-    
-    <section class="featured-tools">
-      <h2>API Mocking Tools</h2>
-      <p class="section-intro">Intercept, mock, and simulate API responses for reliable testing and development</p>
-      <div class="featured-tool-list">
-        {mockingTools.map(tool => (
-          <a href={`/tools/${tool.slug}`} class="featured-tool-card">
-            <div class="tool-header">
-              <h3>{tool.name}</h3>
-              <div class="tool-stats">
-                {tool.githubStars && (
-                  <span class="stat-item" title={`${tool.githubStars.toLocaleString()} GitHub stars`}>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
-                    </svg>
-                    {tool.githubStars.toLocaleString()}
-                  </span>
-                )}
-                {tool.lastActivity && (
-                  <span class="stat-item activity" title={`Last updated: ${new Date(tool.lastActivity).toLocaleDateString()}`}>
-                    {formatTimeAgo(tool.lastActivity)}
-                  </span>
-                )}
+
+    <section class="pt-20">
+      <div class="flex items-end justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">Popular tools</h2>
+          <p class="mt-1 text-zinc-600 dark:text-zinc-400">Most-starred on GitHub · data fetched 2026-10-14.</p>
+        </div>
+        <a 
+          href="/catalog/" 
+          class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400"
+        >
+          View all {tools.length}
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {popularTools.map(tool => (
+          <a 
+            href={`/tools/${tool.slug}/`}
+            class="flex flex-col rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+          >
+            <div class="flex items-center gap-3">
+              <ToolLogo tool={tool} />
+              <div class="flex-1">
+                <div class="font-semibold text-zinc-900 dark:text-white">{tool.name}</div>
+                <div class="text-sm text-zinc-500">{CATEGORY_LABELS[tool.categories[0]]}</div>
               </div>
+              {tool.githubStars && (
+                <span class="flex items-center gap-1 text-sm text-zinc-500">
+                  <Icon name="star" size={16} />
+                  {tool.githubStars >= 1000 
+                    ? `${(tool.githubStars / 1000).toFixed(1).replace(/\.0$/, '')}k` 
+                    : tool.githubStars.toLocaleString()}
+                </span>
+              )}
             </div>
-            <div class="tool-platforms">
-              {tool.runtimes.slice(0, 4).map(runtime => (
-                <span class="platform-tag">{runtime}</span>
-              ))}
+            <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
+              {tool.description}
+            </p>
+            <div class="mt-4">
+              {tool.license && (
+                <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>
+                  {tool.license}
+                </span>
+              )}
             </div>
-            <p class="tool-description">{tool.description}</p>
-            {tool.whenToUse && (
-              <p class="tool-when-to-use">
-                <strong>When to use:</strong> {tool.whenToUse}
-              </p>
-            )}
-            {tool.weeklyDownloads && tool.weeklyDownloads > 0 && (
-              <div class="tool-downloads">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M2.75 14A1.75 1.75 0 011 12.25v-2.5a.75.75 0 011.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25v-2.5a.75.75 0 011.5 0v2.5A1.75 1.75 0 0113.25 14H2.75zM8 7.25V1.75a.75.75 0 00-1.5 0v5.5L4.81 5.56a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06L8 7.25z"/>
-                </svg>
-                {formatDownloads(tool.weeklyDownloads)}
-              </div>
-            )}
           </a>
         ))}
       </div>
     </section>
 
-    <section class="featured-tools">
-      <h2>E2E & UI Testing Tools</h2>
-      <p class="section-intro">Automate end-to-end testing across web and mobile platforms</p>
-      <div class="featured-tool-list">
-        {e2eTools.map(tool => (
-          <a href={`/tools/${tool.slug}`} class="featured-tool-card">
-            <div class="tool-header">
-              <h3>{tool.name}</h3>
-              <div class="tool-stats">
-                {tool.githubStars && (
-                  <span class="stat-item" title={`${tool.githubStars.toLocaleString()} GitHub stars`}>
-                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                      <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
-                    </svg>
-                    {tool.githubStars.toLocaleString()}
-                  </span>
-                )}
-                {tool.lastActivity && (
-                  <span class="stat-item activity" title={`Last updated: ${new Date(tool.lastActivity).toLocaleDateString()}`}>
-                    {formatTimeAgo(tool.lastActivity)}
-                  </span>
-                )}
-              </div>
+    <section class="pt-20 pb-20">
+      <div class="flex items-end justify-between">
+        <div>
+          <h2 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white">Latest guides</h2>
+          <p class="mt-1 text-zinc-600 dark:text-zinc-400">Hands-on tutorials and honest comparisons.</p>
+        </div>
+        <a 
+          href="/guides/" 
+          class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 dark:text-indigo-400"
+        >
+          All guides
+          <Icon name="arrow-right" size={16} />
+        </a>
+      </div>
+      
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        {guides.map(guide => (
+          <a 
+            href={guide.url}
+            class="rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+          >
+            <span class="text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">
+              {guide.category}
+            </span>
+            <h3 class="mt-2 text-lg font-semibold text-zinc-900 dark:text-white">
+              {guide.title}
+            </h3>
+            <p class="mt-2 text-[15px] text-zinc-600 dark:text-zinc-400">
+              {guide.description}
+            </p>
+            <div class="mt-4 flex items-center gap-1.5 text-sm text-zinc-500">
+              <Icon name="wrench" size={16} />
+              {guide.tools}
             </div>
-            <div class="tool-platforms">
-              {tool.runtimes.slice(0, 4).map(runtime => (
-                <span class="platform-tag">{runtime}</span>
-              ))}
-            </div>
-            <p class="tool-description">{tool.description}</p>
-            {tool.whenToUse && (
-              <p class="tool-when-to-use">
-                <strong>When to use:</strong> {tool.whenToUse}
-              </p>
-            )}
-            {tool.weeklyDownloads && tool.weeklyDownloads > 0 && (
-              <div class="tool-downloads">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M2.75 14A1.75 1.75 0 011 12.25v-2.5a.75.75 0 011.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25v-2.5a.75.75 0 011.5 0v2.5A1.75 1.75 0 0113.25 14H2.75zM8 7.25V1.75a.75.75 0 00-1.5 0v5.5L4.81 5.56a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06L8 7.25z"/>
-                </svg>
-                {formatDownloads(tool.weeklyDownloads)}
-              </div>
-            )}
           </a>
         ))}
       </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="/catalog/" class="button">View All Tools →</a>
-      </div>
     </section>
-    
-    <section class="guides">
-      <h2>Latest Guides</h2>
-      <div class="guide-list">
-        <a href="/guides/msw-vs-nock-vs-polly/" class="guide-item">
-          <h3>MSW vs Nock vs Polly.js: Which HTTP Mocking Tool?</h3>
-          <p>Compare three popular JavaScript HTTP mocking libraries and find the right fit for your project.</p>
-        </a>
-        <a href="/guides/spec-first-mocking-prism-openapi/" class="guide-item">
-          <h3>Spec-First Mocking with Prism and OpenAPI</h3>
-          <p>Generate mock servers directly from your OpenAPI specifications.</p>
-        </a>
-        <a href="/guides/react-native-mocking-mockifyer/" class="guide-item">
-          <h3>Mocking APIs in React Native with Mockifyer</h3>
-          <p>Record and replay HTTP interactions in React Native apps.</p>
-        </a>
-      </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="/guides//" class="button">All Guides →</a>
-      </div>
-    </section>
-  </div>
+  </main>
+
+  <script>
+    document.getElementById('hero-search')?.addEventListener('click', () => {
+      document.getElementById('search-button')?.click();
+    });
+  </script>
 </Layout>
-
-<style>
-  .hero {
-    text-align: center;
-    padding: 4rem 0;
-  }
-  
-  .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #58a6ff 0%, #79c0ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .hero-subtitle {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-    max-width: 700px;
-    margin: 0 auto 2rem;
-  }
-  
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .button-secondary {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    color: var(--text);
-  }
-  
-  .button-secondary:hover {
-    background: var(--border);
-  }
-  
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    padding: 3rem 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    margin: 3rem 0;
-  }
-  
-  .stat {
-    text-align: center;
-  }
-  
-  .stat-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--accent);
-  }
-  
-  .stat-label {
-    color: var(--text-secondary);
-    margin-top: 0.5rem;
-  }
-  
-  .categories, .featured-tools, .guides {
-    margin: 4rem 0;
-  }
-  
-  .section-intro {
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-  
-  h2 {
-    margin-bottom: 2rem;
-  }
-  
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .category-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-  
-  .category-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-  
-  .category-card h3 {
-    color: var(--text);
-    margin-bottom: 0.5rem;
-  }
-  
-  .category-card p {
-    color: var(--text-secondary);
-    margin: 0;
-  }
-  
-  .featured-tool-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .featured-tool-card {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: block;
-  }
-  
-  .featured-tool-card:hover {
-    border-color: var(--accent);
-    transform: translateX(4px);
-  }
-  
-  .tool-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  
-  .tool-header h3 {
-    color: var(--text);
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  
-  .tool-stats {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  
-  .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-  }
-  
-  .stat-item svg {
-    color: var(--accent);
-  }
-  
-  .stat-item.activity {
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-  }
-  
-  .tool-platforms {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .platform-tag {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-size: 0.85rem;
-    color: var(--accent);
-  }
-  
-  .tool-description {
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-  
-  .tool-when-to-use {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    padding: 1rem;
-    background: var(--bg);
-    border-left: 3px solid var(--accent);
-    border-radius: 4px;
-    margin-bottom: 1rem;
-  }
-  
-  .tool-when-to-use strong {
-    color: var(--text);
-  }
-  
-  .tool-downloads {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-  }
-  
-  .tool-downloads svg {
-    color: var(--success);
-  }
-  
-  .guide-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .guide-item {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: block;
-  }
-  
-  .guide-item:hover {
-    border-color: var(--accent);
-    transform: translateX(4px);
-  }
-  
-  .guide-item h3 {
-    color: var(--text);
-    margin-bottom: 0.5rem;
-  }
-  
-  .guide-item p {
-    color: var(--text-secondary);
-    margin: 0;
-  }
-  
-  @media (max-width: 768px) {
-    .hero h1 {
-      font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-      font-size: 1rem;
-    }
-    
-    .stat-number {
-      font-size: 2rem;
-    }
-    
-    .tool-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    
-    .tool-stats {
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-    
-    .tool-header h3 {
-      font-size: 1.25rem;
-    }
-    
-    .featured-tool-card {
-      padding: 1rem;
-    }
-    
-    .section-intro {
-      font-size: 1rem;
-    }
-  }
-</style>
