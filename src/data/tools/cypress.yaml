@@ -1,0 +1,22 @@
+name: Cypress
+slug: cypress
+website: https://www.cypress.io
+repo: https://github.com/cypress-io/cypress
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Node.js
+  - Browser
+categories:
+  - e2e-testing
+  - ui-testing
+bestFor: Developer-friendly E2E testing with time-travel debugging and real-time reloads
+description: All-in-one testing framework for web applications with a focus on developer experience. Features include time-travel debugging, automatic waiting, real-time reloads, and comprehensive network control.
+whenToUse: When you want a complete testing solution with excellent developer experience, visual debugging, and integrated test runner for web applications.
+githubStars: 51047
+lastActivity: 2026-09-29T18:23:34Z
+npmPackage: cypress
+weeklyDownloads: 5949802
+lastChecked: 2026-10-14

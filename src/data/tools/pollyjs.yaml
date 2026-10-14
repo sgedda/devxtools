@@ -14,4 +14,9 @@ categories:
   - http-interception
 bestFor: Recording and replaying HTTP interactions in Node.js and browser tests
 description: Record, replay, and stub HTTP interactions. Built by Netflix, works with multiple adapters including Fetch, XHR, and Node HTTP.
+whenToUse: When you want to record real API interactions once and replay them for faster, deterministic tests without hitting live APIs.
+githubStars: 10248
+lastActivity: 2025-05-31T22:29:16Z
+npmPackage: '@pollyjs/core'
+weeklyDownloads: 200347
 lastChecked: 2026-10-14
