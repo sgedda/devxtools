@@ -1,0 +1,20 @@
+name: Locust
+slug: locust
+website: https://locust.io
+repo: https://github.com/locustio/locust
+license: MIT
+languages:
+  - Python
+runtimes:
+  - Python
+  - CLI
+sections:
+  - testing
+categories:
+  - load-testing
+bestFor: Python-based load testing with web UI for monitoring and distributed execution
+description: Open-source load testing tool that lets you define user behavior in Python code. Features a web UI for monitoring tests in real-time, supports distributed load generation, and scales to hundreds of thousands of concurrent users.
+whenToUse: When you want to write load tests in Python, need distributed load testing, or prefer code-based test definitions over GUI tools.
+githubStars: 26700
+lastActivity: 2026-10-07T21:34:19Z
+lastChecked: 2026-10-14

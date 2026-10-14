@@ -1,0 +1,17 @@
+name: Better Stack
+slug: betterstack
+website: https://betterstack.com
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - Hosted
+sections:
+  - observability
+categories:
+  - log-aggregation
+  - error-monitoring
+bestFor: Modern log management and uptime monitoring with beautiful UI and fast search
+description: Log management platform (formerly Logtail) with fast full-text search, SQL queries, and automatic parsing. Features live tailing, alerting, and integrations with popular frameworks and cloud platforms.
+whenToUse: When you want developer-friendly log management with fast search, need live log tailing during debugging, or want combined uptime monitoring and log analysis.
+lastChecked: 2026-10-14

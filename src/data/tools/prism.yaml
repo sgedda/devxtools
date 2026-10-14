@@ -10,6 +10,8 @@ runtimes:
   - Node.js
   - CLI
   - Docker
+sections:
+  - mocking-test-data
 categories:
   - spec-based-mocking
   - mock-server

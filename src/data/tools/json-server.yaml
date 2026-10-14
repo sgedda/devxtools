@@ -8,6 +8,8 @@ languages:
   - TypeScript
 runtimes:
   - Node.js
+sections:
+  - mocking-test-data
 categories:
   - mock-server
 bestFor: Spinning up a full fake REST API from a JSON file in seconds

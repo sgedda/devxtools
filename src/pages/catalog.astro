@@ -3,12 +3,13 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ToolLogo from '../components/ToolLogo.astro';
 import { getAllTools, getUniqueLanguages } from '../lib/tools';
-import { CATEGORY_LABELS, type ToolCategory } from '../lib/schema';
-import { formatTimeAgo, getLicenseBadgeClass } from '../lib/ui-helpers';
+import { CATEGORY_LABELS, SECTION_LABELS, type ToolCategory, type ToolSection } from '../lib/schema';
+import { formatTimeAgo, getLicenseBadgeClass, SECTION_ICONS } from '../lib/ui-helpers';
 
 const tools = getAllTools();
 const languages = getUniqueLanguages().filter(l => l !== 'N/A');
 const categories = Object.entries(CATEGORY_LABELS);
+const sections = Object.entries(SECTION_LABELS);
 
 // Get unique spec support options
 const allSpecs = new Set<string>();
@@ -20,7 +21,7 @@ const specs = Array.from(allSpecs).sort();
 
 <Layout 
   title="Catalog" 
-  description="Browse our complete catalog of API mocking and test data generation tools."
+  description="Browse our complete catalog of API development, testing, and mocking tools."
 >
   <main class="mx-auto max-w-[1200px] px-5 pt-10">
     <nav class="text-sm text-zinc-500">
@@ -31,7 +32,7 @@ const specs = Array.from(allSpecs).sort();
     
     <h1 class="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Tool catalog</h1>
     <p class="mt-2 text-zinc-600 dark:text-zinc-400">
-      Explore <span id="tool-count">{tools.length}</span> tools for API mocking, test data generation, and testing.
+      Explore <span id="tool-count">{tools.length}</span> tools for API development, testing, mocking, and test data generation.
     </p>
     
     <div class="mt-8 flex flex-col gap-8 lg:flex-row">
@@ -49,6 +50,28 @@ const specs = Array.from(allSpecs).sort();
         </button>
         
         <div id="filters" class="hidden lg:block mt-3 lg:mt-0 space-y-2 lg:sticky lg:top-24">
+          <details open class="group rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-medium text-zinc-900 dark:text-white">
+              Section
+              <Icon name="chevron-down" size={16} class="transition group-open:rotate-180" />
+            </summary>
+            <div class="space-y-1 px-4 pb-3">
+              {sections.map(([key, label]) => (
+                <label class="flex items-center gap-2.5 py-1 text-[15px] cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    class="section-filter h-4 w-4 rounded accent-indigo-600" 
+                    value={key}
+                  />
+                  {label}
+                  <span class="ml-auto text-xs text-zinc-400">
+                    {tools.filter(t => t.sections.includes(key as any)).length}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </details>
+          
           <details open class="group rounded-lg border border-zinc-200 dark:border-zinc-800">
             <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-medium text-zinc-900 dark:text-white">
               Category
@@ -170,6 +193,7 @@ const specs = Array.from(allSpecs).sort();
               data-name={tool.name.toLowerCase()}
               data-description={tool.description.toLowerCase()}
               data-best-for={tool.bestFor.toLowerCase()}
+              data-sections={tool.sections.join(',')}
               data-categories={tool.categories.join(',')}
               data-languages={tool.languages.join(',')}
               data-specs={tool.specSupport?.join(',') || ''}
@@ -273,6 +297,7 @@ const specs = Array.from(allSpecs).sort();
   <script is:inline>
     let currentView = 'grid';
     const filters = {
+      sections: new Set(),
       categories: new Set(),
       languages: new Set(),
       specs: new Set(),
@@ -281,6 +306,13 @@ const specs = Array.from(allSpecs).sort();
     // Initialize filters from URL params
     function initFiltersFromURL() {
       const params = new URLSearchParams(window.location.search);
+      
+      const section = params.get('section');
+      if (section) {
+        filters.sections.add(section);
+        const checkbox = document.querySelector(`.section-filter[value="${section}"]`);
+        if (checkbox) checkbox.checked = true;
+      }
       
       const category = params.get('category');
       if (category) {
@@ -319,6 +351,10 @@ const specs = Array.from(allSpecs).sort();
         
         const matchesSearch = !searchQuery || searchText.includes(searchQuery);
         
+        const sections = card.dataset.sections ? card.dataset.sections.split(',') : [];
+        const matchesSection = filters.sections.size === 0 || 
+          sections.some(s => filters.sections.has(s));
+        
         const categories = card.dataset.categories.split(',');
         const matchesCategory = filters.categories.size === 0 || 
           categories.some(c => filters.categories.has(c));
@@ -331,7 +367,7 @@ const specs = Array.from(allSpecs).sort();
         const matchesSpec = filters.specs.size === 0 || 
           specs.some(s => filters.specs.has(s));
         
-        const isVisible = matchesSearch && matchesCategory && matchesLanguage && matchesSpec;
+        const isVisible = matchesSearch && matchesSection && matchesCategory && matchesLanguage && matchesSpec;
         card.style.display = isVisible ? '' : 'none';
         if (isVisible) visible++;
       });
@@ -353,7 +389,7 @@ const specs = Array.from(allSpecs).sort();
       
       // Update counts
       const totalCount = cards.length;
-      const filterCount = filters.categories.size + filters.languages.size + filters.specs.size;
+      const filterCount = filters.sections.size + filters.categories.size + filters.languages.size + filters.specs.size;
       
       document.getElementById('result-count').textContent = `Showing ${visible} of ${totalCount} tools`;
       document.getElementById('filter-count').textContent = filterCount ? `(${filterCount})` : '';
@@ -376,11 +412,12 @@ const specs = Array.from(allSpecs).sort();
     }
 
     function clearAllFilters() {
+      filters.sections.clear();
       filters.categories.clear();
       filters.languages.clear();
       filters.specs.clear();
       
-      document.querySelectorAll('.category-filter, .language-filter, .spec-filter').forEach(input => {
+      document.querySelectorAll('.section-filter, .category-filter, .language-filter, .spec-filter').forEach(input => {
         input.checked = false;
       });
       
@@ -416,6 +453,17 @@ const specs = Array.from(allSpecs).sort();
     // Event listeners
     document.getElementById('search-query').addEventListener('input', updateFilters);
     document.getElementById('sort-select').addEventListener('change', updateFilters);
+    
+    document.querySelectorAll('.section-filter').forEach(input => {
+      input.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          filters.sections.add(e.target.value);
+        } else {
+          filters.sections.delete(e.target.value);
+        }
+        updateFilters();
+      });
+    });
     
     document.querySelectorAll('.category-filter').forEach(input => {
       input.addEventListener('change', (e) => {

@@ -32,6 +32,11 @@ export function getToolsByCategory(category: string): Tool[] {
   return tools.filter(tool => tool.categories.includes(category as any));
 }
 
+export function getToolsBySection(section: string): Tool[] {
+  const tools = getAllTools();
+  return tools.filter(tool => tool.sections.includes(section as any));
+}
+
 export function getUniqueLanguages(): string[] {
   const tools = getAllTools();
   const languages = new Set<string>();
@@ -48,4 +53,13 @@ export function getUniqueCategories(): string[] {
     tool.categories.forEach(cat => categories.add(cat));
   });
   return Array.from(categories).sort();
+}
+
+export function getUniqueSections(): string[] {
+  const tools = getAllTools();
+  const sections = new Set<string>();
+  tools.forEach(tool => {
+    tool.sections.forEach(section => sections.add(section));
+  });
+  return Array.from(sections).sort();
 }

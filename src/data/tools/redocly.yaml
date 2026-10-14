@@ -1,0 +1,26 @@
+name: Redocly
+slug: redocly
+website: https://redocly.com
+repo: https://github.com/Redocly/redocly-cli
+license: MIT
+languages:
+  - TypeScript
+  - JavaScript
+runtimes:
+  - Node.js
+  - CLI
+  - Web
+sections:
+  - api-development
+categories:
+  - openapi-tooling
+specSupport:
+  - OpenAPI
+bestFor: OpenAPI linting, bundling, and beautiful documentation generation
+description: Complete OpenAPI toolkit including CLI for linting and bundling, plus beautiful documentation generator. Features reference docs, developer portal, and API registry.
+whenToUse: When you need robust OpenAPI validation, want to generate production-ready documentation, or need to bundle multi-file OpenAPI specs.
+githubStars: 2300
+lastActivity: 2026-10-11T16:22:08Z
+npmPackage: '@redocly/cli'
+weeklyDownloads: 1847320
+lastChecked: 2026-10-14

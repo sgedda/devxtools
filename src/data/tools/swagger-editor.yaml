@@ -1,0 +1,23 @@
+name: Swagger Editor
+slug: swagger-editor
+website: https://editor.swagger.io
+repo: https://github.com/swagger-api/swagger-editor
+license: Apache-2.0
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Web
+  - Docker
+sections:
+  - api-development
+categories:
+  - openapi-tooling
+specSupport:
+  - OpenAPI
+bestFor: Browser-based OpenAPI editor with live validation and documentation preview
+description: The original OpenAPI editor from SmartBear. Edit OpenAPI specs with live validation, syntax highlighting, and instant documentation preview. Can be self-hosted.
+whenToUse: When you need a simple, reliable OpenAPI editor with instant feedback, or want to quickly prototype API specs in the browser.
+githubStars: 9300
+lastActivity: 2026-08-15T11:43:29Z
+lastChecked: 2026-10-14

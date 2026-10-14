@@ -1,0 +1,26 @@
+name: Reactotron
+slug: reactotron
+website: https://github.com/infinitered/reactotron
+repo: https://github.com/infinitered/reactotron
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - React Native
+  - React
+sections:
+  - observability
+categories:
+  - network-debugging
+  - application-logging
+platforms:
+  - React Native
+  - iOS
+  - Android
+bestFor: Desktop app for inspecting React and React Native apps with network logging
+description: Desktop application for monitoring React and React Native applications. Features include network request/response inspection, state management debugging, performance metrics, and custom logging. Built by Infinite Red.
+whenToUse: When you need visual debugging for React Native apps, want to inspect network traffic and Redux state, or need custom logging and benchmarking during development.
+githubStars: 14800
+lastActivity: 2026-07-22T19:14:35Z
+lastChecked: 2026-10-14

@@ -1,0 +1,20 @@
+name: Charles Proxy
+slug: charles
+website: https://www.charlesproxy.com
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - Desktop
+sections:
+  - observability
+categories:
+  - network-debugging
+platforms:
+  - Web
+  - iOS
+  - Android
+bestFor: HTTP debugging proxy for viewing traffic between computer and internet
+description: HTTP proxy and monitor for viewing all HTTP and SSL/HTTPS traffic. Features include request/response inspection, bandwidth throttling, breakpoints for editing requests, and support for mobile debugging via WiFi.
+whenToUse: When you need to inspect and modify HTTP/HTTPS traffic, want to test apps under poor network conditions, or need to debug mobile app network calls on real devices.
+lastChecked: 2026-10-14

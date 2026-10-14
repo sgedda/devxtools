@@ -8,6 +8,8 @@ languages:
 runtimes:
   - JVM
   - Docker
+sections:
+  - mocking-test-data
 categories:
   - mock-server
   - record-replay

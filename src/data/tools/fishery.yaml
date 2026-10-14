@@ -8,6 +8,8 @@ languages:
   - JavaScript
 runtimes:
   - Node.js
+sections:
+  - mocking-test-data
 categories:
   - test-data-generation
 bestFor: Type-safe factories for building test objects with sensible defaults

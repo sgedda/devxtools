@@ -7,6 +7,8 @@ languages:
   - JavaScript
 runtimes:
   - Node.js
+sections:
+  - mocking-test-data
 categories:
   - mock-server
 bestFor: Multi-protocol service virtualization supporting HTTP, HTTPS, TCP, and SMTP

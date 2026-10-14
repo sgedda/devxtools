@@ -10,9 +10,14 @@ runtimes:
   - iOS
   - Android
   - React Native
+sections:
+  - testing
+platforms:
+  - iOS
+  - Android
+  - React Native
 categories:
   - e2e-testing
-  - ui-testing
 bestFor: Gray box E2E testing for React Native apps with synchronization and device control
 description: End-to-end testing framework specifically designed for React Native mobile apps. Automatically synchronizes with app and network activity, runs on simulators and real devices, and integrates with Jest for assertions.
 whenToUse: When testing React Native apps and you need deep integration with the app runtime for reliable, synchronized tests.
