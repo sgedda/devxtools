@@ -277,6 +277,32 @@ const specs = Array.from(allSpecs).sort();
       languages: new Set(),
       specs: new Set(),
     };
+    
+    // Initialize filters from URL params
+    function initFiltersFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      
+      const category = params.get('category');
+      if (category) {
+        filters.categories.add(category);
+        const checkbox = document.querySelector(`.category-filter[value="${category}"]`);
+        if (checkbox) checkbox.checked = true;
+      }
+      
+      const language = params.get('language');
+      if (language) {
+        filters.languages.add(language);
+        const checkbox = document.querySelector(`.language-filter[value="${language}"]`);
+        if (checkbox) checkbox.checked = true;
+      }
+      
+      const spec = params.get('spec');
+      if (spec) {
+        filters.specs.add(spec);
+        const checkbox = document.querySelector(`.spec-filter[value="${spec}"]`);
+        if (checkbox) checkbox.checked = true;
+      }
+    }
 
     function updateFilters() {
       const searchQuery = document.getElementById('search-query').value.toLowerCase();
@@ -333,8 +359,19 @@ const specs = Array.from(allSpecs).sort();
       document.getElementById('filter-count').textContent = filterCount ? `(${filterCount})` : '';
       document.getElementById('tool-count').textContent = totalCount;
       
+      // Show/hide empty state without destroying cards
+      let emptyState = document.getElementById('empty-state');
       if (visible === 0) {
-        grid.innerHTML = '<div class="col-span-full rounded-xl border border-dashed p-12 text-center text-zinc-500 dark:border-zinc-700">No tools match. <button onclick="clearAllFilters()" class="text-indigo-600">Clear filters</button></div>';
+        if (!emptyState) {
+          emptyState = document.createElement('div');
+          emptyState.id = 'empty-state';
+          emptyState.className = 'col-span-full rounded-xl border border-dashed p-12 text-center text-zinc-500 dark:border-zinc-700';
+          emptyState.innerHTML = 'No tools match. <button onclick="clearAllFilters()" class="text-indigo-600">Clear filters</button>';
+          grid.appendChild(emptyState);
+        }
+        emptyState.style.display = 'block';
+      } else if (emptyState) {
+        emptyState.style.display = 'none';
       }
     }
 
@@ -422,5 +459,9 @@ const specs = Array.from(allSpecs).sort();
     document.getElementById('view-list').addEventListener('click', () => setView('list'));
     
     window.clearAllFilters = clearAllFilters;
+    
+    // Initialize from URL and apply initial sort/filters
+    initFiltersFromURL();
+    updateFilters();
   </script>
 </Layout>

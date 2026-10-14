@@ -11,8 +11,46 @@
     src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2') format('woff2');
   }
   
+  :root {
+    --text: #18181b;
+    --text-secondary: #71717a;
+    --bg: #ffffff;
+    --bg-secondary: #fafafa;
+    --border: #e4e4e7;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+  
+  .dark {
+    --text: #fafafa;
+    --text-secondary: #a1a1aa;
+    --bg: #09090b;
+    --bg-secondary: #18181b;
+    --border: #27272a;
+    --accent: #818cf8;
+    --accent-hover: #6366f1;
+    --success: #34d399;
+    --warning: #fbbf24;
+  }
+  
   body {
     @apply antialiased;
     font-size: 15px;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto max-w-5xl px-5 py-12;
+  }
+  
+  .button {
+    @apply inline-block px-6 py-3 bg-zinc-900 text-white font-medium rounded-lg hover:bg-zinc-700 transition no-underline dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200;
+  }
+  
+  .button-secondary {
+    @apply inline-block px-6 py-3 bg-white text-zinc-900 border border-zinc-300 font-medium rounded-lg hover:border-zinc-400 transition no-underline dark:bg-zinc-900 dark:text-white dark:border-zinc-700 dark:hover:border-zinc-600;
   }
 }
