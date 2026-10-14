@@ -17,12 +17,16 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.8",
+    "enhanced-resolve": "^5.26.0",
     "yaml": "^2.9.1",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20261014.1",
-    "sharp": "^0.35.5",
+    "@tailwindcss/postcss": "^4.3.3",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.30",
+    "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "vitest": "^5.0.4"
   }

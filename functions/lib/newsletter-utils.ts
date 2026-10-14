@@ -29,6 +29,15 @@ export function checkHoneypot(honeypot: unknown): boolean {
   return !!honeypot;
 }
 
+/**
+ * Best-effort KV-based rate limiter (defense in depth)
+ * 
+ * PRIMARY PROTECTION: Cloudflare WAF rate limiting rule
+ * SECONDARY: This KV-based check (may have race conditions due to eventual consistency)
+ * 
+ * Use WAF rule: POST /api/newsletter/signup, 3 requests/min per IP, block 1min
+ * See CLOUDFLARE_SETUP.md for WAF configuration instructions
+ */
 export async function checkRateLimit(
   kv: KVNamespace | undefined,
   clientIP: string
@@ -37,39 +46,57 @@ export async function checkRateLimit(
     return { allowed: true };
   }
 
-  const rateLimitKey = `rate:${clientIP}`;
-  const rateLimitData = await kv.get(rateLimitKey);
-  const now = Date.now();
-
-  if (rateLimitData) {
-    const { count, resetAt }: RateLimitEntry = JSON.parse(rateLimitData);
-
-    if (now < resetAt) {
-      if (count >= RATE_LIMIT_MAX) {
-        return { allowed: false, error: 'Too many requests. Please try again later.' };
-      }
-
-      await kv.put(
-        rateLimitKey,
-        JSON.stringify({ count: count + 1, resetAt }),
-        { expirationTtl: Math.max(60, Math.ceil((resetAt - now) / 1000)) }
-      );
-    } else {
+  try {
+    const rateLimitKey = `rate:${clientIP}`;
+    const now = Date.now();
+    
+    // Get current count
+    const data = await kv.get(rateLimitKey);
+    
+    if (!data) {
+      // First request - store it
       await kv.put(
         rateLimitKey,
         JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }),
         { expirationTtl: 60 }
       );
+      return { allowed: true };
     }
-  } else {
+    
+    const { count, resetAt }: RateLimitEntry = JSON.parse(data);
+    
+    // Check if window expired
+    if (now >= resetAt) {
+      // Reset counter
+      await kv.put(
+        rateLimitKey,
+        JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }),
+        { expirationTtl: 60 }
+      );
+      return { allowed: true };
+    }
+    
+    // Within window - check limit
+    if (count >= RATE_LIMIT_MAX) {
+      return { 
+        allowed: false, 
+        error: 'Too many requests. Please try again later.' 
+      };
+    }
+    
+    // Increment counter
     await kv.put(
       rateLimitKey,
-      JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }),
-      { expirationTtl: 60 }
+      JSON.stringify({ count: count + 1, resetAt }),
+      { expirationTtl: Math.max(60, Math.ceil((resetAt - now) / 1000)) }
     );
+    
+    return { allowed: true };
+  } catch (error) {
+    console.error('Rate limiting error:', error);
+    // On error, allow the request (fail open)
+    return { allowed: true };
   }
-
-  return { allowed: true };
 }
 
 export async function generateToken(email: string, secret: string): Promise<string> {

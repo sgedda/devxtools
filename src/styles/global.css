@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2') format('woff2');
+  }
+  
+  :root {
+    --text: #18181b;
+    --text-secondary: #71717a;
+    --bg: #ffffff;
+    --bg-secondary: #fafafa;
+    --border: #e4e4e7;
+    --accent: #6366f1;
+    --accent-hover: #4f46e5;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+  
+  .dark {
+    --text: #fafafa;
+    --text-secondary: #a1a1aa;
+    --bg: #09090b;
+    --bg-secondary: #18181b;
+    --border: #27272a;
+    --accent: #818cf8;
+    --accent-hover: #6366f1;
+    --success: #34d399;
+    --warning: #fbbf24;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 15px;
+  }
+}
+
+@layer components {
+  .container {
+    margin: 0 auto;
+    max-width: 80rem;
+    padding: 3rem 1.25rem;
+  }
+  
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #18181b;
+    color: white;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .button:hover {
+    background-color: #3f3f46;
+  }
+  
+  .dark .button {
+    background-color: white;
+    color: #18181b;
+  }
+  
+  .dark .button:hover {
+    background-color: #fafafa;
+  }
+  
+  .button-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: white;
+    color: #18181b;
+    border: 1px solid #d4d4d8;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .button-secondary:hover {
+    border-color: #a1a1aa;
+  }
+  
+  .dark .button-secondary {
+    background-color: #18181b;
+    color: white;
+    border-color: #3f3f46;
+  }
+  
+  .dark .button-secondary:hover {
+    border-color: #52525b;
+  }
+}

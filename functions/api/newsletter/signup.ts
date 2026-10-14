@@ -27,7 +27,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    // Rate limiting first - count all attempts including invalid ones
+    // Rate limiting (best-effort KV, primary protection is WAF rule)
+    // See CLOUDFLARE_SETUP.md for WAF configuration
     const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
     const rateLimitResult = await checkRateLimit(env.NEWSLETTER_KV, clientIP);
     
@@ -80,11 +81,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Don't create the contact yet - wait for confirmation to prevent
-    // double opt-in gap where unconfirmed contacts appear in Resend
-
-    // Generate confirmation token (short-lived, 24 hours)
-    const confirmToken = await generateToken(email, env.NEWSLETTER_SECRET);
+    // CRITICAL: Make ZERO writes to Resend contacts during signup
+    // - New contacts: don't create until confirmation
+    // - Existing contacts: don't modify (prevents malicious unsubscribe)
+    // - Only confirm handler can set unsubscribed:false or add to segment
+    // - Only unsubscribe handler can set unsubscribed:true
+    
+    // Generate confirmation token (opaque, single-use, stored in KV with 24h TTL)
+    const confirmToken = await generateUnsubscribeToken(
+      email,
+      env.NEWSLETTER_SECRET,
+      env.NEWSLETTER_KV
+    );
     const confirmUrl = new URL('/newsletter/confirm', request.url);
     confirmUrl.searchParams.set('token', confirmToken);
 
@@ -97,10 +105,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const unsubscribeUrl = new URL('/newsletter/unsubscribe', request.url);
     unsubscribeUrl.searchParams.set('token', unsubscribeToken);
 
-    // Store pending confirmation with attribution if KV is available (24 hour expiry)
-    if (env.NEWSLETTER_KV) {
+    // Store pending confirmation keyed by token (not email) with 24h TTL
+    // This allows us to look it up during confirmation without exposing the email
+    const [tokenId] = confirmToken.split('.');
+    if (env.NEWSLETTER_KV && tokenId) {
       await env.NEWSLETTER_KV.put(
-        `pending:${email}`,
+        `confirm:${tokenId}`,
         JSON.stringify({ 
           email, 
           timestamp: Date.now(),
@@ -113,7 +123,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Send confirmation email
+    // Send confirmation email via Resend /emails API
+    // 
+    // NOTE: Resend's /emails endpoint behavior regarding contacts:
+    // According to Resend documentation and API behavior testing, sending an email
+    // via /emails may auto-create/update contacts in your audience depending on
+    // workspace settings. However, we cannot control this per-request.
+    // 
+    // Since we make ZERO contact API calls during signup:
+    // - If Resend auto-creates a contact when we send the email, we can't prevent it
+    // - The confirm handler will create/update the contact explicitly anyway
+    // - This is acceptable because confirm is when we actually want them subscribed
+    // 
+    // The key security property: signup never calls the contacts API to modify
+    // existing contacts, preventing malicious unsubscribe attacks.
     const fromEmail = env.NEWSLETTER_FROM_EMAIL || 'newsletter@devxtools.dev';
 
     const emailResponse = await fetch('https://api.resend.com/emails', {

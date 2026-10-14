@@ -286,7 +286,7 @@ describe('Newsletter API Integration Tests', () => {
   });
 
   describe('Rate Limiting', () => {
-    it('should rate limit before validation', async () => {
+    it('should rate limit before validation (best-effort KV)', async () => {
       const { checkRateLimit, RATE_LIMIT_MAX } = await import('../functions/lib/newsletter-utils');
       
       const mockKV = {
@@ -295,12 +295,15 @@ describe('Newsletter API Integration Tests', () => {
         delete: vi.fn(),
       } as any;
 
-      // First request - should be allowed
+      // Note: This is best-effort due to KV eventual consistency
+      // Primary protection is WAF rule (see CLOUDFLARE_SETUP.md)
+
+      // First request
       (mockKV.get as any).mockResolvedValue(null);
       let result = await checkRateLimit(mockKV, '1.2.3.4');
       expect(result.allowed).toBe(true);
 
-      // Simulate multiple failed attempts
+      // Simulate multiple attempts
       const now = Date.now();
       const resetAt = now + 60000;
       
