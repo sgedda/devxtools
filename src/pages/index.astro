@@ -17,6 +17,30 @@ const categoryCount = Object.fromEntries(
   ])
 );
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "DevX Tools",
+      "url": "https://devxtools.dev/",
+      "description": "A curated guide to API mocking, testing, and test data generation tools for developers.",
+      "publisher": {
+        "@type": "Organization",
+        "name": "DevX Tools",
+        "url": "https://devxtools.dev/"
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "DevX Tools",
+      "url": "https://devxtools.dev/",
+      "logo": "https://devxtools.dev/og-image.png",
+      "description": "Curated directory of API mocking and test data tools for modern development workflows"
+    }
+  ]
+};
+
 // Popular tools (by GitHub stars)
 const popularTools = tools
   .filter(t => t.githubStars && t.githubStars > 0)
@@ -54,8 +78,9 @@ const guides = [
 ---
 
 <Layout 
-  title="DevX Tools" 
+  title="DevX Tools: API Mocking & Test Data Tools Compared" 
   description="A curated guide to API mocking, testing, and test data generation tools for developers."
+  jsonLd={jsonLd}
 >
   <section class="relative overflow-hidden border-b border-zinc-200 dark:border-zinc-800">
     <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(99,102,241,.18),transparent_60%)]"></div>

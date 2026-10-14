@@ -22,6 +22,9 @@ export default {
           950: '#09090b',
         },
       },
+      maxWidth: {
+        '5xl': '64rem',
+      },
     },
   },
   plugins: [],

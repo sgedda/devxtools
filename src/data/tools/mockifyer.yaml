@@ -14,4 +14,5 @@ categories:
   - http-interception
 bestFor: Record/replay mocking for JavaScript, TypeScript, and React Native apps
 description: Lightweight HTTP mocking tool with record and replay capabilities. Captures real API responses and plays them back in tests. Works with React Native.
+affiliation: The maintainer of this site (Sebastian) is the author of Mockifyer.
 lastChecked: 2026-10-14

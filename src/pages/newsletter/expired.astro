@@ -1,16 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-
-const isPreviewDeploy = import.meta.env.CF_PAGES_BRANCH 
-  ? import.meta.env.CF_PAGES_BRANCH !== 'main'
-  : Astro.url.hostname !== 'devxtools.dev' && Astro.url.hostname !== 'localhost';
 ---
 
 <Layout 
   title="Link Expired" 
   description="This newsletter link has expired or is invalid."
+  noindex={true}
 >
-  {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" slot="head" />}
   
   <div class="container">
     <div class="message-card">
