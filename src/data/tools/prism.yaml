@@ -17,4 +17,9 @@ specSupport:
   - OpenAPI
 bestFor: Generating mock servers directly from OpenAPI specifications
 description: Turn any OpenAPI specification into a mock server with dynamic examples, validation, and request/response matching. Built by Stoplight.
+whenToUse: When you have an OpenAPI spec and want to instantly create a mock server with validation, or need contract testing between frontend and backend.
+githubStars: 5053
+lastActivity: 2026-07-17T08:02:29Z
+npmPackage: '@stoplight/prism-cli'
+weeklyDownloads: 226708
 lastChecked: 2026-10-14

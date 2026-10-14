@@ -2,9 +2,26 @@
 import Layout from '../layouts/Layout.astro';
 import { getAllTools } from '../lib/tools';
 import { CATEGORY_LABELS } from '../lib/schema';
+import { formatTimeAgo, formatDownloads } from '../lib/format';
 
 const tools = getAllTools();
 const categories = Object.entries(CATEGORY_LABELS);
+
+// Featured mocking tools
+const mockingTools = tools
+  .filter(t => 
+    t.categories.includes('http-interception') || 
+    t.categories.includes('mock-server') || 
+    t.categories.includes('spec-based-mocking') ||
+    t.categories.includes('record-replay')
+  )
+  .sort((a, b) => (b.githubStars || 0) - (a.githubStars || 0))
+  .slice(0, 6);
+
+// Featured E2E/UI testing tools
+const e2eTools = tools
+  .filter(t => t.categories.includes('e2e-testing') || t.categories.includes('ui-testing'))
+  .sort((a, b) => (b.githubStars || 0) - (a.githubStars || 0));
 ---
 
 <Layout 
@@ -51,18 +68,97 @@ const categories = Object.entries(CATEGORY_LABELS);
       </div>
     </section>
     
-    <section class="featured">
-      <h2>Popular Tools</h2>
-      <div class="tool-grid">
-        {tools.slice(0, 6).map(tool => (
-          <a href={`/tools/${tool.slug}`} class="tool-card">
-            <h3>{tool.name}</h3>
-            <p class="tool-best-for">{tool.bestFor}</p>
-            <div class="tool-meta">
-              {tool.categories.slice(0, 2).map(cat => (
-                <span class="badge">{CATEGORY_LABELS[cat]}</span>
+    <section class="featured-tools">
+      <h2>API Mocking Tools</h2>
+      <p class="section-intro">Intercept, mock, and simulate API responses for reliable testing and development</p>
+      <div class="featured-tool-list">
+        {mockingTools.map(tool => (
+          <a href={`/tools/${tool.slug}`} class="featured-tool-card">
+            <div class="tool-header">
+              <h3>{tool.name}</h3>
+              <div class="tool-stats">
+                {tool.githubStars && (
+                  <span class="stat-item" title={`${tool.githubStars.toLocaleString()} GitHub stars`}>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                      <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                    </svg>
+                    {tool.githubStars.toLocaleString()}
+                  </span>
+                )}
+                {tool.lastActivity && (
+                  <span class="stat-item activity" title={`Last updated: ${new Date(tool.lastActivity).toLocaleDateString()}`}>
+                    {formatTimeAgo(tool.lastActivity)}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div class="tool-platforms">
+              {tool.runtimes.slice(0, 4).map(runtime => (
+                <span class="platform-tag">{runtime}</span>
               ))}
             </div>
+            <p class="tool-description">{tool.description}</p>
+            {tool.whenToUse && (
+              <p class="tool-when-to-use">
+                <strong>When to use:</strong> {tool.whenToUse}
+              </p>
+            )}
+            {tool.weeklyDownloads && tool.weeklyDownloads > 0 && (
+              <div class="tool-downloads">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M2.75 14A1.75 1.75 0 011 12.25v-2.5a.75.75 0 011.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25v-2.5a.75.75 0 011.5 0v2.5A1.75 1.75 0 0113.25 14H2.75zM8 7.25V1.75a.75.75 0 00-1.5 0v5.5L4.81 5.56a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06L8 7.25z"/>
+                </svg>
+                {formatDownloads(tool.weeklyDownloads)}
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="featured-tools">
+      <h2>E2E & UI Testing Tools</h2>
+      <p class="section-intro">Automate end-to-end testing across web and mobile platforms</p>
+      <div class="featured-tool-list">
+        {e2eTools.map(tool => (
+          <a href={`/tools/${tool.slug}`} class="featured-tool-card">
+            <div class="tool-header">
+              <h3>{tool.name}</h3>
+              <div class="tool-stats">
+                {tool.githubStars && (
+                  <span class="stat-item" title={`${tool.githubStars.toLocaleString()} GitHub stars`}>
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                      <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                    </svg>
+                    {tool.githubStars.toLocaleString()}
+                  </span>
+                )}
+                {tool.lastActivity && (
+                  <span class="stat-item activity" title={`Last updated: ${new Date(tool.lastActivity).toLocaleDateString()}`}>
+                    {formatTimeAgo(tool.lastActivity)}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div class="tool-platforms">
+              {tool.runtimes.slice(0, 4).map(runtime => (
+                <span class="platform-tag">{runtime}</span>
+              ))}
+            </div>
+            <p class="tool-description">{tool.description}</p>
+            {tool.whenToUse && (
+              <p class="tool-when-to-use">
+                <strong>When to use:</strong> {tool.whenToUse}
+              </p>
+            )}
+            {tool.weeklyDownloads && tool.weeklyDownloads > 0 && (
+              <div class="tool-downloads">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M2.75 14A1.75 1.75 0 011 12.25v-2.5a.75.75 0 011.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 00.25-.25v-2.5a.75.75 0 011.5 0v2.5A1.75 1.75 0 0113.25 14H2.75zM8 7.25V1.75a.75.75 0 00-1.5 0v5.5L4.81 5.56a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06L8 7.25z"/>
+                </svg>
+                {formatDownloads(tool.weeklyDownloads)}
+              </div>
+            )}
           </a>
         ))}
       </div>
@@ -158,8 +254,15 @@ const categories = Object.entries(CATEGORY_LABELS);
     margin-top: 0.5rem;
   }
   
-  .categories, .featured, .guides {
+  .categories, .featured-tools, .guides {
     margin: 4rem 0;
+  }
+  
+  .section-intro {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    text-align: center;
   }
   
   h2 {
@@ -196,13 +299,13 @@ const categories = Object.entries(CATEGORY_LABELS);
     margin: 0;
   }
   
-  .tool-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  .featured-tool-list {
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
   }
   
-  .tool-card {
+  .featured-tool-card {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -212,26 +315,98 @@ const categories = Object.entries(CATEGORY_LABELS);
     display: block;
   }
   
-  .tool-card:hover {
+  .featured-tool-card:hover {
     border-color: var(--accent);
-    transform: translateY(-2px);
+    transform: translateX(4px);
   }
   
-  .tool-card h3 {
-    color: var(--text);
-    margin-bottom: 0.75rem;
-  }
-  
-  .tool-best-for {
-    color: var(--text-secondary);
+  .tool-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 1rem;
-    font-size: 0.95rem;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
   
-  .tool-meta {
+  .tool-header h3 {
+    color: var(--text);
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .tool-stats {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .stat-item svg {
+    color: var(--accent);
+  }
+  
+  .stat-item.activity {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+  
+  .tool-platforms {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .platform-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+  
+  .tool-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-when-to-use {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    padding: 1rem;
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-when-to-use strong {
+    color: var(--text);
+  }
+  
+  .tool-downloads {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .tool-downloads svg {
+    color: var(--success);
   }
   
   .guide-list {
@@ -276,6 +451,28 @@ const categories = Object.entries(CATEGORY_LABELS);
     
     .stat-number {
       font-size: 2rem;
+    }
+    
+    .tool-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .tool-stats {
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    
+    .tool-header h3 {
+      font-size: 1.25rem;
+    }
+    
+    .featured-tool-card {
+      padding: 1rem;
+    }
+    
+    .section-intro {
+      font-size: 1rem;
     }
   }
 </style>
