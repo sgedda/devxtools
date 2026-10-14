@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
+import { verifyUnsubscribeToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
@@ -19,10 +19,19 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    const email = await verifyToken(token, env.NEWSLETTER_SECRET, true);
+    // Verify the opaque confirmation token (stored in KV)
+    const email = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     
     if (!email) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    }
+    
+    // Extract token ID to delete it after use (single-use token)
+    const [tokenId] = token.split('.');
+    
+    // Delete the confirmation token to make it single-use
+    if (env.NEWSLETTER_KV && tokenId) {
+      await env.NEWSLETTER_KV.delete(`unsubscribe:${tokenId}`);
     }
 
     // Check if confirmation is still valid and retrieve attribution (if KV is available)
@@ -116,7 +125,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }
     }
 
-    // Send welcome email
+    // Send welcome email - critical step, log failures prominently
     const unsubscribeToken = await generateUnsubscribeToken(
       email,
       env.NEWSLETTER_SECRET,
@@ -126,6 +135,9 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     welcomeUnsubscribeUrl.searchParams.set('token', unsubscribeToken);
 
     const fromEmail = env.NEWSLETTER_FROM_EMAIL || 'newsletter@devxtools.dev';
+    
+    console.log(`[NEWSLETTER] Sending welcome email to ${email} from ${fromEmail}`);
+    
     const welcomeEmailResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -149,7 +161,13 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
     if (!welcomeEmailResponse.ok) {
       const welcomeError = await welcomeEmailResponse.json();
-      console.error('Failed to send welcome email:', welcomeError);
+      console.error(`[NEWSLETTER] CRITICAL: Failed to send welcome email to ${email}:`, JSON.stringify(welcomeError));
+      console.error(`[NEWSLETTER] Response status: ${welcomeEmailResponse.status}`);
+      // Don't throw - we've already subscribed them successfully
+      // But make the failure very visible in logs
+    } else {
+      const welcomeResult = await welcomeEmailResponse.json();
+      console.log(`[NEWSLETTER] Welcome email sent successfully to ${email}:`, welcomeResult);
     }
 
     return Response.redirect(new URL('/newsletter/confirmed', url.origin).toString(), 302);

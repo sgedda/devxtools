@@ -30,46 +30,31 @@ export function checkHoneypot(honeypot: unknown): boolean {
 }
 
 export async function checkRateLimit(
-  kv: KVNamespace | undefined,
+  rateLimiter: DurableObjectNamespace | undefined,
   clientIP: string
 ): Promise<{ allowed: boolean; error?: string }> {
-  if (!kv) {
+  if (!rateLimiter) {
+    // If no rate limiter binding, allow request but log warning
+    console.warn('RATE_LIMITER binding not configured - rate limiting disabled');
     return { allowed: true };
   }
 
-  const rateLimitKey = `rate:${clientIP}`;
-  const rateLimitData = await kv.get(rateLimitKey);
-  const now = Date.now();
+  try {
+    // Get Durable Object instance for this IP
+    // Each IP gets its own DO instance with isolated state
+    const id = rateLimiter.idFromName(clientIP);
+    const stub = rateLimiter.get(id);
 
-  if (rateLimitData) {
-    const { count, resetAt }: RateLimitEntry = JSON.parse(rateLimitData);
-
-    if (now < resetAt) {
-      if (count >= RATE_LIMIT_MAX) {
-        return { allowed: false, error: 'Too many requests. Please try again later.' };
-      }
-
-      await kv.put(
-        rateLimitKey,
-        JSON.stringify({ count: count + 1, resetAt }),
-        { expirationTtl: Math.max(60, Math.ceil((resetAt - now) / 1000)) }
-      );
-    } else {
-      await kv.put(
-        rateLimitKey,
-        JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }),
-        { expirationTtl: 60 }
-      );
-    }
-  } else {
-    await kv.put(
-      rateLimitKey,
-      JSON.stringify({ count: 1, resetAt: now + RATE_LIMIT_WINDOW }),
-      { expirationTtl: 60 }
-    );
+    // Call the Durable Object to check rate limit
+    const response = await stub.fetch('https://rate-limiter/check?action=check');
+    const result = await response.json() as { allowed: boolean; error?: string };
+    
+    return result;
+  } catch (error) {
+    console.error('Rate limiting error:', error);
+    // On error, allow the request (fail open)
+    return { allowed: true };
   }
-
-  return { allowed: true };
 }
 
 export async function generateToken(email: string, secret: string): Promise<string> {

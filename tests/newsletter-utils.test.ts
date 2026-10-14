@@ -66,54 +66,62 @@ describe('Newsletter Utilities', () => {
   });
 
   describe('checkRateLimit', () => {
-    let mockKV: KVNamespace;
+    let mockRateLimiter: DurableObjectNamespace;
+    let mockStub: any;
 
     beforeEach(() => {
-      mockKV = {
-        get: vi.fn(),
-        put: vi.fn(),
-        delete: vi.fn(),
+      mockStub = {
+        fetch: vi.fn(),
+      };
+
+      mockRateLimiter = {
+        idFromName: vi.fn().mockReturnValue('mock-id'),
+        get: vi.fn().mockReturnValue(mockStub),
       } as any;
     });
 
-    it('should allow request when KV is not available', async () => {
+    it('should allow request when rate limiter is not available', async () => {
       const result = await checkRateLimit(undefined, '1.2.3.4');
       expect(result).toEqual({ allowed: true });
     });
 
     it('should allow first request', async () => {
-      (mockKV.get as any).mockResolvedValue(null);
+      mockStub.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ allowed: true }), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+      );
       
-      const result = await checkRateLimit(mockKV, '1.2.3.4');
+      const result = await checkRateLimit(mockRateLimiter, '1.2.3.4');
       
       expect(result).toEqual({ allowed: true });
-      expect(mockKV.get).toHaveBeenCalledWith('rate:1.2.3.4');
-      expect(mockKV.put).toHaveBeenCalled();
+      expect(mockRateLimiter.idFromName).toHaveBeenCalledWith('1.2.3.4');
+      expect(mockStub.fetch).toHaveBeenCalled();
     });
 
     it('should allow requests within rate limit', async () => {
-      const now = Date.now();
-      const resetAt = now + RATE_LIMIT_WINDOW;
-      
-      (mockKV.get as any).mockResolvedValue(
-        JSON.stringify({ count: 1, resetAt })
+      mockStub.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ allowed: true }), {
+          headers: { 'Content-Type': 'application/json' },
+        })
       );
       
-      const result = await checkRateLimit(mockKV, '1.2.3.4');
+      const result = await checkRateLimit(mockRateLimiter, '1.2.3.4');
       
       expect(result).toEqual({ allowed: true });
-      expect(mockKV.put).toHaveBeenCalled();
     });
 
     it('should block requests exceeding rate limit', async () => {
-      const now = Date.now();
-      const resetAt = now + RATE_LIMIT_WINDOW;
-      
-      (mockKV.get as any).mockResolvedValue(
-        JSON.stringify({ count: RATE_LIMIT_MAX, resetAt })
+      mockStub.fetch.mockResolvedValue(
+        new Response(JSON.stringify({ 
+          allowed: false, 
+          error: 'Too many requests. Please try again later.' 
+        }), {
+          headers: { 'Content-Type': 'application/json' },
+        })
       );
       
-      const result = await checkRateLimit(mockKV, '1.2.3.4');
+      const result = await checkRateLimit(mockRateLimiter, '1.2.3.4');
       
       expect(result).toEqual({
         allowed: false,
@@ -121,18 +129,13 @@ describe('Newsletter Utilities', () => {
       });
     });
 
-    it('should reset counter after window expires', async () => {
-      const now = Date.now();
-      const resetAt = now - 1000; // Expired
+    it('should handle Durable Object errors gracefully', async () => {
+      mockStub.fetch.mockRejectedValue(new Error('DO error'));
       
-      (mockKV.get as any).mockResolvedValue(
-        JSON.stringify({ count: RATE_LIMIT_MAX, resetAt })
-      );
+      const result = await checkRateLimit(mockRateLimiter, '1.2.3.4');
       
-      const result = await checkRateLimit(mockKV, '1.2.3.4');
-      
+      // Should fail open (allow request) on error
       expect(result).toEqual({ allowed: true });
-      expect(mockKV.put).toHaveBeenCalled();
     });
   });
 

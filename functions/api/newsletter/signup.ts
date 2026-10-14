@@ -14,6 +14,7 @@ interface Env {
   NEWSLETTER_SEGMENT_ID: string;
   NEWSLETTER_SECRET: string;
   NEWSLETTER_KV: KVNamespace;
+  RATE_LIMITER: DurableObjectNamespace;
 }
 
 export const onRequestPost: PagesFunction<Env> = async (context) => {
@@ -29,7 +30,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   try {
     // Rate limiting first - count all attempts including invalid ones
     const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
-    const rateLimitResult = await checkRateLimit(env.NEWSLETTER_KV, clientIP);
+    const rateLimitResult = await checkRateLimit(env.RATE_LIMITER, clientIP);
     
     if (!rateLimitResult.allowed) {
       return new Response(
@@ -80,11 +81,57 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Don't create the contact yet - wait for confirmation to prevent
-    // double opt-in gap where unconfirmed contacts appear in Resend
+    // Create contact as UNSUBSCRIBED to prevent Resend from auto-subscribing
+    // when we send the confirmation email. Only mark as subscribed on confirmation.
+    const createResponse = await fetch('https://api.resend.com/contacts', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        unsubscribed: true, // CRITICAL: Must be true to prevent auto-subscription
+      }),
+    });
 
-    // Generate confirmation token (short-lived, 24 hours)
-    const confirmToken = await generateToken(email, env.NEWSLETTER_SECRET);
+    // If contact already exists, ensure they are unsubscribed
+    if (!createResponse.ok) {
+      const createData = await createResponse.json() as any;
+      
+      if (createData.message === 'Contact already exists.') {
+        // CRITICAL: Mark existing contact as unsubscribed to prevent re-subscription
+        const updateResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            unsubscribed: true, // CRITICAL: Prevent re-subscription without confirmation
+          }),
+        });
+
+        if (!updateResponse.ok) {
+          console.error('Failed to update contact to unsubscribed');
+          // Continue anyway - we'll send the confirmation email
+        }
+        
+        // CRITICAL: Remove from all segments to prevent auto-subscription
+        // Resend doesn't have a "remove from segment" API, but marking as unsubscribed
+        // should prevent them from being considered subscribed to the segment
+      } else {
+        console.error('Failed to create contact:', createData);
+        // Continue anyway - we'll try to send the email
+      }
+    }
+
+    // Generate confirmation token (opaque, single-use, stored in KV with 24h TTL)
+    const confirmToken = await generateUnsubscribeToken(
+      email,
+      env.NEWSLETTER_SECRET,
+      env.NEWSLETTER_KV
+    );
     const confirmUrl = new URL('/newsletter/confirm', request.url);
     confirmUrl.searchParams.set('token', confirmToken);
 
