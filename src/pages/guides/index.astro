@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Guides" 
+  description="In-depth guides on API mocking, test data generation, and testing best practices."
+>
+  <div class="container">
+    <h1>Guides</h1>
+    <p class="subtitle">
+      Learn how to use API mocking and test data tools effectively in your projects.
+    </p>
+    
+    <div class="guide-grid">
+      <a href="/guides/msw-vs-nock-vs-polly/" class="guide-card">
+        <span class="guide-badge">Comparison</span>
+        <h2>MSW vs Nock vs Polly.js</h2>
+        <p>Compare three popular JavaScript HTTP mocking libraries and find the right fit for your project.</p>
+        <div class="guide-meta">
+          <span>🛠️ Tools: MSW, Nock, Polly.js</span>
+        </div>
+      </a>
+      
+      <a href="/guides/spec-first-mocking-prism-openapi/" class="guide-card">
+        <span class="guide-badge">Tutorial</span>
+        <h2>Spec-First Mocking with Prism and OpenAPI</h2>
+        <p>Generate mock servers directly from your OpenAPI specifications using Prism.</p>
+        <div class="guide-meta">
+          <span>🛠️ Tools: Prism</span>
+        </div>
+      </a>
+      
+      <a href="/guides/react-native-mocking-mockifyer/" class="guide-card">
+        <span class="guide-badge">Tutorial</span>
+        <h2>Mocking APIs in React Native with Mockifyer</h2>
+        <p>Record and replay HTTP interactions in React Native applications for reliable testing.</p>
+        <div class="guide-meta">
+          <span>🛠️ Tools: Mockifyer</span>
+        </div>
+      </a>
+      
+      <a href="/guides/realistic-test-data-faker-factories/" class="guide-card">
+        <span class="guide-badge">Best Practices</span>
+        <h2>Realistic Test Data with Faker and Factories</h2>
+        <p>Create maintainable, realistic test data using Faker and factory patterns with Fishery.</p>
+        <div class="guide-meta">
+          <span>🛠️ Tools: Faker, Fishery</span>
+        </div>
+      </a>
+      
+      <a href="/guides/keeping-mocks-honest-pact/" class="guide-card">
+        <span class="guide-badge">Best Practices</span>
+        <h2>Keeping Mocks Honest with Pact</h2>
+        <p>Use consumer-driven contract testing to ensure your mocks stay in sync with real APIs.</p>
+        <div class="guide-meta">
+          <span>🛠️ Tools: Pact</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    font-size: 1.25rem;
+  }
+  
+  .guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+  
+  .guide-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+  }
+  
+  .guide-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+  
+  .guide-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--accent);
+    color: white;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+  
+  .guide-card h2 {
+    color: var(--text);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  .guide-card p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .guide-meta {
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+  }
+  
+  @media (max-width: 768px) {
+    .guide-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

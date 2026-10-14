@@ -1,0 +1,14 @@
+name: Mockaroo
+slug: mockaroo
+website: https://www.mockaroo.com
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - Hosted
+  - API
+categories:
+  - test-data-generation
+bestFor: Generating large datasets in multiple formats via web interface or API
+description: Generate up to 1,000 rows of realistic test data in CSV, JSON, SQL, and Excel formats. Web interface and REST API available.
+lastChecked: 2026-10-14

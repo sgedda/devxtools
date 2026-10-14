@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Changelog" 
+  description="Updates, additions, and changes to the DevX Tools catalog."
+>
+  <div class="container">
+    <h1>Changelog</h1>
+    <p class="subtitle">
+      Track updates, new tools, and improvements to the catalog.
+    </p>
+    
+    <div class="changelog">
+      <article class="changelog-entry">
+        <div class="changelog-header">
+          <h2>Initial Launch</h2>
+          <time>October 14, 2026</time>
+        </div>
+        <div class="changelog-content">
+          <h3>🎉 DevX Tools v1.0</h3>
+          <p>Welcome to DevX Tools! We've launched with a comprehensive catalog of API mocking and test data tools.</p>
+          
+          <h4>Tools Added</h4>
+          <ul>
+            <li><strong>HTTP Interception:</strong> MSW, Nock, MirageJS</li>
+            <li><strong>Mock Servers:</strong> WireMock, Mockoon, json-server, Mountebank</li>
+            <li><strong>Spec-Based Mocking:</strong> Prism, Microcks</li>
+            <li><strong>Record/Replay:</strong> Polly.js, Hoverfly, Mockifyer</li>
+            <li><strong>Contract Testing:</strong> Pact</li>
+            <li><strong>Test Data Generation:</strong> Faker, Chance, Fishery, Mockaroo</li>
+            <li><strong>Hosted Mocks:</strong> Postman Mock Servers, Beeceptor</li>
+          </ul>
+          
+          <h4>Features</h4>
+          <ul>
+            <li>Browse 19 curated tools across 7 categories</li>
+            <li>Filter by language, category, and spec support</li>
+            <li>Interactive tool picker to find the right solution</li>
+            <li>Detailed comparison: MSW vs Nock vs Polly.js</li>
+            <li>Guide stubs for upcoming tutorials</li>
+            <li>Full SEO optimization with meta tags and sitemap</li>
+          </ul>
+          
+          <h4>Documentation</h4>
+          <ul>
+            <li>Comprehensive README for contributors</li>
+            <li>Schema validation for catalog entries</li>
+            <li>GitHub Actions CI workflow</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+  }
+  
+  .changelog {
+    max-width: 900px;
+  }
+  
+  .changelog-entry {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .changelog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .changelog-header h2 {
+    margin: 0;
+    color: var(--accent);
+  }
+  
+  .changelog-header time {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+  
+  .changelog-content h3 {
+    margin-bottom: 1rem;
+  }
+  
+  .changelog-content h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .changelog-content ul {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .changelog-content li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+  }
+  
+  @media (max-width: 768px) {
+    .changelog-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }
+</style>

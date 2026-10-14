@@ -1,0 +1,22 @@
+name: Microcks
+slug: microcks
+website: https://microcks.io
+repo: https://github.com/microcks/microcks
+license: Apache-2.0
+languages:
+  - Java
+runtimes:
+  - Kubernetes
+  - Docker
+categories:
+  - spec-based-mocking
+  - contract-testing
+  - mock-server
+specSupport:
+  - OpenAPI
+  - AsyncAPI
+  - gRPC
+  - GraphQL
+bestFor: Kubernetes-native API mocking and contract testing for multiple protocols
+description: Turn your API specs into live mocks and contract tests. Supports OpenAPI, AsyncAPI, gRPC, GraphQL, and SOAP. Built for cloud-native environments.
+lastChecked: 2026-10-14

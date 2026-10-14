@@ -1,0 +1,18 @@
+name: WireMock
+slug: wiremock
+website: https://wiremock.org
+repo: https://github.com/wiremock/wiremock
+license: Apache-2.0
+languages:
+  - Java
+runtimes:
+  - JVM
+  - Docker
+categories:
+  - mock-server
+  - record-replay
+specSupport:
+  - OpenAPI
+bestFor: Flexible mock server with record/replay and OpenAPI support for JVM ecosystems
+description: Standalone mock server with request matching, response templating, and record/replay. Can be run as a library, standalone process, or Docker container.
+lastChecked: 2026-10-14

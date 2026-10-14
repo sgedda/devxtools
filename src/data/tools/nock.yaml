@@ -1,0 +1,15 @@
+name: Nock
+slug: nock
+website: https://github.com/nock/nock
+repo: https://github.com/nock/nock
+license: MIT
+languages:
+  - JavaScript
+  - TypeScript
+runtimes:
+  - Node.js
+categories:
+  - http-interception
+bestFor: HTTP mocking and expectations in Node.js tests
+description: HTTP server mocking and expectations library for Node.js. Intercepts requests at the Node.js HTTP module level, perfect for unit testing external API calls.
+lastChecked: 2026-10-14
