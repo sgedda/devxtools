@@ -45,7 +45,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestGet(context);
 
       expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/expired');
+      expect(response.headers.get('location')).toContain('/newsletter/expired/');
     });
 
     it('rejects token with invalid format (missing HMAC)', async () => {
@@ -72,7 +72,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestGet(context);
 
       expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/expired');
+      expect(response.headers.get('location')).toContain('/newsletter/expired/');
     });
 
     it('rejects token with extra content after second dot', async () => {
@@ -99,7 +99,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestGet(context);
 
       expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/expired');
+      expect(response.headers.get('location')).toContain('/newsletter/expired/');
     });
 
     it('HTML-escapes token in rendered page', async () => {
@@ -177,7 +177,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestPost(context);
 
       expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/expired');
+      expect(response.headers.get('location')).toContain('/newsletter/expired/');
     });
 
     it('rejects XSS token in GET unsubscribe', async () => {
@@ -202,7 +202,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestGet(context);
 
       expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/expired');
+      expect(response.headers.get('location')).toContain('/newsletter/expired/');
     });
 
     it('rejects malformed token in POST unsubscribe', async () => {
@@ -231,7 +231,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestPost(context);
 
       expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/expired');
+      expect(response.headers.get('location')).toContain('/newsletter/expired/');
     });
   });
 

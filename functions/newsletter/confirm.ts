@@ -15,24 +15,24 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const token = url.searchParams.get('token');
 
   if (!token || !validateTokenFormat(token)) {
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 
   try {
     const [tokenId] = token.split('.');
     
     if (!tokenId || !env.NEWSLETTER_KV) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
     
     const pendingData = await env.NEWSLETTER_KV.get(`confirm:${tokenId}`);
     if (!pendingData) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
     
     const verifiedEmail = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     if (!verifiedEmail) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
 
     const escapedToken = escapeHtml(token);
@@ -156,7 +156,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   } catch (error) {
     console.error('Newsletter confirmation error:', error);
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 };
 
@@ -181,19 +181,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   if (!token || !validateTokenFormat(token)) {
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 
   try {
     const [tokenId] = token.split('.');
     
     if (!tokenId || !env.NEWSLETTER_KV) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
     
     const pendingData = await env.NEWSLETTER_KV.get(`confirm:${tokenId}`);
     if (!pendingData) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
     
     let email: string;
@@ -209,12 +209,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       }
     } catch (error) {
       console.error('Failed to parse pending confirmation data:', error);
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
     
     const verifiedEmail = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     if (!verifiedEmail) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
     
     await env.NEWSLETTER_KV.delete(`confirm:${tokenId}`);
@@ -330,10 +330,10 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       console.log(`[NEWSLETTER] Welcome email sent successfully to ${email}:`, welcomeResult);
     }
 
-    return Response.redirect(new URL('/newsletter/confirmed', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/confirmed/', url.origin).toString(), 302);
 
   } catch (error) {
     console.error('Newsletter confirmation error:', error);
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 };
