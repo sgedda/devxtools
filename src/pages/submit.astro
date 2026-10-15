@@ -2,75 +2,49 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import { CATEGORY_LABELS } from '../lib/schema';
-import { getToolBySlug } from '../lib/tools';
 
-const toolSlug = Astro.url.searchParams.get('tool');
-const mode = Astro.url.searchParams.get('mode');
-
-let prefillData = {
-  toolName: '',
-  url: '',
-  repoUrl: '',
-  category: '',
-};
-
-if (toolSlug && mode === 'claim') {
-  const tool = getToolBySlug(toolSlug);
-  if (tool) {
-    prefillData = {
-      toolName: tool.name,
-      url: tool.website,
-      repoUrl: tool.repo || '',
-      category: tool.categories[0] || '',
-    };
-  }
-}
-
-const isClaim = mode === 'claim' && toolSlug;
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <Layout 
-  title={isClaim ? 'Claim Your Tool Listing | devxtools.dev' : 'Submit a Tool or Claim a Listing | devxtools.dev'}
-  description={isClaim ? 'Claim your tool listing on devxtools.dev. Suggest corrections, get notified of updates, and add the README badge.' : 'Suggest a developer test or dev tool for devxtools.dev, or claim your existing listing. Listings are free, never paid, and every claim is verified by us.'}
+  title="Submit a Tool or Claim a Listing | devxtools.dev"
+  description="Suggest a developer test or dev tool for devxtools.dev, or claim your existing listing. Listings are free, never paid, and every claim is verified by us."
 >
   <div class="border-b border-zinc-200 bg-gradient-to-b from-indigo-50/60 to-transparent dark:border-zinc-800 dark:from-indigo-500/5">
     <div class="mx-auto max-w-[800px] px-5 py-10">
       <nav class="flex items-center gap-1.5 text-sm text-zinc-500">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
         <Icon name="chevron-right" size={14} />
-        <span class="text-zinc-900 dark:text-white">{isClaim ? 'Claim Listing' : 'Submit'}</span>
+        <span class="text-zinc-900 dark:text-white" id="nav-label">Submit</span>
       </nav>
       
       <div class="mt-6">
-        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white">
-          {isClaim ? 'Claim your listing' : 'Submit a tool or claim a listing'}
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white" id="page-heading">
+          Submit a tool or claim a listing
         </h1>
-        {!isClaim && (
-          <p class="mt-4 text-[16px] leading-relaxed text-zinc-600 dark:text-zinc-400">
-            devxtools.dev is an independent guide to developer test and dev tools. If you build or maintain a tool that belongs here, or you're already listed and want to help keep your entry accurate, this is the place to start.
-          </p>
-        )}
+        <p class="mt-4 text-[16px] leading-relaxed text-zinc-600 dark:text-zinc-400" id="page-description">
+          devxtools.dev is an independent guide to developer test and dev tools. If you build or maintain a tool that belongs here, or you're already listed and want to help keep your entry accurate, this is the place to start.
+        </p>
       </div>
     </div>
   </div>
 
   <main class="mx-auto max-w-[800px] px-5 py-12">
-    {!isClaim && (
+    <div id="before-submit-section" class="mb-10 space-y-6">
       <div class="mb-10 space-y-6">
         <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
           <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Before you submit</h2>
           <ul class="space-y-2 text-[15px] text-zinc-700 dark:text-zinc-300">
             <li class="flex items-start gap-2">
-              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <Icon name="check-circle" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
               <span><strong>Listings are free.</strong> They are never sold, and there's no paid tier.</span>
             </li>
             <li class="flex items-start gap-2">
-              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <Icon name="check-circle" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
               <span>Submitting doesn't guarantee a listing, and it doesn't affect any ranking, comparison or verdict.</span>
             </li>
             <li class="flex items-start gap-2">
-              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <Icon name="check-circle" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
               <span>We check everything ourselves against official sources before it goes on the site.</span>
             </li>
           </ul>
@@ -88,30 +62,28 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
           <p>Open-source and commercial tools are both welcome. To be listed, a tool should be publicly available (not a waitlist), have public documentation, and show signs of active maintenance.</p>
         </div>
       </div>
-    )}
+    </div>
 
     <div class="rounded-xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
-      <form id="submit-form" class="space-y-6">
+      <form id="submit-form" method="POST" action="/api/submit" class="space-y-6">
         <input 
           type="hidden" 
           name="startTime" 
-          id="startTime" 
-          value={Date.now().toString()}
+          id="startTime"
         />
         
         <input 
           type="hidden" 
           name="mode" 
-          value={mode || 'add'}
+          id="mode"
+          value="add"
         />
         
-        {toolSlug && (
-          <input 
-            type="hidden" 
-            name="existingSlug" 
-            value={toolSlug}
-          />
-        )}
+        <input 
+          type="hidden" 
+          name="existingSlug" 
+          id="existingSlug"
+        />
 
         <input
           type="text"
@@ -132,7 +104,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             id="toolName"
             required
             maxlength="100"
-            value={prefillData.toolName}
             class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
             placeholder="e.g., Mock Service Worker"
           />
@@ -147,7 +118,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             name="url"
             id="url"
             required
-            value={prefillData.url}
             class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
             placeholder="https://example.com"
           />
@@ -161,7 +131,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             type="url"
             name="repoUrl"
             id="repoUrl"
-            value={prefillData.repoUrl}
             class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
             placeholder="https://github.com/example/tool"
           />
@@ -180,7 +149,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
           >
             <option value="">Select a category...</option>
             {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
-              <option value={value} selected={value === prefillData.category}>
+              <option value={value}>
                 {label}
               </option>
             ))}
@@ -266,7 +235,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             id="submit-button"
             class="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isClaim ? 'Submit Update' : 'Submit for Review'}
+            Submit for Review
           </button>
           <a
             href="/catalog/"
@@ -280,106 +249,171 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
     <div class="mt-8 rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
       <div class="flex items-start gap-3">
-        <Icon name="info" size={20} class="mt-0.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+        <Icon name="info-circle" size={20} class="mt-0.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
         <div class="text-sm text-zinc-700 dark:text-zinc-300">
           <p class="font-medium mb-2">What happens next</p>
-          <ol class="space-y-1 list-decimal list-inside">
+          <ol class="space-y-1 list-decimal list-inside" id="what-happens-next">
             <li>We read every submission.</li>
             <li>We check the tool against its official docs, repository and pricing page.</li>
             <li>If it fits, we write the listing and publish it with the date we checked. If it doesn't, we'll let you know.</li>
-            {isClaim && (
-              <li>Updates are reviewed by an editor before going live.</li>
-            )}
           </ol>
         </div>
       </div>
     </div>
 
-    {!isClaim && (
-      <div class="mt-8 prose prose-zinc dark:prose-invert max-w-none" id="claim">
-        <h2>Claiming an existing listing</h2>
-        <p>If your tool is already listed, you can claim it. Claiming lets you:</p>
-        <ul>
-          <li>Send corrections to facts (licence, platforms, pricing, links) and get them prioritised</li>
-          <li>Be notified when we update the listing or mention the tool in a new comparison</li>
-          <li>Add the optional README badge</li>
-        </ul>
-        <p>Claiming <strong>doesn't</strong> let you edit the listing directly, change a "best for" or "not for" line, or alter a comparison's verdict. We verify every correction ourselves, and all updates are reviewed by an editor before going live. We update the "last checked" date when we publish changes.</p>
-      </div>
-    )}
+    <div id="claim-info-section" class="mt-8 prose prose-zinc dark:prose-invert max-w-none">
+      <h2 id="claim">Claiming an existing listing</h2>
+      <p>If your tool is already listed, you can claim it. Claiming lets you:</p>
+      <ul>
+        <li>Send corrections to facts (licence, platforms, pricing, links) and get them prioritised</li>
+        <li>Be notified when we update the listing or mention the tool in a new comparison</li>
+        <li>Add the optional README badge</li>
+      </ul>
+      <p>Claiming <strong>doesn't</strong> let you edit the listing directly, change a "best for" or "not for" line, or alter a comparison's verdict. We verify every correction ourselves, and all updates are reviewed by an editor before going live. We update the "last checked" date when we publish changes.</p>
+    </div>
   </main>
 
   {turnstileSiteKey && (
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
   )}
 
-  <script define:vars={{ turnstileSiteKey }}>
-    const form = document.getElementById('submit-form');
-    const submitButton = document.getElementById('submit-button');
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
-    const descriptionField = document.getElementById('description');
-    const charCount = document.getElementById('char-count');
-
-    if (descriptionField && charCount) {
-      descriptionField.addEventListener('input', () => {
-        const remaining = 280 - descriptionField.value.length;
-        charCount.textContent = remaining.toString();
-        charCount.parentElement.classList.toggle('text-red-500', remaining < 0);
-      });
-    }
-
-    let turnstileToken = null;
-    if (turnstileSiteKey) {
-      window.turnstile?.render('#turnstile-container', {
-        sitekey: turnstileSiteKey,
-        callback: (token) => {
-          turnstileToken = token;
-        },
-      });
-    }
-
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      errorMessage?.classList.add('hidden');
-      successMessage?.classList.add('hidden');
-      submitButton.disabled = true;
-      submitButton.textContent = 'Submitting...';
-
+  <script define:vars={{ turnstileSiteKey }} is:inline>
+    // Fetch tool data if needed
+    async function getToolBySlug(slug) {
       try {
-        const formData = new FormData(form);
-        
-        if (turnstileSiteKey && turnstileToken) {
-          formData.append('turnstileToken', turnstileToken);
-        }
-
-        const response = await fetch('/api/submit', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const data = await response.json();
-
+        const response = await fetch(`/tools/${slug}.json`);
         if (response.ok) {
-          successMessage.textContent = data.message;
-          successMessage.classList.remove('hidden');
-          form.reset();
-          document.getElementById('startTime').value = Date.now().toString();
-        } else {
-          errorMessage.textContent = data.error || 'An error occurred. Please try again.';
-          errorMessage.classList.remove('hidden');
+          return await response.json();
         }
-      } catch (error) {
-        errorMessage.textContent = 'Network error. Please check your connection and try again.';
-        errorMessage.classList.remove('hidden');
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Submit for Review';
-        if (turnstileSiteKey) {
-          window.turnstile?.reset();
+      } catch (e) {
+        console.error('Failed to fetch tool data:', e);
+      }
+      return null;
+    }
+
+    // Initialize page on load
+    (async function initPage() {
+      // Set start time for spam detection
+      document.getElementById('startTime').value = Date.now().toString();
+
+      // Read query parameters
+      const params = new URLSearchParams(window.location.search);
+      const toolSlug = params.get('tool');
+      const mode = params.get('mode');
+      const isClaim = mode === 'claim' && toolSlug;
+
+      // Update UI based on mode
+      if (isClaim) {
+        document.title = 'Claim Your Tool Listing | devxtools.dev';
+        document.getElementById('nav-label').textContent = 'Claim Listing';
+        document.getElementById('page-heading').textContent = 'Claim your listing';
+        document.getElementById('page-description').style.display = 'none';
+        document.getElementById('before-submit-section').style.display = 'none';
+        document.getElementById('claim-info-section').style.display = 'none';
+        document.getElementById('submit-button').textContent = 'Submit Update';
+        document.getElementById('mode').value = 'claim';
+        document.getElementById('existingSlug').value = toolSlug;
+
+        // Add extra "What happens next" item for claims
+        const whatHappensNext = document.getElementById('what-happens-next');
+        const li = document.createElement('li');
+        li.textContent = 'Updates are reviewed by an editor before going live.';
+        whatHappensNext.appendChild(li);
+
+        // Prefill form with tool data
+        const tool = await getToolBySlug(toolSlug);
+        if (tool) {
+          document.getElementById('toolName').value = tool.name || '';
+          document.getElementById('url').value = tool.website || '';
+          document.getElementById('repoUrl').value = tool.repo || '';
+          if (tool.categories && tool.categories[0]) {
+            document.getElementById('category').value = tool.categories[0];
+          }
         }
       }
-    });
+
+      // Character counter
+      const descriptionField = document.getElementById('description');
+      const charCount = document.getElementById('char-count');
+      if (descriptionField && charCount) {
+        descriptionField.addEventListener('input', () => {
+          const remaining = 280 - descriptionField.value.length;
+          charCount.textContent = remaining.toString();
+          charCount.parentElement.classList.toggle('text-red-500', remaining < 0);
+        });
+      }
+
+      // Turnstile setup
+      let turnstileToken = null;
+      let turnstileWidgetId = null;
+
+      // Global callback for Turnstile onload
+      window.onTurnstileLoad = function() {
+        if (turnstileSiteKey) {
+          turnstileWidgetId = window.turnstile.render('#turnstile-container', {
+            sitekey: turnstileSiteKey,
+            callback: (token) => {
+              turnstileToken = token;
+            },
+          });
+        }
+      };
+
+      // If turnstile is already loaded, render immediately
+      if (turnstileSiteKey && window.turnstile) {
+        window.onTurnstileLoad();
+      }
+
+      // Form submission
+      const form = document.getElementById('submit-form');
+      const submitButton = document.getElementById('submit-button');
+      const errorMessage = document.getElementById('error-message');
+      const successMessage = document.getElementById('success-message');
+
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        errorMessage?.classList.add('hidden');
+        successMessage?.classList.add('hidden');
+        
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+
+        try {
+          const formData = new FormData(form);
+          
+          if (turnstileSiteKey && turnstileToken) {
+            formData.append('turnstileToken', turnstileToken);
+          }
+
+          const response = await fetch('/api/submit', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            successMessage.textContent = data.message;
+            successMessage.classList.remove('hidden');
+            form.reset();
+            document.getElementById('startTime').value = Date.now().toString();
+          } else {
+            errorMessage.textContent = data.error || 'An error occurred. Please try again.';
+            errorMessage.classList.remove('hidden');
+          }
+        } catch (error) {
+          errorMessage.textContent = 'Network error. Please check your connection and try again.';
+          errorMessage.classList.remove('hidden');
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = originalButtonText;
+          if (turnstileSiteKey && window.turnstile && turnstileWidgetId !== null) {
+            window.turnstile.reset(turnstileWidgetId);
+          }
+        }
+      });
+    })();
   </script>
 </Layout>

@@ -58,19 +58,31 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Minimum fill time check
-    if (typeof startTime === 'number' && !checkMinimumFillTime(startTime, Date.now())) {
-      return new Response(
-        JSON.stringify({ error: 'Please take your time to fill out the form.' }),
-        { 
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
+    // Minimum fill time check (always enforce if startTime provided)
+    if (startTime && typeof startTime === 'number') {
+      if (!checkMinimumFillTime(startTime, Date.now())) {
+        return new Response(
+          JSON.stringify({ error: 'Please take your time to fill out the form.' }),
+          { 
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
     }
 
-    // Turnstile verification (if enabled)
-    if (env.TURNSTILE_SECRET && turnstileToken) {
+    // Turnstile verification (required if secret is configured)
+    if (env.TURNSTILE_SECRET) {
+      if (!turnstileToken) {
+        return new Response(
+          JSON.stringify({ error: 'Verification required. Please complete the CAPTCHA.' }),
+          { 
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
+
       const turnstileResponse = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -109,20 +121,28 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const id = crypto.randomUUID();
     const yamlStub = generateYAMLStub(validation.data);
 
-    // Store submission in KV
-    if (env.NEWSLETTER_KV) {
-      await env.NEWSLETTER_KV.put(
-        `submission:${timestamp}:${id}`,
-        JSON.stringify({
-          ...validation.data,
-          timestamp,
-          id,
-          ip: clientIP,
-          yamlStub,
-        }),
-        { expirationTtl: 90 * 24 * 60 * 60 } // 90 days
+    // Store submission in KV (required)
+    if (!env.NEWSLETTER_KV) {
+      return new Response(
+        JSON.stringify({ error: 'Submission storage is not configured. Please try again later.' }),
+        { 
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        }
       );
     }
+
+    await env.NEWSLETTER_KV.put(
+      `submission:${timestamp}:${id}`,
+      JSON.stringify({
+        ...validation.data,
+        timestamp,
+        id,
+        ip: clientIP,
+        yamlStub,
+      }),
+      { expirationTtl: 90 * 24 * 60 * 60 } // 90 days
+    );
 
     return new Response(
       JSON.stringify({ 
