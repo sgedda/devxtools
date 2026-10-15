@@ -14,8 +14,6 @@ tested_with: "Prometheus 3.15.0, OpenTelemetry Collector Contrib 0.162.0, @opent
 tools: ["opentelemetry", "grafana-loki", "datadog", "sentry", "pino"]
 ---
 
-# OpenTelemetry vs Prometheus: Not Rivals, Different Layers
-
 **OpenTelemetry vs Prometheus isn't really an either/or choice: OpenTelemetry is how your app *produces and ships* telemetry, and Prometheus is a system that *stores, queries and alerts on* metrics.** They overlap in one place, metrics instrumentation and collection, and that's where you have real decisions to make. This guide explains the layers, then wires up a Node.js app three ways and shows the gotchas we hit.
 
 > **Tested with** Prometheus 3.15.0, OpenTelemetry Collector Contrib 0.162.0, the OpenTelemetry JS SDK 0.223.0 and prom-client 15.1.3 on Node 22.23.3 with Express 5.3.0 (2026-10-15). Every config and snippet below ran on our test machine, and the outputs are real. devxtools.dev is independent. Both projects are open source under the CNCF, and nobody sponsored this page.
