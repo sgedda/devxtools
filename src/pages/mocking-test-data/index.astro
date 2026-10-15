@@ -15,11 +15,44 @@ const categoryCount = Object.fromEntries(
     tools.filter(t => t.categories.includes(cat)).length
   ])
 );
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "API Mocking Tools Compared (2026)",
+  "description": "Compare HTTP interceptors, mock servers, spec-first tools, record/replay, and test data generators for JavaScript, TypeScript, and React Native.",
+  "url": "https://devxtools.dev/mocking-test-data/",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": tools.map((tool, index) => ({
+      "@type": "SoftwareApplication",
+      "position": index + 1,
+      "name": tool.name,
+      "url": `https://devxtools.dev/tools/${tool.slug}/`,
+      "description": tool.description,
+      "applicationCategory": "DeveloperApplication"
+    }))
+  }
+};
+
+const relatedComparisons = [
+  {
+    title: "MSW vs Nock",
+    url: "/comparisons/msw-vs-nock/",
+    tools: ["MSW", "Nock"]
+  },
+  {
+    title: "MSW vs Nock vs Polly.js",
+    url: "/comparisons/msw-vs-nock-vs-polly/",
+    tools: ["MSW", "Nock", "Polly.js"]
+  }
+];
 ---
 
 <Layout 
-  title="Mocking & Test Data Tools" 
-  description="Comprehensive guide to API mocking, mock servers, contract testing, and test data generation tools."
+  title="API Mocking Tools Compared (2026) | DevX Tools" 
+  description="Compare HTTP interceptors, mock servers, spec-first tools, record/replay, and test data generators for JavaScript, TypeScript, and React Native."
+  jsonLd={jsonLd}
 >
   <main class="mx-auto max-w-[1200px] px-5 pt-10">
     <nav class="text-sm text-zinc-500">
@@ -34,14 +67,67 @@ const categoryCount = Object.fromEntries(
         Mocking & Test Data
       </div>
       
-      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Mocking & Test Data Tools</h1>
-      <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
-        Tools for mocking APIs, generating test data, and building reliable tests without hitting real services.
-      </p>
+      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">API Mocking Tools Compared</h1>
+      
+      <div class="mt-4 max-w-3xl text-[16px] leading-7 text-zinc-600 dark:text-zinc-400 space-y-3">
+        <p>
+          Mocking APIs and generating realistic test data are core to fast, reliable tests. This section covers every approach to fake an API or generate test data: HTTP interceptors, standalone mock servers, spec-driven mocking, record/replay tools, contract testing, and test data factories for JavaScript, TypeScript, and React Native.
+        </p>
+        <p>
+          <strong>HTTP interception</strong> libraries like MSW and Nock intercept requests at the network or module level, letting you mock responses inline without running a separate server. MSW works in browsers and Node.js via Service Workers; Nock patches Node's HTTP module and offers built-in record/replay. Choose MSW for full-stack apps; Nock for pure Node.js simplicity.
+        </p>
+        <p>
+          <strong>Mock servers</strong> such as WireMock, Mockoon, Mountebank, and JSON Server run standalone and return canned responses, useful when multiple services need to hit the same mock. Spec-first tools like Prism and Microcks generate mocks directly from OpenAPI or AsyncAPI specs, keeping mocks honest. Trade-off: standalone servers add infrastructure but enable cross-team reuse.
+        </p>
+        <p>
+          <strong>Record/replay</strong> tools like Polly.js, Hoverfly, and Mockifyer (React Native) capture real API traffic and replay it in tests, reducing manual setup. <strong>Contract testing</strong> via Pact ensures consumer mocks match provider contracts. <strong>Test data generation</strong> tools like Faker, Chance, Fishery, and Mockaroo create realistic datasets. Pick based on whether you need simple random data (Faker/Chance), object factories (Fishery), or hosted generation (Mockaroo).
+        </p>
+      </div>
     </div>
 
     <section class="mt-12">
-      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Categories</h2>
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Tools in this section</h2>
+      <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {tools.map(tool => (
+          <a 
+            href={`/tools/${tool.slug}/`}
+            class="group rounded-xl border border-zinc-200 p-4 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+          >
+            <div class="flex items-start gap-3">
+              <ToolLogo tool={tool} size="sm" />
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-zinc-900 dark:text-white">{tool.name}</div>
+                <div class="text-sm text-zinc-500 mt-0.5">{CATEGORY_LABELS[tool.categories[0]]}</div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        {relatedComparisons.map(comparison => (
+          <a 
+            href={comparison.url}
+            class="group rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+          >
+            <h3 class="font-semibold text-zinc-900 dark:text-white">{comparison.title}</h3>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {comparison.tools.map(tool => (
+                <span class="inline-flex items-center gap-1 rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">
+                  {tool}
+                </span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 pb-20">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Browse by category</h2>
       <div class="mt-6 grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {sectionCategories.map(cat => (
           <a 
@@ -53,53 +139,6 @@ const categoryCount = Object.fromEntries(
             </span>
             <div class="mt-3 font-medium text-zinc-900 dark:text-white">{CATEGORY_LABELS[cat]}</div>
             <div class="text-sm text-zinc-500">{categoryCount[cat]} tools</div>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="mt-16 pb-20">
-      <div class="flex items-end justify-between">
-        <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">All tools in this section</h2>
-        <a 
-          href="/catalog/?section=mocking-test-data" 
-          class="text-sm font-medium text-indigo-600 dark:text-indigo-400"
-        >
-          Filter in catalog →
-        </a>
-      </div>
-      
-      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tools.map(tool => (
-          <a 
-            href={`/tools/${tool.slug}/`}
-            class="flex flex-col rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
-          >
-            <div class="flex items-center gap-3">
-              <ToolLogo tool={tool} />
-              <div class="flex-1">
-                <div class="font-semibold text-zinc-900 dark:text-white">{tool.name}</div>
-                <div class="text-sm text-zinc-500">{CATEGORY_LABELS[tool.categories[0]]}</div>
-              </div>
-              {tool.githubStars && (
-                <span class="flex items-center gap-1 text-sm text-zinc-500">
-                  <Icon name="star" size={16} />
-                  {tool.githubStars >= 1000 
-                    ? `${(tool.githubStars / 1000).toFixed(1).replace(/\.0$/, '')}k` 
-                    : tool.githubStars.toLocaleString()}
-                </span>
-              )}
-            </div>
-            <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
-              {tool.description}
-            </p>
-            <div class="mt-4">
-              {tool.license && (
-                <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>
-                  {tool.license}
-                </span>
-              )}
-            </div>
           </a>
         ))}
       </div>

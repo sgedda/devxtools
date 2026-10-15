@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import ToolLogo from '../../components/ToolLogo.astro';
 import { getAllTools, getToolBySlug } from '../../lib/tools';
+import { getToolContentLinks } from '../../lib/content-links';
 import { CATEGORY_LABELS } from '../../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass } from '../../lib/ui-helpers';
 
@@ -21,6 +22,8 @@ if (!tool) {
 }
 
 const allTools = getAllTools();
+
+const contentLinks = getToolContentLinks(slug!);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -246,6 +249,48 @@ const relatedTools = allTools
               </a>
             ))}
           </div>
+        </section>
+      )}
+      
+      {(contentLinks.comparisons.length > 0 || contentLinks.guides.length > 0) && (
+        <section>
+          {contentLinks.comparisons.length > 0 && (
+            <div class="mb-8">
+              <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Compared in</h2>
+              <div class="mt-4 space-y-3">
+                {contentLinks.comparisons.map(link => (
+                  <a 
+                    href={link.url}
+                    class="block rounded-xl border border-zinc-200 p-4 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+                  >
+                    <div class="flex items-center gap-2">
+                      <Icon name="git-compare" size={16} class="text-indigo-600 dark:text-indigo-400" />
+                      <span class="font-medium text-zinc-900 dark:text-white">{link.title}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {contentLinks.guides.length > 0 && (
+            <div>
+              <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Featured in guides</h2>
+              <div class="mt-4 space-y-3">
+                {contentLinks.guides.map(link => (
+                  <a 
+                    href={link.url}
+                    class="block rounded-xl border border-zinc-200 p-4 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+                  >
+                    <div class="flex items-center gap-2">
+                      <Icon name="book-open" size={16} class="text-indigo-600 dark:text-indigo-400" />
+                      <span class="font-medium text-zinc-900 dark:text-white">{link.title}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       )}
     </article>

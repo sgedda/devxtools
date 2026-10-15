@@ -13,7 +13,7 @@ interface Props {
 }
 
 const { title, description, canonicalURL, ogImage = '/og-image.png', noindex = false, jsonLd } = Astro.props;
-const siteTitle = title === 'DevX Tools' ? title : `${title} | DevX Tools`;
+const siteTitle = (title === 'DevX Tools' || title.includes('DevX Tools')) ? title : `${title} | DevX Tools`;
 const allTools = getAllTools();
 
 const normalizedCanonical = canonicalURL || `https://devxtools.dev${Astro.url.pathname}${Astro.url.pathname.endsWith('/') ? '' : '/'}`;
@@ -33,7 +33,8 @@ const currentPath = Astro.url.pathname;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={normalizedCanonical} />
     <meta name="generator" content={Astro.generator} />
-    {(isPreviewDeploy || noindex) && <meta name="robots" content="noindex, nofollow" />}
+    {isPreviewDeploy && <meta name="robots" content="noindex, nofollow" />}
+    {!isPreviewDeploy && noindex && <meta name="robots" content="noindex, follow" />}
     <slot name="head" />
     
     <script is:inline>
