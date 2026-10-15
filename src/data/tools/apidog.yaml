@@ -1,0 +1,22 @@
+name: Apidog
+slug: apidog
+website: https://apidog.com
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - Desktop
+  - Web
+  - CLI
+sections:
+  - api-development
+categories:
+  - api-client
+specSupport:
+  - OpenAPI
+  - Swagger
+  - GraphQL
+bestFor: All-in-one API platform combining design, testing, mocking, and documentation in a single integrated workspace
+description: Commercial API development platform that integrates design, debugging, testing, mocking, and documentation. Supports 15+ import formats including Postman, Insomnia, and OpenAPI. Features visual automated testing, spec validation, and team collaboration.
+whenToUse: When you need an integrated platform that handles the full API lifecycle from design to documentation, want to consolidate multiple tools into one workspace, or need enterprise features with visual test automation.
+lastChecked: 2026-10-15
