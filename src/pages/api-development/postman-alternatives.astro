@@ -345,11 +345,11 @@ const jsonLd = {
       <ul>
         <li><strong>Thunder Client</strong> is a VS Code extension, with JetBrains support on paid plans. Collection data is stored locally on your machine. Git Sync, CLI and CI/CD, and WebSocket/SSE/gRPC are listed on paid plans, and the free plan has usage limits. <strong>Pricing (2026-10-15):</strong> Free, Starter $3, Business $7 and Enterprise $16 per user/month.</li>
         <li><strong>REST Client</strong> (by Huachao Mao, MIT) takes another approach. You write requests in <code>.http</code> or <code>.rest</code> files and send them from the editor:
-          <pre><code class="language-http">@baseUrl = http://localhost:4173
+          <pre><code class="language-http">{`@baseUrl = http://localhost:4173
 
 ### List users
 GET {{baseUrl}}/api/users?page=1
-Accept: application/json</code></pre>
+Accept: application/json`}</code></pre>
           The files live in your repo and review cleanly. There's no runner or assertions, so pair it with real tests.
         </li>
       </ul>
@@ -423,7 +423,7 @@ Accept: application/json</code></pre>
 
       <p>A minimal GitHub Actions job for Bruno:</p>
 
-      <pre><code class="language-yaml">jobs:
+      <pre><code class="language-yaml">{`jobs:
   api-tests:
     runs-on: ubuntu-latest
     steps:
@@ -432,7 +432,7 @@ Accept: application/json</code></pre>
         with: { node-version: 22 }
       - run: npm i -g @usebruno/cli
       - run: bru run --env ci --reporter-junit results.xml
-        working-directory: ./api-collection</code></pre>
+        working-directory: ./api-collection`}</code></pre>
 
       <h3 id="replacing-postman-mock-servers">Replacing Postman mock servers</h3>
 
