@@ -96,15 +96,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const confirmUrl = new URL('/newsletter/confirm', request.url);
     confirmUrl.searchParams.set('token', confirmToken);
 
-    // Generate unsubscribe token (long-lived, opaque)
-    const unsubscribeToken = await generateUnsubscribeToken(
-      email,
-      env.NEWSLETTER_SECRET,
-      env.NEWSLETTER_KV
-    );
-    const unsubscribeUrl = new URL('/newsletter/unsubscribe', request.url);
-    unsubscribeUrl.searchParams.set('token', unsubscribeToken);
-
     // Store pending confirmation keyed by token (not email) with 24h TTL
     // This allows us to look it up during confirmation without exposing the email
     const [tokenId] = confirmToken.split('.');
@@ -124,19 +115,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     }
 
     // Send confirmation email via Resend /emails API
-    // 
-    // NOTE: Resend's /emails endpoint behavior regarding contacts:
-    // According to Resend documentation and API behavior testing, sending an email
-    // via /emails may auto-create/update contacts in your audience depending on
-    // workspace settings. However, we cannot control this per-request.
-    // 
-    // Since we make ZERO contact API calls during signup:
-    // - If Resend auto-creates a contact when we send the email, we can't prevent it
-    // - The confirm handler will create/update the contact explicitly anyway
-    // - This is acceptable because confirm is when we actually want them subscribed
-    // 
-    // The key security property: signup never calls the contacts API to modify
-    // existing contacts, preventing malicious unsubscribe attacks.
     const fromEmail = env.NEWSLETTER_FROM_EMAIL || 'newsletter@devxtools.dev';
 
     const emailResponse = await fetch('https://api.resend.com/emails', {
@@ -157,7 +135,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           <p style="font-size: 14px; color: #666;">${confirmUrl.toString()}</p>
           <p style="margin-top: 24px; font-size: 14px; color: #666;">This link will expire in 24 hours.</p>
           <p style="margin-top: 24px; font-size: 12px; color: #999;">
-            If you didn't sign up for this newsletter, you can safely ignore this email or <a href="${unsubscribeUrl.toString()}">unsubscribe here</a>.
+            If you didn't sign up for this newsletter, you can safely ignore this email.
           </p>
         `,
       }),

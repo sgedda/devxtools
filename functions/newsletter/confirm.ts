@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyUnsubscribeToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
+import { verifyUnsubscribeToken, generateUnsubscribeToken, validateTokenFormat, escapeHtml } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
@@ -14,22 +14,185 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const url = new URL(request.url);
   const token = url.searchParams.get('token');
 
-  if (!token) {
+  if (!token || !validateTokenFormat(token)) {
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 
   try {
-    // Extract token ID to look up pending confirmation
     const [tokenId] = token.split('.');
     
     if (!tokenId || !env.NEWSLETTER_KV) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
     
-    // Retrieve pending confirmation data by token ID
     const pendingData = await env.NEWSLETTER_KV.get(`confirm:${tokenId}`);
     if (!pendingData) {
-      // Already confirmed, expired, or invalid token
+      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    }
+    
+    const verifiedEmail = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
+    if (!verifiedEmail) {
+      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    }
+
+    const escapedToken = escapeHtml(token);
+
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Subscription - DevX Tools</title>
+  <meta name="robots" content="noindex">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #e6edf3;
+      background: #0d1117;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; }
+    .message-card {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 3rem 2rem;
+    }
+    .icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      background: rgba(88, 166, 255, 0.1);
+      color: #58a6ff;
+      border: 2px solid #58a6ff;
+    }
+    h1 {
+      margin-bottom: 1rem;
+      color: #e6edf3;
+      font-size: 2rem;
+    }
+    .lead {
+      font-size: 1.25rem;
+      color: #e6edf3;
+      margin-bottom: 1rem;
+    }
+    p {
+      color: #8b949e;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .confirm-form {
+      margin-top: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .button {
+      display: inline-block;
+      padding: 1rem 2rem;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: #fff;
+      background: #238636;
+      border: 1px solid rgba(240, 246, 252, 0.1);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+    .button:hover {
+      background: #2ea043;
+    }
+    .note {
+      font-size: 0.875rem;
+      color: #6e7681;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="message-card">
+      <div class="icon">📧</div>
+      <h1>Confirm Your Subscription</h1>
+      <p class="lead">
+        You're almost there! Click the button below to complete your subscription to the DevX Tools newsletter.
+      </p>
+      <p>
+        By confirming, you'll receive occasional emails about new guides, comparisons, and developer tools. 
+        You can unsubscribe at any time.
+      </p>
+      <form method="POST" action="/newsletter/confirm" class="confirm-form">
+        <input type="hidden" name="token" value="${escapedToken}" />
+        <button type="submit" class="button">
+          Confirm Subscription
+        </button>
+      </form>
+      <p class="note">
+        If you didn't sign up for this newsletter, you can safely ignore this page.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    return new Response(html, {
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+
+  } catch (error) {
+    console.error('Newsletter confirmation error:', error);
+    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+  }
+};
+
+export const onRequestPost: PagesFunction<Env> = async (context) => {
+  const { request, env } = context;
+  const url = new URL(request.url);
+
+  let token: string | null = null;
+
+  try {
+    const contentType = request.headers.get('content-type') || '';
+    
+    if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
+      const formData = await request.formData();
+      token = formData.get('token') as string;
+    } else if (contentType.includes('application/json')) {
+      const body = await request.json() as any;
+      token = body.token;
+    }
+  } catch (error) {
+    console.error('Failed to parse request body:', error);
+  }
+
+  if (!token || !validateTokenFormat(token)) {
+    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+  }
+
+  try {
+    const [tokenId] = token.split('.');
+    
+    if (!tokenId || !env.NEWSLETTER_KV) {
+      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    }
+    
+    const pendingData = await env.NEWSLETTER_KV.get(`confirm:${tokenId}`);
+    if (!pendingData) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
     
@@ -49,17 +212,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
     
-    // Verify token signature (defense in depth)
     const verifiedEmail = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     if (!verifiedEmail) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
     
-    // Delete both the confirmation token and unsubscribe token mapping (single-use)
     await env.NEWSLETTER_KV.delete(`confirm:${tokenId}`);
     await env.NEWSLETTER_KV.delete(`unsubscribe:${tokenId}`);
 
-    // Create contact as subscribed (this is the first time we create them in Resend)
     const createResponse = await fetch('https://api.resend.com/contacts', {
       method: 'POST',
       headers: {
@@ -72,12 +232,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }),
     });
 
-    // If contact already exists, update them to mark as subscribed
     if (!createResponse.ok) {
       const createData = await createResponse.json() as any;
       
       if (createData.message === 'Contact already exists.') {
-        // Contact exists, update their subscription status
         const updateResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
           method: 'PATCH',
           headers: {
@@ -99,7 +257,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       }
     }
 
-    // Add contact to segment
     const segmentId = env.NEWSLETTER_SEGMENT_ID || '31d28ce6-349c-4504-9dcf-65ad1562666f';
     const segmentResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${segmentId}`, {
       method: 'POST',
@@ -115,7 +272,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       throw new Error('Failed to add contact to segment');
     }
 
-    // Store attribution for confirmed subscriber (pending already deleted above)
     if (env.NEWSLETTER_KV && (attribution.page || attribution.placement)) {
       await env.NEWSLETTER_KV.put(
         `attribution:${email}`,
@@ -128,7 +284,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       );
     }
 
-    // Send welcome email - critical step, log failures prominently
     const unsubscribeToken = await generateUnsubscribeToken(
       email,
       env.NEWSLETTER_SECRET,
@@ -151,6 +306,10 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         from: fromEmail,
         to: email,
         subject: 'Welcome to DevX Tools!',
+        headers: {
+          'List-Unsubscribe': `<${welcomeUnsubscribeUrl.toString()}>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
         html: `
           <p>Hi there,</p>
           <p>Thanks for confirming your subscription to the DevX Tools newsletter! 🎉</p>
@@ -166,8 +325,6 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       const welcomeError = await welcomeEmailResponse.json();
       console.error(`[NEWSLETTER] CRITICAL: Failed to send welcome email to ${email}:`, JSON.stringify(welcomeError));
       console.error(`[NEWSLETTER] Response status: ${welcomeEmailResponse.status}`);
-      // Don't throw - we've already subscribed them successfully
-      // But make the failure very visible in logs
     } else {
       const welcomeResult = await welcomeEmailResponse.json();
       console.log(`[NEWSLETTER] Welcome email sent successfully to ${email}:`, welcomeResult);
