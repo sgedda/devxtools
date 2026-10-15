@@ -71,7 +71,7 @@ const jsonLd = {
         </p>
       </div>
 
-      <p>Mocking in an end-to-end test means intercepting the browser's HTTP requests and answering them yourself. That lets you test states that are hard to get from a real backend, like empty lists, 500s, timeouts and slow responses, and keeps tests from failing when a shared staging API is down.</p>
+      <p>Mocking APIs in Playwright means intercepting the browser's HTTP requests and answering them yourself. That lets you test states that are hard to get from a real backend, like empty lists, 500s, timeouts and slow responses, and keeps tests from failing when a shared staging API is down.</p>
 
       <p>Don't mock everything, though. Keep at least a small smoke suite that hits a real backend, or your E2E tests turn into very slow unit tests that can't catch a broken API contract.</p>
 

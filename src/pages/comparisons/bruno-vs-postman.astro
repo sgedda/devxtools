@@ -95,6 +95,7 @@ const jsonLd = {
 
       <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
         <h2 class="mt-0 text-lg font-semibold text-indigo-900 dark:text-indigo-200">TL;DR</h2>
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90">Bruno vs Postman boils down to how your team works: Bruno stores collections as files in your repo with no account required, while Postman synchronizes collections through Postman Cloud.</p>
         <ul class="mb-0 mt-4 space-y-2 text-indigo-900/90 dark:text-indigo-200/90">
           <li><strong>Pick <a href="/tools/bruno/" class="text-indigo-600 dark:text-indigo-400">Bruno</a> if</strong> your team already reviews everything in pull requests, you want collections stored as plain files with no vendor account involved, and you mainly need an API client plus a CI runner.</li>
           <li><strong>Pick <a href="/tools/postman/" class="text-indigo-600 dark:text-indigo-400">Postman</a> if</strong> you need hosted mock servers, scheduled monitors, published documentation, or collaborators who don't use Git.</li>
@@ -123,7 +124,7 @@ const jsonLd = {
             <tr>
               <td>Where collections live</td>
               <td>Plain-text files on your disk: OpenCollection YAML (default for new collections since v3.1) or <code>.bru</code></td>
-              <td>Postman cloud workspaces; with v12 <strong>Native Git</strong>, also multi-file YAML in your repo (sign-in required)</td>
+              <td>Postman cloud workspaces; with v12 <strong>Native Git</strong>, also multi-file YAML in your repo (desktop app only, sign-in required)</td>
             </tr>
             <tr>
               <td>Account required</td>
