@@ -260,16 +260,30 @@ const relatedTools = allTools
         
         <div class="mt-5 grid gap-5 sm:grid-cols-2">
           <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
-            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Light theme</div>
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Small · Light theme</div>
             <div class="flex items-center justify-center rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800">
               <img src={`/badge/${tool.slug}.svg`} alt="Featured on devxtools badge" />
             </div>
           </div>
           
           <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
-            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Dark theme</div>
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Small · Dark theme</div>
             <div class="flex items-center justify-center rounded-lg bg-zinc-900 p-6">
-              <img src={`/badge/${tool.slug}-dark.svg`} alt="Featured on devxtools badge (dark)" />
+              <img src={`/badge/${tool.slug}.svg?theme=dark`} alt="Featured on devxtools badge (dark)" />
+            </div>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Large · Light theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800">
+              <img src={`/badge/${tool.slug}.svg?variant=large`} alt="Featured on devxtools badge (large)" />
+            </div>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Large · Dark theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-900 p-6">
+              <img src={`/badge/${tool.slug}.svg?variant=large&theme=dark`} alt="Featured on devxtools badge (large, dark)" />
             </div>
           </div>
         </div>
@@ -277,7 +291,7 @@ const relatedTools = allTools
         <div class="mt-5 space-y-4">
           <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
             <div class="flex items-center justify-between mb-2">
-              <div class="text-sm font-medium text-zinc-900 dark:text-white">Markdown</div>
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">Markdown (small, light)</div>
               <button
                 onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
                 class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
@@ -290,7 +304,20 @@ const relatedTools = allTools
           
           <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
             <div class="flex items-center justify-between mb-2">
-              <div class="text-sm font-medium text-zinc-900 dark:text-white">HTML</div>
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">Markdown (large, dark)</div>
+              <button
+                onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
+                class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
+                Copy
+              </button>
+            </div>
+            <pre class="text-xs bg-zinc-50 dark:bg-zinc-800 p-3 rounded-lg overflow-x-auto"><code>[![Featured on devxtools](https://devxtools.dev/badge/{tool.slug}.svg?variant=large&amp;theme=dark)](https://devxtools.dev/tools/{tool.slug}/)</code></pre>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">HTML (small, light)</div>
               <button
                 onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
                 class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
