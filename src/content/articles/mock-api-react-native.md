@@ -12,7 +12,7 @@ author: "DevX Tools"
 datePublished: "2026-10-14"
 dateModified: "2026-10-15"
 tested_with: "React Native 0.88.0, React 19.3.1, Jest 30.5.2 with @react-native/jest-preset 0.88.0, @testing-library/react-native 14.1.0, msw 2.15.0; npm registry checks for msw 3.0.3 and @msw/react-native; Node 22.23.3; 2026-10-15. Not run on a simulator or device."
-affiliation: "devxtools.dev is run by Sebastian Gedda, who also builds and maintains <strong>Mockifyer</strong>, one of the tools in this guide. We've tried to keep the comparison fair: MSW and Mirage get at least as much space, and Mockifyer is never ranked first. Mockifyer details come from its README and docs unless we say we tested them."
+affiliation: "devxtools.dev is run by Sebastian Gedda, who also builds and maintains **Mockifyer**, one of the tools in this guide. We've tried to keep the comparison fair: MSW and Mirage get at least as much space, and Mockifyer is never ranked first. Mockifyer details come from its README and docs unless we say we tested them."
 tools: ["msw", "miragejs", "mockoon", "prism", "wiremock", "mockifyer", "pollyjs", "detox", "maestro", "reactotron", "flipper", "proxyman", "charles"]
 ---
 
