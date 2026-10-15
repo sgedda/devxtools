@@ -1,0 +1,175 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Datadog Alternatives (2026): Open-Source & Cheaper Options",
+      "description": "Independent guide to Datadog alternatives: open-source and SaaS tools for APM, logs, metrics and errors, with pricing models and an OpenTelemetry plan.",
+      "url": "https://devxtools.dev/observability/datadog-alternatives/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Observability", "item": "https://devxtools.dev/observability/" },
+        { "@type": "ListItem", "position": 3, "name": "Datadog Alternatives", "item": "https://devxtools.dev/observability/datadog-alternatives/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the best open-source alternative to Datadog?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For an all-in-one experience, SigNoz: it's OpenTelemetry-native, covers traces, metrics and logs in one UI, and stores data in ClickHouse. If you'd rather compose best-in-class parts, use the Grafana stack (Prometheus or Mimir, Loki, Tempo, Grafana). OpenObserve is a strong option for log-heavy workloads on object storage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a free Datadog alternative?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Self-hosted SigNoz, the Grafana stack, OpenObserve, Uptrace, SkyWalking and Coroot are free to run (you pay for servers and time). Managed free tiers include Grafana Cloud (10k series, 50 GB logs, 50 GB traces), New Relic (100 GB/month, one full user), Uptrace Cloud (50 GB) and Sentry Developer (50k errors), all as of 2026-10-15."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is cheaper than Datadog?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For small teams, usage-based vendors such as SigNoz Cloud, Grafana Cloud, Uptrace and New Relic's free tier are often cheaper because they don't charge per host. Whether that holds for you depends on your data volume. Price a real week of telemetry before switching. Vendor savings percentages are marketing claims."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can Grafana replace Datadog?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Grafana alone is dashboards. Grafana plus Prometheus or Mimir (metrics), Loki (logs) and Tempo (traces), self-hosted or on Grafana Cloud, covers most of Datadog's infrastructure, APM and log jobs. You'll rebuild dashboards and alerts, and you'll work with PromQL, LogQL and TraceQL rather than one query language."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SigNoz a good Datadog alternative?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For teams that mainly use Datadog APM, logs and metrics, yes. It's the closest single-product match, it's OpenTelemetry-native, and SigNoz Cloud has no per-host or per-user fees. The trade-offs: self-hosting means operating ClickHouse, and it has fewer adjacent products (security, RUM depth, synthetics) than Datadog."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How hard is it to migrate off Datadog?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The instrumentation is the hard part, and OpenTelemetry solves it once. Add the OTel SDK and a Collector while Datadog keeps receiving data, dual-ship to the new backend, then remove the Datadog exporter. Dashboards, monitors and DogStatsD metrics need rebuilding. Plan weeks, not days, for a production system."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Datadog Alternatives (2026)" 
+  description="Independent guide to Datadog alternatives: open-source and SaaS tools for APM, logs, metrics and errors, with pricing models and an OpenTelemetry plan."
+  canonicalURL="https://devxtools.dev/observability/datadog-alternatives/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/observability/" class="hover:text-zinc-900 dark:hover:text-white">Observability</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Datadog Alternatives</span>
+      </nav>
+
+      <h1>Datadog Alternatives: Open-Source and Cheaper Options by Job</h1>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90"><strong>The best Datadog alternatives depend on which Datadog job you're replacing: APM and tracing, logs, infrastructure metrics, error tracking, RUM or uptime.</strong> No single tool is cheapest at all six. This guide maps an open-source and a SaaS option to each job, explains the pricing models that drive the bill, and shows how to move with OpenTelemetry so you only change backends once.</p>
+      </div>
+
+      <blockquote>
+        <p><strong>Tested with</strong> OpenTelemetry Collector Contrib 0.162.0, Prometheus 3.15.0 and the OpenTelemetry Node SDK 0.223.0 on Node 22.23.3 (2026-10-15). We validated the Collector configs on this page and sent OTLP metrics from a Node service into Prometheus on our test machine. We did <strong>not</strong> run a production trial of any vendor below. Prices come from vendor pricing pages on 2026-10-15. devxtools.dev is independent, has no affiliate or sponsorship deal with any observability vendor, and none of them reviewed this page.</p>
+      </blockquote>
+
+      <h2 id="tldr">TL;DR</h2>
+
+      <p>The strongest open-source Datadog alternatives are <strong>SigNoz</strong> (all-in-one and OpenTelemetry-native) and the <strong>Grafana stack</strong> (Prometheus or Mimir, Loki and Tempo) if you want composable parts. <strong>Sentry</strong> and <strong>Better Stack</strong> cover error tracking and logs more cheaply for small teams. Instrument with <strong>OpenTelemetry</strong> first so you can switch backends without re-instrumenting.</p>
+
+      <p><strong>Quick picks (checked 2026-10-15):</strong></p>
+
+      <ul>
+        <li><strong>All-in-one, self-hosted:</strong> SigNoz or OpenObserve</li>
+        <li><strong>Composable and widely documented:</strong> the Grafana stack (Prometheus/Mimir, Loki, Tempo, Grafana)</li>
+        <li><strong>Errors and frontend issues:</strong> Sentry</li>
+        <li><strong>Logs plus uptime and on-call for a small team:</strong> Better Stack, or Loki if you self-host</li>
+        <li><strong>Small team that wants zero ops and a real free tier:</strong> Grafana Cloud (free tier: 10k metric series, 50 GB logs, 50 GB traces, 14-day retention)</li>
+      </ul>
+
+      <h2 id="why-teams-look">Why teams look for Datadog alternatives</h2>
+
+      <p>Three reasons come up repeatedly, and you can check each one against public sources.</p>
+
+      <p><strong>1. The pricing model scales with infrastructure, not just data.</strong> Datadog bills most core products per host. On its pricing page (checked 2026-10-15), Infrastructure Pro is $15 per host per month and Enterprise $23 (annual billing). APM is $31 per host per month when bought with Infrastructure on annual billing ($36 standalone), with APM Pro at $35 and APM Enterprise at $40. Logs are billed twice: $0.10/GB to ingest, then per million events to index ($1.70 for 15-day retention, or $0.05 on Flex). Autoscaling, many small nodes or containers beyond your allotment ($0.002 per container-hour over the allotment) all push the bill up without anyone writing new code.</p>
+
+      <p><strong>2. Custom metrics are a separate meter.</strong> Infrastructure Pro includes 100 custom metrics per host (200 on Enterprise). Every unique combination of metric name and tag values counts as a custom metric, so one <code>user_id</code> or <code>pod</code> tag can multiply the count. This is the same cardinality problem every metrics backend has. Datadog just turns it directly into a line item.</p>
+
+      <p><strong>3. Bill shock is real and public.</strong> The best-documented case is Coinbase. The Pragmatic Engineer reported (May 2023, citing current and former engineers) that Coinbase's Datadog bill for 2021 was $65M. Coinbase then built an in-house stack on Grafana, Prometheus and ClickHouse, and stayed only after Datadog restructured the contract. Datadog's CEO described the contract restructuring on an earnings call (reported by The New Stack). That's an extreme case, but it shows how a usage-based observability bill can compound.</p>
+
+      <p>To be fair: lock-in is partly self-inflicted. If you instrument with Datadog's proprietary agents and libraries, leaving means re-instrumenting. If you instrument with OpenTelemetry, which Datadog itself supports, leaving mostly means changing an exporter.</p>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>What is the best open-source alternative to Datadog?</h3>
+      <p>For an all-in-one experience, SigNoz: it's OpenTelemetry-native, covers traces, metrics and logs in one UI, and stores data in ClickHouse. If you'd rather compose best-in-class parts, use the Grafana stack (Prometheus or Mimir, Loki, Tempo, Grafana). OpenObserve is a strong option for log-heavy workloads on object storage.</p>
+
+      <h3>Is there a free Datadog alternative?</h3>
+      <p>Yes. Self-hosted SigNoz, the Grafana stack, OpenObserve, Uptrace, SkyWalking and Coroot are free to run (you pay for servers and time). Managed free tiers include Grafana Cloud (10k series, 50 GB logs, 50 GB traces), New Relic (100 GB/month, one full user), Uptrace Cloud (50 GB) and Sentry Developer (50k errors), all as of 2026-10-15. Datadog's own free tier covers up to 5 hosts with 1-day retention.</p>
+
+      <h3>What is cheaper than Datadog?</h3>
+      <p>For small teams, usage-based vendors such as SigNoz Cloud, Grafana Cloud, Uptrace and New Relic's free tier are often cheaper because they don't charge per host. Whether that holds for you depends on your data volume. Price a real week of telemetry before switching. Vendor savings percentages are marketing claims.</p>
+
+      <h3>Can Grafana replace Datadog?</h3>
+      <p>Grafana alone is dashboards. Grafana plus Prometheus or Mimir (metrics), Loki (logs) and Tempo (traces), self-hosted or on Grafana Cloud, covers most of Datadog's infrastructure, APM and log jobs. You'll rebuild dashboards and alerts, and you'll work with PromQL, LogQL and TraceQL rather than one query language.</p>
+
+      <h3>Is SigNoz a good Datadog alternative?</h3>
+      <p>For teams that mainly use Datadog APM, logs and metrics, yes. It's the closest single-product match, it's OpenTelemetry-native, and SigNoz Cloud has no per-host or per-user fees. The trade-offs: self-hosting means operating ClickHouse, and it has fewer adjacent products (security, RUM depth, synthetics) than Datadog.</p>
+
+      <h3>How hard is it to migrate off Datadog?</h3>
+      <p>The instrumentation is the hard part, and OpenTelemetry solves it once. Add the OTel SDK and a Collector while Datadog keeps receiving data, dual-ship to the new backend, then remove the Datadog exporter. Dashboards, monitors and DogStatsD metrics need rebuilding. Plan weeks, not days, for a production system.</p>
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/tools/datadog/">Datadog tool page</a></li>
+        <li><a href="/tools/opentelemetry/">OpenTelemetry</a></li>
+        <li><a href="/tools/grafana-loki/">Grafana Loki</a></li>
+        <li><a href="/tools/sentry/">Sentry</a> · <a href="/tools/betterstack/">Better Stack</a></li>
+        <li><a href="/tools/pino/">Pino</a> · <a href="/tools/winston/">Winston</a></li>
+        <li><a href="/observability/">All observability tools</a></li>
+      </ul>
+
+      <NewsletterSignup variant="article" />
+
+      <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+        <a href="/observability/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">← Back to Observability</a>
+      </div>
+    </article>
+  </div>
+</Layout>
