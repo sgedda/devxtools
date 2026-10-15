@@ -9,6 +9,10 @@ const msw = getToolBySlug('msw');
 const nock = getToolBySlug('nock');
 const polly = getToolBySlug('pollyjs');
 
+const published = "2026-10-14";
+const updated = "2026-10-14";
+const tldr = "MSW excels for full-stack web apps with browser and Node.js support, using Service Workers for network-level interception. Nock is simpler and lighter, ideal for Node.js-only backend testing with built-in record/replay, but lacks browser support.";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -17,8 +21,8 @@ const jsonLd = {
       "headline": "MSW vs Nock (2026): Differences, Code & When to Use Each",
       "description": "Compare MSW and Nock, the two most popular HTTP mocking libraries for JavaScript and TypeScript.",
       "url": "https://devxtools.dev/comparisons/msw-vs-nock/",
-      "datePublished": "2026-10-14",
-      "dateModified": "2026-10-14",
+      "datePublished": published,
+      "dateModified": updated,
       "author": {
         "@type": "Organization",
         "name": "DevX Tools"
@@ -61,7 +65,13 @@ const jsonLd = {
       <header>
         <h1>MSW vs Nock</h1>
         <p class="subtitle">Choosing between the two most popular HTTP mocking libraries</p>
+        <p class="meta">Last updated: {new Date(updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
       </header>
+      
+      <section class="tldr">
+        <h2>TL;DR</h2>
+        <p>{tldr}</p>
+      </section>
       
       <section class="intro">
         <p>
@@ -284,6 +294,34 @@ nock('https://api.example.com')
     color: var(--text-secondary);
     font-size: 1.25rem;
     margin-top: 0.5rem;
+  }
+  
+  .meta {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+  
+  .tldr {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .tldr h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+  
+  .tldr p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.7;
   }
   
   .intro {
