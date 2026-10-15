@@ -1,0 +1,122 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Best API Testing Tools (2026): Free & Open-Source, by Job",
+      "description": "Independent list of the best API testing tools for 2026, grouped by job: API clients, CI test frameworks, contract tests, mocking, schema fuzzing and load.",
+      "url": "https://devxtools.dev/testing/best-api-testing-tools/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Testing", "item": "https://devxtools.dev/testing/" },
+        { "@type": "ListItem", "position": 3, "name": "Best API Testing Tools", "item": "https://devxtools.dev/testing/best-api-testing-tools/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the best API testing tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "There isn't one best tool, because API testing is several jobs. For JS/TS teams, a strong default stack is Bruno or Postman for exploration, Playwright or Vitest with supertest for CI regression, Pact or Schemathesis for contracts and spec conformance, and k6 for load."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best free API testing tool?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For CI regression, Playwright and Vitest with supertest are free and open source. For a GUI client, Bruno's open-source edition, Insomnia and Hoppscotch are free, and Newman runs Postman collections for free. Schemathesis, Spectral, Prism, MSW, WireMock, Mockoon and k6 are all open source."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Best API Testing Tools (2026)" 
+  description="Independent list of the best API testing tools for 2026, grouped by job: API clients, CI test frameworks, contract tests, mocking, schema fuzzing and load."
+  canonicalURL="https://devxtools.dev/testing/best-api-testing-tools/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/testing/" class="hover:text-zinc-900 dark:hover:text-white">Testing</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Best API Testing Tools</span>
+      </nav>
+
+      <h1>The Best API Testing Tools in 2026, Grouped by the Job They Do</h1>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90"><strong>The best API testing tools depend on the job: exploring an API by hand, running regression tests in CI, checking contracts, fuzzing against a schema, mocking dependencies, or load testing.</strong> No single tool does all six well. This guide picks one or two tools per job and runs each one against the same small fixture API, with the exact command we used in CI.</p>
+      </div>
+
+      <blockquote>
+        <p><strong>Tested with</strong> the versions listed in the frontmatter, on Node 22.23.3 and Python 3.13.5 (Linux, 2026-10-15). Every CLI command and test on this page ran against our fixture API, a three-endpoint Express 5 "Users API" with an OpenAPI 3.1 spec, unless we say otherwise. devxtools.dev is independent: no vendor paid for placement or reviewed this page, and we use no affiliate links.</p>
+      </blockquote>
+
+      <h2 id="tldr">TL;DR</h2>
+
+      <p>No single tool is "best" for API testing. Use an API client (<strong>Bruno</strong> or <strong>Postman</strong>) to explore, a code-first framework (<strong>Playwright</strong> or <strong>Vitest with supertest</strong>) for CI regression, <strong>Pact</strong> or <strong>Schemathesis</strong> for contracts and schemas, and <strong>k6</strong> for load. Most JS/TS teams need two or three of these, not one.</p>
+
+      <p><strong>Quick picks:</strong></p>
+
+      <ul>
+        <li><strong>Explore manually:</strong> Bruno (Git-friendly, MIT) or Postman (largest ecosystem)</li>
+        <li><strong>CI regression in JS/TS:</strong> Playwright's <code>request</code> fixture, or Vitest + supertest</li>
+        <li><strong>Contract testing:</strong> Pact</li>
+        <li><strong>Schema-based fuzzing:</strong> Schemathesis</li>
+        <li><strong>Mock dependencies:</strong> MSW (in-process) or Prism (from OpenAPI)</li>
+        <li><strong>Load testing:</strong> k6</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>What is the best API testing tool?</h3>
+      <p>There isn't one best tool, because API testing is several jobs. For JS/TS teams, a strong default stack is Bruno or Postman for exploration, Playwright or Vitest with supertest for CI regression, Pact or Schemathesis for contracts and spec conformance, and k6 for load.</p>
+
+      <h3>What is the best free API testing tool?</h3>
+      <p>For CI regression, Playwright and Vitest with supertest are free and open source. For a GUI client, Bruno's open-source edition, Insomnia and Hoppscotch are free, and Newman runs Postman collections for free. Schemathesis, Spectral, Prism, MSW, WireMock, Mockoon and k6 are all open source.</p>
+
+      <h3>What are the best open-source API testing tools?</h3>
+      <p>Bruno (MIT), Insomnia (Apache-2.0) and Hoppscotch (MIT) for clients. Playwright, Vitest, Jest and supertest for code-first tests. Pact for contracts. Schemathesis (MIT) for schema fuzzing. Spectral and Prism for OpenAPI. MSW, WireMock and Mockoon for mocks. k6, Locust, Gatling and Artillery for load.</p>
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/testing/">Testing tools hub</a> · <a href="/mocking-test-data/">Mocking & test data</a> · <a href="/api-development/">API development</a></li>
+        <li><a href="/tools/postman/">Postman</a> · <a href="/tools/bruno/">Bruno</a> · <a href="/tools/insomnia/">Insomnia</a> · <a href="/tools/hoppscotch/">Hoppscotch</a></li>
+        <li><a href="/tools/playwright/">Playwright</a> · <a href="/tools/pact/">Pact</a> · <a href="/tools/prism/">Prism</a> · <a href="/tools/spectral/">Spectral</a></li>
+        <li><a href="/tools/msw/">MSW</a> · <a href="/tools/wiremock/">WireMock</a> · <a href="/tools/mockoon/">Mockoon</a> · <a href="/comparisons/msw-vs-nock/">MSW vs Nock</a></li>
+        <li><a href="/tools/k6/">k6</a> · <a href="/tools/locust/">Locust</a> · <a href="/tools/gatling/">Gatling</a> · <a href="/tools/artillery/">Artillery</a></li>
+      </ul>
+
+      <NewsletterSignup variant="article" />
+
+      <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+        <a href="/testing/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">← Back to Testing</a>
+      </div>
+    </article>
+  </div>
+</Layout>

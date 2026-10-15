@@ -1,0 +1,112 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Realistic Test Data with Faker.js and Factories (TypeScript)",
+      "description": "Generate realistic, deterministic test data in TypeScript with Faker.js and Fishery factories: seeding, traits, associations, MSW mocks and DB seeds.",
+      "url": "https://devxtools.dev/guides/faker-js-test-data-factories/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://devxtools.dev/guides/" },
+        { "@type": "ListItem", "position": 3, "name": "Faker.js Test Data", "item": "https://devxtools.dev/guides/faker-js-test-data-factories/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Faker.js used for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Faker.js generates realistic fake data, such as names, emails, addresses, prices, dates, UUIDs and lorem text, for tests, mock APIs, demos, Storybook stories and seeding development databases. Install it as @faker-js/faker."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I make Faker.js deterministic?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Call faker.seed(123) before generating data, ideally in beforeEach so each test is isolated, and call faker.setDefaultRefDate('2026-01-01T00:00:00.000Z') so relative dates don't depend on today. The same seed gives the same values on the same Faker version."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Faker.js Test Data and Factories (2026)" 
+  description="Generate realistic, deterministic test data in TypeScript with Faker.js and Fishery factories: seeding, traits, associations, MSW mocks and DB seeds."
+  canonicalURL="https://devxtools.dev/guides/faker-js-test-data-factories/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/guides/" class="hover:text-zinc-900 dark:hover:text-white">Guides</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Faker.js Test Data</span>
+      </nav>
+
+      <h1>Realistic Test Data with Faker.js and Factories</h1>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90"><strong>Faker.js test data gives you realistic names, emails, prices and dates in seconds, but on its own it also gives you flaky tests.</strong> This guide shows the setup that holds up in a real TypeScript codebase: Faker.js for values, seeded so they're the same on every run, wrapped in typed Fishery factories you reuse in unit tests, MSW handlers, Storybook stories and database seed scripts.</p>
+      </div>
+
+      <blockquote>
+        <p><strong>Tested with</strong> @faker-js/faker 10.6.0, fishery 2.4.0, chance 1.1.13, @ngneat/falso 8.0.2, MSW 3.0.3 and Vitest 5.0.5 on Node 22.23.3 (2026-10-15). Every snippet except the Storybook one ran on our test machine, and the outputs shown are real. devxtools.dev is independent and has no relationship with Faker.js, Fishery, Chance, Falso or Mockaroo.</p>
+      </blockquote>
+
+      <h2 id="tldr">TL;DR</h2>
+
+      <p>Use <strong>Faker.js</strong> to generate realistic values and wrap it in typed <strong>Fishery</strong> factories, so every test builds a valid object and overrides only the fields it cares about. <strong>Seed Faker</strong> (<code>faker.seed()</code>) and set a reference date (<code>faker.setDefaultRefDate()</code>) so the "random" data is the same on every run and tests don't flake.</p>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>What is Faker.js used for?</h3>
+      <p>Faker.js generates realistic fake data, such as names, emails, addresses, prices, dates, UUIDs and lorem text, for tests, mock APIs, demos, Storybook stories and seeding development databases. Install it as <code>@faker-js/faker</code>.</p>
+
+      <h3>How do I make Faker.js deterministic?</h3>
+      <p>Call <code>faker.seed(123)</code> before generating data, ideally in <code>beforeEach</code> so each test is isolated, and call <code>faker.setDefaultRefDate('2026-01-01T00:00:00.000Z')</code> so relative dates don't depend on today. The same seed gives the same values on the same Faker version. Upgrades can change them.</p>
+
+      <h3>Faker.js vs Chance: which should I use?</h3>
+      <p>Faker.js for realistic, locale-aware domain data (people, commerce, internet, locations) and active maintenance. Chance for a smaller API focused on random primitives. Both are MIT and seedable. If bundle size matters in the browser, Falso is tree-shakable, but check its maintenance status first.</p>
+
+      <h3>What is a test data factory?</h3>
+      <p>A function that builds a complete, valid object with sensible defaults, so each test overrides only the fields it cares about. Fishery is a typed factory library for TypeScript with <code>build</code>, <code>buildList</code>, sequences, traits, associations, transient params and <code>onCreate</code> hooks. You use Faker.js inside it to generate values.</p>
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/tools/faker/">Faker</a> · <a href="/tools/fishery/">Fishery</a> · <a href="/tools/chance/">Chance</a> · <a href="/tools/mockaroo/">Mockaroo</a></li>
+        <li><a href="/tools/msw/">MSW</a> · <a href="/tools/json-server/">json-server</a></li>
+        <li><a href="/mocking-test-data/">Mocking & test data hub</a></li>
+      </ul>
+
+      <NewsletterSignup variant="article" />
+
+      <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+        <a href="/guides/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">← Back to Guides</a>
+      </div>
+    </article>
+  </div>
+</Layout>
