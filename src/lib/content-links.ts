@@ -25,22 +25,22 @@ const guides: Array<{ title: string; url: string; tools: string[] }> = [
   },
   {
     title: "Spec-First Mocking with Prism and OpenAPI",
-    url: "/guides/spec-first-mocking-prism-openapi/",
+    url: "/guides/openapi-mock-server-prism/",
     tools: ["prism"]
   },
   {
     title: "Mocking APIs in React Native with Mockifyer",
-    url: "/guides/react-native-mocking-mockifyer/",
+    url: "/guides/mock-api-react-native/",
     tools: ["mockifyer"]
   },
   {
     title: "Realistic Test Data with Faker and Factories",
-    url: "/guides/realistic-test-data-faker-factories/",
+    url: "/guides/faker-js-test-data-factories/",
     tools: ["faker", "fishery"]
   },
   {
     title: "Keeping Mocks Honest with Pact",
-    url: "/guides/keeping-mocks-honest-pact/",
+    url: "/guides/pact-contract-testing-javascript/",
     tools: ["pact"]
   }
 ];
