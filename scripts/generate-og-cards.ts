@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer-core';
+import { chromium } from 'playwright';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 import { parse } from 'yaml';
@@ -48,7 +49,7 @@ async function generateOGCard(tool: any, browser: any) {
   }).join(', ');
   
   const languages = tool.languages.slice(0, 2).join(', ');
-  const meta = languages + (tool.license ? ` · ${tool.license}` : '');
+  const meta = languages;
   
   const params = new URLSearchParams({
     kicker: 'Tool Profile',
@@ -72,11 +73,13 @@ async function generateOGCard(tool: any, browser: any) {
     await page.screenshot({ path: outputPath, type: 'png' });
     
     console.log(`✓ Generated ${tool.slug}.png`);
+    await page.close();
+    return true;
   } catch (error) {
     console.error(`✗ Failed to generate ${tool.slug}.png:`, error);
+    await page.close();
+    return false;
   }
-  
-  await page.close();
 }
 
 async function generateAllOGCards() {
@@ -88,17 +91,30 @@ async function generateAllOGCards() {
   console.log(`Generating OG cards for ${tools.length} tools...`);
   
   const browser = await puppeteer.launch({
-    executablePath: '/usr/local/bin/google-chrome',
+    executablePath: chromium.executablePath(),
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     headless: true,
   });
   
+  const results = [];
   for (const tool of tools) {
-    await generateOGCard(tool, browser);
+    const success = await generateOGCard(tool, browser);
+    results.push(success);
   }
   
   await browser.close();
-  console.log('Done!');
+  
+  const successCount = results.filter(Boolean).length;
+  const failureCount = results.length - successCount;
+  
+  console.log(`Done! ${successCount} succeeded, ${failureCount} failed.`);
+  
+  if (failureCount > 0) {
+    process.exit(1);
+  }
 }
 
-generateAllOGCards().catch(console.error);
+generateAllOGCards().catch((error) => {
+  console.error('Fatal error:', error);
+  process.exit(1);
+});
