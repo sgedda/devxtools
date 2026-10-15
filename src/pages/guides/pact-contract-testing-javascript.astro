@@ -1,0 +1,484 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Pact Contract Testing in JavaScript: Keep Your Mocks Honest",
+      "description": "A Pact contract testing example in TypeScript: consumer test, pact file, provider verification, Pact Broker, can-i-deploy, and keeping MSW mocks honest.",
+      "url": "https://devxtools.dev/guides/pact-contract-testing-javascript/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://devxtools.dev/guides/" },
+        { "@type": "ListItem", "position": 3, "name": "Pact Contract Testing", "item": "https://devxtools.dev/guides/pact-contract-testing-javascript/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Pact contract testing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pact is a consumer-driven contract testing tool. Consumer tests run against a Pact mock provider and record each request and the response they need into a pact file. The provider then verifies that pact against its real implementation. Pact supports JavaScript/TypeScript, JVM languages, Python, Go, .NET, Rust and more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pact contract testing example in JavaScript?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Install @pact-foundation/pact. In the consumer, create new PactV4({ consumer, provider }), then addInteraction().given().uponReceiving().withRequest().willRespondWith().executeTest() with your real API client inside executeTest. In the provider, run new Verifier({ providerBaseUrl, pactUrls, stateHandlers }).verifyProvider()."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Pact and contract testing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Contract testing is the general practice of verifying that two services agree on their interface. Pact is one specific, consumer-driven implementation of it, with its own file format, libraries for many languages, and the Pact Broker for sharing contracts. Spring Cloud Contract and bi-directional (spec-based) contract testing are other approaches."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pact vs Spring Cloud Contract?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pact is consumer-driven and polyglot: consumers define expectations, any language can take part, and a broker coordinates versions. Spring Cloud Contract is provider-driven and JVM-first: the provider defines contracts, and the tool generates provider tests and WireMock stubs for consumers. Choose Pact for mixed stacks like a JS frontend with a Node or Go backend, and Spring Cloud Contract for Spring-only systems."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a Pact Broker?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not to start. For one consumer and one provider in a monorepo, pointing the Verifier at the pact file works. Once teams and repos are separate, a broker (self-hosted Pact Broker or PactFlow) is strongly recommended. It stores versions, records verification results and powers can-i-deploy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are alternatives to Pact?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Spring Cloud Contract (JVM, provider-driven), OpenAPI-based checks (a Prism validation proxy, Schemathesis, Spectral), PactFlow's bi-directional contract testing, and Microcks for spec-driven mocking and contract tests. Many teams combine schema checks with Pact rather than choosing one."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Pact Contract Testing in JavaScript (2026)" 
+  description="A Pact contract testing example in TypeScript: consumer test, pact file, provider verification, Pact Broker, can-i-deploy, and keeping MSW mocks honest."
+  canonicalURL="https://devxtools.dev/guides/pact-contract-testing-javascript/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/guides/" class="hover:text-zinc-900 dark:hover:text-white">Guides</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Pact Contract Testing</span>
+      </nav>
+
+      <h1>Keeping API Mocks Honest with Pact Contract Testing</h1>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90"><strong>Pact contract testing catches the moment your frontend's API mocks stop matching the real API, before it reaches production.</strong> Your consumer's tests record the requests they make and the responses they rely on into a contract (a "pact"). The provider's CI replays that contract against the real service. This guide builds a complete TypeScript example, shows real failure output, and connects Pact to the MSW mocks your frontend already uses.</p>
+      </div>
+
+      <blockquote>
+        <p><strong>Tested with</strong> @pact-foundation/pact 17.1.4 (Pact Specification V4), Vitest 5.0.5, MSW 3.0.3 and Express 5.3.0 on Node 22.23.3 (2026-10-15). The consumer test, provider verification, failure output and MSW-from-pact helper all ran on our machine. We didn't run a Pact Broker or PactFlow: those commands come from the official docs and CLI help. devxtools.dev is independent and has no relationship with the Pact Foundation or SmartBear (PactFlow).</p>
+      </blockquote>
+
+      <h2 id="tldr">TL;DR</h2>
+
+      <p>Pact is a consumer-driven contract testing tool. Your consumer's tests record the requests and responses they rely on into a contract, and the provider replays that contract against the real service to prove it still matches. Use it alongside MSW or Prism mocks, so the mocks your frontend relies on can't silently drift from the API.</p>
+
+      <div class="overflow-x-auto my-6">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Pact (consumer-driven)</th>
+              <th>OpenAPI + Prism validation</th>
+              <th>Schemathesis</th>
+              <th>Spring Cloud Contract</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Source of truth</td>
+              <td>Consumer tests (examples)</td>
+              <td>OpenAPI spec</td>
+              <td>OpenAPI/GraphQL schema</td>
+              <td>Provider-defined contracts</td>
+            </tr>
+            <tr>
+              <td>Catches</td>
+              <td>Breaking changes for real consumers</td>
+              <td>Spec violations</td>
+              <td>Schema/edge-case bugs</td>
+              <td>Provider contract breaks</td>
+            </tr>
+            <tr>
+              <td>Languages</td>
+              <td>Many (JS, JVM, Python, Go, …)</td>
+              <td>Any (HTTP proxy)</td>
+              <td>Any (HTTP)</td>
+              <td>JVM-first</td>
+            </tr>
+            <tr>
+              <td>Needs a broker</td>
+              <td>Recommended (Pact Broker/PactFlow)</td>
+              <td>No</td>
+              <td>No</td>
+              <td>No (artifacts)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="the-problem">The problem: mocks drift from the real API</h2>
+
+      <p>Frontend teams mock APIs for good reasons: fast tests, offline development, deterministic states. <a href="/tools/msw/">MSW</a> handlers, <a href="/tools/prism/">Prism</a> mocks and JSON fixtures all encode an assumption: "<code>GET /users/1</code> returns <code>{`{ id, name, email }`}</code>".</p>
+
+      <p>Then the backend renames <code>email</code> to <code>emailAddress</code>. Every frontend test still passes, because the mocks still say <code>email</code>. The bug shows up in staging if you're lucky, and in production if you're not.</p>
+
+      <p>Mocks aren't the problem. <em>Unverified</em> mocks are. Contract testing adds the missing check: the provider must prove it still satisfies what consumers expect.</p>
+
+      <h2 id="what-contract-testing-is">What contract testing is</h2>
+
+      <ul>
+        <li><strong>Consumer-driven:</strong> the consumer (web app, mobile app, another service) writes tests against a Pact mock provider. Each test describes one interaction: request, expected response, and the provider state it needs ("user 1 exists").</li>
+        <li><strong>Contract by example:</strong> the pact file contains concrete examples plus <strong>matching rules</strong> ("any integer", "a string matching this regex"), so the provider doesn't need identical data.</li>
+        <li><strong>Provider verification:</strong> the provider's CI replays each interaction against the real running service, after setting up the required state, and fails if a response doesn't match.</li>
+        <li><strong>Only what's used:</strong> a pact covers the fields and endpoints consumers actually rely on. The provider can change anything else freely.</li>
+      </ul>
+
+      <p>This differs from <strong>schema testing</strong> (OpenAPI validation, Schemathesis), which checks the implementation against a spec, whether or not any consumer uses a given field. They're complementary, as covered below.</p>
+
+      <h2 id="complete-example">A complete example in TypeScript</h2>
+
+      <p>The setup: a <code>web-app</code> consumer with a <code>UserClient</code>, and a <code>users-api</code> provider built with Express. One repo here for simplicity. In real life they'd be separate repos sharing pacts through a broker.</p>
+
+      <pre><code class="language-bash">{`npm i -D @pact-foundation/pact vitest`}</code></pre>
+
+      <p><code>@pact-foundation/pact</code> 17.1.4 declares Node <code>>=22</code> and bundles the Rust core (pact_ffi) as a native library. It installed without a build step on our Linux machine.</p>
+
+      <h3>Consumer test with PactV4 and matchers</h3>
+
+      <pre><code class="language-typescript">{`// src/userClient.ts
+export interface User { id: number; name: string; email: string }
+
+export class UserClient {
+  constructor(private baseUrl: string) {}
+
+  async getUser(id: number): Promise<User | null> {
+    const res = await fetch(\`\${this.baseUrl}/users/\${id}\`, { headers: { Accept: 'application/json' } });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(\`HTTP \${res.status}\`);
+    return res.json();
+  }
+}`}</code></pre>
+
+      <pre><code class="language-typescript">{`// test/userClient.pact.test.ts
+import path from 'node:path';
+import { describe, it, expect } from 'vitest';
+import { PactV4, MatchersV3 } from '@pact-foundation/pact';
+import { UserClient } from '../src/userClient';
+
+const { like, integer, regex } = MatchersV3;
+
+const provider = new PactV4({
+  consumer: 'web-app',
+  provider: 'users-api',
+  dir: path.resolve(process.cwd(), 'pacts'),
+});
+
+describe('UserClient ↔ users-api', () => {
+  it('gets an existing user', async () => {
+    await provider
+      .addInteraction()
+      .given('user 1 exists')
+      .uponReceiving('a request for user 1')
+      .withRequest('GET', '/users/1', (b) => b.headers({ Accept: 'application/json' }))
+      .willRespondWith(200, (b) =>
+        b.headers({ 'Content-Type': 'application/json' }).jsonBody({
+          id: integer(1),
+          name: like('Ada Lovelace'),
+          email: regex(/^[^@\\s]+@[^@\\s]+$/, 'ada@example.com'),
+        }),
+      )
+      .executeTest(async (mockServer) => {
+        const user = await new UserClient(mockServer.url).getUser(1);
+        expect(user).toEqual({ id: 1, name: 'Ada Lovelace', email: 'ada@example.com' });
+      });
+  });
+
+  it('returns null for a missing user', async () => {
+    await provider
+      .addInteraction()
+      .given('user 999 does not exist')
+      .uponReceiving('a request for a missing user')
+      .withRequest('GET', '/users/999', (b) => b.headers({ Accept: 'application/json' }))
+      .willRespondWith(404)
+      .executeTest(async (mockServer) => {
+        expect(await new UserClient(mockServer.url).getUser(999)).toBeNull();
+      });
+  });
+});`}</code></pre>
+
+      <p>Both tests passed in about half a second. <code>executeTest</code> starts a Pact mock server on a random port, your real client code calls it, and Pact fails the test if the client sent a request that wasn't described, or didn't send one that was. The matchers matter: <code>integer(1)</code> means "any integer, e.g. 1", <code>like('Ada Lovelace')</code> means "any string", and <code>regex(...)</code> constrains the format. Use them so the provider isn't forced to return your exact example data.</p>
+
+      <h3>The generated pact file</h3>
+
+      <p>Running the consumer tests wrote <code>pacts/web-app-users-api.json</code>. An excerpt:</p>
+
+      <pre><code class="language-json">{`{
+  "consumer": { "name": "web-app" },
+  "provider": { "name": "users-api" },
+  "interactions": [
+    {
+      "description": "a request for user 1",
+      "providerStates": [{ "name": "user 1 exists" }],
+      "request": { "method": "GET", "path": "/users/1", "headers": { "Accept": ["application/json"] } },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": ["application/json"] },
+        "body": { "content": { "email": "ada@example.com", "id": 1, "name": "Ada Lovelace" }, "contentType": "application/json" },
+        "matchingRules": {
+          "body": {
+            "$.email": { "combine": "AND", "matchers": [{ "match": "regex", "regex": "^[^@\\\\s]+@[^@\\\\s]+$" }] },
+            "$.id": { "combine": "AND", "matchers": [{ "match": "integer" }] },
+            "$.name": { "combine": "AND", "matchers": [{ "match": "type" }] }
+          }
+        }
+      },
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": { "pact-js": { "version": "17.1.4" }, "pactSpecification": { "version": "4.0" } }
+}`}</code></pre>
+
+      <p>This JSON file is the contract. Commit it as a build artifact or, better, publish it to a broker.</p>
+
+      <h3>Provider verification with provider states</h3>
+
+      <pre><code class="language-typescript">{`// provider/app.ts
+import express from 'express';
+
+export const db = new Map<number, { id: number; name: string; email: string }>();
+
+export function createApp() {
+  const app = express();
+  app.get('/users/:id', (req, res) => {
+    const user = db.get(Number(req.params.id));
+    if (!user) return res.status(404).json({ error: 'not_found' });
+    res.json(user);
+  });
+  return app;
+}`}</code></pre>
+
+      <pre><code class="language-typescript">{`// test/provider.pact.test.ts
+import path from 'node:path';
+import type { Server } from 'node:http';
+import { afterAll, beforeAll, describe, it } from 'vitest';
+import { Verifier } from '@pact-foundation/pact';
+import { createApp, db } from '../provider/app';
+
+let server: Server;
+beforeAll(() => new Promise<void>((resolve) => { server = createApp().listen(8081, resolve); }));
+afterAll(() => new Promise<void>((resolve) => server.close(() => resolve())));
+
+describe('users-api honours its consumers', () => {
+  it('verifies the web-app pact', () =>
+    new Verifier({
+      provider: 'users-api',
+      providerBaseUrl: 'http://localhost:8081',
+      pactUrls: [path.resolve(process.cwd(), 'pacts/web-app-users-api.json')],
+      stateHandlers: {
+        'user 1 exists': async () => {
+          db.set(1, { id: 1, name: 'Grace Hopper', email: 'grace@example.com' });
+        },
+        'user 999 does not exist': async () => {
+          db.delete(999);
+        },
+      },
+    }).verifyProvider(), 30_000);
+});`}</code></pre>
+
+      <p>It passed, even though the provider returned <em>Grace Hopper</em>, not the consumer's <em>Ada Lovelace</em> example. The matchers only required "a string" and "an email-shaped string". Express's <code>application/json; charset=utf-8</code> also satisfied the <code>Content-Type</code> expectation.</p>
+
+      <p><strong>Now break it.</strong> We changed the provider to return <code>emailAddress</code> instead of <code>email</code> and re-ran verification:</p>
+
+      <pre><code class="language-text">{`Failures:
+
+1) Verifying a pact between web-app and users-api Given user 1 exists - a request for user 1
+    1.1) has a matching body
+           $ -> Actual map is missing the following keys: email
+    {
+    -  "email": "ada@example.com",
+    +  "emailAddress": "grace@example.com",
+       "id": 1,
+    -  "name": "Ada Lovelace"
+    +  "name": "Grace Hopper"
+    }
+
+There were 1 pact failures`}</code></pre>
+
+      <p>That's the bug from the introduction, caught in the provider's CI with the name of the consumer it would break. (The <code>name</code> lines show as a diff but don't fail: only the missing key does.)</p>
+
+      <h3>Run both in CI</h3>
+
+      <ul>
+        <li><strong>Consumer pipeline:</strong> run the Pact tests, which write <code>pacts/*.json</code>, then publish the pacts tagged with the git SHA and branch.</li>
+        <li><strong>Provider pipeline:</strong> fetch the relevant pacts (from the broker, or from <code>pactUrls</code> in a monorepo), run the Verifier against the service, and publish verification results.</li>
+        <li><strong>Order matters locally:</strong> the provider test and anything that reads the pact file need the consumer tests to have run first.</li>
+      </ul>
+
+      <h2 id="pact-broker">Sharing contracts: Pact Broker, PactFlow and can-i-deploy</h2>
+
+      <p>Copying pact files between repos doesn't scale. The <strong>Pact Broker</strong> (open source, MIT, self-hosted) stores pacts and verification results per version and branch, and <strong>PactFlow</strong> (SmartBear) is the hosted, commercial version with extra features.</p>
+
+      <pre><code class="language-bash">{`# consumer CI — publish (flags from \`pact-broker publish --help\`, pact-cli 18.1.2)
+npx pact-broker publish ./pacts \\
+  --broker-base-url "$PACT_BROKER_BASE_URL" \\
+  --consumer-app-version "$GIT_SHA" --branch "$GIT_BRANCH"
+
+# before deploying either side
+npx pact-broker can-i-deploy --pacticipant web-app --version "$GIT_SHA" --to-environment production
+
+# after deploying
+npx pact-broker record-deployment --pacticipant web-app --version "$GIT_SHA" --environment production`}</code></pre>
+
+      <p><code>can-i-deploy</code> exits 0 or 1 depending on whether that version has successful verifications with the versions currently in the target environment, so it can gate a deploy directly. In the provider, point the <code>Verifier</code> at the broker (<code>pactBrokerUrl</code>, <code>consumerVersionSelectors</code>, <code>publishVerificationResult: true</code>, <code>providerVersion</code>, <code>providerVersionBranch</code>) instead of <code>pactUrls</code>. Broker <strong>webhooks</strong> can trigger the provider build when a consumer publishes a changed pact. We didn't run a broker for this page.</p>
+
+      <p><strong>PactFlow pricing (2026-10-15):</strong> Starter is free (unlimited users, 2 integrations, bi-directional contract testing). Team is $115.42/month billed yearly ($1,385/year) or $127/month billed monthly, for 50 integrations. Enterprise is quote-based.</p>
+
+      <h2 id="pact-msw">Pact + MSW: using the same scenarios in mocks and contracts</h2>
+
+      <p>You probably already have MSW handlers. There are three ways to connect them to Pact:</p>
+
+      <ol>
+        <li><strong>Generate MSW handlers from the verified pact (what we tested).</strong> The pact is the source of truth, and your dev/test mocks are derived from it, so they can't contain anything the provider hasn't verified:</li>
+      </ol>
+
+      <pre><code class="language-typescript">{`// src/mswFromPact.ts
+import { readFileSync } from 'node:fs';
+import { http, HttpResponse } from 'msw';
+
+type Interaction = {
+  providerStates?: { name: string }[];
+  request: { method: string; path: string };
+  response: { status: number; body?: { content?: unknown } };
+};
+
+export function handlersFromPact(pactPath: string, baseUrl: string, state?: string) {
+  const pact = JSON.parse(readFileSync(pactPath, 'utf8')) as { interactions: Interaction[] };
+  return pact.interactions
+    .filter((i) => !state || i.providerStates?.some((s) => s.name === state))
+    .map((i) => {
+      const method = i.request.method.toLowerCase() as 'get' | 'post' | 'put' | 'patch' | 'delete';
+      return http[method](\`\${baseUrl}\${i.request.path}\`, () =>
+        i.response.body?.content !== undefined
+          ? HttpResponse.json(i.response.body.content as any, { status: i.response.status })
+          : new HttpResponse(null, { status: i.response.status }),
+      );
+    });
+}`}</code></pre>
+
+      <p>With <code>setupServer(...handlersFromPact('pacts/web-app-users-api.json', 'https://api.example.com'))</code>, our <code>UserClient</code> got Ada for user 1 and <code>null</code> for user 999 under MSW 3.0.3. That's exactly the verified behaviour. The trade-off: it only covers exact paths in the pact (no path parameters or request matching), and component tests can only use scenarios that exist as Pact interactions. Treat the helper as a starting point.</p>
+
+      <ol start="2">
+        <li><strong>Share fixtures in both directions.</strong> Keep response examples in one <code>fixtures/</code> module, used by both the MSW handlers and the Pact <code>jsonBody</code> examples (wrapped in matchers). It's flexible, but someone has to keep the two usages aligned.</li>
+        <li><strong>Record MSW traffic into pacts.</strong> PactFlow's MIT-licensed <code>@pactflow/pact-msw-adapter</code> (4.0.2 on npm) generates pacts from the requests your MSW handlers serve during tests. That turns existing mocks into consumer contracts, and it pairs naturally with bi-directional contract testing. The catch: the contract is only as good as your mocks, and there are no matchers unless you add them. We didn't test this approach.</li>
+      </ol>
+
+      <p>Whichever you choose, the rule is the same: <strong>every response shape your UI depends on should appear in a contract the provider verifies.</strong></p>
+
+      <h2 id="pact-vs-openapi">Pact vs OpenAPI-based checks</h2>
+
+      <ul>
+        <li><strong><a href="/tools/prism/">Prism</a> validation proxy:</strong> put <code>prism proxy openapi.yaml &lt;real-api&gt; --errors</code> between tests and the real API, and requests or responses that violate the spec become errors. It needs no consumer participation, but it checks the spec, not what consumers actually use.</li>
+        <li><strong>Schemathesis:</strong> generates many requests from the spec and finds undocumented status codes and schema violations. When we ran it for our API testing tools guide, it found three spec mismatches in a "finished" fixture API in seconds. It answers "does the implementation match the spec?", not "will this consumer break?"</li>
+        <li><strong><a href="/tools/spectral/">Spectral</a>:</strong> lints the spec itself (naming, descriptions, your style rules) before any code runs.</li>
+        <li><strong>Bi-directional contract testing (PactFlow):</strong> the consumer publishes a pact (from Pact, or generated from mocks), the provider publishes its OpenAPI spec plus evidence it was tested, and PactFlow checks compatibility without replaying requests against the provider. It's useful when providers won't run Pact verification, with the caveat that it's only as good as the provider's spec and its tests.</li>
+        <li><strong><a href="/tools/microcks/">Microcks</a>:</strong> an open-source mocking and testing platform that runs contract tests against implementations from OpenAPI, AsyncAPI, Postman collections and more.</li>
+      </ul>
+
+      <p>A practical combination: Spectral on the spec, Schemathesis on the provider, Pact between teams that own the consumer and the provider.</p>
+
+      <h2 id="common-mistakes">Common mistakes</h2>
+
+      <ul>
+        <li><strong>Testing UI behaviour through Pact.</strong> Pact tests should exercise your API client layer, not render components. Keep UI tests on MSW (ideally with handlers derived from the pact).</li>
+        <li><strong>Over-specified matchers.</strong> Exact values everywhere force the provider to return your example data and make verification brittle. Use <code>like</code>, <code>integer</code>, <code>regex</code> and <code>eachLike</code>, and use exact values only where the value matters (enums, status codes).</li>
+        <li><strong>Under-specified contracts.</strong> <code>like({`{}`})</code> on a whole body verifies nothing. Describe the fields you actually read.</li>
+        <li><strong>Missing or leaky provider states.</strong> Every <code>given(...)</code> needs a state handler that sets up <em>and isolates</em> data. A state handler that depends on whatever is left in the database makes verification flaky.</li>
+        <li><strong>Using Pact as a functional test suite for the provider.</strong> Pact checks shape and semantics that consumers rely on. Business rules belong in the provider's own tests.</li>
+        <li><strong>Skipping <code>can-i-deploy</code>.</strong> Without it, a broken verification only shows up as a red build that someone may ignore. With it, the deploy is blocked.</li>
+      </ul>
+
+      <h2 id="alternatives">Pact alternatives</h2>
+
+      <ul>
+        <li><strong>Spring Cloud Contract:</strong> provider-driven contracts (Groovy/YAML DSL) for JVM services. It generates provider tests and WireMock stubs for consumers. A natural fit for Spring shops.</li>
+        <li><strong>Schema-first tooling:</strong> OpenAPI + Prism validation, Schemathesis and Spectral. There's no broker and no consumer participation, which is good when you control both sides or publish a public API.</li>
+        <li><strong><a href="/tools/microcks/">Microcks</a>:</strong> mocking plus contract testing from API specs and collections, including event-driven APIs (AsyncAPI).</li>
+        <li><strong>Stub servers with verification:</strong> <a href="/tools/wiremock/">WireMock</a> stubs shared between teams can work for small setups, but nothing forces the provider to honour them. That's the gap Pact fills.</li>
+      </ul>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>What is Pact contract testing?</h3>
+      <p>Pact is a consumer-driven contract testing tool. Consumer tests run against a Pact mock provider and record each request and the response they need into a pact file. The provider then verifies that pact against its real implementation. Pact supports JavaScript/TypeScript, JVM languages, Python, Go, .NET, Rust and more.</p>
+
+      <h3>Pact contract testing example in JavaScript?</h3>
+      <p>Install <code>@pact-foundation/pact</code>. In the consumer, create <code>new PactV4({`{ consumer, provider }`})</code>, then <code>addInteraction().given().uponReceiving().withRequest().willRespondWith().executeTest()</code> with your real API client inside <code>executeTest</code>. In the provider, run <code>new Verifier({`{ providerBaseUrl, pactUrls, stateHandlers }`}).verifyProvider()</code>. The full tested example is above.</p>
+
+      <h3>What is the difference between Pact and contract testing?</h3>
+      <p>Contract testing is the general practice of verifying that two services agree on their interface. Pact is one specific, consumer-driven implementation of it, with its own file format, libraries for many languages, and the Pact Broker for sharing contracts. Spring Cloud Contract and bi-directional (spec-based) contract testing are other approaches.</p>
+
+      <h3>Pact vs Spring Cloud Contract?</h3>
+      <p>Pact is consumer-driven and polyglot: consumers define expectations, any language can take part, and a broker coordinates versions. Spring Cloud Contract is provider-driven and JVM-first: the provider defines contracts, and the tool generates provider tests and WireMock stubs for consumers. Choose Pact for mixed stacks like a JS frontend with a Node or Go backend, and Spring Cloud Contract for Spring-only systems.</p>
+
+      <h3>Do I need a Pact Broker?</h3>
+      <p>Not to start. For one consumer and one provider in a monorepo, pointing the Verifier at the pact file works (that's what we ran). Once teams and repos are separate, a broker (self-hosted Pact Broker or PactFlow) is strongly recommended. It stores versions, records verification results and powers <code>can-i-deploy</code>.</p>
+
+      <h3>What are alternatives to Pact?</h3>
+      <p>Spring Cloud Contract (JVM, provider-driven), OpenAPI-based checks (a Prism validation proxy, Schemathesis, Spectral), PactFlow's bi-directional contract testing, and Microcks for spec-driven mocking and contract tests. Many teams combine schema checks with Pact rather than choosing one.</p>
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/tools/pact/">Pact</a> · <a href="/tools/msw/">MSW</a> · <a href="/tools/prism/">Prism</a> · <a href="/tools/spectral/">Spectral</a></li>
+        <li><a href="/tools/microcks/">Microcks</a> · <a href="/tools/wiremock/">WireMock</a></li>
+        <li><a href="/comparisons/msw-vs-nock/">MSW vs Nock</a> · <a href="/mocking-test-data/">Mocking & test data</a> · <a href="/testing/">Testing</a></li>
+      </ul>
+
+      <NewsletterSignup variant="article" />
+
+      <div class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+        <a href="/guides/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">← Back to Guides</a>
+      </div>
+    </article>
+  </div>
+</Layout>
