@@ -1,55 +1,46 @@
-// This script generates OG cards for guides and comparisons
-// DEPENDENCY: Requires PR #13 (brand assets) to be merged first
-// The og-template.html and Puppeteer setup from PR #13 are prerequisites
-
 import puppeteer from 'puppeteer-core';
-import { writeFileSync, mkdirSync, existsSync } from 'fs';
+import { mkdirSync, existsSync, readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import matter from 'gray-matter';
 
 const OG_GUIDES_DIR = join(process.cwd(), 'public', 'og-guides');
 const OG_COMPARISONS_DIR = join(process.cwd(), 'public', 'og-comparisons');
 
-// Article metadata - sync with actual guide and comparison pages
-const guides = [
-  {
-    slug: 'spec-first-mocking-prism-openapi',
-    title: 'Spec-First Mocking with Prism and OpenAPI',
-    tagline: 'Generate mock servers directly from your OpenAPI specifications using Prism.',
-  },
-  {
-    slug: 'keeping-mocks-honest-pact',
-    title: 'Keeping Mocks Honest with Pact',
-    tagline: 'Use consumer-driven contract testing to ensure your mocks stay in sync with real APIs.',
-  },
-  {
-    slug: 'react-native-mocking-mockifyer',
-    title: 'How to Mock APIs in React Native',
-    tagline: 'Compare MSW, MirageJS, and Mockifyer for mocking HTTP requests in React Native applications.',
-  },
-  {
-    slug: 'realistic-test-data-faker-factories',
-    title: 'Realistic Test Data with Faker and Factories',
-    tagline: 'Create maintainable, realistic test data using Faker and factory patterns with Fishery.',
-  },
-  {
-    slug: 'msw-vs-nock-vs-polly',
-    title: 'MSW vs Nock vs Polly.js',
-    tagline: 'Compare three popular HTTP mocking approaches for JavaScript testing.',
-  },
-];
+interface Article {
+  slug: string;
+  title: string;
+  tagline: string;
+}
 
-const comparisons = [
-  {
-    slug: 'msw-vs-nock',
-    title: 'MSW vs Nock',
-    tagline: 'Choosing between the two most popular HTTP mocking libraries for JavaScript and TypeScript.',
-  },
-  {
-    slug: 'msw-vs-nock-vs-polly',
-    title: 'MSW vs Nock vs Polly.js',
-    tagline: 'Compare MSW, Nock, and Polly.js for HTTP mocking in JavaScript and TypeScript projects.',
-  },
-];
+function loadArticles(): { guides: Article[], comparisons: Article[] } {
+  const articlesDir = join(process.cwd(), 'src', 'content', 'articles');
+  const articleFiles = readdirSync(articlesDir).filter(f => f.endsWith('.md'));
+  const guides: Article[] = [];
+  const comparisons: Article[] = [];
+
+  for (const file of articleFiles) {
+    const filePath = join(articlesDir, file);
+    const content = readFileSync(filePath, 'utf-8');
+    const { data } = matter(content);
+    
+    const slugPath = data.slug as string;
+    const slug = slugPath.split('/').filter(Boolean).pop() || '';
+    
+    const article: Article = {
+      slug,
+      title: data.h1 || data.title,
+      tagline: data.description,
+    };
+    
+    if (slugPath.includes('/guides/')) {
+      guides.push(article);
+    } else if (slugPath.includes('/comparisons/')) {
+      comparisons.push(article);
+    }
+  }
+
+  return { guides, comparisons };
+}
 
 async function generateArticleOGCard(article: any, type: 'guide' | 'comparison', browser: any) {
   const page = await browser.newPage();
@@ -85,7 +76,6 @@ async function generateArticleOGCard(article: any, type: 'guide' | 'comparison',
 }
 
 async function generateAllArticleOGCards() {
-  // Check if og-template.html exists (from PR #13)
   const templatePath = join(process.cwd(), 'public', 'og', 'og-template.html');
   if (!existsSync(templatePath)) {
     console.error('ERROR: og-template.html not found. This script requires PR #13 (brand assets) to be merged first.');
@@ -100,6 +90,7 @@ async function generateAllArticleOGCards() {
     mkdirSync(OG_COMPARISONS_DIR, { recursive: true });
   }
   
+  const { guides, comparisons } = loadArticles();
   console.log(`Generating OG cards for ${guides.length} guides and ${comparisons.length} comparisons...`);
   
   const browser = await puppeteer.launch({

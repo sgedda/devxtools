@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check:og && astro build",
+    "build": "npm run check:og && npm run check:og:articles && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "validate": "tsx scripts/validate-catalog.ts",
@@ -16,6 +16,8 @@
     "test:viewport": "playwright test viewport-overflow.spec.ts",
     "og": "tsx scripts/generate-og-cards.ts",
     "check:og": "tsx scripts/check-og-cards.ts",
+    "og:articles": "tsx scripts/generate-article-og-cards.ts",
+    "check:og:articles": "tsx scripts/check-article-og-cards.ts",
     "postinstall": "node -e \"if (process.env.CF_PAGES) { console.log('Skipping Playwright install on Cloudflare Pages'); process.exit(0); }\" || npx playwright install --with-deps chromium || true"
   },
   "dependencies": {
@@ -23,6 +25,8 @@
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.8",
     "enhanced-resolve": "^5.26.0",
+    "glob": "^13.0.6",
+    "gray-matter": "^4.0.3",
     "yaml": "^2.9.1",
     "zod": "^4.6.7"
   },
