@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8">
+<!-- Parametrized OG card. Use query params: ?kicker=&title=&tagline=&meta=&logo=(tool simple-icons slug, optional)&stars=&license=&cats=
+     Render: chrome --headless --screenshot=out.png --window-size=1200,630 --hide-scrollbars "file:///.../og-template.html?title=..." -->
+<style>@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap");
+*{box-sizing:border-box}html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+body{font-family:Inter,sans-serif;background:#09090b;color:#fafafa;position:relative;padding:64px 72px;display:flex;flex-direction:column}
+.glow{position:absolute;right:-180px;top:-220px;width:720px;height:720px;border-radius:50%;background:radial-gradient(circle,rgba(79,70,229,.45),transparent 65%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.brand{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:800;letter-spacing:-.5px;position:relative}.brand b{color:#818cf8}
+.kicker{margin-top:auto;display:inline-flex;align-self:flex-start;gap:8px;align-items:center;padding:8px 16px;border-radius:999px;background:rgba(129,140,248,.15);color:#a5b4fc;font-size:22px;font-weight:600;position:relative}
+.head{display:flex;align-items:center;gap:28px;margin-top:22px;position:relative}
+.toollogo{width:112px;height:112px;border-radius:24px;background:#fff;display:flex;align-items:center;justify-content:center;flex:none}.toollogo img{width:68px;height:68px}
+h1{font-size:64px;line-height:1.08;font-weight:800;letter-spacing:-2px;margin:0;max-width:1000px}
+p{font-size:28px;line-height:1.4;color:#a1a1aa;margin:20px 0 0;max-width:960px;position:relative}
+.meta{margin-top:auto;display:flex;gap:14px;position:relative;flex-wrap:wrap}.chip{padding:10px 18px;border-radius:12px;background:#18181b;border:1px solid #27272a;font-size:22px;font-weight:500;color:#e4e4e7;display:flex;gap:8px;align-items:center}
+.url{position:absolute;right:72px;top:72px;font-size:22px;color:#71717a}</style></head><body>
+<div class="grid"></div><div class="glow"></div>
+<div class="brand"><svg width="48" height="48" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#818cf8"/><path d="M10 9 L16 16 L10 23 M22 9 L16 16 L22 23" fill="none" stroke="#18181b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>DevX<b>Tools</b></span></div>
+<div class="url">devxtools.dev</div>
+<div class="kicker" id="kicker"></div>
+<div class="head"><div class="toollogo" id="tl" style="display:none"><img id="tli"></div><h1 id="title"></h1></div>
+<p id="tagline"></p>
+<div class="meta" id="meta"></div>
+<script>
+const q=new URLSearchParams(location.search),g=(k,d)=>q.get(k)??d;
+const esc=s=>s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+kicker.textContent=g('kicker','Independent & neutral guide');
+title.textContent=g('title',"The Developer's Guide to API Mocking & Test Data");
+tagline.textContent=g('tagline','Find, compare and pick the right mock servers, HTTP interceptors and test data generators.');
+if(!g('kicker',1))kicker.style.display='none';
+const logo=g('logo','');if(logo){tl.style.display='flex';tli.src='https://cdn.simpleicons.org/'+logo;tli.onerror=()=>{tl.innerHTML='<span style="color:#4f46e5;font:800 56px Inter">'+esc(g('title','?')[0])+'</span>'}}
+const items=[];
+if(g('stars',''))items.push('<svg width="22" height="22" viewBox="0 0 24 24" fill="#facc15"><path d="M12 2l3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></svg>'+esc(g('stars'))+' stars');
+if(g('license',''))items.push('License '+esc(g('license')));
+for(const c of g('cats','').split(',').filter(Boolean))items.push(esc(c));
+for(const m of g('meta',items.length?'':'24 tools · 9 categories · independent & neutral').split('·').map(s=>s.trim()).filter(Boolean))items.push(esc(m));
+meta.innerHTML=items.map(i=>'<span class="chip">'+i+'</span>').join('');
+</script></body></html>
