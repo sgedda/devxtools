@@ -111,20 +111,20 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
         ))}
       </nav>
 
+      {frontmatter.affiliation && (
+        <blockquote class="border-l-4 border-blue-500 pl-4 my-6 bg-blue-50 dark:bg-blue-950/30 p-4">
+          <p class="text-sm">
+            {frontmatter.affiliation}
+          </p>
+        </blockquote>
+      )}
+
       <h1>{displayTitle}</h1>
 
       {frontmatter.tested_with && (
         <blockquote class="border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6">
           <p class="text-sm">
             <strong>Tested with</strong> {frontmatter.tested_with}
-          </p>
-        </blockquote>
-      )}
-
-      {frontmatter.affiliation && (
-        <blockquote class="border-l-4 border-blue-500 pl-4 my-6 bg-blue-50 dark:bg-blue-950/30 p-4">
-          <p class="text-sm">
-            {frontmatter.affiliation}
           </p>
         </blockquote>
       )}

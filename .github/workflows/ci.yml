@@ -45,3 +45,6 @@ jobs:
             exit 1
           fi
           echo "Build successful, dist directory exists"
+      
+      - name: Check H1 counts
+        run: bash scripts/check-h1-counts.sh

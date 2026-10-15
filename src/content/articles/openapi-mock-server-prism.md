@@ -16,7 +16,6 @@ replaces: "src/pages/guides/spec-first-mocking-prism-openapi.astro (noindex stub
 ---
 
 # Spec-First API Mocking: Run an OpenAPI Mock Server with Prism
-
 **An OpenAPI mock server turns your API description into a running HTTP server** so frontends and tests can call real endpoints before the backend exists. Prism, from Stoplight (Apache-2.0), is the CLI most teams reach for: point it at an OpenAPI or Swagger file, or a Postman collection, and it listens on port 4010.
 
 > **Tested with** `@stoplight/prism-cli` 5.16.0 on Node 22.23.3 (2026-10-15). Every curl response below comes from that run against the `users.yaml` in this guide. Mockoon CLI 9.9.0 was used for the comparison. We couldn't run Docker on the test machine; Docker commands follow Stoplight's docs and the `stoplight/prism` tags on Docker Hub. Lint the spec with [Spectral](/tools/spectral/) first. devxtools.dev is independent and has no relationship with Stoplight or SmartBear.
