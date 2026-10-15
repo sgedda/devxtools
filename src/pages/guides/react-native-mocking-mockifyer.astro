@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import Code from '../../components/Code.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -117,13 +118,17 @@ const jsonLd = {
                 </li>
               </ul>
               
-              <pre><code>{`// msw 2.x only: src/mocks/server.js
+              <Code 
+                code={`// msw 2.x only: src/mocks/server.js
 import 'fast-text-encoding';
 import 'react-native-url-polyfill/auto';
 import { setupServer } from 'msw/native';
 import { handlers } from './handlers';
 
-export const server = setupServer(...handlers);`}</code></pre>
+export const server = setupServer(...handlers);`}
+                lang="js"
+                title="src/mocks/server.js"
+              />
               
               <h4>Pros</h4>
               <ul>
