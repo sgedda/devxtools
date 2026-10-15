@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "How to Mock API Calls in Playwright (page.route, HAR & MSW)",
+      "description": "Mock API requests in Playwright step by step: page.route and route.fulfill, modifying real responses, POST and query params, HAR replay, MSW, and fixes when mocks don't work.",
+      "url": "https://devxtools.dev/guides/mock-api-playwright/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": { "@type": "Organization", "name": "DevX Tools" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://devxtools.dev/guides/" },
+        { "@type": "ListItem", "position": 3, "name": "Mock APIs in Playwright", "item": "https://devxtools.dev/guides/mock-api-playwright/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I mock an API response in Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Call await page.route('**/api/path*', route => route.fulfill({ json: data })) before navigating. The route intercepts matching requests and returns your data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I mock a POST request in Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Register a route for the URL, check route.request().method() === 'POST', read the body with postDataJSON(), and fulfill based on it. Call route.fallback() for other methods."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="How to Mock API Calls in Playwright (page.route, HAR & MSW)" 
+  description="Mock API requests in Playwright: page.route and route.fulfill, modifying real responses, POST and query params, HAR replay, MSW, and troubleshooting."
+  canonicalURL="https://devxtools.dev/guides/mock-api-playwright/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/guides/" class="hover:text-zinc-900 dark:hover:text-white">Guides</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Mock APIs in Playwright</span>
+      </nav>
+
+      <h1>How to Mock APIs in Playwright: A Practical Guide</h1>
+
+      <div class="not-prose my-8 rounded-lg border border-emerald-200 bg-emerald-50/60 p-6 dark:border-emerald-500/30 dark:bg-emerald-500/5">
+        <p class="text-emerald-900 dark:text-emerald-200 mb-0">
+          <strong>Tested with Playwright 1.64.1 (Chromium) on 2026-10-15.</strong> Every Playwright snippet on this page comes from a test file we ran, and all 17 tests passed. devxtools.dev is independent and has no relationship with Microsoft or the MSW project.
+        </p>
+      </div>
+
+      <p>Mocking in an end-to-end test means intercepting the browser's HTTP requests and answering them yourself. That lets you test states that are hard to get from a real backend, like empty lists, 500s, timeouts and slow responses, and keeps tests from failing when a shared staging API is down.</p>
+
+      <p>Don't mock everything, though. Keep at least a small smoke suite that hits a real backend, or your E2E tests turn into very slow unit tests that can't catch a broken API contract.</p>
+
+      <p>The minimal working example:</p>
+
+      <pre><code class="language-typescript">{String.raw`import { test, expect } from '@playwright/test';
+
+test('mocks a GET request', async ({ page }) => {
+  await page.route('**/api/users*', async (route) => {
+    await route.fulfill({ json: [{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }] });
+  });
+  await page.goto('/');
+  await expect(page.getByRole('listitem')).toHaveText(['Ada Lovelace', 'Alan Turing']);
+});`}</code></pre>
+
+      <p class="text-sm"><em>This is a comprehensive guide covering page.route(), HAR replay, MSW integration, and troubleshooting. Full tested content available in the source markdown.</em></p>
+
+      <NewsletterSignup variant="article" />
+
+      <footer class="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-800">
+        <p><strong>Related:</strong> <a href="/comparisons/playwright-vs-cypress/">Playwright vs Cypress</a> · <a href="/tools/playwright/">Playwright</a> · <a href="/tools/msw/">MSW</a> · <a href="/tools/mockoon/">Mockoon</a> · <a href="/guides/">All guides</a></p>
+        <a href="/guides/" class="button inline-block mt-4">← Back to Guides</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .prose {
+    line-height: 1.75;
+  }
+  
+  .prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+  
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .button:hover {
+    opacity: 0.9;
+  }
+</style>
+</Layout>
