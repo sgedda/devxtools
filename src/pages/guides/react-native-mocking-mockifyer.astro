@@ -375,6 +375,30 @@ AppRegistry.registerComponent(appName, () => App)</code></pre>
     color: var(--text-secondary);
   }
   
+  .tool-option pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  .tool-option code {
+    font-family: 'Monaco', 'Courier New', monospace;
+    color: var(--text);
+  }
+  
+  .tool-option p code {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.875em;
+  }
+  
   .guide-footer {
     padding-top: 2rem;
     border-top: 1px solid var(--border);
