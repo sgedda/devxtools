@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import Code from '../../components/Code.astro';
+import ReportError from '../../components/ReportError.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -270,6 +271,11 @@ const polly = new Polly('My Test', {
           </ul>
         </div>
       </section>
+      
+      <ReportError 
+        pageTitle="MSW vs Nock vs Polly.js"
+        pageUrl="https://devxtools.dev/comparisons/msw-vs-nock-vs-polly/"
+      />
       
       <NewsletterSignup variant="article" />
       

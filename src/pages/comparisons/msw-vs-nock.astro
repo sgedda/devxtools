@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import Code from '../../components/Code.astro';
+import ReportError from '../../components/ReportError.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -247,6 +248,11 @@ nock('https://api.example.com')
           </a>
         </p>
       </section>
+      
+      <ReportError 
+        pageTitle="MSW vs Nock"
+        pageUrl="https://devxtools.dev/comparisons/msw-vs-nock/"
+      />
       
       <NewsletterSignup variant="article" />
       

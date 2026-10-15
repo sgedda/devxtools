@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ReportError from '../../components/ReportError.astro';
 ---
 
 <Layout 
@@ -34,6 +35,11 @@ import Layout from '../../layouts/Layout.astro';
           </ul>
         </section>
       </div>
+      
+      <ReportError 
+        pageTitle="MSW vs Nock vs Polly.js"
+        pageUrl="https://devxtools.dev/guides/msw-vs-nock-vs-polly/"
+      />
       
       <footer class="guide-footer">
         <a href="/guides/" class="button">← Back to Guides</a>

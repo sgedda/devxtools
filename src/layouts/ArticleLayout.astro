@@ -1,6 +1,7 @@
 ---
 import Layout from './Layout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
+import ReportError from '../components/ReportError.astro';
 
 interface Props {
   frontmatter: {
@@ -128,6 +129,11 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
       )}
 
       <slot />
+
+      <ReportError 
+        pageTitle={displayTitle}
+        pageUrl={frontmatter.canonical}
+      />
 
       <NewsletterSignup />
     </article>
