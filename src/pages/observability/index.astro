@@ -15,11 +15,31 @@ const categoryCount = Object.fromEntries(
     tools.filter(t => t.categories.includes(cat)).length
   ])
 );
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Observability Tools for Developers Compared (2026)",
+  "description": "Compare logging, tracing, error tracking, and network debugging tools for Node.js and React Native apps.",
+  "url": "https://devxtools.dev/observability/",
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": tools.map((tool, index) => ({
+      "@type": "SoftwareApplication",
+      "position": index + 1,
+      "name": tool.name,
+      "url": `https://devxtools.dev/tools/${tool.slug}/`,
+      "description": tool.description,
+      "applicationCategory": "DeveloperApplication"
+    }))
+  }
+};
 ---
 
 <Layout 
-  title="Observability & Logging Tools" 
-  description="Comprehensive guide to error monitoring, distributed tracing, log aggregation, and network debugging tools for production systems."
+  title="Observability Tools for Developers Compared (2026) | DevX Tools" 
+  description="Compare logging, tracing, error tracking, and network debugging tools for Node.js and React Native apps."
+  jsonLd={jsonLd}
 >
   <main class="mx-auto max-w-[1200px] px-5 pt-10">
     <nav class="text-sm text-zinc-500">
@@ -34,14 +54,46 @@ const categoryCount = Object.fromEntries(
         Observability & Logging
       </div>
       
-      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Observability & Logging Tools</h1>
-      <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
-        Tools for monitoring errors, tracing requests across services, aggregating logs, and debugging network traffic in production and development.
-      </p>
+      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Observability Tools for Developers</h1>
+      
+      <div class="mt-4 max-w-3xl text-[16px] leading-7 text-zinc-600 dark:text-zinc-400 space-y-3">
+        <p>
+          Observability tools help you understand what's happening in production and development: where errors occur, how requests flow across services, what your app logs, and what network calls look like. This section covers logging, tracing, error tracking, and debugging tools for Node.js and React Native applications.
+        </p>
+        <p>
+          <strong>Application logging</strong> libraries like pino and Winston structure logs for Node.js apps, with pino prioritizing speed and Winston offering more transports. Both serialize JSON and integrate with log aggregation platforms. Trade-off: pino is faster; Winston has more plugins and flexibility.
+        </p>
+        <p>
+          <strong>Error monitoring</strong> platforms like Sentry and BetterStack capture exceptions, track user sessions, and surface performance issues in production. Sentry has deep JavaScript framework integrations (React, Vue, Next.js) and release tracking. BetterStack (formerly Logtail) combines logs and errors. Choose based on whether you want specialized error tracking (Sentry) or unified logs + errors (BetterStack).
+        </p>
+        <p>
+          <strong>Distributed tracing</strong> via OpenTelemetry or Datadog connects requests across microservices, showing latency and dependencies. OpenTelemetry is vendor-neutral but requires more setup. Datadog is a full observability platform with built-in tracing, logs, and metrics. <strong>Network debugging</strong> tools like Proxyman, Charles, Flipper, and Reactotron inspect HTTP traffic during development, essential for React Native where browser DevTools don't work.
+        </p>
+      </div>
     </div>
 
     <section class="mt-12">
-      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Categories</h2>
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Tools in this section</h2>
+      <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {tools.map(tool => (
+          <a 
+            href={`/tools/${tool.slug}/`}
+            class="group rounded-xl border border-zinc-200 p-4 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+          >
+            <div class="flex items-start gap-3">
+              <ToolLogo tool={tool} size="sm" />
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-zinc-900 dark:text-white">{tool.name}</div>
+                <div class="text-sm text-zinc-500 mt-0.5">{CATEGORY_LABELS[tool.categories[0]]}</div>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-12 pb-20">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Browse by category</h2>
       <div class="mt-6 grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {sectionCategories.map(cat => (
           <a 
@@ -53,53 +105,6 @@ const categoryCount = Object.fromEntries(
             </span>
             <div class="mt-3 font-medium text-zinc-900 dark:text-white">{CATEGORY_LABELS[cat]}</div>
             <div class="text-sm text-zinc-500">{categoryCount[cat]} tools</div>
-          </a>
-        ))}
-      </div>
-    </section>
-
-    <section class="mt-16 pb-20">
-      <div class="flex items-end justify-between">
-        <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">All tools in this section</h2>
-        <a 
-          href="/catalog/?section=observability" 
-          class="text-sm font-medium text-indigo-600 dark:text-indigo-400"
-        >
-          Filter in catalog →
-        </a>
-      </div>
-      
-      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tools.map(tool => (
-          <a 
-            href={`/tools/${tool.slug}/`}
-            class="flex flex-col rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
-          >
-            <div class="flex items-center gap-3">
-              <ToolLogo tool={tool} />
-              <div class="flex-1">
-                <div class="font-semibold text-zinc-900 dark:text-white">{tool.name}</div>
-                <div class="text-sm text-zinc-500">{CATEGORY_LABELS[tool.categories[0]]}</div>
-              </div>
-              {tool.githubStars && (
-                <span class="flex items-center gap-1 text-sm text-zinc-500">
-                  <Icon name="star" size={16} />
-                  {tool.githubStars >= 1000 
-                    ? `${(tool.githubStars / 1000).toFixed(1).replace(/\.0$/, '')}k` 
-                    : tool.githubStars.toLocaleString()}
-                </span>
-              )}
-            </div>
-            <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
-              {tool.description}
-            </p>
-            <div class="mt-4">
-              {tool.license && (
-                <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>
-                  {tool.license}
-                </span>
-              )}
-            </div>
           </a>
         ))}
       </div>
