@@ -7,12 +7,15 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "TechArticle",
-      "headline": "Playwright vs Cypress (2026): Speed, Mocking & When to Use Each",
+      "headline": "Playwright vs Cypress: An Honest Comparison for 2026",
       "description": "Playwright vs Cypress in 2026: architecture, network mocking (page.route vs cy.intercept), MSW, CI cost, debugging, component tests and a migration map.",
       "url": "https://devxtools.dev/comparisons/playwright-vs-cypress/",
       "datePublished": "2026-10-15",
       "dateModified": "2026-10-15",
-      "author": { "@type": "Organization", "name": "DevX Tools" }
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -27,6 +30,14 @@ const jsonLd = {
       "mainEntity": [
         {
           "@type": "Question",
+          "name": "Is Playwright better than Cypress?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Neither is better across the board. Playwright is the stronger fit if you need WebKit, multiple tabs or origins in one test, WebSocket or HAR mocking, languages beyond JS/TS, or free cross-machine parallelism. Cypress is the stronger fit if your team relies on its interactive time-travel runner and Cypress Cloud's dashboard, and mostly tests in Chrome-family browsers. Pick based on those constraints, not on popularity."
+          }
+        },
+        {
+          "@type": "Question",
           "name": "Is Playwright faster than Cypress?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -38,7 +49,39 @@ const jsonLd = {
           "name": "Can Cypress test Safari / WebKit?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Only experimentally. Cypress's WebKit support needs experimentalWebKitSupport and the playwright-webkit package, and it lacks some features. Playwright supports WebKit as a first-class browser."
+            "text": "Only experimentally. Cypress's WebKit support needs experimentalWebKitSupport and the playwright-webkit package, and it lacks some features (for example cy.origin, Test Replay and forceNetworkError). Playwright supports WebKit as a first-class browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which is better for API mocking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For HTTP stubbing they're roughly equal. Playwright also replays HAR files and mocks WebSockets. Cypress has built-in delay/throttle and alias-based waiting. For shared mocks across tools, use MSW or a mock server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Playwright need a paid service for parallel CI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Workers and --shard are built in and free. Cypress needs Cypress Cloud for cross-machine parallelization, and its free Starter plan includes it only until you reach 500 test results in a month. After that, parallelization is disabled until the cycle resets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use MSW with Playwright and Cypress?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. With Playwright, use the official @msw/playwright fixture. It works through page.route(), so no service worker is needed. With Cypress, run MSW's browser worker in the app, or keep MSW for unit tests and use cy.intercept() for E2E."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I migrate from Cypress to Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Only if you hit a concrete limitation (WebKit, multi-tab, WebSockets, CI cost or language). Use the mapping table above and migrate spec by spec."
           }
         }
       ]
@@ -52,7 +95,6 @@ const jsonLd = {
   description="Playwright vs Cypress in 2026: architecture, network mocking (page.route vs cy.intercept), MSW, CI cost, debugging, component tests and a migration map."
   canonicalURL="https://devxtools.dev/comparisons/playwright-vs-cypress/"
   jsonLd={jsonLd}
-  noindex={true}
 >
   <div class="container mx-auto max-w-4xl px-5">
     <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
@@ -77,13 +119,498 @@ const jsonLd = {
 
       <p class="text-sm text-zinc-600 dark:text-zinc-400"><strong>Independence and method.</strong> devxtools.dev has no relationship with Microsoft (Playwright) or Cypress.io. The Playwright snippets on this page were run with <strong>Playwright 1.64.1 on Chromium, 2026-10-15</strong>. The Cypress snippets follow the official <strong>Cypress 16.2</strong> docs and <strong>were not executed</strong> for this edition. Prices and download numbers were checked on 2026-10-15. We didn't run speed benchmarks, so this page doesn't claim either tool is faster.</p>
 
-      <p class="text-sm"><em>This is a comprehensive guide covering architecture, mocking, CI, debugging, and migration. Full content available in the source markdown.</em></p>
+      <h2 id="at-a-glance">At a glance</h2>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Playwright</th>
+              <th>Cypress</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Licence</td>
+              <td>Apache-2.0</td>
+              <td>MIT (app); Cypress Cloud is a paid SaaS with a free tier</td>
+            </tr>
+            <tr>
+              <td>Latest version (2026-10-15)</td>
+              <td>1.64.1</td>
+              <td>16.2.0</td>
+            </tr>
+            <tr>
+              <td>Test languages</td>
+              <td>JavaScript/TypeScript, Python, Java, .NET</td>
+              <td>JavaScript/TypeScript</td>
+            </tr>
+            <tr>
+              <td>Where the test runs</td>
+              <td>Node (or another language) process, driving the browser out of process</td>
+              <td>Inside the browser, next to your app</td>
+            </tr>
+            <tr>
+              <td>Browsers</td>
+              <td>Chromium, Firefox, WebKit</td>
+              <td>Chrome family (Chrome, Chromium, Edge), Firefox (WebDriver BiDi, Firefox 140+); WebKit is experimental; Electron is deprecated</td>
+            </tr>
+            <tr>
+              <td>Multiple tabs / browsers in one test</td>
+              <td>Yes</td>
+              <td>No (multi-tab only via the <code>@cypress/puppeteer</code> plugin)</td>
+            </tr>
+            <tr>
+              <td>Network mocking</td>
+              <td><code>page.route()</code> / <code>context.route()</code>, <code>routeFromHAR()</code>, <code>routeWebSocket()</code></td>
+              <td><code>cy.intercept()</code>, with fixtures, delay and throttling</td>
+            </tr>
+            <tr>
+              <td>WebSocket mocking</td>
+              <td>Yes (<code>routeWebSocket</code>, since v1.48)</td>
+              <td>No frame-level interception</td>
+            </tr>
+            <tr>
+              <td>Parallel CI</td>
+              <td>Built-in workers and <code>--shard</code>, free</td>
+              <td>Needs <code>--record</code> to Cypress Cloud (free Starter plan includes parallelization, but it switches off after 500 test results/month until the cycle resets)</td>
+            </tr>
+            <tr>
+              <td>Debugging</td>
+              <td>Trace viewer, UI mode, codegen, HTML report</td>
+              <td>Interactive runner with time-travel snapshots; Test Replay in Cloud</td>
+            </tr>
+            <tr>
+              <td>Component testing</td>
+              <td>New framework-agnostic "stories" model (v1.62)</td>
+              <td>React, Angular, Vue, Svelte</td>
+            </tr>
+            <tr>
+              <td>GitHub stars (2026-10-15)</td>
+              <td>97,773</td>
+              <td>51,041</td>
+            </tr>
+            <tr>
+              <td>npm weekly downloads (2026-10-06 to 10-12)</td>
+              <td><code>@playwright/test</code> ~76.2M; <code>playwright</code> ~113.6M</td>
+              <td><code>cypress</code> ~5.95M</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Download counts include transitive installs, such as tools that depend on <code>playwright</code>. They show how widely each package is installed, not how many teams pick it for E2E testing.</p>
+
+      <h2 id="architecture">Architecture: why it matters for your tests</h2>
+
+      <p><strong>Cypress runs your test code inside the browser</strong>, in the same run loop as your app. That's why its runner can show live DOM snapshots for every command and why <code>cy.*</code> chains feel synchronous. The trade-offs come from the same design, and Cypress lists them in its docs: one browser per test, no real multi-tab support, and work outside the browser (filesystem, database, Node APIs) goes through <code>cy.task()</code>.</p>
+
+      <p><strong>Playwright runs your test in a separate process</strong> and controls the browser over a protocol, so the test is ordinary async code (<code>await page.click(...)</code>). A single test can open several pages, contexts (isolated sessions) or browsers. That makes logins as two users, OAuth popups and multi-origin flows straightforward. The cost is that you debug through traces and the inspector rather than a live in-app runner.</p>
+
+      <p>For network control, Cypress 16 uses <strong>native CDP interception in Chrome, Chromium and Edge</strong>, and Firefox and WebKit still go through its legacy proxy. Playwright's routing API is the same across Chromium, Firefox and WebKit (with one documented exception: routing service-worker traffic is Chromium-only).</p>
+
+      <h2 id="the-same-test">The same test in both</h2>
+
+      <p>The scenario: the app fetches <code>/api/users</code>. We stub it and check the list renders.</p>
+
+      <p><strong>Playwright</strong> (run on 2026-10-15, passed):</p>
+
+      <pre><code class="language-ts">{`import { test, expect } from '@playwright/test';
+
+test('mocks a GET request', async ({ page }) => {
+  await page.route('**/api/users*', async (route) => {
+    await route.fulfill({ json: [{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }] });
+  });
+  await page.goto('/');
+  await expect(page.getByRole('listitem')).toHaveText(['Ada Lovelace', 'Alan Turing']);
+});`}</code></pre>
+
+      <p><strong>Cypress</strong> (from the docs, not executed):</p>
+
+      <pre><code class="language-js">{`it('mocks a GET request', () => {
+  cy.intercept(
+    { method: 'GET', pathname: '/api/users' },
+    { body: [{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }] },
+  ).as('getUsers');
+  cy.visit('/');
+  cy.wait('@getUsers');
+  cy.get('li').should('have.length', 2).first().should('have.text', 'Ada Lovelace');
+});`}</code></pre>
+
+      <p>Both read cleanly. Cypress's <code>.as()</code> / <code>cy.wait('@alias')</code> makes "wait for this call" explicit. Playwright relies on auto-waiting assertions, and you can use <code>page.waitForResponse()</code> when you need the response itself.</p>
+
+      <h2 id="network-control">Network control and API mocking (the deciding factor for many teams)</h2>
+
+      <h3 id="page-route-vs-cy-intercept"><code>page.route()</code> vs <code>cy.intercept()</code></h3>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Task</th>
+              <th>Playwright</th>
+              <th>Cypress</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Stub JSON</td>
+              <td><code>route.fulfill({`{ json }`})</code></td>
+              <td><code>cy.intercept(url, {`{ body }`})</code></td>
+            </tr>
+            <tr>
+              <td>Serve a fixture file</td>
+              <td><code>route.fulfill({`{ path: 'fixtures/users.json' }`})</code></td>
+              <td><code>{`{ fixture: 'users.json' }`}</code></td>
+            </tr>
+            <tr>
+              <td>Error status</td>
+              <td><code>route.fulfill({`{ status: 500 }`})</code></td>
+              <td><code>{`{ statusCode: 500 }`}</code></td>
+            </tr>
+            <tr>
+              <td>Network failure</td>
+              <td><code>route.abort('failed')</code> (also <code>'timedout'</code>, etc.)</td>
+              <td><code>{`{ forceNetworkError: true }`}</code> (not on WebKit)</td>
+            </tr>
+            <tr>
+              <td>Delay / slow network</td>
+              <td>Your own <code>await</code> before <code>fulfill</code></td>
+              <td><code>delay</code>, <code>throttleKbps</code> built in</td>
+            </tr>
+            <tr>
+              <td>Modify the real response</td>
+              <td><code>route.fetch()</code> then <code>fulfill({`{ response, json }`})</code></td>
+              <td><code>req.continue((res) =&gt; {`{ res.body = … }`})</code></td>
+            </tr>
+            <tr>
+              <td>Match only N times</td>
+              <td><code>{`{ times: 1 }`}</code> (v1.44+)</td>
+              <td><code>{`{ times: 1 }`}</code> in the route matcher</td>
+            </tr>
+            <tr>
+              <td>Precedence</td>
+              <td>Last registered handler runs first; <code>route.fallback()</code> passes on</td>
+              <td>Last defined route matches first; <code>middleware: true</code> routes run first</td>
+            </tr>
+            <tr>
+              <td>Lifetime</td>
+              <td>Per page/context (new for each test by default)</td>
+              <td>Cleared before each test</td>
+            </tr>
+            <tr>
+              <td>URL matching</td>
+              <td>Glob (<code>*</code> doesn't cross <code>/</code>, <code>**</code> does, must match the whole URL), RegExp or a predicate <code>(url) =&gt; boolean</code></td>
+              <td>minimatch glob with <code>matchBase</code>, RegExp, or a route-matcher object (<code>pathname</code>, <code>query</code>, <code>method</code>, …)</td>
+            </tr>
+            <tr>
+              <td>Gotcha</td>
+              <td>Service-worker traffic isn't seen unless you block service workers</td>
+              <td><code>?</code> is a wildcard in globs, so escape it as <code>\\?</code>. <code>cy.request()</code> calls aren't intercepted</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>A failure-then-recovery test shows the APIs side by side.</p>
+
+      <p><strong>Playwright</strong> (run on 2026-10-15, passed):</p>
+
+      <pre><code class="language-ts">{`test('fail once, then succeed', async ({ page }) => {
+  await page.route('**/api/users*', (route) => route.fulfill({ json: [{ name: 'Recovered' }] }));
+  await page.route('**/api/users*', (route) => route.fulfill({ status: 503 }), { times: 1 });
+  await page.goto('/');
+  await expect(page.locator('#status')).toHaveText('Error 503');
+  await page.reload();
+  await expect(page.getByRole('listitem')).toHaveText(['Recovered']);
+});`}</code></pre>
+
+      <p><strong>Cypress</strong> (pattern from the <code>cy.intercept</code> docs, not executed):</p>
+
+      <pre><code class="language-js">{`it('fail once, then succeed', () => {
+  cy.intercept('GET', '/api/users', { body: [{ name: 'Recovered' }] });
+  cy.intercept({ method: 'GET', url: '/api/users', times: 1 }, { statusCode: 503 });
+  cy.visit('/');
+  cy.contains('Error 503');
+  cy.reload();
+  cy.contains('li', 'Recovered');
+});`}</code></pre>
+
+      <h3 id="har-replay-websockets">HAR replay and WebSockets</h3>
+
+      <p>Playwright can <strong>record and replay HAR files</strong>:</p>
+
+      <pre><code class="language-ts">{`await page.routeFromHAR('hars/users.har', {
+  url: '**/api/**',
+  update: !!process.env.UPDATE_HAR, // record when UPDATE_HAR=1, replay otherwise
+  updateContent: 'embed',
+});`}</code></pre>
+
+      <p>Matching is strict on URL and method (and on the body for POST requests). Unmatched requests are aborted by default, or passed through with <code>notFound: 'fallback'</code>. Cypress has no built-in HAR replay. You'd use fixtures or a plugin.</p>
+
+      <p>Playwright also mocks <strong>WebSockets</strong> with <code>page.routeWebSocket()</code>. <code>cy.intercept()</code> doesn't intercept WebSocket frames. If your app is real-time, that difference alone may decide it.</p>
+
+      <h3 id="using-msw">Using MSW with each</h3>
+
+      <p><a href="/tools/msw/">MSW</a> lets you share one set of request handlers across unit tests, Storybook, local development and E2E.</p>
+
+      <ul>
+        <li><strong>Playwright:</strong> the official <code>@msw/playwright</code> package (0.7.0) plugs your MSW handlers into a fixture. Under the hood it uses <code>page.route()</code>/<code>context.route()</code>, so no service worker is involved. We ran this on 2026-10-15:</li>
+      </ul>
+
+      <pre><code class="language-ts">{`// tests/msw.setup.ts
+import { test as testBase } from '@playwright/test';
+import type { AnyHandler } from 'msw';
+import { defineNetworkFixture, type NetworkFixture } from '@msw/playwright';
+import { handlers } from '../mocks/handlers';
+
+export const test = testBase.extend<{ handlers: AnyHandler[]; network: NetworkFixture }>({
+  handlers: [handlers, { option: true }],
+  network: [async ({ context, handlers }, use) => {
+    const network = defineNetworkFixture({ context, handlers });
+    await network.enable();
+    await use(network);
+    await network.disable();
+  }, { auto: true }],
+});`}</code></pre>
+
+      <p>Override per test with <code>network.use(http.get('*/api/users', () =&gt; HttpResponse.json([], {`{ status: 500 }`})))</code>. Note that msw 3.x declares Node 22.12+ in its <code>engines</code> field and is ESM-only.</p>
+
+      <ul>
+        <li><strong>Cypress:</strong> there's no official MSW adapter. The common pattern is to start MSW's browser worker inside the app under test (for example, in a dev or test build). A service worker that answers requests hides them from <code>cy.intercept()</code>, so pick one mocking layer per request. In practice, many Cypress teams use <code>cy.intercept()</code> with fixtures for E2E and keep MSW for unit tests and Storybook.</li>
+      </ul>
+
+      <h3 id="mock-servers">Mock servers (framework-agnostic)</h3>
+
+      <p>When the mock needs to be shared by several apps, stateful, or contract-driven, run a server and point both tools at it: <a href="/tools/mockoon/">Mockoon</a> (desktop app plus CLI), <a href="/tools/wiremock/">WireMock</a> (stateful scenarios, record/playback) or <a href="/tools/prism/">Prism</a> (mocks from an OpenAPI spec, default port 4010). This works the same with Playwright and Cypress. Use a <code>webServer</code> entry in <code>playwright.config.ts</code>, or start the mock in CI before <code>cypress run</code>.</p>
+
+      <p>For a deep dive on the Playwright side, see <a href="/guides/mock-api-playwright/">How to mock APIs in Playwright</a>.</p>
+
+      <h2 id="ci">Running in CI: parallelism and cost</h2>
+
+      <p><strong>Playwright:</strong> parallel workers on one machine are built in, and you split across machines with <code>--shard</code>:</p>
+
+      <pre><code class="language-yaml">{`# GitHub Actions matrix: 4 machines, no paid service
+strategy:
+  matrix:
+    shard: [1/4, 2/4, 3/4, 4/4]
+steps:
+  - run: npx playwright install --with-deps
+  - run: npx playwright test --shard=\${{ matrix.shard }}`}</code></pre>
+
+      <p>Merge the shard reports afterwards with <code>npx playwright merge-reports</code>. There's no hosted dashboard, so flake tracking and history are up to you or a third-party service.</p>
+
+      <p><strong>Cypress:</strong> <code>cypress run</code> is free and open source, but <strong>parallelizing across machines requires recording to Cypress Cloud</strong> (<code>cypress run --record --parallel</code>). Cypress Cloud plans (checked 2026-10-15):</p>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Plan</th>
+              <th>Price</th>
+              <th>Includes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Starter</td>
+              <td>Free</td>
+              <td>10 users, 500 test results/month, parallelization (disabled once the 500 results are used, until the cycle resets), load balancing, Test Replay</td>
+            </tr>
+            <tr>
+              <td>Team</td>
+              <td>$799/year ($67/month)</td>
+              <td>50 users, 120K results/year, flake detection</td>
+            </tr>
+            <tr>
+              <td>Business</td>
+              <td>$3,199/year ($267/month)</td>
+              <td>Adds SSO, spec prioritization, auto-cancellation</td>
+            </tr>
+            <tr>
+              <td>Enterprise</td>
+              <td>Custom</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Once an organization hits its test-result limit, Cypress's FAQ says recorded runs still execute, but <strong>parallelization is disabled</strong> and new results are hidden from the dashboard until you upgrade or the usage cycle resets. The pricing page lists extra on-demand results at $6 per 1,000. A suite of 300 tests run 20 times a month is 6,000 results, which is well beyond the free tier. Do the maths for your own suite before you commit.</p>
+
+      <h2 id="debugging">Debugging and developer experience</h2>
+
+      <ul>
+        <li><strong>Cypress:</strong> the interactive runner is still its standout feature. You hover over each command to see the DOM at that moment, and the network log sits next to it. Test Replay (Cloud) brings a similar experience to CI failures.</li>
+        <li><strong>Playwright:</strong> the <strong>trace viewer</strong> records actions, DOM snapshots, network and console for each test, and it's usually enabled on first retry in CI. <strong>UI mode</strong> (<code>npx playwright test --ui</code>) adds watch mode and time-travel locally, and <strong>codegen</strong> (<code>npx playwright codegen</code>) records locators. Everything runs locally for free.</li>
+      </ul>
+
+      <p>Both auto-wait and retry assertions. Playwright's <code>getByRole</code>-style locators and web-first assertions nudge you toward accessible selectors. Cypress commonly uses <code>cy.get()</code> with <code>data-cy</code> attributes or <code>cy.contains()</code>.</p>
+
+      <h2 id="component-testing">Component testing</h2>
+
+      <ul>
+        <li><strong>Cypress Component Testing</strong> supports React, Angular, Vue and Svelte. It mounts components in a real browser with the same runner UI as E2E.</li>
+        <li><strong>Playwright</strong> replaced its old experimental <code>@playwright/experimental-ct-*</code> packages in <strong>v1.62</strong> with a new framework-agnostic "stories" model: you write stories, a gallery serves them, and tests use a <code>mount</code> fixture. If you tried the experimental version before and gave up, look again, but expect a different setup.</li>
+      </ul>
+
+      <p>If your component tests already live in Vitest or Jest with Testing Library, you may not need either.</p>
+
+      <h2 id="mobile-testing">Mobile testing</h2>
+
+      <p>Neither tool tests <strong>native</strong> mobile apps. Both can emulate mobile viewports for responsive web: Playwright with device descriptors (viewport, user agent, touch), Cypress with <code>cy.viewport()</code>. Playwright can also run WebKit, the engine behind Safari, which is the closer check for iOS web. For native or React Native apps, use <a href="/tools/detox/">Detox</a> (gray-box testing for React Native, with JS tests) or <a href="/tools/maestro/">Maestro</a> (YAML flows for Android and iOS).</p>
+
+      <h2 id="load-testing">Load testing is a different job</h2>
+
+      <p>Neither tool is a load tester. For API load, use <a href="/tools/k6/">k6</a> or similar, and keep your browser suite focused on correctness.</p>
+
+      <h2 id="migrating">Migrating from Cypress to Playwright (mapping table)</h2>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Cypress</th>
+              <th>Playwright</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cy.visit('/')</code></td>
+              <td><code>await page.goto('/')</code></td>
+            </tr>
+            <tr>
+              <td><code>cy.get('[data-cy=save]')</code></td>
+              <td><code>page.locator('[data-cy=save]')</code> or <code>page.getByTestId('save')</code> (set <code>testIdAttribute: 'data-cy'</code>)</td>
+            </tr>
+            <tr>
+              <td><code>cy.contains('Save')</code></td>
+              <td><code>page.getByText('Save')</code></td>
+            </tr>
+            <tr>
+              <td><code>.click()</code> / <code>.type('x')</code></td>
+              <td><code>await locator.click()</code> / <code>await locator.fill('x')</code></td>
+            </tr>
+            <tr>
+              <td><code>.should('have.text', 'x')</code></td>
+              <td><code>await expect(locator).toHaveText('x')</code></td>
+            </tr>
+            <tr>
+              <td><code>.should('be.visible')</code></td>
+              <td><code>await expect(locator).toBeVisible()</code></td>
+            </tr>
+            <tr>
+              <td><code>cy.intercept(url, {`{ body }`})</code></td>
+              <td><code>await page.route(url, r =&gt; r.fulfill({`{ json }`}))</code></td>
+            </tr>
+            <tr>
+              <td><code>cy.intercept(...).as('a'); cy.wait('@a')</code></td>
+              <td><code>const resp = page.waitForResponse(url); … await resp</code></td>
+            </tr>
+            <tr>
+              <td><code>{`{ fixture: 'users.json' }`}</code></td>
+              <td><code>route.fulfill({`{ path: 'fixtures/users.json' }`})</code></td>
+            </tr>
+            <tr>
+              <td><code>{`{ forceNetworkError: true }`}</code></td>
+              <td><code>route.abort('failed')</code></td>
+            </tr>
+            <tr>
+              <td><code>cy.request()</code></td>
+              <td><code>request</code> fixture (<code>await request.get(url)</code>)</td>
+            </tr>
+            <tr>
+              <td><code>cy.task()</code></td>
+              <td>Plain Node code in the test or a fixture</td>
+            </tr>
+            <tr>
+              <td><code>beforeEach</code> + custom commands</td>
+              <td><code>test.beforeEach</code> + fixtures (<code>test.extend</code>)</td>
+            </tr>
+            <tr>
+              <td><code>cy.session()</code></td>
+              <td><code>storageState</code> (log in once in a setup project)</td>
+            </tr>
+            <tr>
+              <td><code>cy.viewport(375, 667)</code></td>
+              <td><code>test.use({`{ viewport: { width: 375, height: 667 } }`})</code> or a device descriptor</td>
+            </tr>
+            <tr>
+              <td><code>cypress run --record --parallel</code></td>
+              <td><code>npx playwright test --shard=1/4</code> (plus workers)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The mental shift is from chained, implicitly queued commands to explicit <code>await</code>. Migrate a spec at a time. Both tools can run in the same CI pipeline during the switch.</p>
+
+      <h2 id="verdict">Verdict</h2>
+
+      <ul>
+        <li><strong>Playwright</strong> is the safer default for <strong>new</strong> projects that need broad browser coverage (especially WebKit), multi-page flows, WebSocket or HAR-based mocking, free self-hosted parallelism, or non-JavaScript languages.</li>
+        <li><strong>Cypress</strong> remains a good choice for teams that value its interactive runner and Cloud dashboard, test mostly in Chrome-family browsers, and don't hit its architectural limits (multiple tabs, WebSockets, WebKit). If your Cypress suite is stable, migrating costs real time. Do it because of a specific limitation you hit, not because of a trend.</li>
+      </ul>
+
+      <p>Still undecided? Use the <a href="/picker/">tool picker</a>, browse the <a href="/testing/">testing hub</a>, or see all <a href="/comparisons/">comparisons</a>.</p>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>Is Playwright better than Cypress?</h3>
+      <p>Neither is better across the board. Playwright is the stronger fit if you need WebKit, multiple tabs or origins in one test, WebSocket or HAR mocking, languages beyond JS/TS, or free cross-machine parallelism. Cypress is the stronger fit if your team relies on its interactive time-travel runner and Cypress Cloud's dashboard, and mostly tests in Chrome-family browsers. Pick based on those constraints, not on popularity.</p>
+
+      <h3>Is Playwright faster than Cypress?</h3>
+      <p>We didn't benchmark them, and published benchmarks vary a lot with suite design. Playwright's free sharding and multi-worker runs often reduce wall-clock time in CI without a paid service. Measure on your own suite.</p>
+
+      <h3>Can Cypress test Safari / WebKit?</h3>
+      <p>Only experimentally. Cypress's WebKit support needs <code>experimentalWebKitSupport</code> and the <code>playwright-webkit</code> package, and it lacks some features (for example <code>cy.origin</code>, Test Replay and <code>forceNetworkError</code>). Playwright supports WebKit as a first-class browser.</p>
+
+      <h3>Which is better for API mocking?</h3>
+      <p>For HTTP stubbing they're roughly equal. Playwright also replays HAR files and mocks WebSockets. Cypress has built-in delay/throttle and alias-based waiting. For shared mocks across tools, use MSW or a mock server.</p>
+
+      <h3>Does Playwright need a paid service for parallel CI?</h3>
+      <p>No. Workers and <code>--shard</code> are built in and free. Cypress needs Cypress Cloud for cross-machine parallelization, and its free Starter plan includes it only until you reach 500 test results in a month. After that, parallelization is disabled until the cycle resets.</p>
+
+      <h3>Can I use MSW with Playwright and Cypress?</h3>
+      <p>Yes. With Playwright, use the official <code>@msw/playwright</code> fixture. It works through <code>page.route()</code>, so no service worker is needed. With Cypress, run MSW's browser worker in the app, or keep MSW for unit tests and use <code>cy.intercept()</code> for E2E.</p>
+
+      <h3>Should I migrate from Cypress to Playwright?</h3>
+      <p>Only if you hit a concrete limitation (WebKit, multi-tab, WebSockets, CI cost or language). Use the mapping table above and migrate spec by spec.</p>
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/guides/mock-api-playwright/">How to mock APIs in Playwright</a></li>
+        <li><a href="/tools/playwright/">Playwright</a> · <a href="/tools/cypress/">Cypress</a> · <a href="/tools/msw/">MSW</a> · <a href="/tools/mockoon/">Mockoon</a> · <a href="/tools/wiremock/">WireMock</a> · <a href="/tools/prism/">Prism</a></li>
+        <li><a href="/tools/detox/">Detox</a> · <a href="/tools/maestro/">Maestro</a> · <a href="/tools/k6/">k6</a></li>
+        <li><a href="/testing/">Testing hub</a> · <a href="/comparisons/">All comparisons</a> · <a href="/picker/">Tool picker</a></li>
+      </ul>
+
+      <hr />
+
+      <h2 id="sources">Sources (checked 2026-10-15)</h2>
+
+      <ul class="text-sm text-zinc-600 dark:text-zinc-400">
+        <li>Playwright release notes (1.44 <code>times</code>, 1.48 <code>routeWebSocket</code>, 1.62 component testing): https://playwright.dev/docs/release-notes</li>
+        <li>Playwright <code>Route</code> / <code>Page.route</code> / <code>BrowserContext.route</code> / <code>routeFromHAR</code>: https://playwright.dev/docs/api/class-route · https://playwright.dev/docs/api/class-page · https://playwright.dev/docs/api/class-browsercontext · https://playwright.dev/docs/mock</li>
+        <li>Playwright service workers: https://playwright.dev/docs/service-workers · sharding: https://playwright.dev/docs/test-sharding · languages: https://playwright.dev/docs/languages · component testing: https://playwright.dev/docs/test-components</li>
+        <li>Playwright repo (Apache-2.0, stars, 1.64.1): https://github.com/microsoft/playwright</li>
+        <li>Cypress <code>cy.intercept</code>: https://docs.cypress.io/api/commands/intercept</li>
+        <li>Cypress browsers (Firefox BiDi, WebKit experimental, Electron deprecation): https://docs.cypress.io/app/references/launching-browsers</li>
+        <li>Cypress trade-offs: https://docs.cypress.io/app/references/trade-offs</li>
+        <li>Cypress parallelization: https://docs.cypress.io/cloud/features/smart-orchestration/parallelization</li>
+        <li>Cypress Cloud pricing: https://www.cypress.io/pricing · test-result limit behaviour: https://docs.cypress.io/cloud/faq</li>
+        <li>Cypress repo (MIT, stars, 16.2.0): https://github.com/cypress-io/cypress</li>
+        <li><code>@msw/playwright</code>: https://github.com/mswjs/playwright · MSW: https://mswjs.io/ · https://github.com/mswjs/msw</li>
+        <li>npm downloads: https://api.npmjs.org/downloads/point/last-week/@playwright/test (also <code>playwright</code>, <code>cypress</code>)</li>
+        <li>Our runs: Playwright 1.64.1 (Chromium), msw 3.0.3, @msw/playwright 0.7.0, Node 22.23.3, Linux, 2026-10-15 (17/17 tests passed; also passed on Node 20.19.2, despite @msw/playwright 0.7.0 declaring Node 22+ and msw 3 declaring Node &gt;=22.12)</li>
+      </ul>
 
       <NewsletterSignup variant="article" />
 
       <footer class="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-800">
-        <p><strong>Related:</strong> <a href="/guides/mock-api-playwright/">How to mock APIs in Playwright</a> · <a href="/tools/playwright/">Playwright</a> · <a href="/tools/cypress/">Cypress</a> · <a href="/comparisons/">All comparisons</a></p>
-        <a href="/comparisons/" class="button inline-block mt-4">← Back to Comparisons</a>
+        <a href="/comparisons/" class="button inline-block">← Back to Comparisons</a>
       </footer>
     </article>
   </div>
@@ -97,7 +624,100 @@ const jsonLd = {
   .prose h1 {
     font-size: 2.25rem;
     font-weight: 700;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose ul, .prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose strong {
+    font-weight: 600;
+  }
+  
+  .prose code {
+    background: var(--bg-secondary);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  
+  .prose pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+  }
+  
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .prose thead {
+    background: var(--bg);
+  }
+  
+  .prose th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  
+  .prose a:hover {
+    opacity: 0.8;
   }
   
   .button {
@@ -116,4 +736,3 @@ const jsonLd = {
     opacity: 0.9;
   }
 </style>
-</Layout>
