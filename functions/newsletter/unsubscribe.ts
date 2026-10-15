@@ -13,14 +13,14 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const token = url.searchParams.get('token');
 
   if (!token || !validateTokenFormat(token)) {
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 
   try {
     const email = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     
     if (!email) {
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
 
     const escapedToken = escapeHtml(token);
@@ -144,7 +144,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
 
   } catch (error) {
     console.error('Newsletter unsubscribe error:', error);
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 };
 
@@ -180,14 +180,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     if (isOneClickUnsubscribe) {
       return new Response('', { status: 200 });
     }
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 
   if (!validateTokenFormat(token)) {
     if (isOneClickUnsubscribe) {
       return new Response('', { status: 200 });
     }
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 
   try {
@@ -197,7 +197,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       if (isOneClickUnsubscribe) {
         return new Response('', { status: 200 });
       }
-      return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+      return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
     }
 
     const updateResponse = await fetch(`https://api.resend.com/contacts/${encodeURIComponent(email)}`, {
@@ -219,13 +219,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       return new Response('', { status: 200 });
     }
 
-    return Response.redirect(new URL('/newsletter/unsubscribed', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/unsubscribed/', url.origin).toString(), 302);
 
   } catch (error) {
     console.error('Newsletter unsubscribe error:', error);
     if (isOneClickUnsubscribe) {
       return new Response('', { status: 200 });
     }
-    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+    return Response.redirect(new URL('/newsletter/expired/', url.origin).toString(), 302);
   }
 };

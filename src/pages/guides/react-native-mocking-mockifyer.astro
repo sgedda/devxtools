@@ -16,7 +16,7 @@ const jsonLd = {
       "description": "Compare MSW, MirageJS, and Mockifyer for mocking HTTP requests in React Native applications.",
       "url": "https://devxtools.dev/guides/react-native-mocking-mockifyer/",
       "datePublished": "2026-10-14",
-      "dateModified": "2026-10-14",
+      "dateModified": "2026-10-15",
       "author": {
         "@type": "Organization",
         "name": "DevX Tools"
@@ -73,9 +73,14 @@ const jsonLd = {
         <section>
           <h2>The Challenge</h2>
           <p>
-            Mocking HTTP requests in React Native presents unique challenges. Unlike web development where 
-            you can use Service Workers (MSW's browser approach), React Native runs in a JavaScript environment 
-            without browser APIs. You need tools that work with React Native's networking layer.
+            Mocking HTTP requests in React Native is different from the web. There's no Service Worker,
+            and React Native lacks some standard APIs (such as a spec-compliant <code>URL</code>) that
+            mocking libraries rely on. You need a tool that hooks into React Native's
+            <code>fetch</code>/<code>XMLHttpRequest</code>, or you point the app at a separate mock server.
+          </p>
+          <p class="update-note">
+            <strong>Updated 2026-10-15:</strong> MSW 3 changed how React Native is supported. See the MSW
+            section below before you install anything.
           </p>
         </section>
         
@@ -89,23 +94,49 @@ const jsonLd = {
               
               <h4>How it works in React Native</h4>
               <p>
-                MSW's Node.js adapter can intercept HTTP requests in React Native by patching global fetch 
-                and XMLHttpRequest. Works out of the box in most React Native setups.
+                In <strong>Jest tests</strong>, use MSW's regular Node.js integration (<code>setupServer</code>
+                from <code>msw/node</code>). That works in React Native projects because Jest runs in Node.
               </p>
+              <p>
+                In the <strong>running app</strong> (simulator or device), the situation changed with MSW 3.0
+                (released 2026-09-28). MSW 3 removed the <code>msw/native</code> export, and MSW's docs now point
+                to a new <code>@msw/react-native</code> package. As of 2026-10-15, though,
+                <strong><code>@msw/react-native</code> isn't published on npm</strong>, so
+                <code>npm install @msw/react-native</code> fails with a 404. Until it ships, you have two options:
+              </p>
+              <ul>
+                <li>
+                  <strong>Pin MSW 2</strong> (<code>msw@2.15.0</code> is the last 2.x release) and use
+                  <code>setupServer</code> from <code>msw/native</code>, with the polyfills MSW 2's docs listed:
+                  <code>react-native-url-polyfill</code> and <code>fast-text-encoding</code>, imported before MSW.
+                </li>
+                <li>
+                  <strong>Point the app at a mock server</strong> (Mockoon, Prism or WireMock) through your API
+                  base URL. On the Android emulator, the host machine is <code>10.0.2.2</code>, not
+                  <code>localhost</code>.
+                </li>
+              </ul>
+              
+              <pre><code>{`// msw 2.x only: src/mocks/server.js
+import 'fast-text-encoding';
+import 'react-native-url-polyfill/auto';
+import { setupServer } from 'msw/native';
+import { handlers } from './handlers';
+
+export const server = setupServer(...handlers);`}</code></pre>
               
               <h4>Pros</h4>
               <ul>
-                <li>Same API you'd use in web apps</li>
-                <li>Large community and excellent documentation</li>
-                <li>Active development and maintenance</li>
-                <li>Works with Expo and bare React Native</li>
+                <li>The same handlers you use in web apps and Node tests</li>
+                <li>Large community and good documentation</li>
+                <li>The Jest/Node integration is unaffected by the React Native changes</li>
               </ul>
               
               <h4>Cons</h4>
               <ul>
-                <li>No built-in record/replay functionality</li>
-                <li>All mocks must be written manually</li>
-                <li>Can be tricky with some native networking libraries</li>
+                <li>In-app use currently means staying on MSW 2 (MSW 3's React Native package isn't on npm yet)</li>
+                <li>MSW's docs label the React Native integration "use at your own risk"</li>
+                <li>No built-in record/replay; all mocks are written by hand</li>
               </ul>
               
               <p><a href="/tools/msw/">Learn more about MSW →</a></p>
@@ -152,7 +183,7 @@ const jsonLd = {
               <h4>Pros</h4>
               <ul>
                 <li>Record real API responses (no manual mock writing)</li>
-                <li>Built specifically for React Native</li>
+                <li>Works with axios and fetch in Node and React Native/Expo (per its README; built by this site's maintainer)</li>
                 <li>Lightweight and simple API</li>
                 <li>Great for prototyping and demos</li>
               </ul>
@@ -175,10 +206,9 @@ const jsonLd = {
           <div class="recommendation-card">
             <h3>Choose MSW if...</h3>
             <ul>
-              <li>You're already using MSW in your web app and want consistency</li>
-              <li>You need a well-documented, widely-adopted solution</li>
-              <li>You're comfortable writing mocks manually</li>
-              <li>You want the largest community and best long-term support</li>
+              <li>You already use MSW handlers in your web app or Jest tests and want to reuse them</li>
+              <li>You're comfortable writing mocks by hand</li>
+              <li>For the running app, you're OK pinning MSW 2 until <code>@msw/react-native</code> is published</li>
             </ul>
           </div>
           
@@ -198,20 +228,17 @@ const jsonLd = {
               <li>You want to record real API traffic and replay it</li>
               <li>You prefer minimal mock writing (capture real responses)</li>
               <li>You're building demos or need offline mode</li>
-              <li>You want something built specifically for React Native</li>
+              <li>You want React Native/Expo record/replay with mocks stored as JSON in your repo</li>
             </ul>
           </div>
         </section>
         
         <section>
-          <h2>Coming Soon</h2>
-          <p>This guide will be expanded with:</p>
-          <ul>
-            <li>Step-by-step setup for each tool</li>
-            <li>Code examples and best practices</li>
-            <li>Integration with popular testing frameworks (Jest, Detox)</li>
-            <li>Handling authentication and dynamic data</li>
-          </ul>
+          <h2>More detail</h2>
+          <p>
+            For side-by-side MSW and Nock code, including MSW 3's breaking changes, see
+            <a href="/comparisons/msw-vs-nock/">MSW vs Nock</a>.
+          </p>
         </section>
       </div>
       
@@ -283,6 +310,20 @@ const jsonLd = {
   .guide-content p {
     line-height: 1.8;
     margin-bottom: 1rem;
+  }
+  
+  .update-note {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--warning);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .update-note strong {
+    color: var(--text);
   }
   
   .tool-comparison {
@@ -357,6 +398,30 @@ const jsonLd = {
   .guide-content li {
     margin-bottom: 0.75rem;
     color: var(--text-secondary);
+  }
+  
+  .tool-option pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  
+  .tool-option code {
+    font-family: 'Monaco', 'Courier New', monospace;
+    color: var(--text);
+  }
+  
+  .tool-option p code {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    padding: 0.125rem 0.375rem;
+    border-radius: 3px;
+    font-size: 0.875em;
   }
   
   .guide-footer {
