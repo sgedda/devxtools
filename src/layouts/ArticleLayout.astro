@@ -113,9 +113,7 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
 
       {frontmatter.affiliation && (
         <blockquote class="border-l-4 border-blue-500 pl-4 my-6 bg-blue-50 dark:bg-blue-950/30 p-4">
-          <p class="text-sm">
-            {frontmatter.affiliation}
-          </p>
+          <p class="text-sm" set:html={frontmatter.affiliation.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')} />
         </blockquote>
       )}
 

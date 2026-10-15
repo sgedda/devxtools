@@ -14,7 +14,6 @@ tested_with: "OpenTelemetry Collector Contrib 0.162.0 (config validation plus a 
 tools: ["datadog", "opentelemetry", "grafana-loki", "sentry", "betterstack", "pino", "winston"]
 ---
 
-# Datadog Alternatives: Open-Source and Cheaper Options by Job
 **The best Datadog alternatives depend on which Datadog job you're replacing: APM and tracing, logs, infrastructure metrics, error tracking, RUM or uptime.** No single tool is cheapest at all six. This guide maps an open-source and a SaaS option to each job, explains the pricing models that drive the bill, and shows how to move with OpenTelemetry so you only change backends once.
 
 > **Tested with** OpenTelemetry Collector Contrib 0.162.0, Prometheus 3.15.0 and the OpenTelemetry Node SDK 0.223.0 on Node 22.23.3 (2026-10-15). We validated the Collector configs on this page and sent OTLP metrics from a Node service into Prometheus on our test machine. We did **not** run a production trial of any vendor below. Prices come from vendor pricing pages on 2026-10-15. devxtools.dev is independent, has no affiliate or sponsorship deal with any observability vendor, and none of them reviewed this page.
