@@ -189,7 +189,7 @@ const jsonLd = {
 
       <p>This is the request from our test collection. We ran it with <code>bru run</code> on 2026-10-15:</p>
 
-      <pre><code>meta {
+      <pre><code>{`meta {
   name: List users
   type: http
   seq: 1
@@ -213,7 +213,7 @@ tests {
   test("returns users", function () {
     expect(res.getBody()).to.be.an("array");
   });
-}</code></pre>
+}`}</code></pre>
 
       <p>That's the original <code>.bru</code> markup. Since <strong>Bruno v3.1</strong>, new and imported collections are saved as <strong>OpenCollection YAML</strong> by default (<code>opencollection.yml</code> at the root, one <code>.yml</code> per request). Existing <code>.bru</code> collections keep working, and Bruno v4.1+ has a "Migrate to YML" button. One collection can't mix the two formats.</p>
 
@@ -262,7 +262,7 @@ tests {
 
       <p><strong>Bruno:</strong></p>
 
-      <pre><code class="language-yaml">jobs:
+      <pre><code class="language-yaml">{`jobs:
   bruno:
     runs-on: ubuntu-latest
     steps:
@@ -271,13 +271,13 @@ tests {
         with: { node-version: 22 }
       - run: npm i -g @usebruno/cli
       - run: bru run --env ci --reporter-junit results.xml
-        working-directory: ./api-collection</code></pre>
+        working-directory: ./api-collection`}</code></pre>
 
       <p>Bruno also publishes an official action, <code>usebruno/bruno-cli-action@v1</code>. It installs the CLI, runs your <code>bru</code> command, adds <code>--reporter-junit</code> automatically if you leave it out, and exposes <code>passed</code>, <code>failed</code> and <code>total</code> as step outputs.</p>
 
       <p><strong>Postman, with Newman and an exported v2.1 collection:</strong></p>
 
-      <pre><code class="language-yaml">jobs:
+      <pre><code class="language-yaml">{`jobs:
   newman:
     runs-on: ubuntu-latest
     steps:
@@ -288,7 +288,7 @@ tests {
       - run: >
           newman run postman_collection.json
           -e ci.postman_environment.json
-          -r cli,junit --reporter-junit-export results.xml</code></pre>
+          -r cli,junit --reporter-junit-export results.xml`}</code></pre>
 
       <p>Two Postman details that matter in 2026:</p>
 
