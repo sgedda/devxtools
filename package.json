@@ -7,10 +7,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check:og && npm run check:og:articles && astro build",
+    "build": "npm run check:og && npm run check:og:articles && astro build && npm run validate:llms-txt",
     "preview": "astro preview",
     "astro": "astro",
     "validate": "tsx scripts/validate-catalog.ts",
+    "validate:llms-txt": "tsx scripts/validate-llms-txt.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:viewport": "playwright test viewport-overflow.spec.ts",
