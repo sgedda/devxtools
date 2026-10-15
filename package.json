@@ -13,7 +13,8 @@
     "validate": "tsx scripts/validate-catalog.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:viewport": "playwright test viewport-overflow.spec.ts"
+    "test:viewport": "playwright test viewport-overflow.spec.ts",
+    "postinstall": "node -e \"if (process.env.CF_PAGES) { console.log('Skipping Playwright install on Cloudflare Pages'); process.exit(0); }\" || npx playwright install --with-deps chromium || true"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
