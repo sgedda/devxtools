@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "name": "About devxtools.dev",
+      "url": "https://devxtools.dev/about/",
+      "description": "Who runs devxtools.dev, how we evaluate developer tools (official sources, dated checks, code we actually ran), how corrections work, and our disclosures."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://devxtools.dev/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About",
+          "item": "https://devxtools.dev/about/"
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="About devxtools.dev: Independent Dev & Test Tool Guides" 
+  description="Who runs devxtools.dev, how we evaluate developer tools (official sources, dated checks, code we actually ran), how corrections work, and our disclosures."
+  noindex={true}
+  jsonLd={jsonLd}
+>
+  <div class="mx-auto max-w-[1200px] px-5 py-16">
+    <article class="mx-auto max-w-[800px]">
+      <h1 class="text-4xl font-bold text-zinc-900 dark:text-white mb-6">About devxtools.dev</h1>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">devxtools.dev is an independent guide to the tools developers use to build, test and debug software: API clients and OpenAPI tooling, end-to-end and load testing, API mocking and test data, and observability. It's for engineers and tech leads who have to pick a tool, or replace one, and want the trade-offs without a sales pitch.</p>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">The site has two parts. The <a href="/catalog/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">catalog</a> lists tools with their licence, runtimes, languages and a "best for" summary, each with the date it was last checked. The <a href="/comparisons/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">comparisons</a> and <a href="/guides/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">guides</a> go deeper on specific choices, like Bruno vs Postman or how to mock APIs in Playwright.</p>
+
+      <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mt-12 mb-4">Independent and neutral</h2>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">No vendor pays to be listed, ranked or reviewed here. There are no affiliate links. Vendor comparison pages are treated as vendor claims and are never used as neutral sources. If a tool is the wrong fit for a job, we say so, and that includes popular tools and the one we're involved with (see the disclosure below).</p>
+
+      <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mt-12 mb-4">How we evaluate tools</h2>
+
+      <ul class="list-disc pl-6 space-y-3 mb-6 text-zinc-800 dark:text-zinc-300">
+        <li class="text-[17px] leading-relaxed"><span class="font-semibold text-zinc-900 dark:text-white">Official sources first.</span> Features, licences and prices come from each vendor's own docs, pricing page or repository, and every article lists its sources.</li>
+        <li class="text-[17px] leading-relaxed"><span class="font-semibold text-zinc-900 dark:text-white">Dated checks.</span> Prices, plans, versions and download counts change, so every page says when they were checked. If a page is old, you can see that it's old.</li>
+        <li class="text-[17px] leading-relaxed"><span class="font-semibold text-zinc-900 dark:text-white">We run the code.</span> Snippets marked as tested were run by us, on our own machines, against a local test setup. The article names the exact tool versions, runtime and OS.</li>
+        <li class="text-[17px] leading-relaxed"><span class="font-semibold text-zinc-900 dark:text-white">We say what we didn't test.</span> Code taken from documentation is labelled as such. If we couldn't verify a claim, the page says so rather than guessing. "Not listed" means we didn't find it on an official page, not that the feature doesn't exist.</li>
+        <li class="text-[17px] leading-relaxed"><span class="font-semibold text-zinc-900 dark:text-white">No speed claims without data.</span> We don't call one tool faster than another unless we've benchmarked it and published how. Most of our comparisons don't include benchmarks, and they say so.</li>
+      </ul>
+
+      <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mt-12 mb-4">Corrections</h2>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">Tools change fast and we'll get things wrong. Every article has a <span class="font-semibold text-zinc-900 dark:text-white">Report an error</span> link that opens an issue on our public <a href="https://github.com/sgedda/devxtools/issues" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">GitHub repository</a>. When we fix something material, we update the page's "last updated" date and note what changed. Vendors can report errors the same way. We fix facts, not verdicts.</p>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">The site's content is licensed CC BY-SA 4.0 and its code is MIT.</p>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">There is a free newsletter (double opt-in, unsubscribe in one click) that we send when new guides ship. We don't sell or share subscriber addresses.</p>
+
+      <h2 class="text-2xl font-semibold text-zinc-900 dark:text-white mt-12 mb-4">Who runs it, and a disclosure</h2>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300">devxtools.dev is built and run by <span class="font-semibold text-zinc-900 dark:text-white">Sebastian Gedda</span>.</p>
+
+      <p class="text-[17px] leading-relaxed mb-6 text-zinc-800 dark:text-zinc-300"><span class="font-semibold text-zinc-900 dark:text-white">Disclosure:</span> Sebastian also builds and maintains <span class="font-semibold text-zinc-900 dark:text-white"><a href="/tools/mockifyer/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">Mockifyer</a></span>, an open-source (MIT) record/replay HTTP mocking library for Node.js and React Native. Here's how that's handled:</p>
+
+      <ul class="list-disc pl-6 space-y-3 mb-6 text-zinc-800 dark:text-zinc-300">
+        <li class="text-[17px] leading-relaxed">Mockifyer is in the catalog like any other tool, and its entry carries an affiliation note.</li>
+        <li class="text-[17px] leading-relaxed">Any page that mentions or compares Mockifyer carries a visible disclosure, including the <a href="/guides/react-native-mocking-mockifyer/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">React Native mocking guide</a> and the <a href="/mocking-test-data/" class="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline">mocking hub</a>.</li>
+        <li class="text-[17px] leading-relaxed">Mockifyer only appears where it's genuinely relevant (record/replay, React Native). It isn't added to guides where it doesn't fit, and it isn't ranked ahead of more mature tools. Where MSW, MirageJS or another tool is the better default, the page says so.</li>
+        <li class="text-[17px] leading-relaxed">Think we've got the balance wrong? Use the Report an error link.</li>
+      </ul>
+    </article>
+  </div>
+</Layout>

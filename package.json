@@ -19,6 +19,7 @@
     "postinstall": "node -e \"if (process.env.CF_PAGES) { console.log('Skipping Playwright install on Cloudflare Pages'); process.exit(0); }\" || npx playwright install --with-deps chromium || true"
   },
   "dependencies": {
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "astro": "^7.3.8",
     "enhanced-resolve": "^5.26.0",
