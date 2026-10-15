@@ -263,7 +263,7 @@ const jsonLd = {
               <td>Not listed</td>
               <td>Apidog CLI</td>
               <td>Yes (local + cloud)</td>
-              <td>Basic $9, Professional $18, Enterprise $27 /user/mo (annual)</td>
+              <td>—</td>
             </tr>
           </tbody>
         </table>
@@ -358,7 +358,7 @@ Accept: application/json`}</code></pre>
 
       <p><strong>Best for:</strong> teams who want an all-in-one design, test, mock and docs platform and don't mind it being cloud-first.</p>
 
-      <p>Apidog publishes a lot of comparison content about Postman alternatives. Treat that as vendor marketing, not as a neutral source. Its pricing page lists local and cloud mock servers and an Apidog CLI. <strong>Pricing (2026-10-15):</strong> Free $0. Basic $9, Professional $18 and Enterprise $27 per user/month, billed annually. 14-day trial.</p>
+      <p>Apidog publishes a lot of comparison content about Postman alternatives. Treat that as vendor marketing, not as a neutral source. Its pricing page lists local and cloud mock servers and an Apidog CLI. Multiple paid plans available (see apidog.com/pricing for current rates). 14-day trial.</p>
 
       <h3 id="curl-http-files">curl + .http files (the minimalist option)</h3>
 
@@ -441,7 +441,7 @@ Accept: application/json`}</code></pre>
       <ul>
         <li><strong><a href="/tools/mockoon/">Mockoon</a>:</strong> a desktop app and CLI for local mock APIs. It's a good fit if you liked clicking routes together in Postman. The CLI runs the same data file in CI: <code>npx @mockoon/cli start --data ./mocks.json --port 3000</code>. It also accepts an OpenAPI file, and there's a Docker image.</li>
         <li><strong><a href="/tools/wiremock/">WireMock</a>:</strong> a JVM-based mock server with request matching, stateful scenarios and record/playback. It runs well in Docker and CI.</li>
-        <li><strong><a href="/tools/prism/">Prism</a></strong> (by <a href="/tools/stoplight/">Stoplight</a>): serves mock responses straight from an OpenAPI document, so your mocks follow the spec. We ran <code>prism mock openapi.yaml</code> (prism-cli 5.16.0), and it served our example on port 4010.</li>
+        <li><strong><a href="/tools/prism/">Prism</a></strong> (by <a href="/tools/stoplight/">Stoplight</a>): serves mock responses straight from an OpenAPI document, so your mocks follow the spec. We ran <code>prism mock openapi.yaml</code> (prism-cli 5.16.0; Prism 5.16.0 requires Node 24.18+ per its engines field), and it served our example on port 4010.</li>
         <li><strong><a href="/tools/msw/">MSW</a>:</strong> if the mocks are only for your own frontend tests, mock at the network layer in the app instead of running a server.</li>
         <li><strong>Bruno's local mock servers (beta)</strong>, <strong>Insomnia's mocks</strong> and <strong>Hoppscotch's API mocking</strong> also cover this job if you're already using one of those clients.</li>
       </ul>
@@ -557,7 +557,7 @@ Accept: application/json`}</code></pre>
         <li>VS Code REST Client: https://github.com/Huachao/vscode-restclient</li>
         <li>Apidog pricing: https://apidog.com/pricing/</li>
         <li>Mockoon CLI: https://mockoon.com/cli/ · Prism: https://github.com/stoplightio/prism · WireMock: https://wiremock.org/</li>
-        <li>Our CLI runs: Bru CLI 4.2.1, Newman 6.2.3, prism-cli 5.16.0; Node 20.19.2, Linux, 2026-10-15</li>
+        <li>Our CLI runs: Bru CLI 4.2.1, Newman 6.2.3, prism-cli 5.16.0 (requires Node 24.18+); Node 20.19.2, Linux, 2026-10-15</li>
       </ul>
 
       <p class="text-sm text-zinc-600 dark:text-zinc-400">Vendor comparison pages (postman.com/alternatives, usebruno.com/compare, Apidog's blog) were treated as vendor claims and not used as sources. <em>Last updated 2026-10-15.</em></p>
