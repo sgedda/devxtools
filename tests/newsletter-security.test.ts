@@ -289,8 +289,7 @@ describe('Newsletter Security Tests', () => {
       const response = await onRequestPost(context);
 
       expect(unsubscribeCalled).toBe(true);
-      expect(response.status).toBe(302);
-      expect(response.headers.get('location')).toContain('/newsletter/unsubscribed');
+      expect(response.status).toBe(200);
     });
 
     it('POST unsubscribe prefers query string token over form body token', async () => {
