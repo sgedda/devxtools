@@ -23,8 +23,8 @@ categories:
 bestFor: Cross-browser end-to-end testing with auto-wait and mobile device emulation
 description: Modern end-to-end testing framework with full browser automation, API testing, and support for multiple languages. Auto-waits for elements to be ready, runs tests in parallel, and supports Chromium, Firefox, and WebKit.
 whenToUse: When you need reliable cross-browser testing with modern features like auto-waiting, video recording, and network interception.
-githubStars: 97680
+githubStars: 97773
 lastActivity: 2026-10-07T20:40:43Z
 npmPackage: playwright
 weeklyDownloads: 113562399
-lastChecked: 2026-10-14
+lastChecked: 2026-10-15

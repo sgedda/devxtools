@@ -1,0 +1,712 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import Icon from '../../components/Icon.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Best Postman Alternatives (2026): 8 API Clients Compared",
+      "description": "Postman alternatives for 2026: Bruno, Hoppscotch, Insomnia, HTTPie, Yaak and more, compared by Git storage, CI runners, mock servers, protocols and price.",
+      "url": "https://devxtools.dev/api-development/postman-alternatives/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "ItemList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "url": "https://devxtools.dev/tools/bruno/" },
+        { "@type": "ListItem", "position": 2, "url": "https://devxtools.dev/tools/hoppscotch/" },
+        { "@type": "ListItem", "position": 3, "url": "https://devxtools.dev/tools/insomnia/" },
+        { "@type": "ListItem", "position": 4, "url": "https://devxtools.dev/tools/httpie/" },
+        { "@type": "ListItem", "position": 5, "url": "https://yaak.app/" },
+        { "@type": "ListItem", "position": 6, "url": "https://www.thunderclient.com/" },
+        { "@type": "ListItem", "position": 7, "url": "https://marketplace.visualstudio.com/items?itemName=humao.rest-client" },
+        { "@type": "ListItem", "position": 8, "url": "https://apidog.com/" }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "API Development", "item": "https://devxtools.dev/api-development/" },
+        { "@type": "ListItem", "position": 3, "name": "Postman alternatives", "item": "https://devxtools.dev/api-development/postman-alternatives/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the best free alternative to Postman?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For most developers, Bruno: the core is MIT-licensed, it's free to use at work, and collections are local files you can keep in Git. Hoppscotch is the best free option if you want a browser-based client."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there an open-source Postman alternative?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Bruno (MIT), Hoppscotch (MIT), Insomnia (Apache-2.0) and the HTTPie CLI (BSD-3-Clause) are open source. Yaak's source is MIT, but it asks for a paid licence for its prebuilt app when used at work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Bruno free for commercial use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The open-source edition is MIT-licensed, and MIT allows commercial use. The paid Pro and Ultimate tiers add features such as Git push and branching in the built-in UI, private Git providers, more workspaces, SSO/SCIM and support. You don't need them to use Bruno at work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the best Postman alternative for Mac / VS Code?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "All the desktop tools here run on macOS. If you want to stay in VS Code, use Thunder Client (it has a free tier, and paid plans add CLI, Git Sync and more protocols) or the free REST Client extension with .http files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I import my Postman collections into Bruno or Insomnia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Both document importing exported Postman collections. Environments are exported and imported separately, and scripts using the pm.* API may need manual fixes."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What replaces Postman mock servers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mockoon, WireMock and Prism are the common standalone replacements, and MSW covers frontend tests. Bruno (beta), Insomnia, Hoppscotch's paid plan and Apidog also have built-in mocking."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Postman Alternatives: 8 API Clients (2026)" 
+  description="Postman alternatives for 2026: Bruno, Hoppscotch, Insomnia, HTTPie, Yaak and more, compared by Git storage, CI runners, mock servers, protocols and price."
+  canonicalURL="https://devxtools.dev/api-development/postman-alternatives/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/api-development/" class="hover:text-zinc-900 dark:hover:text-white">API Development</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Postman alternatives</span>
+      </nav>
+
+      <h1>Postman Alternatives: The Best API Clients by What You Actually Need</h1>
+
+      <p class="lead">Postman is no longer just an API client. It's a platform with workspaces, mock servers, monitors, Flows, AI credits and an API catalog. If you only used it to send requests and keep a few collections, that's a lot of product to carry, and a good reason to look around.</p>
+
+      <p>This guide groups the alternatives by <strong>the job Postman was doing for you</strong>: sending requests, keeping collections in Git, running tests in CI, and serving mocks. Most "Postman alternatives" lists stop at the first job.</p>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <h2 class="mt-0 text-lg font-semibold text-indigo-900 dark:text-indigo-200">Quick picks</h2>
+        <ul class="mb-0 mt-4 space-y-2 text-indigo-900/90 dark:text-indigo-200/90">
+          <li><strong>Best free, Git-native client:</strong> <a href="/tools/bruno/" class="text-indigo-600 dark:text-indigo-400">Bruno</a>. Collections are plain files in your repo, and no account is needed.</li>
+          <li><strong>Best in the browser, or self-hosted:</strong> <a href="/tools/hoppscotch/" class="text-indigo-600 dark:text-indigo-400">Hoppscotch</a>. MIT-licensed, with a web app and a self-hosted Community Edition.</li>
+          <li><strong>Most familiar if you're coming from Postman:</strong> <a href="/tools/insomnia/" class="text-indigo-600 dark:text-indigo-400">Insomnia</a>. A similar desktop app, maintained by Kong.</li>
+          <li><strong>Best for the terminal:</strong> <a href="/tools/httpie/" class="text-indigo-600 dark:text-indigo-400">HTTPie</a>. A friendlier curl, plus a desktop/web app in beta.</li>
+          <li><strong>Best inside your editor:</strong> Thunder Client, or the free VS Code REST Client extension.</li>
+        </ul>
+      </div>
+
+      <p class="text-sm text-zinc-600 dark:text-zinc-400"><strong>How we test.</strong> devxtools.dev is independent. We have no affiliate links and no commercial relationship with any vendor on this page. Prices and plans were checked on each vendor's official pricing page on <strong>2026-10-15</strong>. The Bruno and Newman CLI snippets were run on Linux (Node 20.19) against a local test API with Bru CLI 4.2.1 and Newman 6.2.3. Other CLI commands come from each vendor's docs and are labelled that way. Where we quote a vendor's own comparison page, we call it a vendor claim.</p>
+
+      <h2 id="why-developers-look-for-postman-alternatives">Why developers look for Postman alternatives</h2>
+
+      <p>The reasons usually come back to three dated, checkable changes, not to anyone's opinion of Postman.</p>
+
+      <p><strong>An account is needed for most features.</strong> Postman's offline Scratch Pad stopped being available to new downloads on May 15, 2023, and was removed for everyone in the September 15, 2023 release (v10.18). It was replaced by the "lightweight API Client". You can use that without signing in, but Postman's support docs say collections, environments, mocks, monitors and documentation aren't available in it.</p>
+
+      <p><strong>Your data lives in Postman's cloud by default.</strong> Postman describes itself as a cloud platform that syncs your work when you're signed in. To be fair, Postman v12 added <strong>Native Git</strong> on every plan, including Free. It writes collections as multi-file YAML into your repository, so Git storage is no longer something only the alternatives have. Native Git still needs you to be signed in, though.</p>
+
+      <p><strong>The plans changed in March 2026.</strong> On the current pricing page, Free and Solo are <strong>single-user</strong> plans, and collaboration starts on <strong>Team</strong> ($19 per user/month billed annually, $23 monthly). Basic and Professional "are no longer available for new customers". For a small team that used to collaborate on Free or Basic, this is a real cost change.</p>
+
+      <p>None of this makes Postman a bad tool. It means the free, files-on-disk, no-login experience many developers remember now lives elsewhere.</p>
+
+      <h2 id="how-we-evaluated">How we evaluated</h2>
+
+      <p>We asked the same questions of every tool:</p>
+
+      <ol>
+        <li><strong>Storage.</strong> Where do collections live: local files, Git, or the vendor's cloud? Can you use it with no account (offline or air-gapped)?</li>
+        <li><strong>Protocols.</strong> REST, GraphQL, gRPC, WebSocket, and SSE/MQTT where they're listed.</li>
+        <li><strong>CI.</strong> Is there a CLI runner that can replace Newman or the Postman CLI, and does it write JUnit?</li>
+        <li><strong>Postman import.</strong> Is there a documented path for Collection v2.1 files and environments, and what does it skip?</li>
+        <li><strong>Mock servers.</strong> Can it replace Postman's mock servers?</li>
+        <li><strong>Licence and price,</strong> from official pages, dated.</li>
+      </ol>
+
+      <p>Feature lists come from each vendor's pricing page or docs as of 2026-10-15. "Not listed" means we didn't find the feature on an official page. It doesn't prove the feature is missing.</p>
+
+      <h2 id="postman-alternatives-at-a-glance">Postman alternatives at a glance</h2>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Licence</th>
+              <th>Storage</th>
+              <th>No-account use</th>
+              <th>Protocols listed (official pages)</th>
+              <th>CLI runner</th>
+              <th>Mock server</th>
+              <th>Paid plans from (2026-10-15)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Postman</strong> (baseline)</td>
+              <td>Proprietary</td>
+              <td>Cloud; Native Git (YAML)</td>
+              <td>Lightweight client only</td>
+              <td>HTTP, GraphQL, gRPC, WebSocket, MQTT</td>
+              <td>Postman CLI, Newman (v2.1 only)</td>
+              <td>Yes (hosted)</td>
+              <td>Solo $9/mo; Team $19/user/mo (annual)</td>
+            </tr>
+            <tr>
+              <td><strong><a href="/tools/bruno/">Bruno</a></strong></td>
+              <td>MIT (core)</td>
+              <td>Local files / Git</td>
+              <td>Yes</td>
+              <td>HTTP, REST, GraphQL, gRPC</td>
+              <td>Bru CLI</td>
+              <td>Local, beta</td>
+              <td>Pro $6, Ultimate $11 /user/mo (annual)</td>
+            </tr>
+            <tr>
+              <td><strong><a href="/tools/hoppscotch/">Hoppscotch</a></strong></td>
+              <td>MIT</td>
+              <td>Browser/desktop; cloud workspaces; self-host</td>
+              <td>Yes (web app)</td>
+              <td>REST, GraphQL, realtime</td>
+              <td>Hoppscotch CLI (alpha)</td>
+              <td>"API mocking" on the $6 plan</td>
+              <td>$6 and $11 /user/mo (annual, cloud)</td>
+            </tr>
+            <tr>
+              <td><strong><a href="/tools/insomnia/">Insomnia</a></strong></td>
+              <td>Apache-2.0</td>
+              <td>Local, cloud or Git Sync</td>
+              <td>Scratch Pad only</td>
+              <td>REST, gRPC, GraphQL, SOAP, WebSocket, Socket.IO, SSE</td>
+              <td>Inso CLI</td>
+              <td>Yes (metered)</td>
+              <td>Pro $12/user/mo; Enterprise $45/user/mo</td>
+            </tr>
+            <tr>
+              <td><strong><a href="/tools/httpie/">HTTPie</a></strong></td>
+              <td>CLI: BSD-3-Clause</td>
+              <td>CLI: none; app: spaces, sync</td>
+              <td>Yes</td>
+              <td>HTTP</td>
+              <td>It <em>is</em> a CLI</td>
+              <td>No</td>
+              <td>No public pricing page found</td>
+            </tr>
+            <tr>
+              <td><strong>Yaak</strong></td>
+              <td>MIT (source)</td>
+              <td>Local YAML files; Git sync</td>
+              <td>Yes</td>
+              <td>HTTP, GraphQL, gRPC, WebSocket, SSE</td>
+              <td>Yaak CLI</td>
+              <td>Not listed</td>
+              <td>$79/yr individual; $149/user/yr business (for work use)</td>
+            </tr>
+            <tr>
+              <td><strong>Thunder Client</strong></td>
+              <td>Proprietary</td>
+              <td>Local (Git Sync on paid plans)</td>
+              <td>Yes</td>
+              <td>WebSocket, SSE, gRPC on paid plans</td>
+              <td>Paid plans</td>
+              <td>Not listed</td>
+              <td>Starter $3, Business $7, Enterprise $16 /user/mo</td>
+            </tr>
+            <tr>
+              <td><strong>VS Code REST Client</strong></td>
+              <td>MIT</td>
+              <td><code>.http</code> / <code>.rest</code> files</td>
+              <td>Yes</td>
+              <td>HTTP (plus GraphQL over HTTP)</td>
+              <td>No</td>
+              <td>No</td>
+              <td>Free</td>
+            </tr>
+            <tr>
+              <td><strong>Apidog</strong></td>
+              <td>Proprietary</td>
+              <td>Cloud-first</td>
+              <td>Not listed</td>
+              <td>Not listed</td>
+              <td>Apidog CLI</td>
+              <td>Yes (local + cloud)</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">Licences come from each project's GitHub repository. Prices come from the official pricing pages linked in the sources. All were checked on 2026-10-15.</p>
+
+      <h2 id="the-alternatives">The alternatives</h2>
+
+      <h3 id="bruno">Bruno</h3>
+
+      <p><strong>Best for:</strong> teams who want collections reviewed in pull requests like code.</p>
+
+      <ul>
+        <li><strong>Storage:</strong> each request is a plain-text file in a folder you choose. Since <strong>v3.1</strong>, new and imported collections use <strong>OpenCollection YAML</strong>, and the older <code>.bru</code> markup is still supported. Bruno has no cloud component for syncing or storing your work. You share collections through Git.</li>
+        <li><strong>CI:</strong> the Bru CLI (<code>npm i -g @usebruno/cli</code>) runs collections and writes JUnit, JSON or HTML reports. We ran <code>bru run --env local --reporter-junit results.xml</code>, and it passed. From CLI v3, scripts run in <strong>Safe Mode</strong> by default. Add <code>--sandbox=developer</code> only for trusted collections that need npm modules or filesystem access. There's also an official GitHub Action (<code>usebruno/bruno-cli-action@v1</code>).</li>
+        <li><strong>Import from Postman:</strong> export the collection (v2.1) and environments, then import them in the Bruno app. Common <code>pm.*</code> calls are translated, or you can choose <strong>Preserve scripts</strong> to keep them verbatim. Environment values all become strings. Bulk import of a full Postman data dump is Ultimate-only.</li>
+        <li><strong>Mocks:</strong> local <strong>mock servers (beta)</strong>, backed by saved response examples or an OpenAPI spec. They run while the desktop app is open.</li>
+        <li><strong>Limits:</strong> on the free edition, the built-in Git UI covers clone, init, diffs and pull. Push, branches, stash and merge-conflict resolution are paid. Free also gets 2 workspaces, public Git providers only, and 5 OpenAPI syncs a month. Secret-manager integrations, SSO, SCIM and audit logs are Ultimate-only.</li>
+        <li><strong>Pricing (2026-10-15):</strong> Open Source $0. Pro $6/user/month and Ultimate $11/user/month, billed annually. 14-day Ultimate trial.</li>
+      </ul>
+
+      <p>For a deeper head-to-head, see <a href="/comparisons/bruno-vs-postman/">Bruno vs Postman</a>.</p>
+
+      <h3 id="hoppscotch">Hoppscotch</h3>
+
+      <p><strong>Best for:</strong> a fast client that runs in the browser, and teams that want to self-host.</p>
+
+      <ul>
+        <li><strong>Storage:</strong> a personal workspace on the free plan. Team workspaces with real-time collaboration start on the $6 plan. Use the cloud version or self-host the Community Edition.</li>
+        <li><strong>CI:</strong> the Hoppscotch CLI is labelled <strong>alpha</strong> in its docs. Install it with <code>npm i -g @hoppscotch/cli</code>, then run <code>hopp test collection.json --env env.json</code>. The docs list JUnit report output.</li>
+        <li><strong>Import from Postman:</strong> the importer accepts Postman Collection v2.0/v2.1 and Postman environments. Script import is <strong>experimental and opt-in</strong> (from v2025.10.0). Hoppscotch lists <code>pm.visualizer</code>, <code>pm.collectionVariables</code>, <code>pm.iterationData</code>, <code>setNextRequest</code> and <code>require</code> as unsupported, and advanced auth settings aren't imported.</li>
+        <li><strong>Mocks:</strong> "API mocking" is listed on the $6/user plan.</li>
+        <li><strong>Licence:</strong> MIT.</li>
+        <li><strong>Pricing (2026-10-15, cloud):</strong> $0. Business $6/user/month and Enterprise $11/user/month (SSO, SCIM, audit logs), billed annually.</li>
+      </ul>
+
+      <h3 id="insomnia">Insomnia</h3>
+
+      <p><strong>Best for:</strong> Postman users who want a familiar desktop app with more storage choices.</p>
+
+      <ul>
+        <li><strong>Storage:</strong> local, cloud, or Git Sync projects. On the free Essentials plan, Git Sync is unlimited for up to 3 users, and cloud/local projects are unlimited. Without an account you get the Scratch Pad only. Local Vault projects also need a (free) account. End-to-end encryption is listed on every plan.</li>
+        <li><strong>Protocols:</strong> the pricing page lists REST, gRPC, GraphQL, SOAP, WebSocket, Socket.IO and SSE clients.</li>
+        <li><strong>CI:</strong> the Inso CLI is included on the free plan. A collection run from the docs looks like this:
+          <pre><code class="language-bash">inso run collection "My Collection" --env "CI" --ci</code></pre>
+        </li>
+        <li><strong>Mocks:</strong> a hosted mock server with 1,000 requests/month on Essentials and 10,000 on Pro, then $10 per 25,000 requests. Unlimited on Enterprise.</li>
+        <li><strong>Licence:</strong> Apache-2.0.</li>
+        <li><strong>Pricing (2026-10-15):</strong> Essentials $0. Pro $12/user/month. Enterprise $45/user/month, self-serve up to 50 users (SSO, SCIM, vault integrations).</li>
+      </ul>
+
+      <h3 id="httpie">HTTPie</h3>
+
+      <p><strong>Best for:</strong> developers who live in the terminal.</p>
+
+      <ul>
+        <li><strong>CLI:</strong> <code>http GET api.example.com/users</code> with readable, coloured output and sensible JSON defaults. It's open source under BSD-3-Clause. Note that the CLI repository's last push was in December 2024 (GitHub API, checked 2026-10-15).</li>
+        <li><strong>App:</strong> HTTPie for Desktop and Web is labelled a <strong>public beta</strong>. HTTPie says you can use it offline and without an account, organise work in spaces and collections, and sync across devices.</li>
+        <li><strong>Limits:</strong> no collection runner aimed at CI and no mock server. On 2026-10-15 we found no public pricing page (httpie.io/pricing returned 404).</li>
+      </ul>
+
+      <h3 id="yaak">Yaak</h3>
+
+      <p><strong>Best for:</strong> individuals and small teams who want a fast, local-first desktop client with files in Git.</p>
+
+      <ul>
+        <li><strong>Storage:</strong> local-first. Yaak stores one YAML file per request, folder and environment, and it has Git sync with a built-in Git UI. Yaak says it doesn't store or sync your data on its servers.</li>
+        <li><strong>Protocols:</strong> HTTP, GraphQL, gRPC, WebSocket and Server-Sent Events, according to yaak.app.</li>
+        <li><strong>Import:</strong> Postman collections and environments, Insomnia, Bruno, OpenAPI/Swagger and curl.</li>
+        <li><strong>CLI:</strong> Yaak ships a CLI.</li>
+        <li><strong>Licence and price:</strong> the source is MIT. A licence is required to use the prebuilt app <strong>at work</strong>, and personal use is free. Individual $79/year or $399 one-time. Business $149/user/year. 30-day trial. The latest release at the time of writing was v2026.9.0 (October 10, 2026).</li>
+      </ul>
+
+      <h3 id="thunder-client-and-vs-code-rest-client">Thunder Client and the VS Code REST Client</h3>
+
+      <p><strong>Best for:</strong> staying in your editor.</p>
+
+      <ul>
+        <li><strong>Thunder Client</strong> is a VS Code extension, with JetBrains support on paid plans. Collection data is stored locally on your machine. Git Sync, CLI and CI/CD, and WebSocket/SSE/gRPC are listed on paid plans, and the free plan has usage limits. <strong>Pricing (2026-10-15):</strong> Free, Starter $3, Business $7 and Enterprise $16 per user/month.</li>
+        <li><strong>REST Client</strong> (by Huachao Mao, MIT) takes another approach. You write requests in <code>.http</code> or <code>.rest</code> files and send them from the editor:
+          <pre><code class="language-http">{`@baseUrl = http://localhost:4173
+
+### List users
+GET {{baseUrl}}/api/users?page=1
+Accept: application/json`}</code></pre>
+          The files live in your repo and review cleanly. There's no runner or assertions, so pair it with real tests.
+        </li>
+      </ul>
+
+      <h3 id="apidog">Apidog</h3>
+
+      <p><strong>Best for:</strong> teams who want an all-in-one design, test, mock and docs platform and don't mind it being cloud-first.</p>
+
+      <p>Apidog publishes a lot of comparison content about Postman alternatives. Treat that as vendor marketing, not as a neutral source. Its pricing page lists local and cloud mock servers and an Apidog CLI. Multiple paid plans available (see apidog.com/pricing for current rates). 14-day trial.</p>
+
+      <h3 id="curl-http-files">curl + .http files (the minimalist option)</h3>
+
+      <p>If you mostly replay a handful of requests, you may not need an app. Keep <code>curl</code> commands or <code>.http</code> files in the repo next to the code, review them in PRs, and run your real API tests in your test framework. There's nothing to install or license, and nothing to migrate later. The trade-off is that you get no GUI, no environments UI, and no collection runner.</p>
+
+      <h2 id="replacing-postman-other-jobs">Replacing Postman's other jobs</h2>
+
+      <h3 id="running-collections-in-ci">Running collections in CI</h3>
+
+      <p>Newman still runs <strong>exported Collection v2.1</strong> files, so it works as a stopgap while you migrate. It <strong>can't run Collection v3</strong> (Postman v12 Native Git YAML). For v3, Postman's docs point you to <code>postman collection run</code>, which supports only the <code>cli</code> reporter for YAML collections.</p>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Tool</th>
+              <th>Install</th>
+              <th>Run</th>
+              <th>JUnit report</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Postman (Newman)</td>
+              <td><code>npm i -g newman</code></td>
+              <td><code>newman run postman_collection.json -e local.postman_environment.json</code></td>
+              <td><code>-r cli,junit --reporter-junit-export out.xml</code></td>
+              <td>Run by us</td>
+            </tr>
+            <tr>
+              <td>Postman CLI</td>
+              <td>See Postman docs</td>
+              <td><code>postman collection run &lt;path-or-id&gt;</code></td>
+              <td>Not for v3 YAML collections</td>
+              <td>Docs</td>
+            </tr>
+            <tr>
+              <td>Bruno</td>
+              <td><code>npm i -g @usebruno/cli</code></td>
+              <td><code>bru run --env local</code> (in the collection folder)</td>
+              <td><code>--reporter-junit out.xml</code></td>
+              <td>Run by us</td>
+            </tr>
+            <tr>
+              <td>Hoppscotch</td>
+              <td><code>npm i -g @hoppscotch/cli</code></td>
+              <td><code>hopp test collection.json --env env.json</code></td>
+              <td>Not listed</td>
+              <td>Docs</td>
+            </tr>
+            <tr>
+              <td>Insomnia</td>
+              <td>Inso CLI (Kong docs)</td>
+              <td><code>inso run collection "&lt;name&gt;" --env "&lt;env&gt;" --ci</code></td>
+              <td>Not listed</td>
+              <td>Docs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>A minimal GitHub Actions job for Bruno:</p>
+
+      <pre><code class="language-yaml">{`jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm i -g @usebruno/cli
+      - run: bru run --env ci --reporter-junit results.xml
+        working-directory: ./api-collection`}</code></pre>
+
+      <h3 id="replacing-postman-mock-servers">Replacing Postman mock servers</h3>
+
+      <p>Most lists skip this. If your frontend or E2E tests point at a Postman mock URL, you need a replacement before you cancel:</p>
+
+      <ul>
+        <li><strong><a href="/tools/mockoon/">Mockoon</a>:</strong> a desktop app and CLI for local mock APIs. It's a good fit if you liked clicking routes together in Postman. The CLI runs the same data file in CI: <code>npx @mockoon/cli start --data ./mocks.json --port 3000</code>. It also accepts an OpenAPI file, and there's a Docker image.</li>
+        <li><strong><a href="/tools/wiremock/">WireMock</a>:</strong> a JVM-based mock server with request matching, stateful scenarios and record/playback. It runs well in Docker and CI.</li>
+        <li><strong><a href="/tools/prism/">Prism</a></strong> (by <a href="/tools/stoplight/">Stoplight</a>): serves mock responses straight from an OpenAPI document, so your mocks follow the spec. We ran <code>prism mock openapi.yaml</code> (prism-cli 5.16.0; Prism 5.16.0 requires Node 24.18+ per its engines field), and it served our example on port 4010.</li>
+        <li><strong><a href="/tools/msw/">MSW</a>:</strong> if the mocks are only for your own frontend tests, mock at the network layer in the app instead of running a server.</li>
+        <li><strong>Bruno's local mock servers (beta)</strong>, <strong>Insomnia's mocks</strong> and <strong>Hoppscotch's API mocking</strong> also cover this job if you're already using one of those clients.</li>
+      </ul>
+
+      <p>Compare these with what Postman offers on our <a href="/tools/postman-mock-servers/">Postman mock servers</a> page.</p>
+
+      <h3 id="monitors-and-contract-checks">Monitors and contract checks</h3>
+
+      <p>Postman monitors run collections on a schedule, and the free plan includes 1,000 monitoring requests a month. No open-source client on this list has a hosted monitor built in. The usual replacement is a scheduled CI job (for example, a GitHub Actions <code>schedule:</code> trigger) that runs your CLI collection and alerts on failure. To check that an API still matches its contract, look at Pact (consumer-driven contracts) or Schemathesis (property-based tests from an OpenAPI schema). Those deserve their own guides.</p>
+
+      <h2 id="migrating-from-postman">Migrating from Postman step by step</h2>
+
+      <ol>
+        <li><strong>Export collections</strong> as <strong>Collection v2.1</strong> JSON from Postman. If you've already moved to Native Git, check which formats your target tool accepts first, because most importers document v2.x.</li>
+        <li><strong>Export environments</strong> separately. They aren't included in the collection file. Before you commit anything, strip secrets or replace them with placeholders.</li>
+        <li><strong>Import</strong> into your new tool using its documented importer.</li>
+        <li><strong>Fix scripts.</strong> Pre-request and test scripts that use the <code>pm.*</code> API are where migrations break. Bruno translates common calls. Hoppscotch's script import is experimental and skips several APIs. Expect to edit some scripts by hand.</li>
+        <li><strong>Fix auth.</strong> Check OAuth 2.0 flows, collection-level auth and inherited auth on every folder. Hoppscotch, for example, doesn't import advanced auth settings.</li>
+        <li><strong>Commit to Git</strong> (for file-based tools). Add environment files that hold secrets to <code>.gitignore</code>.</li>
+        <li><strong>Swap CI</strong> from Newman to the new tool's CLI, and run both side by side for a week.</li>
+        <li><strong>Replace mocks and monitors</strong> before you turn off the Postman workspace.</li>
+      </ol>
+
+      <h2 id="when-postman-is-still-right">When Postman is still the right choice</h2>
+
+      <p>Postman is still a good default if you depend on <strong>hosted mock servers and scheduled monitors</strong>, if collaborators <strong>don't use Git</strong> (PMs, QA, partners who need a shared workspace and a link), or if you use its documentation publishing, API catalog, AI features (Agent Mode, metered in AI credits) or governance features. Paying $19 per user/month for that integration can cost less than assembling it from four tools.</p>
+
+      <h2 id="which-should-you-choose">Which Postman alternative should you choose?</h2>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>If you…</th>
+              <th>Choose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>want collections in Git, reviewed in PRs, with no cloud and no account</td>
+              <td>Bruno</td>
+            </tr>
+            <tr>
+              <td>want a browser client, or need to self-host</td>
+              <td>Hoppscotch</td>
+            </tr>
+            <tr>
+              <td>want the most Postman-like desktop app, with Git <em>or</em> cloud, and more protocols</td>
+              <td>Insomnia</td>
+            </tr>
+            <tr>
+              <td>mostly work in the terminal</td>
+              <td>HTTPie (or curl)</td>
+            </tr>
+            <tr>
+              <td>want to stay in VS Code</td>
+              <td>Thunder Client or REST Client</td>
+            </tr>
+            <tr>
+              <td>want a polished local-first app and will pay for work use</td>
+              <td>Yaak</td>
+            </tr>
+            <tr>
+              <td>want one platform for design, testing, mocks and docs</td>
+              <td>Apidog, or stay on Postman</td>
+            </tr>
+            <tr>
+              <td>need to replace Postman mock servers</td>
+              <td>Mockoon, WireMock or Prism</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Not sure yet? Try the <a href="/picker/">tool picker</a> or browse more <a href="/comparisons/">comparisons</a> in our <a href="/api-development/">API development hub</a>.</p>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>What is the best free alternative to Postman?</h3>
+      <p>For most developers, Bruno: the core is MIT-licensed, it's free to use at work, and collections are local files you can keep in Git. Hoppscotch is the best free option if you want a browser-based client.</p>
+
+      <h3>Is there an open-source Postman alternative?</h3>
+      <p>Yes. Bruno (MIT), Hoppscotch (MIT), Insomnia (Apache-2.0) and the HTTPie CLI (BSD-3-Clause) are open source. Yaak's source is MIT, but it asks for a paid licence for its prebuilt app when used at work.</p>
+
+      <h3>Is Bruno free for commercial use?</h3>
+      <p>Yes. The open-source edition is MIT-licensed, and MIT allows commercial use. The paid Pro and Ultimate tiers add features such as Git push and branching in the built-in UI, private Git providers, more workspaces, SSO/SCIM and support. You don't need them to use Bruno at work.</p>
+
+      <h3>What is the best Postman alternative for Mac / VS Code?</h3>
+      <p>All the desktop tools here run on macOS. If you want to stay in VS Code, use Thunder Client (it has a free tier, and paid plans add CLI, Git Sync and more protocols) or the free REST Client extension with <code>.http</code> files.</p>
+
+      <h3>Can I import my Postman collections into Bruno or Insomnia?</h3>
+      <p>Yes. Both document importing exported Postman collections. Environments are exported and imported separately, and scripts using the <code>pm.*</code> API may need manual fixes.</p>
+
+      <h3>What replaces Postman mock servers?</h3>
+      <p>Mockoon, WireMock and Prism are the common standalone replacements, and MSW covers frontend tests. Bruno (beta), Insomnia, Hoppscotch's paid plan and Apidog also have built-in mocking.</p>
+
+      <hr />
+
+      <h2 id="sources">Sources (checked 2026-10-15)</h2>
+
+      <ul class="text-sm text-zinc-600 dark:text-zinc-400">
+        <li>Postman pricing and plan comparison: https://www.postman.com/pricing/ · March 2026 plan changes: https://blog.postman.com/new-capabilities-march-2026/</li>
+        <li>Scratch Pad sunset and lightweight client: https://blog.postman.com/announcing-new-lightweight-postman-api-client/ · https://support.postman.com/hc/en-us/articles/115003356485-Can-I-use-Postman-locally</li>
+        <li>Postman Native Git and Collection v3: https://learning.postman.com/docs/use/native-git/sync.md · https://learning.postman.com/docs/use/use-collections/collections-schemas.md</li>
+        <li>Postman CLI collection runs: https://learning.postman.com/docs/postman-cli/postman-cli-collections.mdx</li>
+        <li>Newman (Apache-2.0, 6.2.3): https://github.com/postmanlabs/newman</li>
+        <li>Bruno pricing: https://www.usebruno.com/pricing · docs: https://docs.usebruno.com/ (OpenCollection YAML, Postman migration, Bru CLI run/reports, mock servers, GitHub Action) · licence: https://github.com/usebruno/bruno</li>
+        <li>Hoppscotch pricing: https://hoppscotch.com/pricing · CLI: https://docs.hoppscotch.io/documentation/clients/cli/overview · import: https://docs.hoppscotch.io/documentation/features/importer · licence: https://github.com/hoppscotch/hoppscotch</li>
+        <li>Insomnia pricing: https://insomnia.rest/pricing · Inso CLI: https://developer.konghq.com/inso-cli/ · licence: https://github.com/Kong/insomnia</li>
+        <li>HTTPie: https://github.com/httpie/cli · https://httpie.io/desktop</li>
+        <li>Yaak: https://yaak.app/ · https://yaak.app/pricing · https://github.com/mountain-loop/yaak</li>
+        <li>Thunder Client pricing: https://www.thunderclient.com/pricing</li>
+        <li>VS Code REST Client: https://github.com/Huachao/vscode-restclient</li>
+        <li>Apidog pricing: https://apidog.com/pricing/</li>
+        <li>Mockoon CLI: https://mockoon.com/cli/ · Prism: https://github.com/stoplightio/prism · WireMock: https://wiremock.org/</li>
+        <li>Our CLI runs: Bru CLI 4.2.1, Newman 6.2.3, prism-cli 5.16.0 (requires Node 24.18+); Node 20.19.2, Linux, 2026-10-15</li>
+      </ul>
+
+      <p class="text-sm text-zinc-600 dark:text-zinc-400">Vendor comparison pages (postman.com/alternatives, usebruno.com/compare, Apidog's blog) were treated as vendor claims and not used as sources. <em>Last updated 2026-10-15.</em></p>
+
+      <NewsletterSignup variant="article" />
+
+      <footer class="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-800">
+        <p class="text-sm text-zinc-600 dark:text-zinc-400">
+          <strong>Related:</strong> 
+          <a href="/comparisons/bruno-vs-postman/">Bruno vs Postman</a> • 
+          <a href="/tools/bruno/">Bruno</a> • 
+          <a href="/tools/postman/">Postman</a> • 
+          <a href="/comparisons/">All comparisons</a>
+        </p>
+        <a href="/api-development/" class="button mt-4 inline-block">← Back to API Development</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .prose {
+    line-height: 1.75;
+  }
+  
+  .prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  
+  .prose h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  
+  .prose h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose ul, .prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose strong {
+    font-weight: 600;
+    color: var(--text);
+  }
+  
+  .prose code {
+    background: var(--bg-secondary);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  
+  .prose pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
+  
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .prose thead {
+    background: var(--bg);
+  }
+  
+  .prose th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  
+  .prose a:hover {
+    opacity: 0.8;
+  }
+  
+  .lead {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+  }
+  
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .button:hover {
+    opacity: 0.9;
+  }
+</style>
+</Layout>

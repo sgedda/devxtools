@@ -1,0 +1,620 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "How to Mock API Calls in Playwright (page.route, HAR & MSW)",
+      "description": "Mock API requests in Playwright: page.route and route.fulfill, modifying real responses, POST and query params, HAR replay, MSW, and troubleshooting.",
+      "url": "https://devxtools.dev/guides/mock-api-playwright/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Guides", "item": "https://devxtools.dev/guides/" },
+        { "@type": "ListItem", "position": 3, "name": "Mock APIs in Playwright", "item": "https://devxtools.dev/guides/mock-api-playwright/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I mock an API response in Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Call await page.route('**/api/path*', route => route.fulfill({ json: data })) before navigating. The route intercepts matching requests and returns your data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I mock a POST request in Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Register a route for the URL, check route.request().method() === 'POST', read the body with postDataJSON(), and fulfill based on it. Call route.fallback() for other methods."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I mock an API with query parameters in Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use a predicate: page.route(url => url.pathname === '/api/users' && url.searchParams.get('role') === 'admin', handler). Or use a glob ending in * that covers the query string."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my Playwright mock not working?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually it's one of these: the route was registered after the request fired, the glob doesn't match the full URL, a service worker is handling the request, or a later route is shadowing yours. See the troubleshooting checklist in the guide."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use MSW with Playwright?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The official @msw/playwright package runs your MSW handlers through Playwright's routing, so the same handlers work in unit tests and E2E."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "page.route vs browserContext.route: what's the difference?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "page.route covers one page. context.route covers every page in the browser context, including popups. Page routes take precedence when both match."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Mock API Calls in Playwright (2026)" 
+  description="Mock API requests in Playwright: page.route and route.fulfill, modifying real responses, POST and query params, HAR replay, MSW, and troubleshooting."
+  canonicalURL="https://devxtools.dev/guides/mock-api-playwright/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/guides/" class="hover:text-zinc-900 dark:hover:text-white">Guides</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Mock APIs in Playwright</span>
+      </nav>
+
+      <h1>How to Mock APIs in Playwright: A Practical Guide</h1>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90">To mock APIs in Playwright, you intercept the browser's HTTP requests in an end-to-end test and answer them yourself. That lets you test states that are hard to get from a real backend, like empty lists, 500s, timeouts and slow responses, and keeps tests from failing when a shared staging API is down.</p>
+      </div>
+
+      <blockquote>
+        <p><strong>Tested with Playwright 1.64.1 (Chromium) on 2026-10-15.</strong> Every Playwright snippet on this page comes from a test file we ran, and all 17 tests passed. devxtools.dev is independent and has no relationship with Microsoft or the MSW project.</p>
+      </blockquote>
+
+      <p>Don't mock everything, though. Keep at least a small smoke suite that hits a real backend, or your E2E tests turn into very slow unit tests that can't catch a broken API contract. (See <a href="#keeping-mocks-honest">Keeping mocks honest</a> below.)</p>
+
+      <p>The minimal working example:</p>
+
+      <pre><code class="language-typescript">{`import { test, expect } from '@playwright/test';
+
+test('mocks a GET request', async ({ page }) => {
+  await page.route('**/api/users*', async (route) => {
+    await route.fulfill({ json: [{ name: 'Ada Lovelace' }, { name: 'Alan Turing' }] });
+  });
+  await page.goto('/');
+  await expect(page.getByRole('listitem')).toHaveText(['Ada Lovelace', 'Alan Turing']);
+});`}</code></pre>
+
+      <h2 id="quick-start">Quick start: mock a GET request with page.route() and route.fulfill()</h2>
+
+      <p>Three rules make the example above work:</p>
+
+      <ol>
+        <li><strong>Register the route before the request happens.</strong> Call <code>page.route()</code> before <code>page.goto()</code> if the app fetches on load.</li>
+        <li><strong>Make the pattern match the whole URL.</strong> <code>**/api/users*</code> matches <code>http://localhost:4173/api/users?page=1&role=admin</code>, because <code>**</code> covers the origin and the trailing <code>*</code> covers the query string.</li>
+        <li><strong>Pass <code>json</code>.</strong> <code>route.fulfill({`{ json }`})</code> serialises the body and sets <code>content-type: application/json</code> for you.</li>
+      </ol>
+
+      <p>The handler has three main options: <code>route.fulfill()</code> answers the request, <code>route.continue()</code> sends it on to the network (optionally modified), and <code>route.abort()</code> fails it.</p>
+
+      <h2 id="matching">Matching the right requests</h2>
+
+      <h3>Glob vs regex vs predicate URLs</h3>
+
+      <p><code>page.route(url, handler)</code> accepts a glob string, a <code>RegExp</code>, a <code>URLPattern</code>, or a predicate function that receives a <code>URL</code>.</p>
+
+      <p>Glob rules in Playwright, from the docs:</p>
+
+      <ul>
+        <li><code>*</code> matches any characters except <code>/</code>.</li>
+        <li><code>**</code> matches any characters, including <code>/</code>.</li>
+        <li><code>?</code> matches a literal question mark, not "any character".</li>
+        <li>The glob must match the <strong>entire</strong> URL.</li>
+      </ul>
+
+      <p>That last rule catches most people: <code>'/api/users'</code> won't match a request that has a query string.</p>
+
+      <pre><code class="language-typescript">{`await page.route('**/api/users*', handler);          // glob
+await page.route(/\\/api\\/users(\\?|$)/, handler);     // regex
+await page.route((url) => url.pathname === '/api/users', handler); // predicate`}</code></pre>
+
+      <h3>Query parameters</h3>
+
+      <p>Predicates are the clearest way to match on query parameters (tested):</p>
+
+      <pre><code class="language-typescript">{`await page.route(
+  (url) => url.pathname === '/api/users' && url.searchParams.get('role') === 'admin',
+  (route) => route.fulfill({ json: [{ name: 'Admin Only' }] }),
+);`}</code></pre>
+
+      <h3>Matching by method (POST/PUT) and request body</h3>
+
+      <p>A route matches every HTTP method, so check <code>route.request()</code> inside the handler. Use <code>route.fallback()</code> to pass anything you don't handle to the next matching route, or to the network if no other route matches (tested):</p>
+
+      <pre><code class="language-typescript">{`await page.route('**/api/orders', async (route) => {
+  const req = route.request();
+  if (req.method() !== 'POST') return route.fallback();
+  const body = req.postDataJSON();
+  if (body.item === 'out-of-stock') {
+    return route.fulfill({ status: 409, json: { status: 'rejected' } });
+  }
+  return route.fulfill({ status: 201, json: { status: 'accepted' } });
+});`}</code></pre>
+
+      <h3>page.route vs context.route</h3>
+
+      <p><code>page.route()</code> applies to one page. <code>browserContext.route()</code> applies to <strong>every page in the context</strong>, including popups and new tabs (tested):</p>
+
+      <pre><code class="language-typescript">{`test('context.route applies to every page', async ({ context }) => {
+  await context.route('**/api/users*', (route) => route.fulfill({ json: [{ name: 'From context' }] }));
+  const page = await context.newPage();
+  await page.goto('/');
+  await expect(page.getByRole('listitem')).toHaveText(['From context']);
+});`}</code></pre>
+
+      <p>Use <code>context.route()</code> when a popup's <strong>first</strong> request must be mocked. Playwright's docs note that <code>page.route()</code> doesn't intercept the first request of a popup page. When both a page route and a context route match, the page route runs first.</p>
+
+      <h2 id="mocking-responses">Mocking responses</h2>
+
+      <h3>JSON, status codes and headers</h3>
+
+      <pre><code class="language-typescript">{`await route.fulfill({
+  status: 201,
+  headers: { 'x-request-id': 'test-123' },
+  json: { id: 1 },
+});
+// Non-JSON:
+await route.fulfill({ status: 404, contentType: 'text/plain', body: 'Not Found!' });`}</code></pre>
+
+      <h3>Error states (500, 401, timeouts)</h3>
+
+      <pre><code class="language-typescript">{`// HTTP errors (tested)
+await page.route('**/api/users*', (route) =>
+  route.fulfill({ status: 500, json: { error: 'boom' } }));
+
+// Network failure: fetch() rejects (tested)
+await page.route('**/api/users*', (route) => route.abort('failed'));
+
+// Simulate a timeout error code instead
+await page.route('**/api/users*', (route) => route.abort('timedout'));`}</code></pre>
+
+      <p><code>route.abort()</code> takes an error code (<code>'failed'</code> by default). Others include <code>'timedout'</code>, <code>'connectionrefused'</code> and <code>'internetdisconnected'</code>.</p>
+
+      <p>For retry logic, make a route fail <strong>once</strong> and then succeed with <code>times</code> (v1.44+, tested). The most recently registered route runs first:</p>
+
+      <pre><code class="language-typescript">{`await page.route('**/api/users*', (route) => route.fulfill({ json: [{ name: 'Recovered' }] }));
+await page.route('**/api/users*', (route) => route.fulfill({ status: 503 }), { times: 1 });`}</code></pre>
+
+      <h3>Simulating latency</h3>
+
+      <p>There's no built-in delay option. Wait before fulfilling (tested):</p>
+
+      <pre><code class="language-typescript">{`await page.route('**/api/users*', async (route) => {
+  await new Promise((r) => setTimeout(r, 1500));
+  await route.fulfill({ json: [{ name: 'Slow Sam' }] });
+});
+await page.goto('/');
+await expect(page.getByRole('listitem')).toHaveCount(0);       // loading state
+await expect(page.getByRole('listitem')).toHaveText(['Slow Sam']);`}</code></pre>
+
+      <h3>Serving fixtures from files</h3>
+
+      <pre><code class="language-typescript">{`await page.route('**/api/users*', (route) =>
+  route.fulfill({ path: 'fixtures/users.json' })); // content type inferred from the extension`}</code></pre>
+
+      <h2 id="modifying-real">Modifying real responses with route.fetch()</h2>
+
+      <p>Sometimes you want the real backend's response plus an edge case. <code>route.fetch()</code> performs the request, and you fulfil with a modified copy (tested):</p>
+
+      <pre><code class="language-typescript">{`await page.route('**/api/users*', async (route) => {
+  const response = await route.fetch();
+  const users = await response.json();
+  users.push({ name: 'Injected Edge Case' });
+  await route.fulfill({ response, json: users });
+});`}</code></pre>
+
+      <p>Passing <code>response</code> keeps the original status and headers. To change the outgoing request instead (headers, method, post data), use <code>route.continue({`{ headers: { ... } }`})</code>.</p>
+
+      <h2 id="har">Record and replay with HAR files</h2>
+
+      <p><code>routeFromHAR</code> serves responses from a HAR file. With <code>update: true</code>, it records real traffic into the file instead (tested):</p>
+
+      <pre><code class="language-typescript">{`await page.routeFromHAR('hars/users.har', {
+  url: '**/api/**',               // only API calls; static assets go to the network
+  update: !!process.env.UPDATE_HAR,
+  updateContent: 'embed',         // or 'attach' to store bodies as separate files
+});`}</code></pre>
+
+      <p>Record with <code>UPDATE_HAR=1 npx playwright test</code>, then commit the HAR and run normally. You can also record from the CLI: <code>npx playwright open --save-har=example.har --save-har-glob="**/api/**" https://example.com</code>. For contexts you create yourself, the <code>recordHar</code> context option does the same.</p>
+
+      <p>Things to know:</p>
+
+      <ul>
+        <li><strong>Matching is strict.</strong> The URL and method must match, and POST bodies must match too. If several entries match, the one with the most matching headers wins.</li>
+        <li><strong>Unmatched requests are aborted by default.</strong> Pass <code>notFound: 'fallback'</code> to let them through.</li>
+        <li><strong>Keep HARs small and scrubbed.</strong> Always set <code>url</code> to scope recording to your API. The default <code>updateMode: 'minimal'</code> drops data Playwright doesn't need for replay. HARs store headers and bodies verbatim, so remove tokens, cookies and personal data before committing (a quick script over the JSON works).</li>
+      </ul>
+
+      <h2 id="fixtures">Reusable mocks with Playwright fixtures</h2>
+
+      <p>Copy-pasting <code>page.route()</code> into every test gets old. Put default mocks in a fixture, and make the data an <strong>option</strong> so tests can override it (tested):</p>
+
+      <pre><code class="language-typescript">{`// tests/fixtures.ts
+import { test as base } from '@playwright/test';
+
+type User = { name: string };
+
+export const test = base.extend<{ users: User[]; mockApi: void }>({
+  users: [[{ name: 'Default User' }], { option: true }],
+  mockApi: [async ({ page, users }, use) => {
+    await page.route('**/api/users*', (route) => route.fulfill({ json: users }));
+    await use();
+  }, { auto: true }],
+});
+export { expect } from '@playwright/test';`}</code></pre>
+
+      <pre><code class="language-typescript">{`// tests/users.spec.ts
+import { test, expect } from './fixtures';
+
+test('uses default mocks', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.getByRole('listitem')).toHaveText(['Default User']);
+});
+
+test.describe('empty state', () => {
+  test.use({ users: [] });
+  test('shows no users', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.getByRole('listitem')).toHaveCount(0);
+  });
+});`}</code></pre>
+
+      <p>You can also override inside a single test by registering another <code>page.route()</code>. It runs before the fixture's route because it was added later. To remove routes, use <code>page.unroute(url)</code> or <code>page.unrouteAll({`{ behavior: 'ignoreErrors' }`})</code>.</p>
+
+      <h2 id="websockets">Mocking WebSockets</h2>
+
+      <p>Since v1.48, <code>page.routeWebSocket()</code> lets you act as the server (tested):</p>
+
+      <pre><code class="language-typescript">{`await page.routeWebSocket('**/ws', (ws) => {
+  ws.onMessage((message) => {
+    if (message === 'ping') ws.send('pong');
+  });
+});`}</code></pre>
+
+      <p>Call <code>ws.connectToServer()</code> inside the handler if you want to proxy to the real server and modify messages instead.</p>
+
+      <h2 id="msw">Using MSW with Playwright</h2>
+
+      <p><a href="/tools/msw/">MSW</a> is useful when you want <strong>one set of handlers</strong> for unit tests (Vitest/Jest), Storybook, local development and E2E.</p>
+
+      <h3>Sharing handlers between Vitest/Jest and E2E</h3>
+
+      <p>The official <strong><code>@msw/playwright</code></strong> package (0.7.0 at the time of writing) connects MSW handlers to Playwright's routing. It uses <code>page.route()</code>/<code>context.route()</code> internally, so you don't need the service-worker script (tested):</p>
+
+      <pre><code class="language-typescript">{`// mocks/handlers.ts — shared with your unit tests
+import { http, HttpResponse } from 'msw';
+export const handlers = [
+  http.get('*/api/users', () => HttpResponse.json([{ name: 'MSW User' }])),
+];`}</code></pre>
+
+      <pre><code class="language-typescript">{`// tests/msw.setup.ts
+import { test as testBase } from '@playwright/test';
+import type { AnyHandler } from 'msw';
+import { defineNetworkFixture, type NetworkFixture } from '@msw/playwright';
+import { handlers } from '../mocks/handlers';
+
+interface Fixtures { handlers: Array<AnyHandler>; network: NetworkFixture }
+
+export const test = testBase.extend<Fixtures>({
+  handlers: [handlers, { option: true }],
+  network: [async ({ context, handlers }, use) => {
+    const network = defineNetworkFixture({ context, handlers });
+    await network.enable();
+    await use(network);
+    await network.disable();
+  }, { auto: true }],
+});
+export { expect } from '@playwright/test';`}</code></pre>
+
+      <pre><code class="language-typescript">{`// tests/msw.spec.ts
+import { http, HttpResponse } from 'msw';
+import { test, expect } from './msw.setup';
+
+test('overrides a handler per test', async ({ network, page }) => {
+  network.use(http.get('*/api/users', () => HttpResponse.json([], { status: 500 })));
+  await page.goto('/');
+  await expect(page.locator('#status')).toHaveText('Error 500');
+});`}</code></pre>
+
+      <p>msw 3.x is ESM-only and declares Node 22.12+ in its <code>engines</code> field.</p>
+
+      <h3>The service-worker caveat</h3>
+
+      <p>If your <strong>app itself</strong> starts MSW's browser worker (<code>setupWorker().start()</code>, common in dev builds), the service worker answers requests before Playwright sees them. Playwright's docs say network events and routing don't cover requests a service worker handles. You have two options:</p>
+
+      <ul>
+        <li><strong>Block service workers</strong> in tests: <code>use: {`{ serviceWorkers: 'block' }`}</code> in <code>playwright.config.ts</code>. Then <code>page.route()</code> sees everything. The trade-off is that you no longer test anything that depends on the service worker, such as offline or PWA caching.</li>
+        <li><strong>Let the worker mock</strong>, and don't also use <code>page.route()</code> for the same endpoints.</li>
+      </ul>
+
+      <p><code>@msw/playwright</code> avoids the problem because it doesn't use the worker.</p>
+
+      <h2 id="mock-server">Using a mock server instead</h2>
+
+      <p>Use a standalone mock server when several apps or test runners share the mocks, when you need state across requests, or when mocks should come from an OpenAPI spec:</p>
+
+      <ul>
+        <li><strong><a href="/tools/prism/">Prism</a></strong>: mocks from OpenAPI examples. We ran <code>prism mock openapi.yaml</code> with a local install of <code>@stoplight/prism-cli</code> 5.16.0, and it served the spec's example on <code>http://127.0.0.1:4010</code>. <code>@stoplight/prism-cli</code> 5.16.0 declares Node &gt;=24.18.0 in its <code>engines</code> field, so use Node 24.18+ for a supported setup. Our basic <code>prism mock</code> run also served the example on Node 20.19.2, 22.23.3 and 24.22.0.</li>
+        <li><strong><a href="/tools/mockoon/">Mockoon</a></strong>: design routes in the desktop app, then run the same file in CI: <code>npx @mockoon/cli start --data ./mocks.json --port 3000</code>.</li>
+        <li><strong><a href="/tools/wiremock/">WireMock</a></strong>: stateful scenarios and record/playback. It runs in Docker.</li>
+      </ul>
+
+      <p>Start the mock server alongside your app with Playwright's <code>webServer</code> option (it accepts an array):</p>
+
+      <pre><code class="language-typescript">{`// playwright.config.ts
+export default defineConfig({
+  use: { baseURL: 'http://localhost:4173' },
+  webServer: [
+    { command: 'npx @stoplight/prism-cli mock openapi.yaml', url: 'http://127.0.0.1:4010/api/users' },
+    { command: 'API_URL=http://127.0.0.1:4010 npm run preview', url: 'http://localhost:4173' },
+  ],
+});`}</code></pre>
+
+      <p>We ran this two-server pattern with Playwright 1.64.1 and Prism 5.16.0: Playwright waited for Prism's readiness URL (it returns the spec's 200 example), then started the app, and the test rendered the mocked users. If your config file isn't next to the spec, set <code>cwd</code> on each entry.</p>
+
+      <p>The trade-off is control: per-test edge cases (a single 500, a delay) are easier with <code>page.route()</code>. Many teams combine the two, with a mock server for the baseline and <code>page.route()</code> for edge cases.</p>
+
+      <h2 id="troubleshooting">Troubleshooting: "Playwright mock API not working"</h2>
+
+      <ul>
+        <li><strong>Route registered too late.</strong> Register routes before <code>page.goto()</code> or before the action that triggers the request.</li>
+        <li><strong>Glob doesn't match the full URL.</strong> <code>'/api/users'</code> doesn't match <code>/api/users?page=1</code>, and <code>*</code> doesn't cross <code>/</code>. Use <code>**/api/users*</code> or a predicate. To debug, log every request with <code>page.on('request', r =&gt; console.log(r.method(), r.url()))</code>.</li>
+        <li><strong><code>baseURL</code> surprises.</strong> If <code>baseURL</code> is set, a pattern that doesn't start with <code>*</code> is resolved against it, so <code>'/api/users'</code> becomes an exact <code>http://localhost:4173/api/users</code> match.</li>
+        <li><strong>Service worker.</strong> MSW's browser worker, or a PWA worker, hides requests from <code>route()</code>. Set <code>serviceWorkers: 'block'</code>.</li>
+        <li><strong>Handler order.</strong> The <strong>last registered</strong> handler runs first. A generic route added later shadows a specific one added earlier. Use <code>route.fallback()</code> to pass requests along.</li>
+        <li><strong>Popups.</strong> Use <code>context.route()</code>.</li>
+        <li><strong>CORS.</strong> In our Chromium and Firefox tests, a cross-origin <code>fetch</code> with a custom header (which triggers a preflight) was fulfilled by <code>route.fulfill()</code> without any CORS headers, and the handler never saw an <code>OPTIONS</code> request. If you <code>route.continue()</code> to a real server or point at a mock server, CORS headers are that server's job. We couldn't launch WebKit on our Linux test machine (missing system libraries), so WebKit is untested.</li>
+        <li><strong>API tests vs mocks.</strong> Playwright's <code>request</code> fixture (<code>APIRequestContext</code>) makes requests from Node, not the page, so <code>page.route()</code> doesn't apply to it. Use it to test real APIs, not to mock them.</li>
+      </ul>
+
+      <p>Coming from Cypress? <code>cy.intercept()</code> maps to <code>page.route()</code>, with the same "last defined wins" precedence. See <a href="/comparisons/playwright-vs-cypress/">Playwright vs Cypress</a>.</p>
+
+      <h2 id="keeping-mocks-honest">Keeping mocks honest</h2>
+
+      <p>Mocks drift from the real API without anyone noticing. Three ways to catch that:</p>
+
+      <ol>
+        <li>Generate mocks from the <strong>OpenAPI spec</strong> (Prism) so a spec change breaks the mock.</li>
+        <li>Run <strong>contract tests</strong> such as Pact (consumer-driven contracts) between frontend and backend. Our Pact guide is in progress.</li>
+        <li>Keep a small <strong>unmocked smoke suite</strong> against staging.</li>
+      </ol>
+
+      <p>For mocking at the unit and integration level in Node, see <a href="/comparisons/msw-vs-nock/">MSW vs Nock</a>, and browse all <a href="/mocking-test-data/">mocking and test-data tools</a>.</p>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>How do I mock an API response in Playwright?</h3>
+      <p>Call <code>await page.route('**/api/path*', route =&gt; route.fulfill({`{ json: data }`}))</code> before navigating. The route intercepts matching requests and returns your data.</p>
+
+      <h3>How do I mock a POST request in Playwright?</h3>
+      <p>Register a route for the URL, check <code>route.request().method() === 'POST'</code>, read the body with <code>postDataJSON()</code>, and <code>fulfill</code> based on it. Call <code>route.fallback()</code> for other methods.</p>
+
+      <h3>How do I mock an API with query parameters in Playwright?</h3>
+      <p>Use a predicate: <code>page.route(url =&gt; url.pathname === '/api/users' && url.searchParams.get('role') === 'admin', handler)</code>. Or use a glob ending in <code>*</code> that covers the query string.</p>
+
+      <h3>Why is my Playwright mock not working?</h3>
+      <p>Usually it's one of these: the route was registered after the request fired, the glob doesn't match the full URL, a service worker is handling the request, or a later route is shadowing yours. See the troubleshooting checklist above.</p>
+
+      <h3>Can I use MSW with Playwright?</h3>
+      <p>Yes. The official <code>@msw/playwright</code> package runs your MSW handlers through Playwright's routing, so the same handlers work in unit tests and E2E.</p>
+
+      <h3>page.route vs browserContext.route: what's the difference?</h3>
+      <p><code>page.route</code> covers one page. <code>context.route</code> covers every page in the browser context, including popups. Page routes take precedence when both match.</p>
+
+      <hr />
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/tools/playwright/">Playwright</a> · <a href="/tools/msw/">MSW</a> · <a href="/tools/mockoon/">Mockoon</a> · <a href="/tools/wiremock/">WireMock</a> · <a href="/tools/prism/">Prism</a> · <a href="/tools/cypress/">Cypress</a></li>
+        <li><a href="/comparisons/playwright-vs-cypress/">Playwright vs Cypress</a> · <a href="/comparisons/msw-vs-nock/">MSW vs Nock</a></li>
+        <li><a href="/testing/">Testing hub</a> · <a href="/guides/">All guides</a></li>
+      </ul>
+
+      <hr />
+
+      <h2 id="sources">Sources (checked 2026-10-15)</h2>
+
+      <ul class="text-sm text-zinc-600 dark:text-zinc-400">
+        <li>Playwright mock APIs guide: <a href="https://playwright.dev/docs/mock" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/mock</a></li>
+        <li>Playwright network guide (glob rules, HAR, WebSockets): <a href="https://playwright.dev/docs/network" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/network</a></li>
+        <li><code>Route</code> API (fulfill, fetch, fallback, abort error codes): <a href="https://playwright.dev/docs/api/class-route" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/api/class-route</a></li>
+        <li><code>Page.route</code> / <code>routeFromHAR</code> / <code>unrouteAll</code> / <code>routeWebSocket</code>, baseURL resolution: <a href="https://playwright.dev/docs/api/class-page" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/api/class-page</a></li>
+        <li><code>BrowserContext.route</code> (popup note, precedence): <a href="https://playwright.dev/docs/api/class-browsercontext" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/api/class-browsercontext</a></li>
+        <li>Service workers: <a href="https://playwright.dev/docs/service-workers" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/service-workers</a></li>
+        <li>Fixtures and options: <a href="https://playwright.dev/docs/test-fixtures" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/test-fixtures</a></li>
+        <li>Release notes (v1.44 <code>times</code>, v1.48 WebSocket routing): <a href="https://playwright.dev/docs/release-notes" target="_blank" rel="noopener noreferrer">https://playwright.dev/docs/release-notes</a></li>
+        <li><code>@msw/playwright</code>: <a href="https://github.com/mswjs/playwright" target="_blank" rel="noopener noreferrer">https://github.com/mswjs/playwright</a> · MSW: <a href="https://mswjs.io/docs/" target="_blank" rel="noopener noreferrer">https://mswjs.io/docs/</a></li>
+        <li>Prism: <a href="https://github.com/stoplightio/prism" target="_blank" rel="noopener noreferrer">https://github.com/stoplightio/prism</a> · Mockoon CLI: <a href="https://mockoon.com/cli/" target="_blank" rel="noopener noreferrer">https://mockoon.com/cli/</a> · WireMock: <a href="https://wiremock.org/" target="_blank" rel="noopener noreferrer">https://wiremock.org/</a></li>
+        <li>Our test project: Playwright 1.64.1 (Chromium), msw 3.0.3, @msw/playwright 0.7.0, prism-cli 5.16.0 (declares Node &gt;=24.18.0; our runs used Node 22.23.3, plus a basic mock check on 20.19.2 and 24.22.0), Node 22.23.3, Linux, 2026-10-15</li>
+      </ul>
+
+      <NewsletterSignup variant="article" />
+
+      <footer class="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-800">
+        <a href="/guides/" class="button inline-block">← Back to Guides</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .prose {
+    line-height: 1.75;
+  }
+  
+  .prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose ul, .prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose strong {
+    font-weight: 600;
+  }
+  
+  .prose code {
+    background: var(--bg-secondary);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  
+  .prose pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+  }
+  
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .prose thead {
+    background: var(--bg);
+  }
+  
+  .prose th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  
+  .prose a:hover {
+    opacity: 0.8;
+  }
+
+  .prose blockquote {
+    border-left: 4px solid var(--accent);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+  }
+
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+  
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .button:hover {
+    opacity: 0.9;
+  }
+</style>
