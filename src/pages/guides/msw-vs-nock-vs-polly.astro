@@ -11,7 +11,7 @@ import Layout from '../../layouts/Layout.astro';
     <article class="guide">
       <header>
         <div class="breadcrumb">
-          <a href="/guides/">Guides</a> / Comparison
+          <a href="/guides/">Guides</a> <span aria-hidden="true">/ </span>Comparison
         </div>
         <h1>MSW vs Nock vs Polly.js: Which HTTP Mocking Tool?</h1>
         <p class="subtitle">A comprehensive comparison of three popular JavaScript HTTP mocking libraries</p>
@@ -46,6 +46,7 @@ import Layout from '../../layouts/Layout.astro';
   .guide {
     max-width: 800px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   .breadcrumb {

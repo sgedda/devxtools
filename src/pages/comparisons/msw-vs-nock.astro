@@ -260,6 +260,7 @@ nock('https://api.example.com')
   .comparison {
     max-width: 900px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   header {
@@ -361,6 +362,7 @@ nock('https://api.example.com')
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 2rem;
+    min-width: 0;
   }
   
   .code-grid {
@@ -368,6 +370,11 @@ nock('https://api.example.com')
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     margin-top: 1.5rem;
+    min-width: 0;
+  }
+  
+  .code-block {
+    min-width: 0;
   }
   
   .code-block h4 {
@@ -385,6 +392,7 @@ nock('https://api.example.com')
     border-radius: 6px;
     padding: 1rem;
     overflow-x: auto;
+    max-width: 100%;
   }
   
   code {
@@ -480,6 +488,10 @@ nock('https://api.example.com')
     .comparison-grid,
     .code-grid {
       grid-template-columns: 1fr;
+    }
+    
+    .code-comparison {
+      padding: 1rem;
     }
     
     table {

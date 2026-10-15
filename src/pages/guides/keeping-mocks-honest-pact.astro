@@ -12,7 +12,7 @@ import NewsletterSignup from '../../components/NewsletterSignup.astro';
     <article class="guide">
       <header>
         <div class="breadcrumb">
-          <a href="/guides/">Guides</a> / Best Practices
+          <a href="/guides/">Guides</a> <span aria-hidden="true">/ </span>Best Practices
         </div>
         <h1>Keeping Mocks Honest with Pact</h1>
         <p class="subtitle">Using contract testing to ensure mocks match reality</p>
@@ -58,6 +58,7 @@ import NewsletterSignup from '../../components/NewsletterSignup.astro';
   .guide {
     max-width: 800px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   .breadcrumb {
