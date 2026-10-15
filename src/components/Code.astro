@@ -1,0 +1,216 @@
+---
+import { Code as ShikiCode } from 'astro:components';
+
+interface Props {
+  code: string;
+  lang?: string;
+  title?: string;
+  showLineNumbers?: boolean;
+}
+
+const { code, lang = 'plaintext', title, showLineNumbers = false } = Astro.props;
+
+const languageLabels: Record<string, string> = {
+  ts: 'TypeScript',
+  js: 'JavaScript',
+  tsx: 'TypeScript JSX',
+  jsx: 'JavaScript JSX',
+  bash: 'Bash',
+  sh: 'Shell',
+  json: 'JSON',
+  yaml: 'YAML',
+  yml: 'YAML',
+  http: 'HTTP',
+  html: 'HTML',
+  css: 'CSS',
+  python: 'Python',
+  py: 'Python',
+  go: 'Go',
+  rust: 'Rust',
+  sql: 'SQL',
+  graphql: 'GraphQL',
+  plaintext: 'Plain Text',
+};
+
+const displayLabel = title || languageLabels[lang] || lang.toUpperCase();
+---
+
+<div class="code-block-wrapper" data-lang={lang}>
+  <div class="code-block-header">
+    <span class="code-block-label">{displayLabel}</span>
+    <button 
+      class="code-block-copy" 
+      aria-label="Copy code"
+      data-code={code}
+    >
+      <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <svg class="check-icon hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </button>
+  </div>
+  <div class="code-block-content">
+    <ShikiCode 
+      code={code} 
+      lang={lang}
+      themes={{
+        light: 'github-light',
+        dark: 'github-dark',
+      }}
+    />
+  </div>
+</div>
+
+<style>
+  .code-block-wrapper {
+    position: relative;
+    margin: 1.5rem 0;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(228 228 231);
+    background: rgb(250 250 250);
+    overflow: hidden;
+  }
+
+  :global(.dark) .code-block-wrapper {
+    border-color: rgb(39 39 42);
+    background: rgb(24 24 27);
+  }
+
+  .code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid rgb(228 228 231);
+    background: rgb(244 244 245);
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+
+  :global(.dark) .code-block-header {
+    border-bottom-color: rgb(39 39 42);
+    background: rgb(39 39 42);
+  }
+
+  .code-block-label {
+    color: rgb(63 63 70);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  :global(.dark) .code-block-label {
+    color: rgb(161 161 170);
+  }
+
+  .code-block-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    background: transparent;
+    border: none;
+    color: rgb(82 82 91); /* zinc-600 - WCAG AA contrast */
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .code-block-copy:hover {
+    background: rgb(228 228 231);
+    color: rgb(24 24 27);
+  }
+
+  :global(.dark) .code-block-copy {
+    color: rgb(212 212 216); /* zinc-300 - WCAG AA contrast on dark bg */
+  }
+
+  :global(.dark) .code-block-copy:hover {
+    background: rgb(63 63 70);
+    color: rgb(250 250 250);
+  }
+
+  .code-block-copy:active {
+    transform: scale(0.95);
+  }
+
+  .code-block-content {
+    overflow-x: auto;
+    background: white;
+  }
+
+  :global(.dark) .code-block-content {
+    background: rgb(9 9 11);
+  }
+
+  .code-block-content :global(pre) {
+    margin: 0 !important;
+    padding: 1rem !important;
+    background: transparent !important;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+
+  .code-block-content :global(code) {
+    display: block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    tab-size: 2;
+  }
+
+  /* Ensure Shiki dark theme is applied in dark mode */
+  :global(.dark) .code-block-content :global(.astro-code),
+  :global(.dark) .code-block-content :global(.astro-code span) {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+  }
+
+  .check-icon.hidden {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .code-block-header {
+      font-size: 0.75rem;
+      padding: 0.375rem 0.75rem;
+    }
+
+    .code-block-content :global(pre) {
+      padding: 0.75rem !important;
+      font-size: 0.8125rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const copyButtons = document.querySelectorAll<HTMLButtonElement>('.code-block-copy');
+    
+    copyButtons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const code = button.dataset.code;
+        if (!code) return;
+
+        try {
+          await navigator.clipboard.writeText(code);
+          
+          const copyIcon = button.querySelector('.copy-icon');
+          const checkIcon = button.querySelector('.check-icon');
+          
+          if (copyIcon && checkIcon) {
+            copyIcon.classList.add('hidden');
+            checkIcon.classList.remove('hidden');
+            
+            setTimeout(() => {
+              copyIcon.classList.remove('hidden');
+              checkIcon.classList.add('hidden');
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy code:', err);
+        }
+      });
+    });
+  });
+</script>

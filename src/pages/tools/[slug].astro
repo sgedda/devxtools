@@ -76,19 +76,20 @@ const relatedTools = allTools
 <Layout 
   title={`${tool.name}: Setup, Example & Alternatives`}
   description={tool.bestFor}
+  ogImage={`/og-tools/${tool.slug}.png`}
   jsonLd={jsonLd}
 >
   <div class="border-b border-zinc-200 bg-gradient-to-b from-indigo-50/60 to-transparent dark:border-zinc-800 dark:from-indigo-500/5">
     <div class="mx-auto max-w-[1200px] px-5 py-10">
       <nav class="flex items-center gap-1.5 text-sm text-zinc-500">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
-        <Icon name="chevron-right" size={14} />
+        <Icon name="chevron-right" size={14} aria-hidden="true" />
         <a href="/catalog/" class="hover:text-zinc-900 dark:hover:text-white">Catalog</a>
-        <Icon name="chevron-right" size={14} />
+        <Icon name="chevron-right" size={14} aria-hidden="true" />
         <a href={`/catalog/?category=${tool.categories[0]}`} class="hover:text-zinc-900 dark:hover:text-white">
           {CATEGORY_LABELS[tool.categories[0]]}
         </a>
-        <Icon name="chevron-right" size={14} />
+        <Icon name="chevron-right" size={14} aria-hidden="true" />
         <span class="text-zinc-900 dark:text-white">{tool.name}</span>
       </nav>
       

@@ -29,6 +29,12 @@ jobs:
       - name: Run tests
         run: npm test
       
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      
+      - name: Run viewport overflow tests
+        run: npx playwright test viewport-overflow.spec.ts
+      
       - name: Build site
         run: npm run build
       
@@ -39,3 +45,6 @@ jobs:
             exit 1
           fi
           echo "Build successful, dist directory exists"
+      
+      - name: Check H1 counts
+        run: bash scripts/check-h1-counts.sh

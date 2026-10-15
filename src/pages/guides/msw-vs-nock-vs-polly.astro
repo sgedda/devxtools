@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import ReportError from '../../components/ReportError.astro';
 ---
 
 <Layout 
@@ -11,7 +12,7 @@ import Layout from '../../layouts/Layout.astro';
     <article class="guide">
       <header>
         <div class="breadcrumb">
-          <a href="/guides/">Guides</a> / Comparison
+          <a href="/guides/">Guides</a> <span aria-hidden="true">/ </span>Comparison
         </div>
         <h1>MSW vs Nock vs Polly.js: Which HTTP Mocking Tool?</h1>
         <p class="subtitle">A comprehensive comparison of three popular JavaScript HTTP mocking libraries</p>
@@ -35,6 +36,11 @@ import Layout from '../../layouts/Layout.astro';
         </section>
       </div>
       
+      <ReportError 
+        pageTitle="MSW vs Nock vs Polly.js"
+        pageUrl="https://devxtools.dev/guides/msw-vs-nock-vs-polly/"
+      />
+      
       <footer class="guide-footer">
         <a href="/guides/" class="button">← Back to Guides</a>
       </footer>
@@ -46,6 +52,7 @@ import Layout from '../../layouts/Layout.astro';
   .guide {
     max-width: 800px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   .breadcrumb {

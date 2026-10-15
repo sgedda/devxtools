@@ -342,11 +342,7 @@ We welcome contributions! Here's how you can help:
 
 ## Automated Updates
 
-A weekly GitHub Action automatically:
-
-1. Checks for broken links in tool websites and repos
-2. Opens PRs to update `lastChecked` dates
-3. Flags tools that may need review
+Catalog data refreshes are performed by scheduled maintainer routines to keep tool information current.
 
 ## License
 

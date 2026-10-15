@@ -1,0 +1,52 @@
+---
+interface Props {
+  pageTitle: string;
+  pageUrl: string;
+}
+
+const { pageTitle, pageUrl } = Astro.props;
+
+const issueTitle = encodeURIComponent(`Error on ${pageTitle}`);
+const issueBody = encodeURIComponent(`Page URL: ${pageUrl}\n\nDescription of the error:\n\n`);
+const githubIssueUrl = `https://github.com/sgedda/devxtools/issues/new?title=${issueTitle}&body=${issueBody}`;
+---
+
+<div class="report-error">
+  <a href={githubIssueUrl} target="_blank" rel="noopener noreferrer" class="report-error-link">
+    Report an error
+  </a>
+</div>
+
+<style>
+  .report-error {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border, #e4e4e7);
+  }
+
+  .report-error-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary, #71717a);
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+
+  .report-error-link:hover {
+    color: var(--text, #18181b);
+  }
+
+  :global(.dark) .report-error {
+    border-top-color: #3f3f46;
+  }
+
+  :global(.dark) .report-error-link {
+    color: #a1a1aa;
+  }
+
+  :global(.dark) .report-error-link:hover {
+    color: #e4e4e7;
+  }
+</style>

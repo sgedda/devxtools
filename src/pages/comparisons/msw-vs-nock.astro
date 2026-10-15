@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import Code from '../../components/Code.astro';
+import ReportError from '../../components/ReportError.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -134,36 +136,42 @@ const jsonLd = {
         <div class="code-grid">
           <div class="code-block">
             <h4>MSW</h4>
-            <pre><code>import &#123; http, HttpResponse &#125; from 'msw'
-import &#123; setupServer &#125; from 'msw/node'
+            <Code 
+              code={`import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 const server = setupServer(
-  http.get('/api/user', () => &#123;
-    return HttpResponse.json(&#123;
+  http.get('/api/user', () => {
+    return HttpResponse.json({
       id: 1,
       name: 'John Doe'
-    &#125;)
-  &#125;)
+    })
+  })
 )
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
-afterAll(() => server.close())</code></pre>
+afterAll(() => server.close())`}
+              lang="ts"
+            />
           </div>
           
           <div class="code-block">
             <h4>Nock</h4>
-            <pre><code>import nock from 'nock'
+            <Code 
+              code={`import nock from 'nock'
 
 nock('https://api.example.com')
   .get('/api/user')
-  .reply(200, &#123;
+  .reply(200, {
     id: 1,
     name: 'John Doe'
-  &#125;)
+  })
 
 // That's it! Nock intercepts 
-// matching requests automatically</code></pre>
+// matching requests automatically`}
+              lang="ts"
+            />
           </div>
         </div>
       </section>
@@ -241,6 +249,11 @@ nock('https://api.example.com')
         </p>
       </section>
       
+      <ReportError 
+        pageTitle="MSW vs Nock"
+        pageUrl="https://devxtools.dev/comparisons/msw-vs-nock/"
+      />
+      
       <NewsletterSignup variant="article" />
       
       <footer class="comparison-footer">
@@ -260,6 +273,7 @@ nock('https://api.example.com')
   .comparison {
     max-width: 900px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   header {
@@ -361,6 +375,7 @@ nock('https://api.example.com')
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 2rem;
+    min-width: 0;
   }
   
   .code-grid {
@@ -368,6 +383,11 @@ nock('https://api.example.com')
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
     margin-top: 1.5rem;
+    min-width: 0;
+  }
+  
+  .code-block {
+    min-width: 0;
   }
   
   .code-block h4 {
@@ -385,6 +405,7 @@ nock('https://api.example.com')
     border-radius: 6px;
     padding: 1rem;
     overflow-x: auto;
+    max-width: 100%;
   }
   
   code {
@@ -396,37 +417,6 @@ nock('https://api.example.com')
   
   .comparison-table-wrapper {
     overflow-x: auto;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  th, td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  thead {
-    background: var(--bg);
-  }
-  
-  th {
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
-  }
-  
-  tbody tr:last-child td {
-    border-bottom: none;
   }
   
   .check {
@@ -480,6 +470,10 @@ nock('https://api.example.com')
     .comparison-grid,
     .code-grid {
       grid-template-columns: 1fr;
+    }
+    
+    .code-comparison {
+      padding: 1rem;
     }
     
     table {

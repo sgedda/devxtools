@@ -1,0 +1,576 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import NewsletterSignup from '../../components/NewsletterSignup.astro';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Bruno vs Postman (2026): Which API Client Fits Your Team?",
+      "description": "Bruno vs Postman in 2026: both store YAML in Git now. We compare accounts, CI runners, reports, mock servers, security and pricing.",
+      "url": "https://devxtools.dev/comparisons/bruno-vs-postman/",
+      "datePublished": "2026-10-15",
+      "dateModified": "2026-10-15",
+      "author": {
+        "@type": "Organization",
+        "name": "DevX Tools"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://devxtools.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Comparisons", "item": "https://devxtools.dev/comparisons/" },
+        { "@type": "ListItem", "position": 3, "name": "Bruno vs Postman", "item": "https://devxtools.dev/comparisons/bruno-vs-postman/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is Bruno better than Postman?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on the job. For offline, Git-based collection work with no vendor account, Bruno is the better fit. For hosted mocks, monitors and collaborating with non-developers, Postman does more."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Bruno free for commercial use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The open-source edition is MIT-licensed, and you can use it at work. Pro and Ultimate are optional. They add Git UI features such as push and branching, private Git providers, unlimited workspaces, SSO/SCIM and support."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Bruno more secure than Postman?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bruno stores nothing in a vendor cloud, which shrinks your exposure. Postman offers more centralised controls (vaults, audit logs, SCIM, EU data residency) on paid plans. Which one is more secure depends on whether your bigger risk is data leaving your network or ungoverned access."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can Bruno import Postman collections and environments?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Export Collection v2.1 JSON and the environments from Postman, then import them in Bruno. Common pm.* calls are translated automatically. Review anything that uses Postman-only packages."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Bruno have mock servers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, in beta. Bruno can run local mock servers from saved examples or an OpenAPI spec while the app is open. For shared or CI mocks, use Mockoon, WireMock or Prism."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Bruno vs Postman (2026): Which Fits Your Team?" 
+  description="Bruno vs Postman in 2026: both store YAML in Git now. We compare accounts, CI runners, reports, mock servers, security and pricing."
+  canonicalURL="https://devxtools.dev/comparisons/bruno-vs-postman/"
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        /
+        <a href="/comparisons/" class="hover:text-zinc-900 dark:hover:text-white">Comparisons</a>
+        /
+        <span class="text-zinc-900 dark:text-white">Bruno vs Postman</span>
+      </nav>
+
+      <h1>Bruno vs Postman: Which API Client Should Your Team Use?</h1>
+      <p class="text-lg text-zinc-600 dark:text-zinc-400">Files in your repo vs a cloud platform: what actually changes for your team</p>
+
+      <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+        <h2 class="mt-0 text-lg font-semibold text-indigo-900 dark:text-indigo-200">TL;DR</h2>
+        <p class="mb-0 text-indigo-900/90 dark:text-indigo-200/90">Bruno vs Postman boils down to how your team works: Bruno stores collections as files in your repo with no account required, while Postman synchronizes collections through Postman Cloud.</p>
+        <ul class="mb-0 mt-4 space-y-2 text-indigo-900/90 dark:text-indigo-200/90">
+          <li><strong>Pick <a href="/tools/bruno/" class="text-indigo-600 dark:text-indigo-400">Bruno</a> if</strong> your team already reviews everything in pull requests, you want collections stored as plain files with no vendor account involved, and you mainly need an API client plus a CI runner.</li>
+          <li><strong>Pick <a href="/tools/postman/" class="text-indigo-600 dark:text-indigo-400">Postman</a> if</strong> you need hosted mock servers, scheduled monitors, published documentation, or collaborators who don't use Git.</li>
+        </ul>
+      </div>
+
+      <p class="text-sm text-zinc-600 dark:text-zinc-400"><strong>Independence note.</strong> devxtools.dev has no relationship with Bruno or Postman. Both vendors publish their own comparison pages (usebruno.com/compare, postman.com/alternatives). We treat those as vendor claims. Prices were checked on the official pricing pages on <strong>2026-10-15</strong>. The CI commands below were run on 2026-10-15 against a local test API with <strong>Bru CLI 4.2.1</strong> and <strong>Newman 6.2.3</strong> on Node 20.19 (Linux). Both passed and wrote JUnit XML.</p>
+
+      <h2 id="at-a-glance">Bruno vs Postman at a glance</h2>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Bruno</th>
+              <th>Postman</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Licence</td>
+              <td>MIT open-source core; paid Pro and Ultimate</td>
+              <td>Proprietary; Free plan</td>
+            </tr>
+            <tr>
+              <td>Where collections live</td>
+              <td>Plain-text files on your disk: OpenCollection YAML (default for new collections since v3.1) or <code>.bru</code></td>
+              <td>Postman cloud workspaces; with v12 <strong>Native Git</strong>, also multi-file YAML in your repo (desktop app only, sign-in required)</td>
+            </tr>
+            <tr>
+              <td>Account required</td>
+              <td>No</td>
+              <td>Yes for collections, environments, mocks and monitors. The signed-out "lightweight API Client" has none of these</td>
+            </tr>
+            <tr>
+              <td>Offline / air-gapped</td>
+              <td>Yes</td>
+              <td>Lightweight client only</td>
+            </tr>
+            <tr>
+              <td>Protocols (official pricing pages)</td>
+              <td>HTTP, REST, GraphQL, gRPC</td>
+              <td>HTTP, GraphQL, gRPC, WebSocket, MQTT</td>
+            </tr>
+            <tr>
+              <td>Scripting</td>
+              <td>JavaScript pre-request and post-response scripts, tests, declarative <code>assert</code> blocks</td>
+              <td>JavaScript pre-request and post-response scripts using <code>pm.*</code></td>
+            </tr>
+            <tr>
+              <td>CLI</td>
+              <td>Bru CLI (<code>bru run</code>), official GitHub Action</td>
+              <td>Postman CLI; Newman (v2.1 collections only)</td>
+            </tr>
+            <tr>
+              <td>Mock servers</td>
+              <td>Local, in beta, run from the desktop app</td>
+              <td>Yes (hosted)</td>
+            </tr>
+            <tr>
+              <td>Monitors</td>
+              <td>No</td>
+              <td>Yes (1,000 monitor requests/month on Free)</td>
+            </tr>
+            <tr>
+              <td>Collaboration</td>
+              <td>Git</td>
+              <td>Shared workspaces (multi-user needs the Team plan)</td>
+            </tr>
+            <tr>
+              <td>SSO / SCIM</td>
+              <td>Ultimate</td>
+              <td>SSO via a $6/user/month add-on on Team; SCIM on Enterprise</td>
+            </tr>
+            <tr>
+              <td>Price (2026-10-15, billed annually)</td>
+              <td>$0 / Pro $6 / Ultimate $11 per user/month</td>
+              <td>$0 (1 user) / Solo $9/month / Team $19 per user/month / Enterprise custom</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="storage">Where your collections live (the core difference)</h2>
+
+      <p>Storage used to be the whole story: Bruno writes requests to files you commit, and Postman keeps them in its cloud. That gap is smaller in 2026. Postman v12 added <strong>Native Git</strong> on every plan, including Free. It writes collections into a <code>postman/</code> folder in your repository using the <strong>Collection v3</strong> format: one YAML file per request instead of one big JSON export.</p>
+
+      <p>What's still different is the direction of trust. Bruno has no server in the loop at all. Postman's Native Git syncs your local files with Postman Cloud and needs you to be signed in.</p>
+
+      <h3>A request as a Bruno file</h3>
+
+      <p>This is the request from our test collection. We ran it with <code>bru run</code> on 2026-10-15:</p>
+
+      <pre><code>{`meta {
+  name: List users
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/users?page=1
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("returns users", function () {
+    expect(res.getBody()).to.be.an("array");
+  });
+}`}</code></pre>
+
+      <p>That's the original <code>.bru</code> markup. Since <strong>Bruno v3.1</strong>, new and imported collections are saved as <strong>OpenCollection YAML</strong> by default (<code>opencollection.yml</code> at the root, one <code>.yml</code> per request). Existing <code>.bru</code> collections keep working, and Bruno v4.1+ has a "Migrate to YML" button. One collection can't mix the two formats.</p>
+
+      <h3>The same request in a Postman collection</h3>
+
+      <p>Postman now has two on-disk shapes, and which one you get matters for CI.</p>
+
+      <p><strong>Exported Collection v2.1 (single JSON file).</strong> This is what we ran with <code>newman run</code>. <strong>Native Git, Collection v3 (multi-file YAML).</strong> Each request is a <code>*.request.yaml</code> file with a <code>$kind</code> discriminator.</p>
+
+      <h3>What a pull request diff looks like</h3>
+
+      <p>Say you change <code>page=1</code> to <code>page=2</code>.</p>
+
+      <ul>
+        <li><strong>Bruno</strong> (either format): the diff touches the URL and query-param lines in <code>list-users.bru</code> or <code>list-users.yml</code>. That's one small file, and reviewers can read it without context.</li>
+        <li><strong>Postman v3 via Native Git</strong>: also a one-file change, now that each request is its own YAML file. This is a real improvement.</li>
+        <li><strong>Postman v2.1 export</strong>: every request sits in <strong>one JSON file</strong>. The same change edits <code>raw</code> and the <code>query</code> array deep inside it, and test code is stored as an array of strings. You can work with it, but it's harder to review and more prone to merge conflicts.</li>
+      </ul>
+
+      <p>So the diff argument for Bruno is now mostly against <strong>exported</strong> Postman collections. Against v12 Native Git, the differences are the account requirement and which CLI can run the files.</p>
+
+      <h2 id="collaboration">Collaboration: Git vs workspaces</h2>
+
+      <p><strong>Bruno's model is Git.</strong> You share by pushing, review in PRs, and branch with your code. In the built-in Git UI, the free edition covers cloning, initialising, viewing diffs and pulling. Pushing, branching, checkout, stash and merge-conflict resolution are listed on Pro and Ultimate. The <code>git</code> command line works with any tier, because the files are plain text.</p>
+
+      <p><strong>Postman's model is shared workspaces.</strong> Changes sync live, viewers can be invited, and people who never touch Git can comment, fork and send requests. On the March 2026 plans, <strong>Free and Solo are single-user</strong>. A Free team with several members becomes read-only except for one admin. Shared workspaces, unlimited viewers and basic RBAC start on <strong>Team</strong> ($19 per user/month billed annually, $23 monthly).</p>
+
+      <p>If your collections need to reach people outside engineering (PMs, QA, partners), Postman's model is stronger. If everyone already lives in pull requests, Bruno fits with no extra work.</p>
+
+      <h2 id="scripting">Scripting and tests</h2>
+
+      <p>Both tools run JavaScript before and after requests.</p>
+
+      <ul>
+        <li><strong>Postman</strong> uses the <code>pm</code> object (<code>pm.test</code>, <code>pm.expect</code>, <code>pm.environment.set</code>, <code>pm.response.json()</code>). AI-assisted test generation uses AI credits: 50/month on Free (per comparison table), 400 on Solo, 400 per user on Team.</li>
+        <li><strong>Bruno</strong> uses <code>req</code>, <code>res</code> and <code>bru</code> (for example <code>bru.setEnvVar</code>) with Chai-style <code>expect</code>. It also has declarative <code>assert</code> blocks, like the <code>res.status: eq 200</code> line above, for checks that don't need code.</li>
+      </ul>
+
+      <p><code>pm.*</code> scripts don't run unchanged in Bruno. On import, Bruno translates common calls (<code>pm.test</code>, <code>pm.environment</code>, <code>pm.globals</code>, <code>pm.collectionVariables</code>, <code>pm.response</code>). Its importer also flags npm packages your scripts <code>require()</code>, and it lists Postman-only packages (<code>postman-collection</code>, <code>newman</code>, <code>@postman/*</code>) as unsupported. There's also a "Preserve scripts" option if you'd rather keep <code>pm.*</code> code verbatim.</p>
+
+      <p><strong>Runtime sandbox:</strong> from <strong>Bru CLI 3.0</strong>, the default runtime is <strong>Safe Mode</strong>. Scripts that need external npm packages or filesystem access must run with <code>bru run --sandbox=developer</code>. Only do that for collections you trust.</p>
+
+      <h2 id="ci">Running in CI: bru CLI vs Newman / Postman CLI</h2>
+
+      <p>We ran both of these commands against the same local endpoint on 2026-10-15. Both passed and wrote JUnit XML.</p>
+
+      <p><strong>Bruno:</strong></p>
+
+      <pre><code class="language-yaml">{`jobs:
+  bruno:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm i -g @usebruno/cli
+      - run: bru run --env ci --reporter-junit results.xml
+        working-directory: ./api-collection`}</code></pre>
+
+      <p>Bruno also publishes an official action, <code>usebruno/bruno-cli-action@v1</code>. It installs the CLI, runs your <code>bru</code> command, adds <code>--reporter-junit</code> automatically if you leave it out, and exposes <code>passed</code>, <code>failed</code> and <code>total</code> as step outputs.</p>
+
+      <p><strong>Postman, with Newman and an exported v2.1 collection:</strong></p>
+
+      <pre><code class="language-yaml">{`jobs:
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm i -g newman
+      - run: >
+          newman run postman_collection.json
+          -e ci.postman_environment.json
+          -r cli,junit --reporter-junit-export results.xml`}</code></pre>
+
+      <p>Two Postman details that matter in 2026:</p>
+
+      <ul>
+        <li><strong>Newman can't run Collection v3.</strong> If you've moved to Native Git, CI has to use <code>postman collection run &lt;path-or-id&gt;</code> from the Postman CLI.</li>
+        <li><strong>For v3 (YAML) collections, the Postman CLI only supports the <code>cli</code> reporter.</strong> JSON, JUnit and HTML reports are listed for other cases only. If your CI dashboard depends on JUnit XML, test this before migrating.</li>
+      </ul>
+
+      <p>On adoption: npm counted about <strong>638K weekly downloads of <code>newman</code></strong> and <strong>263K of <code>@usebruno/cli</code></strong> (week of 2026-10-06 to 2026-10-12, api.npmjs.org).</p>
+
+      <h2 id="protocols">Protocols and features</h2>
+
+      <p>Both tools cover REST and GraphQL, and both list gRPC. Postman's pricing page also lists <strong>WebSocket and MQTT</strong>. Bruno's lists "HTTP, REST, GraphQL, gRPC".</p>
+
+      <p><strong>Mock servers.</strong> Postman says mock servers are "unlimited on every plan". Collection-based mocks are free, and deploying code-based mocks needs Solo or above. The Postman CLI can also start a local mock for a run. Bruno now has <strong>local mock servers (beta)</strong>, backed by saved response examples or an OpenAPI spec and stored next to the collection. They run inside the desktop app, and closing Bruno stops them. That makes them good for local development, but they don't replace a shared or CI-hosted mock. For those cases, use a standalone server: <a href="/tools/mockoon/">Mockoon</a>, <a href="/tools/wiremock/">WireMock</a> or <a href="/tools/prism/">Prism</a>.</p>
+
+      <p><strong>Monitors.</strong> Postman only. With Bruno, the usual replacement is a scheduled CI job running <code>bru run</code>.</p>
+
+      <h2 id="security">Security and data privacy</h2>
+
+      <p>"Is Bruno more secure than Postman?" depends on your threat model. Neither tool wins outright.</p>
+
+      <ul>
+        <li><strong>Data location.</strong> Bruno keeps collections on your disk and has no sync service, so your exposure is whatever your Git host and laptops already have. Postman syncs to its cloud when you're signed in. Enterprise adds EU-only data residency, audit logs and a private API network.</li>
+        <li><strong>Secrets.</strong> Bruno has secret management in every tier, and integrations with external secret managers are Ultimate-only. Postman has a Local Vault and local secret scanning on every plan, a Shared Vault on Solo and above, and external vault integrations (Azure Key Vault, HashiCorp Vault, AWS Secrets Manager, 1Password) through the Enterprise Advanced Security add-on.</li>
+        <li><strong>Identity.</strong> Bruno lists SSO, SCIM and audit logs on <strong>Ultimate</strong>. Postman Team can add SSO for $6 per user/month. SCIM and audit logs are on Enterprise.</li>
+        <li><strong>Air-gapped use.</strong> Bruno works fully offline. Postman's offline mode is the lightweight client, without collections or environments.</li>
+      </ul>
+
+      <p>If your rule is "API payloads and credentials never leave our network", Bruno meets it by design. If your rule is "access must be centrally governed and audited", Postman Enterprise has more controls.</p>
+
+      <h2 id="pricing">Pricing in 2026</h2>
+
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr>
+              <th>Plan</th>
+              <th>Bruno</th>
+              <th>Postman</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free</td>
+              <td>Open Source, $0: client, testing, collection runner, 2 workspaces, public Git providers in the Git UI, 5 OpenAPI syncs/month</td>
+              <td>Free, $0: 1 user, mocks, Native Git, Postman CLI, 1,000 monitor requests/month, 50 AI credits</td>
+            </tr>
+            <tr>
+              <td>Individual</td>
+              <td>n/a</td>
+              <td>Solo: $9/month billed annually ($12 monthly)</td>
+            </tr>
+            <tr>
+              <td>Team</td>
+              <td>Pro: $6/user/month billed annually</td>
+              <td>Team: $19/user/month billed annually ($23 monthly)</td>
+            </tr>
+            <tr>
+              <td>Enterprise</td>
+              <td>Ultimate: $11/user/month billed annually (SSO, SCIM, audit logs, secret-manager integrations)</td>
+              <td>Enterprise: contact sales. SSO is a $6/user/month add-on on Team</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-zinc-600 dark:text-zinc-400"><em>Prices checked 2026-10-15.</em> For a 10-person team on annual billing, list prices are <strong>$720/year</strong> on Bruno Pro vs <strong>$2,280/year</strong> on Postman Team. With SSO, it's <strong>$1,320</strong> (Bruno Ultimate) vs <strong>$3,000</strong> (Postman Team plus Simple Security). Bruno's pricing page says Ultimate "can save teams more than 70%". That's a vendor claim. Our figures are list prices only and ignore usage-based extras such as Postman AI credits and monitor overages.</p>
+
+      <h2 id="migrating">Migrating from Postman to Bruno</h2>
+
+      <ol>
+        <li>In Postman, export each collection as <strong>Collection v2.1</strong> JSON, then export each environment. A full data dump also works, but Bruno's bulk import of a dump is an <strong>Ultimate</strong> feature.</li>
+        <li>In Bruno, import the collection into a folder inside your repo. New imports are saved as OpenCollection YAML.</li>
+        <li>Import the environments. Bruno stores all variable values as strings, so numbers, booleans and objects are converted, and characters such as <code>/</code> in names become <code>-</code>. Move secrets out of committed files.</li>
+        <li>Choose whether to translate scripts (the default) or keep them verbatim with <strong>Preserve scripts</strong>. Install any npm packages the import prompt lists.</li>
+        <li>Run the collection with <code>bru run</code> and fix failures. Then replace <code>newman run</code> in CI.</li>
+      </ol>
+
+      <p><strong>What doesn't carry over:</strong> monitors, hosted mocks, published docs, comments, workspace permissions and history. Scripts that use Postman-only packages also need rewriting.</p>
+
+      <h2 id="verdict">Verdict: when to choose Bruno, when to choose Postman</h2>
+
+      <p><strong>Bruno wins on</strong> a no-account, no-cloud workflow, working offline or air-gapped, and price. It's MIT-licensed and free for commercial use, and its paid tiers cost about a third (Pro vs Team) to just over half (Ultimate vs Team plus SSO) of Postman's per-seat list price.</p>
+
+      <p><strong>Postman wins on</strong> hosted mocks and monitors, documentation publishing, collaboration with non-Git users, more protocols listed (WebSocket, MQTT), built-in AI tooling, and enterprise governance. With Native Git, it has also closed much of the "collections as code" gap, as long as you accept signing in and switching CI from Newman to the Postman CLI.</p>
+
+      <p>Plenty of teams use both: Bruno for engineers' collections in the repo, and Postman (or a standalone mock server) for the hosted pieces.</p>
+
+      <h2 id="faq">FAQ</h2>
+
+      <h3>Is Bruno better than Postman?</h3>
+      <p>It depends on the job. For offline, Git-based collection work with no vendor account, Bruno is the better fit. For hosted mocks, monitors and collaborating with non-developers, Postman does more.</p>
+
+      <h3>Is Bruno free for commercial use?</h3>
+      <p>Yes. The open-source edition is MIT-licensed, and you can use it at work. Pro and Ultimate are optional. They add Git UI features such as push and branching, private Git providers, unlimited workspaces, SSO/SCIM and support.</p>
+
+      <h3>Is Bruno more secure than Postman?</h3>
+      <p>Bruno stores nothing in a vendor cloud, which shrinks your exposure. Postman offers more centralised controls (vaults, audit logs, SCIM, EU data residency) on paid plans. Which one is "more secure" depends on whether your bigger risk is data leaving your network or ungoverned access.</p>
+
+      <h3>Can Bruno import Postman collections and environments?</h3>
+      <p>Yes. Export Collection v2.1 JSON and the environments from Postman, then import them in Bruno. Common <code>pm.*</code> calls are translated automatically. Review anything that uses Postman-only packages.</p>
+
+      <h3>Does Bruno have mock servers?</h3>
+      <p>Yes, in beta. Bruno can run local mock servers from saved examples or an OpenAPI spec while the app is open. For shared or CI mocks, use Mockoon, WireMock or Prism.</p>
+
+      <h3>Bruno vs Insomnia: which is the better Postman alternative?</h3>
+      <p>Bruno is the purer local-files option and needs no account. <a href="/tools/insomnia/">Insomnia</a> lets you choose Local Vault, Git Sync or cloud storage per project. It lists more protocols (including WebSocket, Socket.IO and SSE), but most features need a free account. See also <a href="/tools/hoppscotch/">Hoppscotch</a> and our <a href="/api-development/postman-alternatives/">Postman alternatives</a> guide.</p>
+
+      <hr />
+
+      <h2 id="related">Related</h2>
+
+      <ul>
+        <li><a href="/api-development/postman-alternatives/">Postman alternatives</a></li>
+        <li><a href="/tools/bruno/">Bruno</a> · <a href="/tools/postman/">Postman</a> · <a href="/tools/insomnia/">Insomnia</a> · <a href="/tools/hoppscotch/">Hoppscotch</a></li>
+        <li><a href="/tools/mockoon/">Mockoon</a> · <a href="/tools/wiremock/">WireMock</a> · <a href="/tools/prism/">Prism</a> · <a href="/tools/postman-mock-servers/">Postman mock servers</a></li>
+        <li><a href="/comparisons/">All comparisons</a> · <a href="/api-development/">API development hub</a></li>
+      </ul>
+
+      <hr />
+
+      <h2 id="sources">Sources (checked 2026-10-15)</h2>
+
+      <ul class="text-sm text-zinc-600 dark:text-zinc-400">
+        <li>Bruno pricing and tier matrix: https://www.usebruno.com/pricing</li>
+        <li>Bruno OpenCollection YAML format: https://docs.usebruno.com/opencollection-yaml/overview</li>
+        <li>Bruno: migrating from Postman: https://docs.usebruno.com/get-started/import-export-data/postman-migration</li>
+        <li>Bruno mock servers (beta): https://docs.usebruno.com/mock-servers/overview</li>
+        <li>Bru CLI <code>run</code> (Safe Mode default since CLI v3.0.0): https://docs.usebruno.com/bru-cli/run/overview</li>
+        <li>Bru CLI GitHub Action: https://docs.usebruno.com/bru-cli/github-actions/overview</li>
+        <li>Postman pricing and plan comparison: https://www.postman.com/pricing/</li>
+        <li>Postman Native Git: https://learning.postman.com/docs/use/native-git/sync.md</li>
+        <li>Postman Collection schema v3 (Newman can't run v3): https://learning.postman.com/docs/use/use-collections/collections-schemas.md</li>
+        <li>Postman CLI <code>collection run</code> (v3 reporter limitation, <code>--mock</code>): https://learning.postman.com/docs/postman-cli/postman-cli-collections.mdx</li>
+        <li>npm weekly downloads: https://api.npmjs.org/downloads/point/last-week/newman and /@usebruno/cli</li>
+        <li>Our CI runs: Bru CLI 4.2.1 and Newman 6.2.3, Node 20.19.2, Linux, 2026-10-15</li>
+      </ul>
+
+      <NewsletterSignup variant="article" />
+
+      <footer class="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-800">
+        <a href="/comparisons/" class="button inline-block">← Back to Comparisons</a>
+      </footer>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .prose {
+    line-height: 1.75;
+    min-width: 0;
+  }
+  
+  .prose .overflow-x-auto {
+    min-width: 0;
+  }
+  
+  .prose ul {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  .prose li {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  .prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .prose h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+  
+  .prose ul, .prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .prose strong {
+    font-weight: 600;
+  }
+  
+  .prose code {
+    background: var(--bg-secondary);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: 'Monaco', 'Courier New', monospace;
+  }
+  
+  .prose pre {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+  }
+  
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .prose thead {
+    background: var(--bg);
+  }
+  
+  .prose th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .prose tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  
+  .prose a:hover {
+    opacity: 0.8;
+  }
+  
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--accent);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .button:hover {
+    opacity: 0.9;
+  }
+</style>
+</Layout>

@@ -20,13 +20,14 @@ const specs = Array.from(allSpecs).sort();
 ---
 
 <Layout 
-  title="Catalog" 
+  title="Catalog Compared (2026)" 
   description="Browse our complete catalog of API development, testing, and mocking tools."
+  ogImage="/og-catalog.png"
 >
   <main class="mx-auto max-w-[1200px] px-5 pt-10">
     <nav class="text-sm text-zinc-500">
       <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
-      /
+      <span aria-hidden="true"> / </span>
       <span class="text-zinc-900 dark:text-white">Catalog</span>
     </nav>
     
@@ -218,6 +219,12 @@ const specs = Array.from(allSpecs).sort();
                 <p class="mt-3 text-[15px] text-zinc-600 dark:text-zinc-400 line-clamp-3">
                   {tool.bestFor}.
                 </p>
+                
+                {tool.affiliation && (
+                  <p class="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                    ⚠️ {tool.affiliation}
+                  </p>
+                )}
                 
                 <div class="mt-3 flex flex-wrap gap-1.5">
                   {tool.categories.map(cat => (

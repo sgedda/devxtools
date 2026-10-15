@@ -1,0 +1,141 @@
+---
+import Layout from './Layout.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+import ReportError from '../components/ReportError.astro';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    canonical: string;
+    h1?: string;
+    breadcrumbs: Array<{ name: string; url: string }>;
+    schema: string[];
+    author: string;
+    datePublished: string;
+    dateModified: string;
+    tested_with?: string;
+    affiliation?: string;
+  };
+  headings?: Array<{ depth: number; slug: string; text: string }>;
+}
+
+const { frontmatter, headings } = Astro.props;
+
+function buildJsonLd(frontmatter: Props['frontmatter']) {
+  const graph: any[] = [];
+  
+  if (frontmatter.schema.includes('TechArticle')) {
+    graph.push({
+      "@type": "TechArticle",
+      "headline": frontmatter.title,
+      "description": frontmatter.description,
+      "url": frontmatter.canonical,
+      "datePublished": frontmatter.datePublished,
+      "dateModified": frontmatter.dateModified,
+      "author": {
+        "@type": "Organization",
+        "name": frontmatter.author
+      }
+    });
+  }
+  
+  if (frontmatter.schema.includes('BreadcrumbList')) {
+    graph.push({
+      "@type": "BreadcrumbList",
+      "itemListElement": frontmatter.breadcrumbs.map((crumb, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": crumb.name,
+        "item": `https://devxtools.dev${crumb.url}`
+      }))
+    });
+  }
+  
+  if (frontmatter.schema.includes('FAQPage') && headings) {
+    const faqHeadings = headings.filter(h => 
+      h.depth === 2 && (
+        h.text.toLowerCase().includes('?') ||
+        h.text.toLowerCase().startsWith('how') ||
+        h.text.toLowerCase().startsWith('what') ||
+        h.text.toLowerCase().startsWith('why') ||
+        h.text.toLowerCase().startsWith('when') ||
+        h.text.toLowerCase().startsWith('where') ||
+        h.text.toLowerCase().startsWith('can') ||
+        h.text.toLowerCase().startsWith('should')
+      )
+    );
+    
+    if (faqHeadings.length > 0) {
+      graph.push({
+        "@type": "FAQPage",
+        "mainEntity": faqHeadings.map(h => ({
+          "@type": "Question",
+          "name": h.text,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Detailed answer provided in the ${frontmatter.title} guide.`
+          }
+        }))
+      });
+    }
+  }
+  
+  return {
+    "@context": "https://schema.org",
+    "@graph": graph
+  };
+}
+
+const jsonLd = buildJsonLd(frontmatter);
+const displayTitle = frontmatter.h1 || frontmatter.title;
+---
+
+<Layout 
+  title={frontmatter.title}
+  description={frontmatter.description}
+  canonicalURL={frontmatter.canonical}
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5">
+    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+      <nav class="text-sm text-zinc-500 mb-6">
+        {frontmatter.breadcrumbs.map((crumb, index) => (
+          <>
+            {index > 0 && <span class="mx-2">/</span>}
+            {index < frontmatter.breadcrumbs.length - 1 ? (
+              <a href={crumb.url} class="hover:text-zinc-900 dark:hover:text-white">{crumb.name}</a>
+            ) : (
+              <span class="text-zinc-900 dark:text-white">{crumb.name}</span>
+            )}
+          </>
+        ))}
+      </nav>
+
+      {frontmatter.affiliation && (
+        <blockquote class="border-l-4 border-blue-500 pl-4 my-6 bg-blue-50 dark:bg-blue-950/30 p-4">
+          <p class="text-sm" set:html={frontmatter.affiliation.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')} />
+        </blockquote>
+      )}
+
+      <h1>{displayTitle}</h1>
+
+      {frontmatter.tested_with && (
+        <blockquote class="border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6">
+          <p class="text-sm">
+            <strong>Tested with</strong> {frontmatter.tested_with}
+          </p>
+        </blockquote>
+      )}
+
+      <slot />
+
+      <ReportError 
+        pageTitle={displayTitle}
+        pageUrl={frontmatter.canonical}
+      />
+
+      <NewsletterSignup />
+    </article>
+  </div>
+</Layout>

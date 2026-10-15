@@ -7,6 +7,26 @@ export const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 export const RATE_LIMIT_MAX = 3; // 3 requests per minute
 export const TOKEN_MAX_AGE = 24 * 60 * 60 * 1000; // 24 hours
 
+export const TOKEN_FORMAT_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9a-f]{64}$/;
+
+export function validateTokenFormat(token: unknown): boolean {
+  if (!token || typeof token !== 'string') {
+    return false;
+  }
+  return TOKEN_FORMAT_REGEX.test(token);
+}
+
+export function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return text.replace(/[&<>"']/g, (m) => map[m]);
+}
+
 export interface UnsubscribeMapping {
   email: string;
   createdAt: number;

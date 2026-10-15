@@ -44,7 +44,7 @@ const jsonLd = {
   <main class="mx-auto max-w-[1200px] px-5 pt-10">
     <nav class="text-sm text-zinc-500">
       <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
-      /
+      <span aria-hidden="true"> / </span>
       <span class="text-zinc-900 dark:text-white">Testing</span>
     </nav>
     
@@ -54,23 +54,33 @@ const jsonLd = {
         Testing
       </div>
       
-      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">API Testing Tools Compared</h1>
+      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">API Testing Tools, Plus E2E, Mobile & Load Testing</h1>
       
-      <div class="mt-4 max-w-3xl text-[16px] leading-7 text-zinc-600 dark:text-zinc-400 space-y-3">
-        <p>
-          Choosing the right test layer matters: API tests, E2E browser tests, mobile tests, and load tests each serve different purposes and come with trade-offs in speed, reliability, and environment complexity. This section covers the tools JavaScript and TypeScript teams use to test web, mobile, and backend applications.
-        </p>
-        <p>
-          <strong>E2E testing</strong> tools like Playwright and Cypress automate browsers to test full user flows, from login to checkout. Playwright offers better cross-browser support and parallelization; Cypress has a simpler API and excellent debugging. Both handle network mocking differently—Playwright via request interception, Cypress via cy.intercept—so choose based on your stack and test isolation needs.
-        </p>
-        <p>
-          <strong>Mobile testing</strong> includes Detox and Maestro for React Native and native apps, plus Appium for cross-platform scenarios. Detox integrates tightly with React Native and runs on simulators and devices. Maestro uses a simpler YAML syntax and works across iOS and Android. Trade-offs: Detox is faster but React Native-first; Maestro is broader but less fine-grained.
-        </p>
-        <p>
-          <strong>Load testing</strong> tools like k6, Locust, Artillery, and Gatling simulate concurrent users to find performance bottlenecks. k6 (JavaScript) and Locust (Python) are scriptable and open source. Artillery focuses on ease of use with YAML configs. Gatling (JVM) excels at scale but requires Java knowledge. Pick based on your language preference and infrastructure.
-        </p>
-      </div>
+      <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
+        Choosing among API testing tools, E2E frameworks and load testers starts with choosing the <strong>layer</strong> you're testing. Each layer has a different best tool, and most teams need more than one.
+      </p>
+      <ul class="mt-4 max-w-3xl space-y-2 text-zinc-600 dark:text-zinc-400">
+        <li><strong>API testing.</strong> Run request collections with assertions from a CLI in CI: the Postman CLI or Newman for <a href="/tools/postman/" class="text-indigo-600 dark:text-indigo-400">Postman</a>, <code>bru run</code> for <a href="/tools/bruno/" class="text-indigo-600 dark:text-indigo-400">Bruno</a>, <code>hopp test</code> for <a href="/tools/hoppscotch/" class="text-indigo-600 dark:text-indigo-400">Hoppscotch</a> and Inso for <a href="/tools/insomnia/" class="text-indigo-600 dark:text-indigo-400">Insomnia</a>. Code-first teams can also call APIs directly from Playwright's <code>request</code> fixture. Compare the clients in <a href="/api-development/postman-alternatives/" class="text-indigo-600 dark:text-indigo-400">Postman alternatives</a>.</li>
+        <li><strong>Browser E2E.</strong> <a href="/tools/playwright/" class="text-indigo-600 dark:text-indigo-400">Playwright</a> (Apache-2.0) drives Chromium, Firefox and WebKit from JS/TS, Python, Java or .NET. <a href="/tools/cypress/" class="text-indigo-600 dark:text-indigo-400">Cypress</a> (MIT) runs your tests inside the browser and has an interactive, time-travel debugger. Both can intercept and mock network requests (<code>page.route()</code> and <code>cy.intercept()</code>), which often matters more than raw speed.</li>
+        <li><strong>Mobile.</strong> <a href="/tools/detox/" class="text-indigo-600 dark:text-indigo-400">Detox</a> is a gray-box framework built for React Native, with tests written in JavaScript. <a href="/tools/maestro/" class="text-indigo-600 dark:text-indigo-400">Maestro</a> describes flows in YAML for Android, iOS and web. <a href="/tools/appium/" class="text-indigo-600 dark:text-indigo-400">Appium</a> uses the W3C WebDriver protocol to automate native, hybrid and mobile-web apps from many languages.</li>
+        <li><strong>Load and performance.</strong> <a href="/tools/k6/" class="text-indigo-600 dark:text-indigo-400">k6</a> (AGPL-3.0) is written in Go and scripted in JavaScript. <a href="/tools/locust/" class="text-indigo-600 dark:text-indigo-400">Locust</a> uses plain Python. <a href="/tools/gatling/" class="text-indigo-600 dark:text-indigo-400">Gatling</a> supports Java, Kotlin, Scala and, more recently, JS/TS. <a href="/tools/artillery/" class="text-indigo-600 dark:text-indigo-400">Artillery</a> uses YAML or Node scenarios and can drive Playwright for browser-level load.</li>
+      </ul>
+      <p class="mt-4 max-w-3xl text-zinc-600 dark:text-zinc-400">
+        Need to fake the backend instead? See the <a href="/mocking-test-data/" class="text-indigo-600 dark:text-indigo-400">mocking section</a>.
+      </p>
+      <p class="mt-4 max-w-3xl text-sm text-zinc-500 dark:text-zinc-500">
+        Every tool page lists licence, language and the date we last checked it. For a guided choice, try the <a href="/picker/" class="text-indigo-600 dark:text-indigo-400">tool picker</a>.
+      </p>
     </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons and guides</h2>
+      <ul class="mt-4 space-y-2">
+        <li><a href="/comparisons/playwright-vs-cypress/" class="text-indigo-600 dark:text-indigo-400 hover:underline">Playwright vs Cypress (2026)</a>: architecture, network mocking, CI cost and a migration map</li>
+        <li><a href="/guides/mock-api-playwright/" class="text-indigo-600 dark:text-indigo-400 hover:underline">How to mock APIs in Playwright</a>: <code>page.route</code>, HAR replay and MSW, tested on 1.64.1</li>
+        <li><a href="/comparisons/" class="text-indigo-600 dark:text-indigo-400 hover:underline">All comparisons</a></li>
+      </ul>
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Tools in this section</h2>
@@ -85,6 +95,11 @@ const jsonLd = {
               <div class="flex-1 min-w-0">
                 <div class="font-medium text-zinc-900 dark:text-white">{tool.name}</div>
                 <div class="text-sm text-zinc-500 mt-0.5">{CATEGORY_LABELS[tool.categories[0]]}</div>
+                {tool.affiliation && (
+                  <div class="text-xs text-amber-700 dark:text-amber-400 mt-1">
+                    ⚠️ {tool.affiliation}
+                  </div>
+                )}
               </div>
             </div>
           </a>

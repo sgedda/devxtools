@@ -3,8 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 ---
 
 <Layout 
-  title="Guides" 
+  title="Guides Compared (2026)" 
   description="In-depth guides on API mocking, test data generation, and testing best practices."
+  ogImage="/og-guides.png"
 >
   <div class="container">
     <h1>Guides</h1>
@@ -13,7 +14,7 @@ import Layout from '../../layouts/Layout.astro';
     </p>
     
     <div class="guide-grid">
-      <a href="/guides/msw-vs-nock-vs-polly/" class="guide-card">
+      <a href="/comparisons/msw-vs-nock-vs-polly/" class="guide-card">
         <span class="guide-badge">Comparison</span>
         <h2>MSW vs Nock vs Polly.js</h2>
         <p>Compare three popular JavaScript HTTP mocking libraries and find the right fit for your project.</p>
@@ -22,7 +23,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
       </a>
       
-      <a href="/guides/spec-first-mocking-prism-openapi/" class="guide-card">
+      <a href="/guides/openapi-mock-server-prism/" class="guide-card">
         <span class="guide-badge">Tutorial</span>
         <h2>Spec-First Mocking with Prism and OpenAPI</h2>
         <p>Generate mock servers directly from your OpenAPI specifications using Prism.</p>
@@ -31,7 +32,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
       </a>
       
-      <a href="/guides/react-native-mocking-mockifyer/" class="guide-card">
+      <a href="/guides/mock-api-react-native/" class="guide-card">
         <span class="guide-badge">Tutorial</span>
         <h2>Mocking APIs in React Native with Mockifyer</h2>
         <p>Record and replay HTTP interactions in React Native applications for reliable testing.</p>
@@ -40,7 +41,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
       </a>
       
-      <a href="/guides/realistic-test-data-faker-factories/" class="guide-card">
+      <a href="/guides/faker-js-test-data-factories/" class="guide-card">
         <span class="guide-badge">Best Practices</span>
         <h2>Realistic Test Data with Faker and Factories</h2>
         <p>Create maintainable, realistic test data using Faker and factory patterns with Fishery.</p>
@@ -49,7 +50,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
       </a>
       
-      <a href="/guides/keeping-mocks-honest-pact/" class="guide-card">
+      <a href="/guides/pact-contract-testing-javascript/" class="guide-card">
         <span class="guide-badge">Best Practices</span>
         <h2>Keeping Mocks Honest with Pact</h2>
         <p>Use consumer-driven contract testing to ensure your mocks stay in sync with real APIs.</p>

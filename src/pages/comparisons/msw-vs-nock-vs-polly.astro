@@ -1,6 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import Code from '../../components/Code.astro';
+import ReportError from '../../components/ReportError.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -143,18 +145,21 @@ const jsonLd = {
         
         <div class="code-example">
           <h4>Example Usage</h4>
-          <pre><code>import &#123; http, HttpResponse &#125; from 'msw'
-import &#123; setupServer &#125; from 'msw/node'
+          <Code 
+            code={`import { http, HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
 const server = setupServer(
-  http.get('/api/user', () => &#123;
-    return HttpResponse.json(&#123; id: 1, name: 'John' &#125;)
-  &#125;)
+  http.get('/api/user', () => {
+    return HttpResponse.json({ id: 1, name: 'John' })
+  })
 )
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
-afterAll(() => server.close())</code></pre>
+afterAll(() => server.close())`}
+            lang="ts"
+          />
         </div>
       </section>
       
@@ -179,14 +184,17 @@ afterAll(() => server.close())</code></pre>
         
         <div class="code-example">
           <h4>Example Usage</h4>
-          <pre><code>import nock from 'nock'
+          <Code 
+            code={`import nock from 'nock'
 
 nock('https://api.example.com')
   .get('/user/1')
-  .reply(200, &#123; id: 1, name: 'John' &#125;)
+  .reply(200, { id: 1, name: 'John' })
 
 // Your test code here
-// Nock automatically intercepts matching requests</code></pre>
+// Nock automatically intercepts matching requests`}
+            lang="ts"
+          />
         </div>
       </section>
       
@@ -211,19 +219,22 @@ nock('https://api.example.com')
         
         <div class="code-example">
           <h4>Example Usage</h4>
-          <pre><code>import &#123; Polly &#125; from '@pollyjs/core'
+          <Code 
+            code={`import { Polly } from '@pollyjs/core'
 import FetchAdapter from '@pollyjs/adapter-fetch'
 import LocalStoragePersister from '@pollyjs/persister-local-storage'
 
 Polly.register(FetchAdapter)
 Polly.register(LocalStoragePersister)
 
-const polly = new Polly('My Test', &#123;
+const polly = new Polly('My Test', {
   adapters: ['fetch'],
   persister: 'local-storage'
-&#125;)
+})
 
-// Polly records and replays automatically</code></pre>
+// Polly records and replays automatically`}
+            lang="ts"
+          />
         </div>
       </section>
       
@@ -261,6 +272,11 @@ const polly = new Polly('My Test', &#123;
         </div>
       </section>
       
+      <ReportError 
+        pageTitle="MSW vs Nock vs Polly.js"
+        pageUrl="https://devxtools.dev/comparisons/msw-vs-nock-vs-polly/"
+      />
+      
       <NewsletterSignup variant="article" />
       
       <footer class="comparison-footer">
@@ -280,6 +296,7 @@ const polly = new Polly('My Test', &#123;
   .comparison {
     max-width: 900px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   header {
@@ -312,42 +329,12 @@ const polly = new Polly('My Test', &#123;
   
   .comparison-table-section {
     overflow-x: auto;
+    min-width: 0;
   }
   
   .table-wrapper {
     overflow-x: auto;
-  }
-  
-  .comparison-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .comparison-table th,
-  .comparison-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .comparison-table thead {
-    background: var(--bg);
-  }
-  
-  .comparison-table th {
-    color: var(--text-secondary);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 0.875rem;
-    letter-spacing: 0.05em;
-  }
-  
-  .comparison-table tbody tr:last-child td {
-    border-bottom: none;
+    min-width: 0;
   }
   
   .tool-deep-dive {
@@ -355,6 +342,7 @@ const polly = new Polly('My Test', &#123;
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 2rem;
+    min-width: 0;
   }
   
   .tool-deep-dive h2 {
