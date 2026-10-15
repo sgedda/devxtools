@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-// import { rehypeTableWrapper } from './src/lib/rehype-table-wrapper.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,7 +13,6 @@ export default defineConfig({
         dark: 'github-dark',
       },
     },
-    // rehypePlugins: [rehypeTableWrapper],
   },
   integrations: [
     sitemap({

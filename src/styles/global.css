@@ -233,10 +233,8 @@
   }
 
   .prose table {
-    display: block;
     width: 100%;
     max-width: 100%;
-    overflow-x: auto;
     border-collapse: collapse;
     background: rgb(250 250 250);
     font-size: 0.9375rem;
@@ -262,31 +260,6 @@
 
   .dark table {
     background: rgb(24 24 27);
-  }
-
-  /* Table caption for accessibility */
-  caption {
-    text-align: left;
-    padding: 0.75rem 1rem;
-    font-weight: 600;
-    font-size: 0.875rem;
-    border-bottom: 1px solid rgb(228 228 231);
-  }
-
-  .dark caption {
-    border-color: rgb(39 39 42);
-  }
-
-  caption.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
   }
 
   /* Table header */
@@ -377,25 +350,7 @@
   .table-wrapper,
   .overflow-x-auto {
     overflow-x: auto;
-    margin: 1.5rem 0;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(228 228 231);
     position: relative;
-  }
-
-  .dark .comparison-table-wrapper,
-  .dark .table-wrapper,
-  .dark .overflow-x-auto {
-    border-color: rgb(39 39 42);
-  }
-
-  /* Apply consistent table styling to comparison pages */
-  .comparison-table-wrapper table,
-  .table-wrapper table,
-  .overflow-x-auto table {
-    border: none;
-    border-radius: 0;
-    margin: 0;
   }
 
   /* Mobile: right-edge fade hint for scrollable tables */
