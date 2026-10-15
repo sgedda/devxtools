@@ -16,11 +16,7 @@ affiliation: "devxtools.dev is run by Sebastian Gedda, who also builds and maint
 tools: ["msw", "miragejs", "mockoon", "prism", "wiremock", "mockifyer", "pollyjs", "detox", "maestro", "reactotron", "flipper", "proxyman", "charles"]
 ---
 
-> **Disclosure:** devxtools.dev is run by Sebastian Gedda, who also builds and maintains **Mockifyer**, one of the tools in this guide. We've tried to keep the comparison fair: MSW and Mirage get at least as much space, and Mockifyer is never ranked first. Mockifyer details come from its README and docs unless we say we tested them.
-
 **To mock APIs in React Native, you need different tools for three different places: Jest tests, the running app in a simulator, and end-to-end tests with Detox or Maestro.** This guide covers each one: MSW in Jest (tested), MSW and Expo in the running app (including the MSW 3 change that broke the old setup), Mirage JS, mock servers and the Android `10.0.2.2` gotcha, record/replay, and debugging tools.
-
-> **Tested with** React Native 0.88.0, Jest 30.5.2 (`@react-native/jest-preset` 0.88.0), React Native Testing Library 14.1.0 and msw 2.15.0 on Node 22.23.3 (2026-10-15). The Jest snippets passed on our machine. We had **no iOS simulator, Android emulator or device** available, so in-app and E2E snippets come from the tools' official docs and are labelled that way.
 
 ## TL;DR
 
