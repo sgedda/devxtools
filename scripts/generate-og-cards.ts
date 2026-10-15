@@ -23,8 +23,8 @@ const simpleIconsMap: Record<string, string> = {
   'datadog': 'datadog',
   'charles': 'charlesproxy',
   'nock': 'npm',
-  'polly': 'netflix',
-  'mirage': 'miragejs',
+  'pollyjs': 'netflix',
+  'miragejs': 'miragejs',
   'mockoon': 'mockoon',
 };
 
