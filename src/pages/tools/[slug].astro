@@ -253,6 +253,91 @@ const relatedTools = allTools
         </section>
       )}
       
+      <section id="badges">
+        <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">README badges</h2>
+        <p class="mt-2 text-[15px] text-zinc-600 dark:text-zinc-400">
+          If your tool is listed on devxtools.dev, you can add a badge to your README or docs that links to your listing. It's optional, it's free, and nobody will chase you about it.
+        </p>
+        
+        <div class="mt-5 rounded-xl border border-indigo-200 bg-indigo-50/60 p-5 dark:border-indigo-500/30 dark:bg-indigo-500/5">
+          <h3 class="text-sm font-semibold text-indigo-900 dark:text-indigo-200 mb-2">What the badge means</h3>
+          <p class="text-sm text-indigo-900/80 dark:text-indigo-200/80">
+            The badge says your tool is <strong>listed in the devxtools.dev catalog and that we've reviewed the listing</strong> against official sources, with a dated check. That's all it means.
+          </p>
+          <p class="mt-2 text-sm text-indigo-900/80 dark:text-indigo-200/80">
+            It doesn't mean that we <strong>endorse</strong> or recommend the tool over alternatives, that anyone <strong>paid</strong> for the listing (nobody can), or that the tool won a comparison.
+          </p>
+        </div>
+        
+        <div class="mt-5 grid gap-5 sm:grid-cols-2">
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Small · Light theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800">
+              <img src={`/badge/${tool.slug}.svg`} alt="Listed on devxtools.dev" />
+            </div>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Small · Dark theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-900 p-6">
+              <img src={`/badge/${tool.slug}.svg?theme=dark`} alt="Listed on devxtools.dev" />
+            </div>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Large · Light theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800">
+              <img src={`/badge/${tool.slug}.svg?variant=large`} alt="Listed on devxtools.dev" />
+            </div>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Large · Dark theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-900 p-6">
+              <img src={`/badge/${tool.slug}.svg?variant=large&theme=dark`} alt="Listed on devxtools.dev" />
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-5 space-y-4">
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">Markdown</div>
+              <button
+                onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
+                class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
+                Copy
+              </button>
+            </div>
+            <pre class="text-xs bg-zinc-50 dark:bg-zinc-800 p-3 rounded-lg overflow-x-auto"><code>[![Listed on devxtools.dev](https://devxtools.dev/badge/{tool.slug}.svg)](https://devxtools.dev/tools/{tool.slug}/)</code></pre>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">HTML</div>
+              <button
+                onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
+                class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
+                Copy
+              </button>
+            </div>
+            <pre class="text-xs bg-zinc-50 dark:bg-zinc-800 p-3 rounded-lg overflow-x-auto"><code>&lt;a href="https://devxtools.dev/tools/{tool.slug}/"&gt;&lt;img src="https://devxtools.dev/badge/{tool.slug}.svg" alt="Listed on devxtools.dev" height="20"&gt;&lt;/a&gt;</code></pre>
+          </div>
+        </div>
+        
+        <div class="mt-5 rounded-xl border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <h3 class="text-sm font-semibold text-zinc-900 dark:text-white mb-2">Usage rules</h3>
+          <ol class="space-y-2 text-sm text-zinc-700 dark:text-zinc-300 list-decimal list-inside">
+            <li><strong>Only for listed tools.</strong> Use the badge only if your tool has a live listing at the URL it links to.</li>
+            <li><strong>Link to your listing.</strong> Keep the link pointing at your devxtools.dev listing page, not the home page or somewhere else.</li>
+            <li><strong>Don't modify it.</strong> Don't change the badge's wording, colours or logo.</li>
+            <li><strong>It's optional, and it has no effect.</strong> Adding the badge, or not adding it, doesn't affect your listing, its position, or any comparison or verdict.</li>
+          </ol>
+        </div>
+      </section>
+      
       {(contentLinks.comparisons.length > 0 || contentLinks.guides.length > 0) && (
         <section>
           {contentLinks.comparisons.length > 0 && (
@@ -428,6 +513,14 @@ const relatedTools = allTools
       >
         <Icon name="pencil" size={16} />
         Suggest an edit
+      </a>
+      
+      <a 
+        href={`/submit/?tool=${tool.slug}&mode=claim#claim`}
+        class="mt-2 flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+      >
+        <Icon name="badge-check" size={16} />
+        Claim or update this listing
       </a>
     </aside>
   </main>

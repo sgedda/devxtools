@@ -207,6 +207,80 @@ The repository includes a GitHub Actions workflow (`.github/workflows/ci.yml`) t
 - Builds the site
 - Runs on every PR and push to main
 
+## Tool Submission System
+
+The site includes a tool submission feature that allows maintainers to submit new tools or claim existing listings:
+
+- **Public submission form**: `/submit/` page with validation
+- **Claim flow**: Tool pages link to `/submit/?tool=<slug>&mode=claim` for maintainers to claim and update listings
+- **Server-side validation**: All fields validated with appropriate limits
+- **Anti-spam protection**:
+  - Honeypot field (invisible to real users)
+  - Minimum fill time (3 seconds)
+  - Rate limiting (5 submissions per hour per IP)
+  - Optional Turnstile CAPTCHA (when configured)
+- **Secure storage**: Submissions stored in Cloudflare KV with 90-day retention
+- **Manual review workflow**: Never auto-publishes; maintainers review and approve
+
+### Submission Architecture
+
+- **Frontend**: Astro page at `/submit/` with progressive enhancement
+- **Backend**: Cloudflare Pages Function at `/api/submit`
+- **Storage**: Cloudflare KV (uses `NEWSLETTER_KV` binding)
+- **Rate limiting**: IP-based via KV (5 per hour)
+
+### Managing Submissions
+
+Use the `scripts/list-submissions.ts` script to export submissions:
+
+```bash
+# List all submissions
+CLOUDFLARE_ACCOUNT_ID=xxx \
+CLOUDFLARE_API_TOKEN=xxx \
+CLOUDFLARE_KV_NAMESPACE_ID=xxx \
+tsx scripts/list-submissions.ts
+
+# Export YAML stubs to a directory
+CLOUDFLARE_ACCOUNT_ID=xxx \
+CLOUDFLARE_API_TOKEN=xxx \
+CLOUDFLARE_KV_NAMESPACE_ID=xxx \
+tsx scripts/list-submissions.ts --export ./submissions
+```
+
+**Review workflow:**
+1. Export submissions with the script
+2. Review and edit the YAML stubs
+3. Move approved files to `src/data/tools/`
+4. Create a PR with the new tools
+5. Merge after Editor review
+
+### Optional: Turnstile Configuration
+
+To enable Turnstile CAPTCHA (recommended for production):
+
+1. Create a Turnstile site key at [dash.cloudflare.com](https://dash.cloudflare.com/?to=/:account/turnstile)
+2. Set environment variables:
+   - `PUBLIC_TURNSTILE_SITE_KEY` (build-time, visible to client)
+   - `TURNSTILE_SECRET` (runtime secret, Pages Function only)
+
+When unset, the form works without CAPTCHA (relies on honeypot + rate limiting).
+
+## Tool Badges
+
+Each tool in the catalog has a badge that can be embedded in README files or websites:
+
+- **Light theme**: `/badge/<slug>.svg`
+- **Dark theme**: `/badge/<slug>-dark.svg`
+
+Badges are generated at build time as static SVGs for all tools. The badge section on each tool page includes:
+- Visual previews (light and dark themes)
+- Copy-paste Markdown snippet
+- Copy-paste HTML snippet
+
+To customize badge design, edit:
+- `src/pages/badge/[slug].svg.ts` (light theme)
+- `src/pages/badge/[slug]-dark.svg.ts` (dark theme)
+
 ## Newsletter System
 
 The site includes a newsletter signup feature with:

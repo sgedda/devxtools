@@ -1,0 +1,385 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { CATEGORY_LABELS } from '../lib/schema';
+import { getToolBySlug } from '../lib/tools';
+
+const toolSlug = Astro.url.searchParams.get('tool');
+const mode = Astro.url.searchParams.get('mode');
+
+let prefillData = {
+  toolName: '',
+  url: '',
+  repoUrl: '',
+  category: '',
+};
+
+if (toolSlug && mode === 'claim') {
+  const tool = getToolBySlug(toolSlug);
+  if (tool) {
+    prefillData = {
+      toolName: tool.name,
+      url: tool.website,
+      repoUrl: tool.repo || '',
+      category: tool.categories[0] || '',
+    };
+  }
+}
+
+const isClaim = mode === 'claim' && toolSlug;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<Layout 
+  title={isClaim ? 'Claim Your Tool Listing | devxtools.dev' : 'Submit a Tool or Claim a Listing | devxtools.dev'}
+  description={isClaim ? 'Claim your tool listing on devxtools.dev. Suggest corrections, get notified of updates, and add the README badge.' : 'Suggest a developer test or dev tool for devxtools.dev, or claim your existing listing. Listings are free, never paid, and every claim is verified by us.'}
+>
+  <div class="border-b border-zinc-200 bg-gradient-to-b from-indigo-50/60 to-transparent dark:border-zinc-800 dark:from-indigo-500/5">
+    <div class="mx-auto max-w-[800px] px-5 py-10">
+      <nav class="flex items-center gap-1.5 text-sm text-zinc-500">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        <Icon name="chevron-right" size={14} />
+        <span class="text-zinc-900 dark:text-white">{isClaim ? 'Claim Listing' : 'Submit'}</span>
+      </nav>
+      
+      <div class="mt-6">
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white">
+          {isClaim ? 'Claim your listing' : 'Submit a tool or claim a listing'}
+        </h1>
+        {!isClaim && (
+          <p class="mt-4 text-[16px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+            devxtools.dev is an independent guide to developer test and dev tools. If you build or maintain a tool that belongs here, or you're already listed and want to help keep your entry accurate, this is the place to start.
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+
+  <main class="mx-auto max-w-[800px] px-5 py-12">
+    {!isClaim && (
+      <div class="mb-10 space-y-6">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Before you submit</h2>
+          <ul class="space-y-2 text-[15px] text-zinc-700 dark:text-zinc-300">
+            <li class="flex items-start gap-2">
+              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span><strong>Listings are free.</strong> They are never sold, and there's no paid tier.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span>Submitting doesn't guarantee a listing, and it doesn't affect any ranking, comparison or verdict.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span>We check everything ourselves against official sources before it goes on the site.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="prose prose-zinc dark:prose-invert max-w-none">
+          <h2>What we list</h2>
+          <p>Tools that developers use to build, test and debug software, in our four sections:</p>
+          <ul>
+            <li><strong>API development:</strong> API clients, OpenAPI design and linting, SDK generators</li>
+            <li><strong>Testing:</strong> end-to-end, component, mobile and load testing</li>
+            <li><strong>Mocking & test data:</strong> HTTP interception, mock servers, contract testing, test data generation</li>
+            <li><strong>Observability:</strong> logging, tracing, error tracking, request debugging</li>
+          </ul>
+          <p>Open-source and commercial tools are both welcome. To be listed, a tool should be publicly available (not a waitlist), have public documentation, and show signs of active maintenance.</p>
+        </div>
+      </div>
+    )}
+
+    <div class="rounded-xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+      <form id="submit-form" class="space-y-6">
+        <input 
+          type="hidden" 
+          name="startTime" 
+          id="startTime" 
+          value={Date.now().toString()}
+        />
+        
+        <input 
+          type="hidden" 
+          name="mode" 
+          value={mode || 'add'}
+        />
+        
+        {toolSlug && (
+          <input 
+            type="hidden" 
+            name="existingSlug" 
+            value={toolSlug}
+          />
+        )}
+
+        <input
+          type="text"
+          name="honeypot"
+          id="honeypot"
+          class="hidden"
+          tabindex="-1"
+          autocomplete="off"
+        />
+
+        <div>
+          <label for="toolName" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Tool Name <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="toolName"
+            id="toolName"
+            required
+            maxlength="100"
+            value={prefillData.toolName}
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+            placeholder="e.g., Mock Service Worker"
+          />
+        </div>
+
+        <div>
+          <label for="url" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Website URL <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="url"
+            name="url"
+            id="url"
+            required
+            value={prefillData.url}
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+            placeholder="https://example.com"
+          />
+        </div>
+
+        <div>
+          <label for="repoUrl" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Repository URL
+          </label>
+          <input
+            type="url"
+            name="repoUrl"
+            id="repoUrl"
+            value={prefillData.repoUrl}
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+            placeholder="https://github.com/example/tool"
+          />
+          <p class="mt-1 text-sm text-zinc-500">Optional, but helpful for verification</p>
+        </div>
+
+        <div>
+          <label for="category" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Primary Category <span class="text-red-500">*</span>
+          </label>
+          <select
+            name="category"
+            id="category"
+            required
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+          >
+            <option value="">Select a category...</option>
+            {Object.entries(CATEGORY_LABELS).map(([value, label]) => (
+              <option value={value} selected={value === prefillData.category}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label for="pricing" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Pricing <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="pricing"
+            id="pricing"
+            required
+            maxlength="100"
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+            placeholder="e.g., Open Source, Free with paid plans, Enterprise"
+          />
+        </div>
+
+        <div>
+          <label for="description" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Short Description <span class="text-red-500">*</span>
+          </label>
+          <textarea
+            name="description"
+            id="description"
+            required
+            maxlength="280"
+            rows="3"
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+            placeholder="One or two sentences on what it's best for (max 280 characters)"
+          ></textarea>
+          <p class="mt-1 text-sm text-zinc-500">
+            <span id="char-count">280</span> characters remaining
+          </p>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-zinc-900 dark:text-white">
+            Contact Email <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            required
+            class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
+            placeholder="your@email.com"
+          />
+          <p class="mt-1 text-sm text-zinc-500">
+            We'll use this to contact you about your submission. Your email will not be published.
+          </p>
+        </div>
+
+        <div class="flex items-start gap-3">
+          <input
+            type="checkbox"
+            name="isMaintainer"
+            id="isMaintainer"
+            required
+            class="mt-1 h-4 w-4 rounded border-zinc-300 text-indigo-600 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700"
+          />
+          <label for="isMaintainer" class="text-sm text-zinc-700 dark:text-zinc-300">
+            I am the maintainer or an authorized representative of this tool <span class="text-red-500">*</span>
+          </label>
+        </div>
+
+        {turnstileSiteKey && (
+          <div id="turnstile-container" class="flex justify-center"></div>
+        )}
+
+        <div id="error-message" class="hidden rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-200">
+        </div>
+
+        <div id="success-message" class="hidden rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200">
+        </div>
+
+        <div class="flex gap-3">
+          <button
+            type="submit"
+            id="submit-button"
+            class="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isClaim ? 'Submit Update' : 'Submit for Review'}
+          </button>
+          <a
+            href="/catalog/"
+            class="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-6 py-3 font-medium text-zinc-900 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-white"
+          >
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <div class="mt-8 rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
+      <div class="flex items-start gap-3">
+        <Icon name="info" size={20} class="mt-0.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+        <div class="text-sm text-zinc-700 dark:text-zinc-300">
+          <p class="font-medium mb-2">What happens next</p>
+          <ol class="space-y-1 list-decimal list-inside">
+            <li>We read every submission.</li>
+            <li>We check the tool against its official docs, repository and pricing page.</li>
+            <li>If it fits, we write the listing and publish it with the date we checked. If it doesn't, we'll let you know.</li>
+            {isClaim && (
+              <li>Updates are reviewed by an editor before going live.</li>
+            )}
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    {!isClaim && (
+      <div class="mt-8 prose prose-zinc dark:prose-invert max-w-none" id="claim">
+        <h2>Claiming an existing listing</h2>
+        <p>If your tool is already listed, you can claim it. Claiming lets you:</p>
+        <ul>
+          <li>Send corrections to facts (licence, platforms, pricing, links) and get them prioritised</li>
+          <li>Be notified when we update the listing or mention the tool in a new comparison</li>
+          <li>Add the optional README badge</li>
+        </ul>
+        <p>Claiming <strong>doesn't</strong> let you edit the listing directly, change a "best for" or "not for" line, or alter a comparison's verdict. We verify every correction ourselves, and all updates are reviewed by an editor before going live. We update the "last checked" date when we publish changes.</p>
+      </div>
+    )}
+  </main>
+
+  {turnstileSiteKey && (
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
+
+  <script define:vars={{ turnstileSiteKey }}>
+    const form = document.getElementById('submit-form');
+    const submitButton = document.getElementById('submit-button');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+    const descriptionField = document.getElementById('description');
+    const charCount = document.getElementById('char-count');
+
+    if (descriptionField && charCount) {
+      descriptionField.addEventListener('input', () => {
+        const remaining = 280 - descriptionField.value.length;
+        charCount.textContent = remaining.toString();
+        charCount.parentElement.classList.toggle('text-red-500', remaining < 0);
+      });
+    }
+
+    let turnstileToken = null;
+    if (turnstileSiteKey) {
+      window.turnstile?.render('#turnstile-container', {
+        sitekey: turnstileSiteKey,
+        callback: (token) => {
+          turnstileToken = token;
+        },
+      });
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      errorMessage?.classList.add('hidden');
+      successMessage?.classList.add('hidden');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Submitting...';
+
+      try {
+        const formData = new FormData(form);
+        
+        if (turnstileSiteKey && turnstileToken) {
+          formData.append('turnstileToken', turnstileToken);
+        }
+
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          successMessage.textContent = data.message;
+          successMessage.classList.remove('hidden');
+          form.reset();
+          document.getElementById('startTime').value = Date.now().toString();
+        } else {
+          errorMessage.textContent = data.error || 'An error occurred. Please try again.';
+          errorMessage.classList.remove('hidden');
+        }
+      } catch (error) {
+        errorMessage.textContent = 'Network error. Please check your connection and try again.';
+        errorMessage.classList.remove('hidden');
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit for Review';
+        if (turnstileSiteKey) {
+          window.turnstile?.reset();
+        }
+      }
+    });
+  </script>
+</Layout>
