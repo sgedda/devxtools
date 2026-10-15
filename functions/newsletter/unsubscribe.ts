@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyUnsubscribeToken } from '../lib/newsletter-utils';
+import { verifyUnsubscribeToken, validateTokenFormat, escapeHtml } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
@@ -12,7 +12,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const url = new URL(request.url);
   const token = url.searchParams.get('token');
 
-  if (!token) {
+  if (!token || !validateTokenFormat(token)) {
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 
@@ -22,6 +22,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     if (!email) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
+
+    const escapedToken = escapeHtml(token);
 
     const html = `
 <!DOCTYPE html>
@@ -122,7 +124,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         You won't receive any more emails from us.
       </p>
       <form method="POST" action="/newsletter/unsubscribe" class="unsubscribe-form">
-        <input type="hidden" name="token" value="${token}" />
+        <input type="hidden" name="token" value="${escapedToken}" />
         <button type="submit" class="button">
           Confirm Unsubscribe
         </button>
@@ -152,21 +154,25 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
 
   let token: string | null = null;
 
-  try {
-    const contentType = request.headers.get('content-type') || '';
-    
-    if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
-      const formData = await request.formData();
-      token = formData.get('token') as string;
-    } else if (contentType.includes('application/json')) {
-      const body = await request.json() as any;
-      token = body.token;
-    }
-  } catch (error) {
-    console.error('Failed to parse request body:', error);
-  }
+  token = url.searchParams.get('token');
 
   if (!token) {
+    try {
+      const contentType = request.headers.get('content-type') || '';
+      
+      if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
+        const formData = await request.formData();
+        token = formData.get('token') as string;
+      } else if (contentType.includes('application/json')) {
+        const body = await request.json() as any;
+        token = body.token;
+      }
+    } catch (error) {
+      console.error('Failed to parse request body:', error);
+    }
+  }
+
+  if (!token || !validateTokenFormat(token)) {
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 

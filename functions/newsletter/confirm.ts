@@ -1,5 +1,5 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
-import { verifyUnsubscribeToken, generateUnsubscribeToken } from '../lib/newsletter-utils';
+import { verifyUnsubscribeToken, generateUnsubscribeToken, validateTokenFormat, escapeHtml } from '../lib/newsletter-utils';
 
 interface Env {
   RESEND_API_KEY: string;
@@ -14,7 +14,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   const url = new URL(request.url);
   const token = url.searchParams.get('token');
 
-  if (!token) {
+  if (!token || !validateTokenFormat(token)) {
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 
@@ -34,6 +34,8 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
     if (!verifiedEmail) {
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
+
+    const escapedToken = escapeHtml(token);
 
     const html = `
 <!DOCTYPE html>
@@ -134,7 +136,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
         You can unsubscribe at any time.
       </p>
       <form method="POST" action="/newsletter/confirm" class="confirm-form">
-        <input type="hidden" name="token" value="${token}" />
+        <input type="hidden" name="token" value="${escapedToken}" />
         <button type="submit" class="button">
           Confirm Subscription
         </button>
@@ -178,7 +180,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     console.error('Failed to parse request body:', error);
   }
 
-  if (!token) {
+  if (!token || !validateTokenFormat(token)) {
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 
