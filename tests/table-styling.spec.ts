@@ -9,52 +9,34 @@ const PAGES_WITH_TABLES = [
 ];
 
 test.describe('Table styling', () => {
-  test('tables should have borders and proper spacing', async ({ page }) => {
-    for (const url of PAGES_WITH_TABLES) {
-      await page.goto(url);
-      
-      const tables = page.locator('table');
-      const count = await tables.count();
-      
-      if (count > 0) {
-        console.log(`  Checking ${count} table(s) on ${url}`);
-        
-        const firstTable = tables.first();
-        
-        // Check that table has styling
-        const hasBackground = await firstTable.evaluate((el) => {
-          const style = window.getComputedStyle(el);
-          return style.background !== 'none' && style.background !== '';
-        });
-        expect(hasBackground, `Table on ${url} should have background`).toBe(true);
-        
-        // Check for overflow handling (either on table or wrapper)
-        const hasOverflow = await page.evaluate(() => {
-          const table = document.querySelector('table');
-          if (!table) return false;
-          
-          const tableStyle = window.getComputedStyle(table);
-          const wrappers = ['.overflow-x-auto', '.table-wrapper', '.comparison-table-wrapper'];
-          
-          for (const selector of wrappers) {
-            const wrapper = table.closest(selector);
-            if (wrapper) {
-              const wrapperStyle = window.getComputedStyle(wrapper);
-              if (wrapperStyle.overflowX === 'auto' || wrapperStyle.overflowX === 'scroll') {
-                return true;
-              }
-            }
-          }
-          
-          // Check if table itself handles overflow
-          return tableStyle.overflowX === 'auto' || 
-                 tableStyle.overflowX === 'scroll' ||
-                 tableStyle.display === 'block';
-        });
-        
-        expect(hasOverflow, `Table on ${url} should have overflow handling`).toBe(true);
-      }
-    }
+  test('markdown tables should be wrapped and have proper structure', async ({ page }) => {
+    await page.goto('/guides/openapi-mock-server-prism/');
+    
+    // Wait for the script to run
+    await page.waitForTimeout(500);
+    
+    const tables = page.locator('table');
+    const count = await tables.count();
+    
+    expect(count, 'Should have tables on the page').toBeGreaterThan(0);
+    
+    const firstTable = tables.first();
+    
+    // Check table has wrapper
+    const hasWrapper = await firstTable.evaluate((el) => {
+      const parent = el.parentElement;
+      return parent?.classList.contains('table-wrapper') || 
+             parent?.classList.contains('overflow-x-auto');
+    });
+    expect(hasWrapper, 'Table should be wrapped in overflow container').toBe(true);
+    
+    // Check first column has th scope="row"
+    const firstRowHeader = await firstTable.locator('tbody tr:first-child th[scope="row"]').count();
+    expect(firstRowHeader, 'First column should use th with scope="row"').toBeGreaterThan(0);
+    
+    // Check table has caption (even if sr-only)
+    const hasCaption = await firstTable.locator('caption').count();
+    expect(hasCaption, 'Table should have a caption').toBeGreaterThan(0);
   });
 
   test('tables should not cause horizontal overflow at 375px', async ({ page }) => {
@@ -62,6 +44,7 @@ test.describe('Table styling', () => {
     
     for (const url of PAGES_WITH_TABLES) {
       await page.goto(url);
+      await page.waitForTimeout(500); // Wait for wrapper script
       
       const { scrollWidth, clientWidth } = await page.evaluate(() => ({
         scrollWidth: document.documentElement.scrollWidth,

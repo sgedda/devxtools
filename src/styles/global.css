@@ -397,4 +397,27 @@
     border-radius: 0;
     margin: 0;
   }
+
+  /* Mobile: right-edge fade hint for scrollable tables */
+  @media (max-width: 768px) {
+    .table-wrapper::after,
+    .comparison-table-wrapper::after,
+    .overflow-x-auto::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 3rem;
+      background: linear-gradient(to right, transparent, rgb(250 250 250));
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .dark .table-wrapper::after,
+    .dark .comparison-table-wrapper::after,
+    .dark .overflow-x-auto::after {
+      background: linear-gradient(to right, transparent, rgb(24 24 27));
+    }
+  }
 }
