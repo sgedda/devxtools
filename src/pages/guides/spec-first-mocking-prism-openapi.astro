@@ -12,7 +12,7 @@ import NewsletterSignup from '../../components/NewsletterSignup.astro';
     <article class="guide">
       <header>
         <div class="breadcrumb">
-          <a href="/guides/">Guides</a> / Tutorial
+          <a href="/guides/">Guides</a> <span aria-hidden="true">/ </span>Tutorial
         </div>
         <h1>Spec-First Mocking with Prism and OpenAPI</h1>
         <p class="subtitle">Turn your OpenAPI specs into live mock servers</p>
@@ -57,6 +57,7 @@ import NewsletterSignup from '../../components/NewsletterSignup.astro';
   .guide {
     max-width: 800px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   .breadcrumb {

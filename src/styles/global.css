@@ -35,10 +35,30 @@
     --warning: #fbbf24;
   }
   
+  html {
+    overflow-x: clip;
+  }
+  
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-size: 15px;
+    overflow-x: clip;
+  }
+  
+  img, svg, video, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  
+  code {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 }
 
@@ -47,6 +67,7 @@
     margin: 0 auto;
     max-width: 80rem;
     padding: 3rem 1.25rem;
+    min-width: 0;
   }
   
   .button {

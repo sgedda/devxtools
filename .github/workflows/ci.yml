@@ -29,6 +29,12 @@ jobs:
       - name: Run tests
         run: npm test
       
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      
+      - name: Run viewport overflow tests
+        run: npx playwright test viewport-overflow.spec.ts
+      
       - name: Build site
         run: npm run build
       

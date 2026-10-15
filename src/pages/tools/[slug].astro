@@ -82,13 +82,13 @@ const relatedTools = allTools
     <div class="mx-auto max-w-[1200px] px-5 py-10">
       <nav class="flex items-center gap-1.5 text-sm text-zinc-500">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
-        <Icon name="chevron-right" size={14} />
+        <Icon name="chevron-right" size={14} aria-hidden="true" />
         <a href="/catalog/" class="hover:text-zinc-900 dark:hover:text-white">Catalog</a>
-        <Icon name="chevron-right" size={14} />
+        <Icon name="chevron-right" size={14} aria-hidden="true" />
         <a href={`/catalog/?category=${tool.categories[0]}`} class="hover:text-zinc-900 dark:hover:text-white">
           {CATEGORY_LABELS[tool.categories[0]]}
         </a>
-        <Icon name="chevron-right" size={14} />
+        <Icon name="chevron-right" size={14} aria-hidden="true" />
         <span class="text-zinc-900 dark:text-white">{tool.name}</span>
       </nav>
       

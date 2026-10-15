@@ -58,7 +58,7 @@ const jsonLd = {
     <article class="guide">
       <header>
         <div class="breadcrumb">
-          <a href="/guides/">Guides</a> / Tutorial
+          <a href="/guides/">Guides</a> <span aria-hidden="true">/ </span>Tutorial
         </div>
         <h1>Mocking APIs in React Native</h1>
         <p class="subtitle">Comparing approaches for HTTP mocking in React Native apps</p>
@@ -255,6 +255,7 @@ export const server = setupServer(...handlers);`}</code></pre>
   .guide {
     max-width: 900px;
     margin: 0 auto;
+    min-width: 0;
   }
   
   .breadcrumb {
