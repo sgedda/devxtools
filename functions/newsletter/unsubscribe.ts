@@ -153,26 +153,40 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const url = new URL(request.url);
 
   let token: string | null = null;
+  let isOneClickUnsubscribe = false;
 
-  token = url.searchParams.get('token');
-
-  if (!token) {
-    try {
-      const contentType = request.headers.get('content-type') || '';
-      
-      if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
-        const formData = await request.formData();
-        token = formData.get('token') as string;
-      } else if (contentType.includes('application/json')) {
-        const body = await request.json() as any;
-        token = body.token;
+  try {
+    const contentType = request.headers.get('content-type') || '';
+    
+    if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
+      const formData = await request.formData();
+      token = formData.get('token') as string;
+      if (formData.get('List-Unsubscribe') === 'One-Click') {
+        isOneClickUnsubscribe = true;
       }
-    } catch (error) {
-      console.error('Failed to parse request body:', error);
+    } else if (contentType.includes('application/json')) {
+      const body = await request.json() as any;
+      token = body.token;
     }
+  } catch (error) {
+    console.error('Failed to parse request body:', error);
   }
 
-  if (!token || !validateTokenFormat(token)) {
+  if (!token) {
+    token = url.searchParams.get('token');
+  }
+
+  if (!token) {
+    if (isOneClickUnsubscribe) {
+      return new Response('', { status: 200 });
+    }
+    return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
+  }
+
+  if (!validateTokenFormat(token)) {
+    if (isOneClickUnsubscribe) {
+      return new Response('', { status: 200 });
+    }
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 
@@ -180,6 +194,9 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const email = await verifyUnsubscribeToken(token, env.NEWSLETTER_SECRET, env.NEWSLETTER_KV);
     
     if (!email) {
+      if (isOneClickUnsubscribe) {
+        return new Response('', { status: 200 });
+      }
       return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
     }
 
@@ -198,10 +215,17 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       console.error('Failed to unsubscribe contact');
     }
 
+    if (isOneClickUnsubscribe) {
+      return new Response('', { status: 200 });
+    }
+
     return Response.redirect(new URL('/newsletter/unsubscribed', url.origin).toString(), 302);
 
   } catch (error) {
     console.error('Newsletter unsubscribe error:', error);
+    if (isOneClickUnsubscribe) {
+      return new Response('', { status: 200 });
+    }
     return Response.redirect(new URL('/newsletter/expired', url.origin).toString(), 302);
   }
 };

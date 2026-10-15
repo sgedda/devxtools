@@ -96,15 +96,6 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const confirmUrl = new URL('/newsletter/confirm', request.url);
     confirmUrl.searchParams.set('token', confirmToken);
 
-    // Generate unsubscribe token (long-lived, opaque)
-    const unsubscribeToken = await generateUnsubscribeToken(
-      email,
-      env.NEWSLETTER_SECRET,
-      env.NEWSLETTER_KV
-    );
-    const unsubscribeUrl = new URL('/newsletter/unsubscribe', request.url);
-    unsubscribeUrl.searchParams.set('token', unsubscribeToken);
-
     // Store pending confirmation keyed by token (not email) with 24h TTL
     // This allows us to look it up during confirmation without exposing the email
     const [tokenId] = confirmToken.split('.');
