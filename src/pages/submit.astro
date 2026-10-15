@@ -31,32 +31,65 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
 <Layout 
-  title={isClaim ? 'Claim Your Tool Listing' : 'Submit a Tool'}
-  description={isClaim ? 'Claim and update your tool listing on DevX Tools.' : 'Submit a new developer tool to the DevX Tools catalog.'}
+  title={isClaim ? 'Claim Your Tool Listing | devxtools.dev' : 'Submit a Tool or Claim a Listing | devxtools.dev'}
+  description={isClaim ? 'Claim your tool listing on devxtools.dev. Suggest corrections, get notified of updates, and add the README badge.' : 'Suggest a developer test or dev tool for devxtools.dev, or claim your existing listing. Listings are free, never paid, and every claim is verified by us.'}
 >
   <div class="border-b border-zinc-200 bg-gradient-to-b from-indigo-50/60 to-transparent dark:border-zinc-800 dark:from-indigo-500/5">
-    <div class="mx-auto max-w-[1200px] px-5 py-10">
+    <div class="mx-auto max-w-[800px] px-5 py-10">
       <nav class="flex items-center gap-1.5 text-sm text-zinc-500">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
         <Icon name="chevron-right" size={14} />
-        <span class="text-zinc-900 dark:text-white">{isClaim ? 'Claim Listing' : 'Submit Tool'}</span>
+        <span class="text-zinc-900 dark:text-white">{isClaim ? 'Claim Listing' : 'Submit'}</span>
       </nav>
       
       <div class="mt-6">
         <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white">
-          {isClaim ? 'Claim your listing' : 'Submit a tool'}
+          {isClaim ? 'Claim your listing' : 'Submit a tool or claim a listing'}
         </h1>
-        <p class="mt-2 text-lg text-zinc-600 dark:text-zinc-400">
-          {isClaim 
-            ? `Update and claim the listing for ${prefillData.toolName}. We'll review your submission and get back to you.`
-            : 'Help grow the DevX Tools catalog by submitting a new tool. All submissions are manually reviewed before publishing.'
-          }
-        </p>
+        {!isClaim && (
+          <p class="mt-4 text-[16px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+            devxtools.dev is an independent guide to developer test and dev tools. If you build or maintain a tool that belongs here, or you're already listed and want to help keep your entry accurate, this is the place to start.
+          </p>
+        )}
       </div>
     </div>
   </div>
 
   <main class="mx-auto max-w-[800px] px-5 py-12">
+    {!isClaim && (
+      <div class="mb-10 space-y-6">
+        <div class="rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">Before you submit</h2>
+          <ul class="space-y-2 text-[15px] text-zinc-700 dark:text-zinc-300">
+            <li class="flex items-start gap-2">
+              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span><strong>Listings are free.</strong> They are never sold, and there's no paid tier.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span>Submitting doesn't guarantee a listing, and it doesn't affect any ranking, comparison or verdict.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <Icon name="check" size={20} class="mt-0.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+              <span>We check everything ourselves against official sources before it goes on the site.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="prose prose-zinc dark:prose-invert max-w-none">
+          <h2>What we list</h2>
+          <p>Tools that developers use to build, test and debug software, in our four sections:</p>
+          <ul>
+            <li><strong>API development:</strong> API clients, OpenAPI design and linting, SDK generators</li>
+            <li><strong>Testing:</strong> end-to-end, component, mobile and load testing</li>
+            <li><strong>Mocking & test data:</strong> HTTP interception, mock servers, contract testing, test data generation</li>
+            <li><strong>Observability:</strong> logging, tracing, error tracking, request debugging</li>
+          </ul>
+          <p>Open-source and commercial tools are both welcome. To be listed, a tool should be publicly available (not a waitlist), have public documentation, and show signs of active maintenance.</p>
+        </div>
+      </div>
+    )}
+
     <div class="rounded-xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
       <form id="submit-form" class="space-y-6">
         <input 
@@ -180,7 +213,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             maxlength="280"
             rows="3"
             class="mt-1.5 block w-full rounded-lg border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white"
-            placeholder="Brief description of what this tool does and when to use it (max 280 characters)"
+            placeholder="One or two sentences on what it's best for (max 280 characters)"
           ></textarea>
           <p class="mt-1 text-sm text-zinc-500">
             <span id="char-count">280</span> characters remaining
@@ -233,7 +266,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             id="submit-button"
             class="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Submit for Review
+            {isClaim ? 'Submit Update' : 'Submit for Review'}
           </button>
           <a
             href="/catalog/"
@@ -249,16 +282,31 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       <div class="flex items-start gap-3">
         <Icon name="info" size={20} class="mt-0.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
         <div class="text-sm text-zinc-700 dark:text-zinc-300">
-          <p class="font-medium mb-2">What happens next?</p>
-          <ul class="space-y-1 list-disc list-inside">
-            <li>Your submission is stored securely for review</li>
-            <li>A maintainer will verify the information and prepare a catalog entry</li>
-            <li>You'll receive an email when your tool is published</li>
-            <li>All submissions are manually reviewed to ensure quality and accuracy</li>
-          </ul>
+          <p class="font-medium mb-2">What happens next</p>
+          <ol class="space-y-1 list-decimal list-inside">
+            <li>We read every submission.</li>
+            <li>We check the tool against its official docs, repository and pricing page.</li>
+            <li>If it fits, we write the listing and publish it with the date we checked. If it doesn't, we'll let you know.</li>
+            {isClaim && (
+              <li>Updates are reviewed by an editor before going live.</li>
+            )}
+          </ol>
         </div>
       </div>
     </div>
+
+    {!isClaim && (
+      <div class="mt-8 prose prose-zinc dark:prose-invert max-w-none" id="claim">
+        <h2>Claiming an existing listing</h2>
+        <p>If your tool is already listed, you can claim it. Claiming lets you:</p>
+        <ul>
+          <li>Send corrections to facts (licence, platforms, pricing, links) and get them prioritised</li>
+          <li>Be notified when we update the listing or mention the tool in a new comparison</li>
+          <li>Add the optional README badge</li>
+        </ul>
+        <p>Claiming <strong>doesn't</strong> let you edit the listing directly, change a "best for" or "not for" line, or alter a comparison's verdict. We verify every correction ourselves, and all updates are reviewed by an editor before going live. We update the "last checked" date when we publish changes.</p>
+      </div>
+    )}
   </main>
 
   {turnstileSiteKey && (
@@ -273,7 +321,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     const descriptionField = document.getElementById('description');
     const charCount = document.getElementById('char-count');
 
-    // Character counter
     if (descriptionField && charCount) {
       descriptionField.addEventListener('input', () => {
         const remaining = 280 - descriptionField.value.length;
@@ -282,7 +329,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       });
     }
 
-    // Turnstile widget
     let turnstileToken = null;
     if (turnstileSiteKey) {
       window.turnstile?.render('#turnstile-container', {

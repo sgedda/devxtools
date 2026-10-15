@@ -40,7 +40,7 @@ export const onRequest: PagesFunction = async (context) => {
   // Generate badge
   const svg = badge({
     slug,
-    label: 'featured',
+    label: 'listed',
     variant,
     theme,
   });

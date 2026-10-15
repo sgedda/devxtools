@@ -37,9 +37,9 @@ export interface BadgeOptions {
   theme?: 'light' | 'dark';
 }
 
-export function badge({slug = '', label = 'featured', variant = 'small', theme = 'light'}: BadgeOptions = {}): string {
+export function badge({slug = '', label = 'listed', variant = 'small', theme = 'light'}: BadgeOptions = {}): string {
   const c = C[theme];
-  const title = `Featured on devxtools.dev${slug ? ' – ' + slug : ''}`;
+  const title = `Listed on devxtools.dev${slug ? ' – ' + slug : ''}`;
   
   if (variant === 'small') {
     const lt = 'devxtools';
@@ -52,7 +52,7 @@ export function badge({slug = '', label = 'featured', variant = 'small', theme =
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="20" viewBox="0 0 ${w} 20" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title><linearGradient id="g" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="r"><rect width="${w}" height="20" rx="3"/></clipPath><g clip-path="url(#r)"><rect width="${lw}" height="20" fill="${c.l}"/><rect x="${lw}" width="${rw}" height="20" fill="${c.r}"/><rect width="${w}" height="20" fill="url(#g)"/></g>${mark(5, 3, 14, c)}<g ${FONT} font-size="11" text-rendering="geometricPrecision">${T(23, lt)}${T(lw + 6, label)}</g></svg>`;
   }
   
-  const top = label === 'featured' ? 'FEATURED ON' : label.toUpperCase();
+  const top = label === 'listed' ? 'LISTED ON' : label.toUpperCase();
   const main = 'devxtools.dev';
   const tw = Math.max(textWidth(top, 10) * 1.08, textWidth(main, 16) * 1.12);
   const w = Math.ceil(10 + 28 + 10 + tw + 14);
