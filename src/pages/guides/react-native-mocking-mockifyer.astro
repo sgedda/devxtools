@@ -89,9 +89,24 @@ const jsonLd = {
               
               <h4>How it works in React Native</h4>
               <p>
-                MSW's Node.js adapter can intercept HTTP requests in React Native by patching global fetch 
-                and XMLHttpRequest. Works out of the box in most React Native setups.
+                MSW requires the official <code>@msw/react-native</code> package to work in React Native. 
+                This package handles polyfills (URL, TextEncoder, etc.) automatically and intercepts fetch 
+                and XMLHttpRequest requests. You configure it with a <code>network</code> instance before 
+                your app renders.
               </p>
+              
+              <pre><code>// Install the React Native package
+npm install msw @msw/react-native
+
+// Configure in your app entry point
+import { network } from '@msw/react-native'
+import { handlers } from './handlers'
+
+network.configure({ handlers })
+network.enable()
+
+// Then register your app component
+AppRegistry.registerComponent(appName, () => App)</code></pre>
               
               <h4>Pros</h4>
               <ul>
@@ -103,6 +118,7 @@ const jsonLd = {
               
               <h4>Cons</h4>
               <ul>
+                <li>Requires separate <code>@msw/react-native</code> package and configuration</li>
                 <li>No built-in record/replay functionality</li>
                 <li>All mocks must be written manually</li>
                 <li>Can be tricky with some native networking libraries</li>
