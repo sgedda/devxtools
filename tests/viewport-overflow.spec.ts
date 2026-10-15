@@ -3,10 +3,14 @@ import { test, expect } from '@playwright/test';
 const KEY_PAGES = [
   '/',
   '/api-development/',
+  '/api-development/postman-alternatives/',
   '/catalog/',
   '/tools/postman/',
   '/comparisons/msw-vs-nock/',
+  '/comparisons/bruno-vs-postman/',
+  '/comparisons/playwright-vs-cypress/',
   '/guides/msw-vs-nock-vs-polly/',
+  '/guides/mock-api-playwright/',
 ];
 
 test.describe('Mobile viewport overflow check', () => {

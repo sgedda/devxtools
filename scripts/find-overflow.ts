@@ -15,16 +15,20 @@ const VIEWPORT_WIDTHS = [375, 390];
 const TEST_PAGES = [
   { url: '/', name: 'home' },
   { url: '/api-development/', name: 'hub-api-development' },
+  { url: '/api-development/postman-alternatives/', name: 'article-postman-alternatives' },
   { url: '/testing/', name: 'hub-testing' },
   { url: '/mocking-test-data/', name: 'hub-mocking' },
   { url: '/catalog/', name: 'catalog' },
   { url: '/tools/postman/', name: 'tool-postman' },
   { url: '/tools/msw/', name: 'tool-msw' },
   { url: '/comparisons/', name: 'comparisons-index' },
-  { url: '/comparisons/msw-vs-nock/', name: 'comparison-page' },
-  { url: '/comparisons/msw-vs-nock-vs-polly/', name: 'comparison-page-3way' },
+  { url: '/comparisons/msw-vs-nock/', name: 'comparison-msw-vs-nock' },
+  { url: '/comparisons/msw-vs-nock-vs-polly/', name: 'comparison-msw-vs-nock-vs-polly' },
+  { url: '/comparisons/bruno-vs-postman/', name: 'comparison-bruno-vs-postman' },
+  { url: '/comparisons/playwright-vs-cypress/', name: 'comparison-playwright-vs-cypress' },
   { url: '/guides/', name: 'guides-index' },
-  { url: '/guides/msw-vs-nock-vs-polly/', name: 'guide-page' },
+  { url: '/guides/msw-vs-nock-vs-polly/', name: 'guide-msw-vs-nock-vs-polly' },
+  { url: '/guides/mock-api-playwright/', name: 'guide-mock-api-playwright' },
 ];
 
 async function findOverflowingElements(baseUrl: string) {

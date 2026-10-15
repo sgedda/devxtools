@@ -441,6 +441,21 @@ tests {
 <style>
   .prose {
     line-height: 1.75;
+    min-width: 0;
+  }
+  
+  .prose .overflow-x-auto {
+    min-width: 0;
+  }
+  
+  .prose ul {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  .prose li {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   
   .prose h1 {
