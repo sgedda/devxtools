@@ -252,6 +252,57 @@ const relatedTools = allTools
         </section>
       )}
       
+      <section>
+        <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Get the badge</h2>
+        <p class="mt-2 text-[15px] text-zinc-600 dark:text-zinc-400">
+          Show that {tool.name} is featured on DevX Tools by adding this badge to your README or website.
+        </p>
+        
+        <div class="mt-5 grid gap-5 sm:grid-cols-2">
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Light theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-50 p-6 dark:bg-zinc-800">
+              <img src={`/badge/${tool.slug}.svg`} alt="Featured on devxtools badge" />
+            </div>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Dark theme</div>
+            <div class="flex items-center justify-center rounded-lg bg-zinc-900 p-6">
+              <img src={`/badge/${tool.slug}-dark.svg`} alt="Featured on devxtools badge (dark)" />
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-5 space-y-4">
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">Markdown</div>
+              <button
+                onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
+                class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
+                Copy
+              </button>
+            </div>
+            <pre class="text-xs bg-zinc-50 dark:bg-zinc-800 p-3 rounded-lg overflow-x-auto"><code>[![Featured on devxtools](https://devxtools.dev/badge/{tool.slug}.svg)](https://devxtools.dev/tools/{tool.slug}/)</code></pre>
+          </div>
+          
+          <div class="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <div class="flex items-center justify-between mb-2">
+              <div class="text-sm font-medium text-zinc-900 dark:text-white">HTML</div>
+              <button
+                onclick="navigator.clipboard.writeText(this.parentElement.nextElementSibling.textContent)"
+                class="text-xs text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+              >
+                Copy
+              </button>
+            </div>
+            <pre class="text-xs bg-zinc-50 dark:bg-zinc-800 p-3 rounded-lg overflow-x-auto"><code>&lt;a href="https://devxtools.dev/tools/{tool.slug}/"&gt;&lt;img src="https://devxtools.dev/badge/{tool.slug}.svg" alt="Featured on devxtools" /&gt;&lt;/a&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+      
       {(contentLinks.comparisons.length > 0 || contentLinks.guides.length > 0) && (
         <section>
           {contentLinks.comparisons.length > 0 && (
@@ -427,6 +478,14 @@ const relatedTools = allTools
       >
         <Icon name="pencil" size={16} />
         Suggest an edit
+      </a>
+      
+      <a 
+        href={`/submit/?tool=${tool.slug}&mode=claim`}
+        class="mt-2 flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-white"
+      >
+        <Icon name="badge-check" size={16} />
+        Claim or update this listing
       </a>
     </aside>
   </main>
