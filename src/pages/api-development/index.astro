@@ -36,9 +36,26 @@ const categoryCount = Object.fromEntries(
       
       <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">API Development Tools</h1>
       <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
-        Tools for designing, testing, documenting, and building APIs with clients, OpenAPI tooling, and SDK generators.
+        Building an API involves four jobs: <strong>designing</strong> the contract, <strong>checking</strong> it, <strong>calling</strong> it while you build, and <strong>shipping</strong> it to consumers as docs and SDKs. This section covers the tools JS/TS teams use for each, with trade-offs stated plainly.
+      </p>
+      <ul class="mt-4 max-w-3xl space-y-2 text-zinc-600 dark:text-zinc-400">
+        <li><strong>Design and lint.</strong> Write OpenAPI by hand or visually with <a href="/tools/swagger-editor/" class="text-indigo-600 dark:text-indigo-400">Swagger Editor</a>, <a href="/tools/stoplight/" class="text-indigo-600 dark:text-indigo-400">Stoplight</a> or <a href="/tools/redocly/" class="text-indigo-600 dark:text-indigo-400">Redocly</a>, then enforce a style guide in CI with <a href="/tools/spectral/" class="text-indigo-600 dark:text-indigo-400">Spectral</a>.</li>
+        <li><strong>Call and debug.</strong> API clients range from cloud platforms (<a href="/tools/postman/" class="text-indigo-600 dark:text-indigo-400">Postman</a>) to Git-friendly local apps (<a href="/tools/bruno/" class="text-indigo-600 dark:text-indigo-400">Bruno</a>, <a href="/tools/insomnia/" class="text-indigo-600 dark:text-indigo-400">Insomnia</a>), browser-based or self-hosted tools (<a href="/tools/hoppscotch/" class="text-indigo-600 dark:text-indigo-400">Hoppscotch</a>) and the terminal (<a href="/tools/httpie/" class="text-indigo-600 dark:text-indigo-400">HTTPie</a>). The real differences are where your collections live, whether you need an account, and which CLI runs them in CI.</li>
+        <li><strong>Docs and SDKs.</strong> Generate client libraries from the spec with <a href="/tools/openapi-generator/" class="text-indigo-600 dark:text-indigo-400">OpenAPI Generator</a> (open source) or hosted generators such as <a href="/tools/speakeasy/" class="text-indigo-600 dark:text-indigo-400">Speakeasy</a>, <a href="/tools/stainless/" class="text-indigo-600 dark:text-indigo-400">Stainless</a> and <a href="/tools/fern/" class="text-indigo-600 dark:text-indigo-400">Fern</a>.</li>
+      </ul>
+      <p class="mt-4 max-w-3xl text-sm text-zinc-500 dark:text-zinc-500">
+        Every tool page lists the licence, pricing model and last-checked date. Prices change often, so we date them. Not sure where to start? Try the <a href="/picker/" class="text-indigo-600 dark:text-indigo-400">tool picker</a>.
       </p>
     </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons</h2>
+      <ul class="mt-4 space-y-2">
+        <li><a href="/api-development/postman-alternatives/" class="text-indigo-600 dark:text-indigo-400 hover:underline">Best Postman alternatives (2026)</a>: Bruno, Hoppscotch, Insomnia, HTTPie, Yaak and more, grouped by the job Postman did for you</li>
+        <li><a href="/comparisons/bruno-vs-postman/" class="text-indigo-600 dark:text-indigo-400 hover:underline">Bruno vs Postman</a>: files in Git vs a cloud platform, CI runners, pricing</li>
+        <li><a href="/comparisons/" class="text-indigo-600 dark:text-indigo-400 hover:underline">All comparisons</a></li>
+      </ul>
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Categories</h2>
@@ -93,6 +110,11 @@ const categoryCount = Object.fromEntries(
             <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
               {tool.description}
             </p>
+            {tool.affiliation && (
+              <p class="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                ⚠️ {tool.affiliation}
+              </p>
+            )}
             <div class="mt-4">
               {tool.license && (
                 <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>

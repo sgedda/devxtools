@@ -34,11 +34,28 @@ const categoryCount = Object.fromEntries(
         Observability & Logging
       </div>
       
-      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Observability & Logging Tools</h1>
+      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Observability Tools</h1>
       <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
-        Tools for monitoring errors, tracing requests across services, aggregating logs, and debugging network traffic in production and development.
+        Observability for app developers comes down to four questions: what happened (<strong>logs</strong>), where the time went (<strong>traces and metrics</strong>), what broke (<strong>error tracking</strong>), and what was actually sent over the wire (<strong>request debugging</strong>). This section covers tools for each, focusing on Node.js and React Native.
+      </p>
+      <ul class="mt-4 max-w-3xl space-y-2 text-zinc-600 dark:text-zinc-400">
+        <li><strong>Logging.</strong> <a href="/tools/pino/" class="text-indigo-600 dark:text-indigo-400">pino</a> is a fast JSON logger. <a href="/tools/winston/" class="text-indigo-600 dark:text-indigo-400">winston</a> puts flexible transports and formats first. Both are MIT. Ship logs to <a href="/tools/grafana-loki/" class="text-indigo-600 dark:text-indigo-400">Grafana Loki</a> or a hosted service.</li>
+        <li><strong>Tracing and metrics.</strong> <a href="/tools/opentelemetry/" class="text-indigo-600 dark:text-indigo-400">OpenTelemetry</a> (Apache-2.0) is the vendor-neutral standard for instrumentation. Instrument once, then send data to the backend you choose, such as <a href="/tools/datadog/" class="text-indigo-600 dark:text-indigo-400">Datadog</a> or <a href="/tools/betterstack/" class="text-indigo-600 dark:text-indigo-400">Better Stack</a>. Better Stack has since folded its former Logtail and Better Uptime products into Telemetry, error tracking and uptime monitoring.</li>
+        <li><strong>Error tracking.</strong> <a href="/tools/sentry/" class="text-indigo-600 dark:text-indigo-400">Sentry</a> captures exceptions with stack traces, releases and context in browsers, Node and React Native.</li>
+        <li><strong>Request and app debugging.</strong> HTTP proxies such as <a href="/tools/proxyman/" class="text-indigo-600 dark:text-indigo-400">Proxyman</a> (macOS, capturing traffic from macOS, iOS and Android) and <a href="/tools/charles/" class="text-indigo-600 dark:text-indigo-400">Charles</a> show you real traffic. <a href="/tools/reactotron/" class="text-indigo-600 dark:text-indigo-400">Reactotron</a> inspects React and React Native apps. Note that <a href="/tools/flipper/" class="text-indigo-600 dark:text-indigo-400">Flipper</a>'s repository is now archived, and React Native 0.74 removed the Flipper integration from new projects.</li>
+      </ul>
+      <p class="mt-4 max-w-3xl text-sm text-zinc-500 dark:text-zinc-500">
+        Each tool page lists licence, platforms and the date we last checked it. For guided picks, use the <a href="/picker/" class="text-indigo-600 dark:text-indigo-400">tool picker</a>.
       </p>
     </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons</h2>
+      <ul class="mt-4 space-y-2">
+        <li>Coming soon: pino vs winston, OpenTelemetry vs Prometheus, Datadog alternatives, Proxyman vs Charles</li>
+        <li><a href="/comparisons/" class="text-indigo-600 dark:text-indigo-400 hover:underline">All comparisons</a></li>
+      </ul>
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Categories</h2>
@@ -93,6 +110,11 @@ const categoryCount = Object.fromEntries(
             <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
               {tool.description}
             </p>
+            {tool.affiliation && (
+              <p class="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                ⚠️ {tool.affiliation}
+              </p>
+            )}
             <div class="mt-4">
               {tool.license && (
                 <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>

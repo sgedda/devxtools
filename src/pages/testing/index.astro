@@ -36,9 +36,29 @@ const categoryCount = Object.fromEntries(
       
       <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Testing Tools</h1>
       <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
-        End-to-end and load testing tools for web, mobile, and backend applications including React Native support.
+        Choosing a testing tool starts with choosing the <strong>layer</strong> you're testing. Each layer has a different best tool, and most teams need more than one.
+      </p>
+      <ul class="mt-4 max-w-3xl space-y-2 text-zinc-600 dark:text-zinc-400">
+        <li><strong>Browser E2E.</strong> <a href="/tools/playwright/" class="text-indigo-600 dark:text-indigo-400">Playwright</a> (Apache-2.0) drives Chromium, Firefox and WebKit from JS/TS, Python, Java or .NET. <a href="/tools/cypress/" class="text-indigo-600 dark:text-indigo-400">Cypress</a> (MIT) runs your tests inside the browser and has an interactive, time-travel debugger. Both can intercept and mock network requests (<code>page.route()</code> and <code>cy.intercept()</code>), which often matters more than raw speed.</li>
+        <li><strong>Mobile.</strong> <a href="/tools/detox/" class="text-indigo-600 dark:text-indigo-400">Detox</a> is a gray-box framework built for React Native, with tests written in JavaScript. <a href="/tools/maestro/" class="text-indigo-600 dark:text-indigo-400">Maestro</a> describes flows in YAML for Android, iOS and web. <a href="/tools/appium/" class="text-indigo-600 dark:text-indigo-400">Appium</a> uses the W3C WebDriver protocol to automate native, hybrid and mobile-web apps from many languages.</li>
+        <li><strong>Load and performance.</strong> <a href="/tools/k6/" class="text-indigo-600 dark:text-indigo-400">k6</a> (AGPL-3.0) is written in Go and scripted in JavaScript. <a href="/tools/locust/" class="text-indigo-600 dark:text-indigo-400">Locust</a> uses plain Python. <a href="/tools/gatling/" class="text-indigo-600 dark:text-indigo-400">Gatling</a> supports Java, Kotlin, Scala and, more recently, JS/TS. <a href="/tools/artillery/" class="text-indigo-600 dark:text-indigo-400">Artillery</a> uses YAML or Node scenarios and can drive Playwright for browser-level load.</li>
+      </ul>
+      <p class="mt-4 max-w-3xl text-zinc-600 dark:text-zinc-400">
+        API contract and functional tests often live in your API client's CLI (see <a href="/api-development/postman-alternatives/" class="text-indigo-600 dark:text-indigo-400">Postman alternatives</a>) or in your unit test runner, with mocks from the <a href="/mocking-test-data/" class="text-indigo-600 dark:text-indigo-400">mocking section</a>.
+      </p>
+      <p class="mt-4 max-w-3xl text-sm text-zinc-500 dark:text-zinc-500">
+        Every tool page lists licence, language and the date we last checked it. For a guided choice, try the <a href="/picker/" class="text-indigo-600 dark:text-indigo-400">tool picker</a>.
       </p>
     </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons and guides</h2>
+      <ul class="mt-4 space-y-2">
+        <li><a href="/comparisons/playwright-vs-cypress/" class="text-indigo-600 dark:text-indigo-400 hover:underline">Playwright vs Cypress (2026)</a>: architecture, network mocking, CI cost and a migration map</li>
+        <li><a href="/guides/mock-api-playwright/" class="text-indigo-600 dark:text-indigo-400 hover:underline">How to mock APIs in Playwright</a>: <code>page.route</code>, HAR replay and MSW, tested on 1.64.1</li>
+        <li><a href="/comparisons/" class="text-indigo-600 dark:text-indigo-400 hover:underline">All comparisons</a></li>
+      </ul>
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Categories</h2>
@@ -93,6 +113,11 @@ const categoryCount = Object.fromEntries(
             <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
               {tool.description}
             </p>
+            {tool.affiliation && (
+              <p class="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                ⚠️ {tool.affiliation}
+              </p>
+            )}
             <div class="mt-4">
               {tool.license && (
                 <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>

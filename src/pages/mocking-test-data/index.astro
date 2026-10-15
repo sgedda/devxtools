@@ -36,9 +36,27 @@ const categoryCount = Object.fromEntries(
       
       <h1 class="mt-4 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Mocking & Test Data Tools</h1>
       <p class="mt-3 max-w-3xl text-lg text-zinc-600 dark:text-zinc-400">
-        Tools for mocking APIs, generating test data, and building reliable tests without hitting real services.
+        There are five main ways to fake an API, plus one for fake data. Which one fits depends on where the request starts and who else needs the mock.
       </p>
+      <ul class="mt-4 max-w-3xl space-y-2 text-zinc-600 dark:text-zinc-400">
+        <li><strong>In-process interceptors.</strong> <a href="/tools/msw/" class="text-indigo-600 dark:text-indigo-400">MSW</a> uses a Service Worker in the browser. In Node, it patches the request modules instead, with no worker involved. <a href="/tools/nock/" class="text-indigo-600 dark:text-indigo-400">Nock</a> intercepts Node's HTTP layer. <a href="/tools/miragejs/" class="text-indigo-600 dark:text-indigo-400">Mirage JS</a> runs a fake backend inside the browser. These are best for unit, integration and component tests.</li>
+        <li><strong>Mock servers.</strong> <a href="/tools/wiremock/" class="text-indigo-600 dark:text-indigo-400">WireMock</a>, <a href="/tools/mockoon/" class="text-indigo-600 dark:text-indigo-400">Mockoon</a>, <a href="/tools/mountebank/" class="text-indigo-600 dark:text-indigo-400">Mountebank</a>, <a href="/tools/hoverfly/" class="text-indigo-600 dark:text-indigo-400">Hoverfly</a>, <a href="/tools/json-server/" class="text-indigo-600 dark:text-indigo-400">json-server</a> and hosted options (<a href="/tools/beeceptor/" class="text-indigo-600 dark:text-indigo-400">Beeceptor</a>, <a href="/tools/postman-mock-servers/" class="text-indigo-600 dark:text-indigo-400">Postman mock servers</a>). These are best when several apps, languages or E2E runners share the mock.</li>
+        <li><strong>Spec-first.</strong> <a href="/tools/prism/" class="text-indigo-600 dark:text-indigo-400">Prism</a> and <a href="/tools/microcks/" class="text-indigo-600 dark:text-indigo-400">Microcks</a> serve responses straight from OpenAPI (and other specs), so the mock changes when the contract does.</li>
+        <li><strong>Record and replay.</strong> <a href="/tools/pollyjs/" class="text-indigo-600 dark:text-indigo-400">Polly.JS</a> records real HTTP traffic once and replays it, and Playwright can do the same with HAR files. For React Native and Node apps using axios or fetch, there's also <a href="/tools/mockifyer/" class="text-indigo-600 dark:text-indigo-400">Mockifyer</a>. <em>Disclosure: Mockifyer is built and maintained by the owner of devxtools.dev.</em></li>
+        <li><strong>Contracts.</strong> <a href="/tools/pact/" class="text-indigo-600 dark:text-indigo-400">Pact</a> checks that your mocks still match the real provider.</li>
+        <li><strong>Test data.</strong> <a href="/tools/faker/" class="text-indigo-600 dark:text-indigo-400">Faker</a> and <a href="/tools/chance/" class="text-indigo-600 dark:text-indigo-400">Chance</a> generate realistic values, <a href="/tools/fishery/" class="text-indigo-600 dark:text-indigo-400">Fishery</a> builds typed factories, and <a href="/tools/mockaroo/" class="text-indigo-600 dark:text-indigo-400">Mockaroo</a> generates CSV, JSON or SQL datasets through a web UI or REST API.</li>
+      </ul>
     </div>
+
+    <section class="mt-12">
+      <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons and guides</h2>
+      <ul class="mt-4 space-y-2">
+        <li><a href="/comparisons/msw-vs-nock/" class="text-indigo-600 dark:text-indigo-400 hover:underline">MSW vs Nock</a></li>
+        <li><a href="/guides/mock-api-playwright/" class="text-indigo-600 dark:text-indigo-400 hover:underline">How to mock APIs in Playwright</a></li>
+        <li><a href="/guides/react-native-mocking-mockifyer/" class="text-indigo-600 dark:text-indigo-400 hover:underline">Mock APIs in React Native (Mockifyer)</a>: <em>written by Mockifyer's maintainer, who also runs this site</em></li>
+        <li><a href="/comparisons/" class="text-indigo-600 dark:text-indigo-400 hover:underline">All comparisons</a> · <a href="/guides/" class="text-indigo-600 dark:text-indigo-400 hover:underline">All guides</a></li>
+      </ul>
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Categories</h2>
@@ -93,6 +111,11 @@ const categoryCount = Object.fromEntries(
             <p class="mt-3 line-clamp-2 text-[15px] text-zinc-600 dark:text-zinc-400">
               {tool.description}
             </p>
+            {tool.affiliation && (
+              <p class="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                ⚠️ {tool.affiliation}
+              </p>
+            )}
             <div class="mt-4">
               {tool.license && (
                 <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>
