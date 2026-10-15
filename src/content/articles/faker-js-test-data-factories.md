@@ -15,8 +15,6 @@ tested_with: "@faker-js/faker 10.6.0, fishery 2.4.0, chance 1.1.13, @ngneat/fals
 tools: ["faker", "fishery", "chance", "mockaroo", "msw", "json-server"]
 ---
 
-# Realistic Test Data with Faker.js and Factories
-
 **Faker.js test data gives you realistic names, emails, prices and dates in seconds, but on its own it also gives you flaky tests.** This guide shows the setup that holds up in a real TypeScript codebase: Faker.js for values, seeded so they're the same on every run, wrapped in typed Fishery factories you reuse in unit tests, MSW handlers, Storybook stories and database seed scripts.
 
 > **Tested with** @faker-js/faker 10.6.0, fishery 2.4.0, chance 1.1.13, @ngneat/falso 8.0.2, MSW 3.0.3 and Vitest 5.0.5 on Node 22.23.3 (2026-10-15). Every snippet except the Storybook one ran on our test machine, and the outputs shown are real. devxtools.dev is independent and has no relationship with Faker.js, Fishery, Chance, Falso or Mockaroo.

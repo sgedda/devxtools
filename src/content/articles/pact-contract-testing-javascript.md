@@ -16,7 +16,6 @@ tools: ["pact", "msw", "prism", "microcks", "wiremock", "spectral"]
 ---
 
 # Keeping API Mocks Honest with Pact Contract Testing
-
 **Pact contract testing catches the moment your frontend's API mocks stop matching the real API, before it reaches production.** Your consumer's tests record the requests they make and the responses they rely on into a contract (a "pact"). The provider's CI replays that contract against the real service. This guide builds a complete TypeScript example, shows real failure output, and connects Pact to the MSW mocks your frontend already uses.
 
 > **Tested with** @pact-foundation/pact 17.1.4 (Pact Specification V4), Vitest 5.0.5, MSW 3.0.3 and Express 5.3.0 on Node 22.23.3 (2026-10-15). The consumer test, provider verification, failure output and MSW-from-pact helper all ran on our machine. We didn't run a Pact Broker or PactFlow: those commands come from the official docs and CLI help. devxtools.dev is independent and has no relationship with the Pact Foundation or SmartBear (PactFlow).

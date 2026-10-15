@@ -20,7 +20,7 @@ const comparisons: Array<{ title: string; url: string; tools: string[] }> = [
 const guides: Array<{ title: string; url: string; tools: string[] }> = [
   {
     title: "MSW vs Nock vs Polly.js",
-    url: "/guides/msw-vs-nock-vs-polly/",
+    url: "/comparisons/msw-vs-nock-vs-polly/",
     tools: ["msw", "nock", "pollyjs"]
   },
   {
