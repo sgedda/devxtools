@@ -58,7 +58,7 @@ export const GET: APIRoute = async () => {
     .sort();
   
   const guideUrls = Array.from(pageMap.keys())
-    .filter(url => url.startsWith('/guides/') && url !== '/guides/')
+    .filter(url => url.startsWith('/guides/') && url !== '/guides/' && url !== '/guides/msw-vs-nock-vs-polly/')
     .sort();
   
   const testingUrls = Array.from(pageMap.keys())
