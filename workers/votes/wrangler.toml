@@ -20,3 +20,8 @@ name = "RATE_LIMITER"
 type = "ratelimit"
 namespace_id = "1002"
 simple = { limit = 10, period = 60 }
+
+# Scheduled cleanup: delete vote hashes older than 90 days
+# Runs daily at 02:00 UTC
+[triggers]
+crons = ["0 2 * * *"]

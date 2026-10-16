@@ -7,11 +7,11 @@ const createTestEnv = (): any => {
       bind: (...args: any[]) => ({
         first: async () => null,
         all: async () => ({ results: [] }),
-        run: async () => ({ success: true }),
+        run: async () => ({ success: true, meta: { changes: 0 } }),
       }),
       first: async () => null,
       all: async () => ({ results: [] }),
-      run: async () => ({ success: true }),
+      run: async () => ({ success: true, meta: { changes: 0 } }),
     }),
     exec: async () => {},
     batch: async () => [],
@@ -37,7 +37,35 @@ describe('Votes Worker', () => {
     expect(data).toHaveProperty('error');
   });
 
-  it('should handle POST request with missing body', async () => {
+  it('should reject GET request without IP address', async () => {
+    const env = createTestEnv();
+    const request = new Request('https://devxtools.dev/api/polls/test', {});
+
+    const response = await worker.fetch(request, env);
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data).toHaveProperty('code', 'IP_REQUIRED');
+  });
+
+  it('should reject POST vote without IP address', async () => {
+    const env = createTestEnv();
+    const request = new Request('https://devxtools.dev/api/polls/test/vote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ option: 'test' }),
+    });
+
+    const response = await worker.fetch(request, env);
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data).toHaveProperty('code', 'IP_REQUIRED');
+  });
+
+  it('should handle POST request with missing option', async () => {
     const env = createTestEnv();
     const request = new Request('https://devxtools.dev/api/polls/test/vote', {
       method: 'POST',
@@ -79,7 +107,7 @@ describe('Votes Worker', () => {
     expect(response.headers.get('Access-Control-Allow-Methods')).toContain('POST');
   });
 
-  it('should include error code in rate limit response', async () => {
+  it('should return 429 for rate limited GET request', async () => {
     const env: any = {
       ...createTestEnv(),
       RATE_LIMITER: {
@@ -96,5 +124,48 @@ describe('Votes Worker', () => {
     expect(response.status).toBe(429);
     const data = await response.json();
     expect(data).toHaveProperty('code', 'RATE_LIMITED');
+  });
+
+  it('should return 503 for rate limited POST request (fail closed)', async () => {
+    const env: any = {
+      ...createTestEnv(),
+      RATE_LIMITER: {
+        limit: async () => {
+          throw new Error('Rate limiter error');
+        },
+      },
+    };
+
+    const request = new Request('https://devxtools.dev/api/polls/test/vote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'CF-Connecting-IP': '192.168.1.1',
+      },
+      body: JSON.stringify({ option: 'test' }),
+    });
+
+    const response = await worker.fetch(request, env);
+
+    expect(response.status).toBe(503);
+    const data = await response.json();
+    expect(data).toHaveProperty('code', 'RATE_LIMITED');
+  });
+
+  it('should return 503 if VOTE_SALT is not configured', async () => {
+    const env: any = {
+      ...createTestEnv(),
+      VOTE_SALT: undefined,
+    };
+
+    const request = new Request('https://devxtools.dev/api/polls/test', {
+      headers: { 'CF-Connecting-IP': '192.168.1.1' },
+    });
+
+    const response = await worker.fetch(request, env);
+
+    expect(response.status).toBe(503);
+    const data = await response.json();
+    expect(data).toHaveProperty('code', 'NOT_CONFIGURED');
   });
 });

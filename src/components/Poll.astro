@@ -344,8 +344,10 @@ const { pollSlug } = Astro.props;
             this.showError('Too many requests. Please try again in a minute.');
           } else if (response.status === 503 && errorData.code === 'NOT_CONFIGURED') {
             this.showError('The voting system is currently being configured. Please try again later.');
-          } else if (response.status === 400 && errorData.code === 'INVALID_CAPTCHA') {
-            this.showError('Captcha verification failed. Please refresh the page and try again.');
+          } else if (response.status === 400 && errorData.code === 'IP_REQUIRED') {
+            this.showError('Your IP address could not be determined. Voting requires a valid IP address.');
+          } else if (response.status === 503 && errorData.code === 'RATE_LIMITED') {
+            this.showError('Service temporarily unavailable. Please try again in a moment.');
           } else {
             this.showError(errorData.error || 'Failed to submit vote. Please try again.');
           }

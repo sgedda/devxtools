@@ -141,11 +141,16 @@ Tests run with Vitest + `@cloudflare/vitest-plugin` for in-memory D1.
 ## Privacy
 
 - **No raw IPs stored**: Only SHA-256 hashes of `IP + poll slug + secret salt`
-- **Cookie**: `devxtools_voter` (secure, httpOnly, SameSite=Lax, 1-year expiry)
-- **Turnstile**: Optional; only if `TURNSTILE_SECRET` is set
+- **Retention**: Vote hashes are automatically deleted after 90 days via scheduled cron job
+- **No cookies**: Deduplication is per IP address only
+- **Rate limiting**: 10 requests/minute per IP (fail-closed for POST requests)
 
 ## Permissions
 
 The `CLOUDFLARE_WORKERS_TOKEN` secret must have:
 - **Account > Workers Scripts > Edit**
 - **Account > D1 > Edit** (for database creation and migrations)
+
+## Scheduled Tasks
+
+The worker includes a cron trigger that runs daily at 02:00 UTC to delete vote hashes older than 90 days. This maintains the 90-day retention policy while keeping aggregate vote counts intact.

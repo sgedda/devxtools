@@ -23,8 +23,10 @@ import Poll from '../../../components/Poll.astro';
 
     <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400 space-y-2">
       <p>
-        <strong>Privacy:</strong> Your vote is anonymous. We store only a salted hash of your IP address to prevent duplicate votes.
-        A cookie is set to remember that you voted.
+        <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID, your option and the time. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days.
+      </p>
+      <p>
+        The voting API runs on Cloudflare Workers with a D1 database. We use IP-based rate limiting (10 requests/minute). Results are shown only after you vote. VPNs and network changes allow extra votes, and a shared IP gets only one vote. Results are informal.
       </p>
       <p class="text-xs">
         <em>Disclosure:</em> The maintainer of this site (Sebastian) is the author of Mockifyer, one of the options in this poll.
@@ -41,8 +43,7 @@ import Poll from '../../../components/Poll.astro';
             <a href="/tools/miragejs/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MirageJS</a>
           </h3>
           <p class="text-zinc-600 dark:text-zinc-400">
-            In-memory mock server with database simulation. Works in Node.js and browser environments.
-            Categories: http-interception, mock-server.
+            Intercepts fetch and XHR in the JavaScript runtime. In-memory database simulation for building complete frontend applications.
           </p>
         </div>
 
@@ -51,8 +52,16 @@ import Poll from '../../../components/Poll.astro';
             <a href="/tools/mockifyer/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Mockifyer</a>
           </h3>
           <p class="text-zinc-600 dark:text-zinc-400">
-            Record/replay HTTP mocking for axios and fetch with distributed tracing. Explicitly supports React Native with device storage sync.
-            Categories: record-replay, http-interception, network-debugging.
+            Record/replay HTTP mocking for axios and fetch, with JSON mocks in your repo. Supports React Native/Expo via device storage and optional Metro sync. (Built by the site's maintainer.)
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/mockoon/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Mockoon</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Local mock API server with GUI or CLI. Runs as a separate server; point your app's base URL at it (Android emulator: use 10.0.2.2).
           </p>
         </div>
 
@@ -61,9 +70,7 @@ import Poll from '../../../components/Poll.astro';
             <a href="/tools/msw/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MSW (Mock Service Worker)</a>
           </h3>
           <p class="text-zinc-600 dark:text-zinc-400">
-            Network-level HTTP interception using Service Workers in browsers and native Node.js modules.
-            Works in any framework without changing application code.
-            Categories: http-interception.
+            Network-level HTTP interception using Service Workers in browsers and native Node.js modules. In React Native: MSW 2's msw/native with polyfills ("use at your own risk"). MSW 3 removed it, and @msw/react-native isn't on npm yet.
           </p>
         </div>
 
@@ -72,8 +79,7 @@ import Poll from '../../../components/Poll.astro';
             <a href="/tools/pollyjs/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Polly.js</a>
           </h3>
           <p class="text-zinc-600 dark:text-zinc-400">
-            Record, replay, and stub HTTP interactions. Built by Netflix, works with multiple adapters including Fetch, XHR, and Node HTTP.
-            Categories: record-replay, http-interception.
+            Record, replay, and stub HTTP interactions. Built by Netflix, works with multiple adapters including Fetch, XHR, and Node HTTP. Its docs don't cover React Native.
           </p>
         </div>
 
@@ -82,11 +88,16 @@ import Poll from '../../../components/Poll.astro';
             <a href="/tools/prism/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Prism</a>
           </h3>
           <p class="text-zinc-600 dark:text-zinc-400">
-            Generate mock servers directly from OpenAPI specifications with dynamic examples and validation.
-            Categories: spec-based-mocking, mock-server.
+            Generate mock servers directly from OpenAPI specifications with dynamic examples and validation. Runs as a separate server; point the app's base URL at it (Android emulator: 10.0.2.2).
           </p>
         </div>
       </div>
+    </div>
+
+    <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400">
+      <p>
+        <strong>Note:</strong> Nock was removed from this poll because it's Node-only: works in Jest, not on device.
+      </p>
     </div>
 
     <div class="mt-8 text-center">

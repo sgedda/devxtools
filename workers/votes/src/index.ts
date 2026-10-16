@@ -7,7 +7,6 @@ interface Env {
   DB: D1Database;
   RATE_LIMITER?: RateLimit;
   VOTE_SALT?: string;
-  TURNSTILE_SECRET?: string;
 }
 
 interface RateLimit {
@@ -35,21 +34,7 @@ interface VoteCount {
   count: number;
 }
 
-const COOKIE_NAME = 'devxtools_voter';
-const COOKIE_MAX_AGE = 365 * 24 * 60 * 60; // 1 year
-
-function jsonResponse(data: unknown, status = 200, extraHeaders: Record<string, string> = {}) {
-  return new Response(JSON.stringify(data, null, 2), {
-    status,
-    headers: {
-      'Content-Type': 'application/json',
-      'Cache-Control': status === 200 ? 'private, max-age=0' : 'no-store',
-      ...extraHeaders,
-    },
-  });
-}
-
-async function checkRateLimit(env: Env, ip: string): Promise<boolean> {
+async function checkRateLimit(env: Env, ip: string, failClosed: boolean = false): Promise<boolean> {
   if (!env.RATE_LIMITER) {
     return true;
   }
@@ -57,8 +42,9 @@ async function checkRateLimit(env: Env, ip: string): Promise<boolean> {
   try {
     const { success } = await env.RATE_LIMITER.limit({ key: ip });
     return success;
-  } catch {
-    return true;
+  } catch (error) {
+    console.error('Rate limiter error:', error);
+    return !failClosed;
   }
 }
 
@@ -71,51 +57,15 @@ async function hashVoter(ip: string, pollSlug: string, salt: string): Promise<st
   return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
-function generateVoterToken(): string {
-  const array = new Uint8Array(32);
-  crypto.getRandomValues(array);
-  return Array.from(array)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function setCookie(token: string): string {
-  return `${COOKIE_NAME}=${token}; HttpOnly; Secure; SameSite=Lax; Max-Age=${COOKIE_MAX_AGE}; Path=/`;
-}
-
-function getCookie(request: Request): string | null {
-  const cookieHeader = request.headers.get('Cookie');
-  if (!cookieHeader) return null;
-
-  const cookies = cookieHeader.split(';').map((c) => c.trim());
-  for (const cookie of cookies) {
-    const [name, value] = cookie.split('=');
-    if (name === COOKIE_NAME) return value;
-  }
-  return null;
-}
-
-async function verifyTurnstile(token: string, env: Env, ip: string): Promise<boolean> {
-  if (!env.TURNSTILE_SECRET) {
-    return true;
-  }
-
-  try {
-    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        secret: env.TURNSTILE_SECRET,
-        response: token,
-        remoteip: ip,
-      }),
-    });
-
-    const data = await response.json();
-    return data.success === true;
-  } catch {
-    return true;
-  }
+function jsonResponse(data: unknown, status = 200, extraHeaders: Record<string, string> = {}) {
+  return new Response(JSON.stringify(data, null, 2), {
+    status,
+    headers: {
+      'Content-Type': 'application/json',
+      'Cache-Control': status === 200 ? 'private, max-age=0' : 'no-store',
+      ...extraHeaders,
+    },
+  });
 }
 
 async function getPoll(env: Env, request: Request): Promise<Response> {
@@ -144,8 +94,11 @@ async function getPoll(env: Env, request: Request): Promise<Response> {
     .bind(poll.id)
     .all<PollOption>();
 
-  const cookie = getCookie(request);
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const ip = request.headers.get('CF-Connecting-IP');
+  if (!ip) {
+    return jsonResponse({ error: 'IP address required', code: 'IP_REQUIRED' }, 400);
+  }
+
   const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT);
 
   const hasVoted = await env.DB.prepare('SELECT 1 FROM votes WHERE poll_id = ? AND voter_hash = ?')
@@ -214,7 +167,7 @@ async function vote(env: Env, request: Request): Promise<Response> {
 
   const pollSlug = pathMatch[1];
 
-  let body: { option: string; turnstile_token?: string };
+  let body: { option: string };
   try {
     body = await request.json();
   } catch {
@@ -223,6 +176,11 @@ async function vote(env: Env, request: Request): Promise<Response> {
 
   if (!body.option) {
     return jsonResponse({ error: 'Missing option' }, 400);
+  }
+
+  const ip = request.headers.get('CF-Connecting-IP');
+  if (!ip) {
+    return jsonResponse({ error: 'IP address required', code: 'IP_REQUIRED' }, 400);
   }
 
   const poll = await env.DB.prepare('SELECT * FROM polls WHERE slug = ? AND status = ?')
@@ -241,7 +199,6 @@ async function vote(env: Env, request: Request): Promise<Response> {
     return jsonResponse({ error: 'Invalid option' }, 400);
   }
 
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT);
 
   const existingVote = await env.DB.prepare('SELECT 1 FROM votes WHERE poll_id = ? AND voter_hash = ?')
@@ -250,13 +207,6 @@ async function vote(env: Env, request: Request): Promise<Response> {
 
   if (existingVote) {
     return jsonResponse({ error: 'Already voted', code: 'ALREADY_VOTED' }, 409);
-  }
-
-  if (body.turnstile_token) {
-    const turnstileValid = await verifyTurnstile(body.turnstile_token, env, ip);
-    if (!turnstileValid) {
-      return jsonResponse({ error: 'Invalid captcha', code: 'INVALID_CAPTCHA' }, 400);
-    }
   }
 
   await env.DB.prepare('INSERT INTO votes (poll_id, voter_hash, option_id) VALUES (?, ?, ?)')
@@ -276,30 +226,24 @@ async function vote(env: Env, request: Request): Promise<Response> {
   const countsMap = new Map(voteCounts.results.map((vc) => [vc.option_id, vc.count]));
   const totalVotes = Array.from(countsMap.values()).reduce((sum, count) => sum + count, 0);
 
-  const voterToken = generateVoterToken();
-
-  return jsonResponse(
-    {
-      success: true,
-      results: {
-        slug: poll.slug,
-        question: poll.question,
-        total_votes: totalVotes,
-        options: options.results.map((opt) => {
-          const count = countsMap.get(opt.id) || 0;
-          return {
-            slug: opt.slug,
-            label: opt.label,
-            tool_slug: opt.tool_slug,
-            count,
-            percentage: totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0,
-          };
-        }),
-      },
+  return jsonResponse({
+    success: true,
+    results: {
+      slug: poll.slug,
+      question: poll.question,
+      total_votes: totalVotes,
+      options: options.results.map((opt) => {
+        const count = countsMap.get(opt.id) || 0;
+        return {
+          slug: opt.slug,
+          label: opt.label,
+          tool_slug: opt.tool_slug,
+          count,
+          percentage: totalVotes > 0 ? Math.round((count / totalVotes) * 100) : 0,
+        };
+      }),
     },
-    200,
-    { 'Set-Cookie': setCookie(voterToken) }
-  );
+  });
 }
 
 async function handleRequest(request: Request, env: Env): Promise<Response> {
@@ -318,11 +262,15 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     });
   }
 
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const allowed = await checkRateLimit(env, ip);
+  const ip = request.headers.get('CF-Connecting-IP');
+  if (!ip) {
+    return jsonResponse({ error: 'IP address required', code: 'IP_REQUIRED' }, 400);
+  }
+
+  const allowed = await checkRateLimit(env, ip, method === 'POST');
 
   if (!allowed) {
-    return jsonResponse({ error: 'Rate limit exceeded', code: 'RATE_LIMITED' }, 429);
+    return jsonResponse({ error: method === 'POST' ? 'Service temporarily unavailable' : 'Rate limit exceeded', code: 'RATE_LIMITED' }, method === 'POST' ? 503 : 429);
   }
 
   if (pathname.match(/^\/api\/polls\/[^/]+$/) && method === 'GET') {
@@ -343,6 +291,22 @@ export default {
     } catch (error) {
       console.error('Worker error:', error);
       return jsonResponse({ error: 'Internal server error' }, 500);
+    }
+  },
+
+  async scheduled(event: ScheduledEvent, env: Env): Promise<void> {
+    try {
+      const ninetyDaysAgo = new Date();
+      ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+      const cutoffDate = ninetyDaysAgo.toISOString();
+
+      const result = await env.DB.prepare(
+        'DELETE FROM votes WHERE created_at < ?'
+      ).bind(cutoffDate).run();
+
+      console.log(`Deleted ${result.meta.changes || 0} vote hashes older than 90 days`);
+    } catch (error) {
+      console.error('Scheduled cleanup error:', error);
     }
   },
 };
