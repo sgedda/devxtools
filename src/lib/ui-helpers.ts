@@ -86,6 +86,7 @@ export const CATEGORY_ICONS: Record<string, string> = {
   'sdk-generator': 'code-2',
   'e2e-testing': 'route',
   'load-testing': 'zap',
+  'metrics': 'bar-chart-2',
   'error-monitoring': 'alert-circle',
   'distributed-tracing': 'git-branch',
   'log-aggregation': 'layers',

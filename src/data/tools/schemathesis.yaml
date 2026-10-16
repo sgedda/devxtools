@@ -9,7 +9,7 @@ runtimes:
   - Python
   - CLI
 sections:
-  - testing
+  - mocking-test-data
 categories:
   - contract-testing
 specSupport:
