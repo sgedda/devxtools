@@ -270,7 +270,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   const allowed = await checkRateLimit(env, ip, method === 'POST');
 
   if (!allowed) {
-    return jsonResponse({ error: method === 'POST' ? 'Service temporarily unavailable' : 'Rate limit exceeded', code: 'RATE_LIMITED' }, method === 'POST' ? 503 : 429);
+    return jsonResponse({ error: 'Rate limit exceeded', code: 'RATE_LIMITED' }, 429);
   }
 
   if (pathname.match(/^\/api\/polls\/[^/]+$/) && method === 'GET') {
@@ -298,13 +298,13 @@ export default {
     try {
       const ninetyDaysAgo = new Date();
       ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
-      const cutoffDate = ninetyDaysAgo.toISOString();
+      const cutoffDate = ninetyDaysAgo.toISOString().replace('T', ' ').substring(0, 19);
 
       const result = await env.DB.prepare(
-        'DELETE FROM votes WHERE created_at < ?'
+        "UPDATE votes SET voter_hash = 'EXPIRED_' || poll_id || '_' || option_id || '_' || created_at WHERE created_at < ? AND voter_hash NOT LIKE 'EXPIRED_%'"
       ).bind(cutoffDate).run();
 
-      console.log(`Deleted ${result.meta.changes || 0} vote hashes older than 90 days`);
+      console.log(`Anonymized ${result.meta.changes || 0} vote hashes older than 90 days`);
     } catch (error) {
       console.error('Scheduled cleanup error:', error);
     }
