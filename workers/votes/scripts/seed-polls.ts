@@ -5,7 +5,7 @@ import YAML from 'yaml';
 import { pollSchema } from '../src/schema.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const pollsDir = path.resolve(__dirname, '../../src/data/polls');
+const pollsDir = path.resolve(__dirname, '../../../src/data/polls');
 
 async function loadPolls() {
   const files = fs.readdirSync(pollsDir).filter((f) => f.endsWith('.yaml') || f.endsWith('.yml'));

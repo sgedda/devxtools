@@ -209,9 +209,16 @@ async function vote(env: Env, request: Request): Promise<Response> {
     return jsonResponse({ error: 'Already voted', code: 'ALREADY_VOTED' }, 409);
   }
 
-  await env.DB.prepare('INSERT INTO votes (poll_id, voter_hash, option_id) VALUES (?, ?, ?)')
-    .bind(poll.id, voterHash, option.id)
-    .run();
+  try {
+    await env.DB.prepare('INSERT INTO votes (poll_id, voter_hash, option_id) VALUES (?, ?, ?)')
+      .bind(poll.id, voterHash, option.id)
+      .run();
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('UNIQUE constraint failed')) {
+      return jsonResponse({ error: 'Already voted', code: 'ALREADY_VOTED' }, 409);
+    }
+    throw error;
+  }
 
   const voteCounts = await env.DB.prepare(
     'SELECT option_id, COUNT(*) as count FROM votes WHERE poll_id = ? GROUP BY option_id'

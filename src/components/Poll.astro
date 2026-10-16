@@ -110,7 +110,7 @@ const { pollSlug } = Astro.props;
     justify-content: center;
   }
 
-  .poll-option-input:checked ~ .poll-option-radio::after {
+  .poll-option-input:checked + .poll-option-label .poll-option-radio::after {
     content: '';
     width: 0.625rem;
     height: 0.625rem;
@@ -118,7 +118,7 @@ const { pollSlug } = Astro.props;
     border-radius: 50%;
   }
 
-  :global(.dark) .poll-option-input:checked ~ .poll-option-radio::after {
+  :global(.dark) .poll-option-input:checked + .poll-option-label .poll-option-radio::after {
     background: white;
   }
 
@@ -328,7 +328,10 @@ const { pollSlug } = Astro.props;
           try {
             const data: ErrorResponse = await response.json();
             if (response.status === 409 && data.code === 'ALREADY_VOTED') {
-              errorMessage = 'You have already voted in this poll.';
+              const pollData = await this.fetchPoll();
+              this.form?.classList.add('hidden');
+              this.renderResults(pollData);
+              return;
             } else if (response.status === 429 && data.code === 'RATE_LIMITED') {
               errorMessage = 'Too many requests. Please try again in a minute.';
             } else if (response.status === 400 && data.code === 'IP_REQUIRED') {
