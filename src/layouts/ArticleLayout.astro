@@ -2,6 +2,7 @@
 import Layout from './Layout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import ReportError from '../components/ReportError.astro';
+import StackPickerWidget from '../components/StackPickerWidget.astro';
 
 interface Props {
   frontmatter: {
@@ -16,11 +17,25 @@ interface Props {
     dateModified: string;
     tested_with?: string;
     affiliation?: string;
+    section?: string; // e.g., 'mocking-test-data', 'testing', 'api-development', 'observability'
   };
   headings?: Array<{ depth: number; slug: string; text: string }>;
 }
 
 const { frontmatter, headings } = Astro.props;
+
+// Map section to need for picker widget
+function getSectionNeed(section?: string): string | undefined {
+  const needMap: Record<string, string> = {
+    'mocking-test-data': 'mock',
+    'testing': 'e2e',
+    'api-development': 'debug',
+    'observability': 'observe'
+  };
+  return section ? needMap[section] : undefined;
+}
+
+const pickerNeed = getSectionNeed(frontmatter.section);
 
 function buildJsonLd(frontmatter: Props['frontmatter']) {
   const graph: any[] = [];
@@ -129,6 +144,10 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
       )}
 
       <slot />
+
+      <div class="not-prose my-12">
+        <StackPickerWidget need={pickerNeed} />
+      </div>
 
       <ReportError 
         pageTitle={displayTitle}

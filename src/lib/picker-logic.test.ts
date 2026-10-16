@@ -110,8 +110,8 @@ function matchesTool(tool: any, state: any, filterMode: 'best' | 'also' = 'best'
     observe: ['error-monitoring', 'distributed-tracing', 'log-aggregation', 'application-logging', 'metrics']
   };
   
+  let matchedNeeds: string[] = [];
   if (state.need && state.need.length > 0) {
-    const matchedNeeds: string[] = [];
     state.need.forEach((need: string) => {
       const cats = NEED_TO_CATEGORIES[need] || [];
       if (tool.categories?.some((c: string) => cats.includes(c))) {
@@ -121,7 +121,8 @@ function matchesTool(tool: any, state: any, filterMode: 'best' | 'also' = 'best'
       }
     });
     
-    if (filterMode === 'best' && matchedNeeds.length === 0) {
+    // When needs are selected, tool MUST match at least one need to appear at all
+    if (matchedNeeds.length === 0) {
       return null;
     }
   }
@@ -416,5 +417,74 @@ describe('Empty state logic', () => {
     );
     
     expect(mostRestrictive[1]).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe('Need filter enforcement', () => {
+  it('requires tools to match at least one need when needs are selected', () => {
+    const state = { platform: 'web', need: ['mock'], lang: 'ts', spec: [], oss: '' };
+    
+    // Appium, Reactotron, Cypress, Playwright, Sentry, Hoppscotch should NOT appear
+    // because they don't match the 'mock' need
+    const allMatches = mockTools
+      .map(t => matchesTool(t, state, 'also'))
+      .filter(m => m !== null);
+    
+    // Check that no tool without a matching need appears
+    allMatches.forEach(match => {
+      const hasNeedMatch = state.need.some(need => {
+        const NEED_TO_CATEGORIES: Record<string, string[]> = {
+          mock: ['http-interception', 'mock-server', 'spec-based-mocking', 'hosted-mocks'],
+          record: ['record-replay'],
+          data: ['test-data-generation'],
+          e2e: ['e2e-testing'],
+          contract: ['contract-testing', 'openapi-tooling', 'sdk-generator'],
+          load: ['load-testing'],
+          debug: ['api-client', 'network-debugging'],
+          observe: ['error-monitoring', 'distributed-tracing', 'log-aggregation', 'application-logging', 'metrics']
+        };
+        const cats = NEED_TO_CATEGORIES[need] || [];
+        return match!.tool.categories?.some((c: string) => cats.includes(c));
+      });
+      expect(hasNeedMatch).toBe(true);
+    });
+  });
+  
+  it('excludes Appium when platform=web, need=mock, lang=ts', () => {
+    const state = { platform: 'web', need: ['mock'], lang: 'ts', spec: [], oss: '' };
+    
+    const allMatches = mockTools
+      .map(t => matchesTool(t, state, 'also'))
+      .filter(m => m !== null);
+    
+    // Appium should not match because it's not in mock categories
+    const appiumMatch = allMatches.find(m => m?.tool.slug === 'appium');
+    expect(appiumMatch).toBeUndefined();
+  });
+  
+  it('excludes Cypress and Playwright when need=mock', () => {
+    const state = { platform: 'web', need: ['mock'], lang: '', spec: [], oss: '' };
+    
+    const allMatches = mockTools
+      .map(t => matchesTool(t, state, 'also'))
+      .filter(m => m !== null);
+    
+    // Cypress and Playwright are e2e tools, not mock tools
+    const cypressMatch = allMatches.find(m => m?.tool.slug === 'cypress');
+    const playwrightMatch = allMatches.find(m => m?.tool.slug === 'playwright');
+    
+    expect(cypressMatch).toBeUndefined();
+    expect(playwrightMatch).toBeUndefined();
+  });
+  
+  it('allows tools through when no needs are selected', () => {
+    const state = { platform: 'web', need: [], lang: '', spec: [], oss: '' };
+    
+    const allMatches = mockTools
+      .map(t => matchesTool(t, state, 'also'))
+      .filter(m => m !== null);
+    
+    // Should get multiple tools including e2e tools
+    expect(allMatches.length).toBeGreaterThan(0);
   });
 });

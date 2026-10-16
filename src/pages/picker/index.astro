@@ -412,8 +412,8 @@ const toolsJson = JSON.stringify(tools);
       }
       
       // Needs matching
+      let matchedNeeds = [];
       if (state.need.length > 0) {
-        const matchedNeeds = [];
         state.need.forEach(need => {
           const cats = NEED_TO_CATEGORIES[need] || [];
           if (tool.categories?.some(c => cats.includes(c))) {
@@ -423,7 +423,8 @@ const toolsJson = JSON.stringify(tools);
           }
         });
         
-        if (filterMode === 'best' && matchedNeeds.length === 0) {
+        // When needs are selected, tool MUST match at least one need to appear at all
+        if (matchedNeeds.length === 0) {
           return null;
         }
       }
@@ -629,41 +630,57 @@ const toolsJson = JSON.stringify(tools);
       // Hide popular tools
       document.getElementById('popular-tools').classList.add('hidden');
       
-      // Show per-need picks if needs are selected
-      if (state.need.length > 0) {
-        showPerNeedPicks(bestMatches);
-      } else {
-        document.getElementById('per-need-picks').classList.add('hidden');
-      }
-      
       // Show results
       if (totalMatches === 0) {
         showEmptyState();
       } else {
         document.getElementById('empty-state').classList.add('hidden');
         
-        // Best match section
-        if (bestMatches.length > 0) {
-          document.getElementById('best-match-section').classList.remove('hidden');
-          const grid = document.getElementById('best-match-grid');
-          grid.innerHTML = '';
-          bestMatches.slice(0, 9).forEach(match => {
-            grid.appendChild(createToolCard(match));
-          });
-        } else {
+        // When needs are selected, per-need picks ARE the best match section
+        // Tools should never appear in both sections
+        if (state.need.length > 0) {
+          const shownSlugs = showPerNeedPicks(bestMatches);
           document.getElementById('best-match-section').classList.add('hidden');
-        }
-        
-        // Also works section
-        if (alsoWorks.length > 0) {
-          document.getElementById('also-works-section').classList.remove('hidden');
-          const grid = document.getElementById('also-works-grid');
-          grid.innerHTML = '';
-          alsoWorks.slice(0, 9).forEach(match => {
-            grid.appendChild(createToolCard(match));
-          });
+          
+          // Also works: tools not shown in per-need picks
+          const remainingBest = bestMatches.filter(m => !shownSlugs.has(m.tool.slug));
+          const allAlsoWorks = [...remainingBest, ...alsoWorks];
+          
+          if (allAlsoWorks.length > 0) {
+            document.getElementById('also-works-section').classList.remove('hidden');
+            const grid = document.getElementById('also-works-grid');
+            grid.innerHTML = '';
+            allAlsoWorks.slice(0, 9).forEach(match => {
+              grid.appendChild(createToolCard(match));
+            });
+          } else {
+            document.getElementById('also-works-section').classList.add('hidden');
+          }
         } else {
-          document.getElementById('also-works-section').classList.add('hidden');
+          // No needs selected: show traditional Best match / Also works
+          document.getElementById('per-need-picks').classList.add('hidden');
+          
+          if (bestMatches.length > 0) {
+            document.getElementById('best-match-section').classList.remove('hidden');
+            const grid = document.getElementById('best-match-grid');
+            grid.innerHTML = '';
+            bestMatches.slice(0, 9).forEach(match => {
+              grid.appendChild(createToolCard(match));
+            });
+          } else {
+            document.getElementById('best-match-section').classList.add('hidden');
+          }
+          
+          if (alsoWorks.length > 0) {
+            document.getElementById('also-works-section').classList.remove('hidden');
+            const grid = document.getElementById('also-works-grid');
+            grid.innerHTML = '';
+            alsoWorks.slice(0, 9).forEach(match => {
+              grid.appendChild(createToolCard(match));
+            });
+          } else {
+            document.getElementById('also-works-section').classList.add('hidden');
+          }
         }
       }
     }
@@ -672,6 +689,8 @@ const toolsJson = JSON.stringify(tools);
       const container = document.getElementById('per-need-picks');
       container.classList.remove('hidden');
       container.innerHTML = '';
+      
+      const shownSlugs = new Set();
       
       state.need.forEach(need => {
         const needMatches = bestMatches.filter(m => m.reasons.includes(need));
@@ -687,8 +706,11 @@ const toolsJson = JSON.stringify(tools);
         const grid = section.querySelector(`#need-${need}-grid`);
         needMatches.slice(0, 3).forEach(match => {
           grid.appendChild(createToolCard(match));
+          shownSlugs.add(match.tool.slug);
         });
       });
+      
+      return shownSlugs;
     }
     
     function showEmptyState() {
