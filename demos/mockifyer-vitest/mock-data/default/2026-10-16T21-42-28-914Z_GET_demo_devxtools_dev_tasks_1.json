@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://demo.devxtools.dev/tasks/1",
+    "headers": {
+      "x-mockifyer-request-id": "916c7b14-b12e-4312-ab1d-21035bf99ffb"
+    }
+  },
+  "response": {
+    "status": 200,
+    "data": {
+      "id": 1,
+      "title": "Set up project repository",
+      "completed": true,
+      "userId": 1
+    },
+    "headers": {
+      "access-control-allow-headers": "Content-Type, X-DevX-Req-Id",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "*",
+      "access-control-max-age": "86400",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "public, max-age=60",
+      "cf-ray": "a4ba3bce5ef2b086-IAD",
+      "connection": "keep-alive",
+      "content-encoding": "br",
+      "content-type": "application/json",
+      "date": "Fri, 16 Oct 2026 21:42:28 GMT",
+      "nel": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}",
+      "report-to": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=i7PrgIeFn%2BQIXwrg6iCFJhvYo5hgcGL%2Bdkb5tbHfrXZZxEqGa9tj%2FXm86dkfgIWIa6nLBDV3cp29nlNNE5HIDPG7ZmO77gbS7pwGvtxSe%2Bvzbp3BlkyVyfVjHFeEQs0Lqc6gRpo%3D\"}]}",
+      "server": "cloudflare",
+      "transfer-encoding": "chunked"
+    }
+  },
+  "timestamp": "2026-10-16T21:42:28.913Z",
+  "duration": 145,
+  "sessionId": "session-1792186948912-jktfu7uao",
+  "requestId": "916c7b14-b12e-4312-ab1d-21035bf99ffb"
+}

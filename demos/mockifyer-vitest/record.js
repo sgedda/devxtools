@@ -1,21 +1,22 @@
-// Record script for capturing fresh API responses
-// Run with: npm run record
-
+// Record script - captures real API responses with Mockifyer
 import { setupMockifyer } from '@sgedda/mockifyer-fetch';
 
 setupMockifyer({
   mockDataPath: './mock-data',
   defaultScenario: 'default',
   recordMode: true,
+  useGlobalFetch: true,
+  domainPathRulesMode: 'record_all', // Allow recording without explicit allowlist
 });
 
-async function recordTask() {
-  console.log('Recording response from demo.devxtools.dev...');
+async function record() {
+  console.log('Recording response from demo.devxtools.dev/tasks/1...');
+  
   const response = await fetch('https://demo.devxtools.dev/tasks/1');
   const data = await response.json();
   
-  console.log('Recorded:', data);
-  console.log('Mock saved to mock-data/default/');
+  console.log('Recorded data:', data);
+  console.log('Mock should be saved to mock-data/default/');
 }
 
-recordTask().catch(console.error);
+record().catch(console.error);
