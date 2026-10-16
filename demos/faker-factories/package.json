@@ -1,0 +1,14 @@
+{
+  "name": "faker-factories-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@faker-js/faker": "10.6.0"
+  },
+  "devDependencies": {
+    "vitest": "5.0.5"
+  }
+}

@@ -1,0 +1,96 @@
+---
+interface Props {
+  project: string;
+  file?: string;
+  title?: string;
+}
+
+const { project, file, title = 'Run in StackBlitz' } = Astro.props;
+
+const GITHUB_REPO = 'sgedda/devxtools';
+const DEFAULT_BRANCH = 'main';
+
+const stackblitzUrl = `https://stackblitz.com/github/${GITHUB_REPO}/tree/${DEFAULT_BRANCH}/demos/${project}${file ? `?file=${file}` : ''}`;
+---
+
+<div class="run-it" data-project={project} data-file={file}>
+  <noscript>
+    <a href={stackblitzUrl} target="_blank" rel="noopener noreferrer" class="run-it-link">
+      {title} →
+    </a>
+  </noscript>
+  <button type="button" class="run-it-button" data-stackblitz-url={stackblitzUrl}>
+    {title}
+  </button>
+</div>
+
+<script>
+  function initRunIt() {
+    const buttons = document.querySelectorAll('.run-it-button');
+    
+    buttons.forEach((button) => {
+      if (!(button instanceof HTMLButtonElement)) return;
+      
+      button.addEventListener('click', () => {
+        const url = button.dataset.stackblitzUrl;
+        if (url) {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRunIt);
+  } else {
+    initRunIt();
+  }
+</script>
+
+<style>
+  .run-it {
+    margin: 2rem 0;
+  }
+
+  .run-it-link,
+  .run-it-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #1389fd 0%, #0d6efd 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .run-it-button:hover,
+  .run-it-link:hover {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+  }
+
+  .run-it-button:active,
+  .run-it-link:active {
+    transform: translateY(0);
+  }
+
+  noscript .run-it-link {
+    display: inline-block;
+  }
+
+  .run-it-button {
+    display: none;
+  }
+
+  @media (scripting: enabled) {
+    .run-it-button {
+      display: inline-block;
+    }
+  }
+</style>
