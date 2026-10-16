@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import ToolLogo from '../../components/ToolLogo.astro';
+import StackPickerWidget from '../../components/StackPickerWidget.astro';
 import { getToolsBySection } from '../../lib/tools';
 import { CATEGORY_LABELS, SECTION_TO_CATEGORIES } from '../../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass, CATEGORY_ICONS } from '../../lib/ui-helpers';
@@ -72,6 +73,10 @@ const jsonLd = {
         Every tool page lists licence, language and the date we last checked it. For a guided choice, try the <a href="/picker/" class="text-indigo-600 dark:text-indigo-400">tool picker</a>.
       </p>
     </div>
+
+    <section class="mt-12">
+      <StackPickerWidget need="e2e" />
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Top comparisons and guides</h2>
