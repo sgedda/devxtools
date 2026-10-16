@@ -22,3 +22,4 @@ specSupport:
 bestFor: Kubernetes-native API mocking and contract testing for multiple protocols
 description: Turn your API specs into live mocks and contract tests. Supports OpenAPI, AsyncAPI, gRPC, GraphQL, and SOAP. Built for cloud-native environments.
 lastChecked: 2026-10-14
+isOpenSource: true

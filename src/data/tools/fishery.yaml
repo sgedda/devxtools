@@ -15,3 +15,4 @@ categories:
 bestFor: Type-safe factories for building test objects with sensible defaults
 description: Library for setting up JavaScript objects as test data. Inspired by factory_bot, with full TypeScript support and composable factories.
 lastChecked: 2026-10-14
+isOpenSource: true

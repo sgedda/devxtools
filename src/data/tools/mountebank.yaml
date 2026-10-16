@@ -14,3 +14,4 @@ categories:
 bestFor: Multi-protocol service virtualization supporting HTTP, HTTPS, TCP, and SMTP
 description: Over-the-wire test doubles with support for HTTP, HTTPS, TCP, and SMTP. Powerful predicates and response behaviors for complex scenarios.
 lastChecked: 2026-10-14
+isOpenSource: true

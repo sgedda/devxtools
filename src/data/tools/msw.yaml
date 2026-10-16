@@ -23,3 +23,6 @@ lastActivity: 2026-10-10T01:37:25Z
 npmPackage: msw
 weeklyDownloads: 22997466
 lastChecked: 2026-10-14
+isOpenSource: true
+platforms:
+  - Web

@@ -18,3 +18,4 @@ specSupport:
 bestFor: Service virtualization and API simulation with record/replay and templating
 description: Lightweight service virtualization tool built in Go. Capture and simulate APIs with request matching, templating, and stateful behavior.
 lastChecked: 2026-10-14
+isOpenSource: true

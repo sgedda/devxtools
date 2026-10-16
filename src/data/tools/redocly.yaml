@@ -21,6 +21,7 @@ description: Complete OpenAPI toolkit including CLI for linting and bundling, pl
 whenToUse: When you need robust OpenAPI validation, want to generate production-ready documentation, or need to bundle multi-file OpenAPI specs.
 githubStars: 2300
 lastActivity: 2026-10-11T16:22:08Z
-npmPackage: '@redocly/cli'
+npmPackage: "@redocly/cli"
 weeklyDownloads: 1847320
 lastChecked: 2026-10-14
+isOpenSource: true

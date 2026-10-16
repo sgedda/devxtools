@@ -16,3 +16,4 @@ categories:
 bestFor: Generating massive amounts of realistic fake data for testing
 description: Generate fake but realistic data including names, addresses, emails, phone numbers, dates, and more. Localized for 60+ locales.
 lastChecked: 2026-10-14
+isOpenSource: true

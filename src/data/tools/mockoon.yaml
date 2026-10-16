@@ -21,6 +21,7 @@ description: Desktop application and CLI for creating and running mock APIs loca
 whenToUse: When you want to quickly create mock APIs without writing code, or need a visual interface to design and test API responses.
 githubStars: 8441
 lastActivity: 2026-09-16T08:00:31Z
-npmPackage: '@mockoon/cli'
+npmPackage: "@mockoon/cli"
 weeklyDownloads: 47326
 lastChecked: 2026-10-14
+isOpenSource: true

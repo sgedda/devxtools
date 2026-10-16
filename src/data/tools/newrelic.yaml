@@ -15,3 +15,4 @@ bestFor: Usage-based full-stack observability (100 GB/month free ingest)
 description: Comprehensive observability platform with APM, infrastructure monitoring, logs, traces, digital experience monitoring, and AI observability. Features unified telemetry data store and pay-as-you-go pricing model.
 whenToUse: When you need enterprise-grade observability, need unified visibility across applications and infrastructure, or prefer usage-based pricing over per-host billing.
 lastChecked: 2026-10-16
+isOpenSource: false

@@ -23,3 +23,6 @@ whenToUse: When you want a lightweight browser-based API client, need real-time 
 githubStars: 73200
 lastActivity: 2026-10-13T14:28:19Z
 lastChecked: 2026-10-14
+isOpenSource: true
+platforms:
+  - Web

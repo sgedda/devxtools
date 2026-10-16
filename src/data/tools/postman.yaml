@@ -19,3 +19,5 @@ bestFor: Comprehensive API development platform with collaboration, testing, and
 description: Industry-leading API platform for designing, testing, documenting, and monitoring APIs. Features include visual request builder, automated testing, mock servers, team collaboration, and API governance.
 whenToUse: When you need a full-featured API development environment with team collaboration, documentation generation, and enterprise features.
 lastChecked: 2026-10-14
+isOpenSource: false
+languageAgnostic: true

@@ -17,3 +17,6 @@ categories:
 bestFor: Building complete frontend applications without a backend using an in-memory database
 description: An API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
 lastChecked: 2026-10-14
+isOpenSource: true
+platforms:
+  - Web

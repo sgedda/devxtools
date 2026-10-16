@@ -54,6 +54,8 @@ export const ToolSchema = z.object({
   weeklyDownloads: z.number().optional(), // weekly npm downloads
   lastChecked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   affiliation: z.string().optional(), // Disclosure for affiliated tools
+  isOpenSource: z.boolean(),
+  languageAgnostic: z.boolean().optional(), // True when languages=['N/A'] and tool is truly any-language
 });
 
 export type Tool = z.infer<typeof ToolSchema>;

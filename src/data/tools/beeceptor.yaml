@@ -14,3 +14,7 @@ categories:
 bestFor: Quick HTTP mocking without local setup or installation
 description: Create mock REST APIs in seconds with a hosted endpoint. Web-based interface for defining rules, inspecting requests, and simulating latency.
 lastChecked: 2026-10-14
+isOpenSource: false
+languageAgnostic: true
+platforms:
+  - Web

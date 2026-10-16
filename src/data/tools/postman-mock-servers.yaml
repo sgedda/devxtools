@@ -16,3 +16,7 @@ specSupport:
 bestFor: Cloud-hosted mock servers integrated with Postman collections
 description: Create mock servers directly from Postman collections or OpenAPI specs. Hosted by Postman with automatic syncing and collaboration features.
 lastChecked: 2026-10-14
+isOpenSource: false
+languageAgnostic: true
+platforms:
+  - Web
