@@ -2,7 +2,7 @@ name: Fern
 slug: fern
 website: https://buildwithfern.com
 repo: https://github.com/fern-api/fern
-license: MIT
+license: Apache-2.0
 languages:
   - TypeScript
 runtimes:
@@ -21,3 +21,4 @@ whenToUse: When you want a unified approach to SDKs and documentation, prefer co
 githubStars: 3400
 lastActivity: 2026-10-13T16:08:52Z
 lastChecked: 2026-10-14
+isOpenSource: true

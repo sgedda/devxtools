@@ -2,7 +2,7 @@ name: Sentry
 slug: sentry
 website: https://sentry.io
 repo: https://github.com/getsentry/sentry
-license: BUSL-1.1
+license: FSL-1.1-Apache-2.0
 languages:
   - Python
   - JavaScript
@@ -31,3 +31,4 @@ whenToUse: When you need comprehensive error tracking with stack traces, breadcr
 githubStars: 40200
 lastActivity: 2026-10-13T18:24:56Z
 lastChecked: 2026-10-14
+isOpenSource: false

@@ -17,3 +17,5 @@ bestFor: Visual API design platform with collaborative editing and automatic doc
 description: Design-first API platform with visual OpenAPI editor, automatic documentation generation, mock servers, and team collaboration. Features Studio for design and Elements for embeddable docs.
 whenToUse: When you need a visual, collaborative platform for API design with automatic documentation and want to enforce design-first workflows.
 lastChecked: 2026-10-14
+isOpenSource: false
+languageAgnostic: true

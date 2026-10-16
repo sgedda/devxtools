@@ -22,3 +22,4 @@ npmPackage: httpie
 pypiPackage: httpie
 weeklyDownloads: 14879
 lastChecked: 2026-10-14
+isOpenSource: true

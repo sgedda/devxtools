@@ -2,7 +2,7 @@ name: Speakeasy
 slug: speakeasy
 website: https://www.speakeasy.com
 repo: https://github.com/speakeasy-api/speakeasy
-license: Apache-2.0
+license: Elastic-2.0
 languages:
   - Go
 runtimes:
@@ -19,3 +19,4 @@ whenToUse: When you need high-quality, idiomatic SDKs with excellent documentati
 githubStars: 1800
 lastActivity: 2026-10-12T19:33:14Z
 lastChecked: 2026-10-14
+isOpenSource: false

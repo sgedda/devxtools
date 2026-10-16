@@ -1,0 +1,1104 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import ToolLogo from '../../components/ToolLogo.astro';
+import { getAllTools } from '../../lib/tools';
+import { CATEGORY_LABELS } from '../../lib/schema';
+import { formatTimeAgo, getLicenseBadgeClass } from '../../lib/ui-helpers';
+
+const tools = getAllTools();
+
+// Serialize tools for client-side filtering
+const toolsJson = JSON.stringify(tools);
+---
+
+<Layout 
+  title="Pick tools for your stack | DevX Tools" 
+  description="Find the right API development, testing, and mocking tools for your stack with our interactive picker."
+>
+  <main class="mx-auto max-w-[1200px] px-5 pt-10 pb-20">
+    <nav class="text-sm text-zinc-600 dark:text-zinc-400">
+      <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+      <span aria-hidden="true"> / </span>
+      <span class="text-zinc-900 dark:text-white">Pick a Tool</span>
+    </nav>
+    
+    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-zinc-900 dark:text-white">Pick tools for your stack</h1>
+    <p class="mt-2 text-zinc-600 dark:text-zinc-400">
+      Answer a few questions to find tools that match your needs.
+    </p>
+    
+    <!-- No-JS fallback: show all tools -->
+    <noscript>
+      <div class="mt-8 space-y-4">
+        {tools.map(tool => (
+          <a 
+            href={`/tools/${tool.slug}/`}
+            class="block rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800"
+          >
+            <div class="flex items-start gap-3">
+              <ToolLogo tool={tool} />
+              <div class="flex-1">
+                <h3 class="font-semibold text-zinc-900 dark:text-white">{tool.name}</h3>
+                <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{tool.bestFor}</p>
+                {tool.affiliation && (
+                  <p class="mt-2 text-xs text-amber-700 dark:text-amber-400">
+                    ⚠️ {tool.affiliation}
+                  </p>
+                )}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </noscript>
+    
+    <!-- JS version -->
+    <div id="picker-app" class="hidden">
+      <!-- Desktop filters container -->
+      <div id="filters-desktop-wrapper" class="mt-8 rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
+        <div class="flex items-center justify-between mb-6">
+          <h2 id="filters-title" class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Filters</h2>
+          <div class="flex items-center gap-3">
+            <button id="copy-link-btn" class="hidden items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+              <Icon name="link" size={16} />
+              Copy link
+            </button>
+            <button id="clear-filters-btn" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+              Clear all
+            </button>
+          </div>
+        </div>
+        
+        <!-- Shared filters form (moves between desktop and mobile) -->
+        <form id="picker-filters">
+        
+        <!-- Platform -->
+        <fieldset class="mb-6">
+          <legend class="text-sm font-medium text-zinc-900 dark:text-white mb-3">What are you building?</legend>
+          <div class="flex flex-wrap gap-2" id="platform-chips">
+            <label class="filter-chip">
+              <input type="radio" name="platform" value="" class="sr-only" checked />
+              <span>Not sure / Any</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="platform" value="web" class="sr-only" />
+              <span>Web app (React, Vue…)</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="platform" value="rn" class="sr-only" />
+              <span>React Native / mobile</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="platform" value="node" class="sr-only" />
+              <span>Node.js backend / API</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="platform" value="backend" class="sr-only" />
+              <span>Other backend (JVM, Python, Go, .NET)</span>
+            </label>
+          </div>
+        </fieldset>
+        
+        <!-- Needs -->
+        <fieldset class="mb-6">
+          <legend class="text-sm font-medium text-zinc-900 dark:text-white mb-3">What do you need? <span class="text-zinc-600 dark:text-zinc-400">(up to 3)</span></legend>
+          <div class="flex flex-wrap gap-2" id="need-chips">
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="mock" class="sr-only" />
+              <span>Mock APIs in tests</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="record" class="sr-only" />
+              <span>Record & replay real traffic</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="data" class="sr-only" />
+              <span>Test data</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="e2e" class="sr-only" />
+              <span>E2E / UI tests</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="contract" class="sr-only" />
+              <span>Contract / spec</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="load" class="sr-only" />
+              <span>Load testing</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="debug" class="sr-only" />
+              <span>Explore / debug APIs</span>
+            </label>
+            <label class="filter-chip">
+              <input type="checkbox" name="need" value="observe" class="sr-only" />
+              <span>Monitor in production</span>
+            </label>
+          </div>
+        </fieldset>
+        
+        <!-- Language -->
+        <fieldset class="mb-6">
+          <legend class="text-sm font-medium text-zinc-900 dark:text-white mb-3">Language</legend>
+          <div class="flex flex-wrap gap-2" id="lang-chips">
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="" class="sr-only" checked />
+              <span>Not sure / Any</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="ts" class="sr-only" />
+              <span>TypeScript/JavaScript</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="py" class="sr-only" />
+              <span>Python</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="jvm" class="sr-only" />
+              <span>Java/Kotlin</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="go" class="sr-only" />
+              <span>Go</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="dotnet" class="sr-only" />
+              <span>C#/.NET</span>
+            </label>
+            <label class="filter-chip">
+              <input type="radio" name="lang" value="ruby" class="sr-only" />
+              <span>Ruby</span>
+            </label>
+          </div>
+        </fieldset>
+        
+        <!-- More filters -->
+        <details class="border-t border-zinc-200 pt-4 dark:border-zinc-800">
+          <summary class="cursor-pointer text-sm font-medium text-zinc-900 dark:text-white">
+            More filters
+          </summary>
+          <div class="mt-4 space-y-4">
+            <!-- Spec support -->
+            <fieldset>
+              <legend class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Spec support</legend>
+              <div class="flex flex-wrap gap-2">
+                <label class="filter-chip filter-chip-sm">
+                  <input type="checkbox" name="spec" value="openapi" class="sr-only" />
+                  <span>OpenAPI</span>
+                </label>
+                <label class="filter-chip filter-chip-sm">
+                  <input type="checkbox" name="spec" value="graphql" class="sr-only" />
+                  <span>GraphQL</span>
+                </label>
+                <label class="filter-chip filter-chip-sm">
+                  <input type="checkbox" name="spec" value="asyncapi" class="sr-only" />
+                  <span>AsyncAPI</span>
+                </label>
+                <label class="filter-chip filter-chip-sm">
+                  <input type="checkbox" name="spec" value="grpc" class="sr-only" />
+                  <span>gRPC</span>
+                </label>
+              </div>
+            </fieldset>
+            
+            <!-- License -->
+            <fieldset>
+              <legend class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">License</legend>
+              <div class="flex flex-wrap gap-2">
+                <label class="filter-chip filter-chip-sm">
+                  <input type="radio" name="oss" value="" class="sr-only" checked />
+                  <span>Any</span>
+                </label>
+                <label class="filter-chip filter-chip-sm">
+                  <input type="radio" name="oss" value="1" class="sr-only" />
+                  <span>Open source only</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+        </details>
+        </form>
+      </div>
+      
+      <!-- Mobile summary bar (sticky) -->
+      <div id="mobile-summary" class="hidden sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-5 py-3 -mx-5">
+        <div class="flex items-center justify-between">
+          <div class="flex-1 min-w-0">
+            <div id="mobile-summary-text" class="text-sm text-zinc-600 dark:text-zinc-400 truncate"></div>
+          </div>
+          <button id="edit-filters-btn" class="ml-3 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+            Edit
+          </button>
+        </div>
+      </div>
+      
+      <!-- Results -->
+      <div class="mt-6">
+        <div id="result-count" class="text-sm text-zinc-600 dark:text-zinc-400" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+        <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Ranked by fit, then GitHub stars. No sponsored placement.</p>
+        
+        <!-- Per-need picks (when needs are selected) -->
+        <div id="per-need-picks" class="hidden mt-6 space-y-8"></div>
+        
+        <!-- Best match -->
+        <div id="best-match-section" class="hidden">
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mt-8 mb-4">Best match</h2>
+          <div id="best-match-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+        
+        <!-- Also works -->
+        <div id="also-works-section" class="hidden">
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mt-8 mb-4">Also works</h2>
+          <div id="also-works-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+        
+        <!-- Empty state -->
+        <div id="empty-state" class="hidden mt-8 rounded-xl border-2 border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
+          <p class="text-lg text-zinc-900 dark:text-white mb-4" id="empty-message"></p>
+          <div id="empty-buttons" class="flex flex-wrap justify-center gap-2 mb-6"></div>
+          <div id="nearest-matches"></div>
+          <p class="mt-6 text-sm text-zinc-600 dark:text-zinc-400">
+            Know a tool that fits? <a href="/submit/" class="underline text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300">Suggest it</a>
+          </p>
+        </div>
+        
+        <!-- Popular tools (no filters) -->
+        <div id="popular-tools" class="hidden mt-8">
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">Popular across the catalog</h2>
+          <div id="popular-tools-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+      </div>
+      
+      <!-- Mobile bottom sheet -->
+      <div id="mobile-sheet-overlay" class="hidden fixed inset-0 bg-black/50 z-40" aria-hidden="true"></div>
+      <div 
+        id="mobile-sheet" 
+        class="hidden fixed inset-x-0 bottom-0 z-50 bg-white dark:bg-zinc-950 rounded-t-2xl border-t border-zinc-200 dark:border-zinc-800 max-h-[85vh] overflow-y-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mobile-sheet-title"
+      >
+        <div class="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-5 py-4 flex items-center justify-between">
+          <h2 id="mobile-sheet-title" class="font-semibold text-zinc-900 dark:text-white">Filters</h2>
+          <button id="close-sheet-btn" class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white" aria-label="Close filters">
+            <Icon name="x" size={24} />
+          </button>
+        </div>
+        <div class="p-5" id="mobile-filters-container">
+          <!-- picker-filters form will be moved here when sheet opens -->
+        </div>
+        <div class="sticky bottom-0 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 p-5 flex gap-3">
+          <button id="mobile-clear-btn" class="flex-1 rounded-lg border border-zinc-300 px-4 py-2.5 font-medium dark:border-zinc-700">
+            Clear all
+          </button>
+          <button id="mobile-apply-btn" class="flex-1 rounded-lg bg-zinc-900 px-4 py-2.5 font-medium text-white dark:bg-white dark:text-zinc-900">
+            Show <span id="mobile-apply-count"></span> tools
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script id="tools-data" type="application/json" set:html={JSON.stringify(tools).replace(/<\//g, '<\\/')}></script>
+
+  <script type="module">
+    import { matchesTool, rankTools, NEED_TO_CATEGORIES, NEED_LABELS } from '../../lib/picker.ts';
+    
+    // Get tools data from page
+    const toolsData = document.getElementById('tools-data');
+    const allTools = JSON.parse(toolsData.textContent);
+    
+    // State
+    let state = {
+      platform: '',
+      need: [],
+      lang: '',
+      spec: [],
+      oss: ''
+    };
+    
+    let hasInteracted = false;
+    
+    // Debounced aria-live announcements
+    let announceTimer = null;
+    function announceResults(text) {
+      clearTimeout(announceTimer);
+      announceTimer = setTimeout(() => {
+        document.getElementById('result-count').textContent = text;
+      }, 400);
+    }
+    
+    function initFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      
+      state.platform = params.get('platform') || '';
+      state.need = params.get('need')?.split(',').filter(Boolean).slice(0, 3) || [];
+      state.lang = params.get('lang') || '';
+      state.spec = params.get('spec')?.split(',').filter(Boolean) || [];
+      state.oss = params.get('oss') || '';
+      
+      // Auto-select TypeScript for web/RN platforms if user hasn't touched language yet
+      if ((state.platform === 'web' || state.platform === 'rn') && !params.get('lang') && !hasInteracted) {
+        state.lang = 'ts';
+      }
+      
+      // Update UI
+      document.querySelectorAll('input[name="platform"]').forEach(input => {
+        input.checked = input.value === state.platform;
+      });
+      
+      document.querySelectorAll('input[name="need"]').forEach(input => {
+        input.checked = state.need.includes(input.value);
+      });
+      
+      document.querySelectorAll('input[name="lang"]').forEach(input => {
+        input.checked = input.value === state.lang;
+      });
+      
+      document.querySelectorAll('input[name="spec"]').forEach(input => {
+        input.checked = state.spec.includes(input.value);
+      });
+      
+      document.querySelectorAll('input[name="oss"]').forEach(input => {
+        input.checked = input.value === state.oss;
+      });
+      
+      updateResults();
+    }
+    
+    function updateURL() {
+      const params = new URLSearchParams();
+      if (state.platform) params.set('platform', state.platform);
+      if (state.need.length) params.set('need', state.need.join(','));
+      if (state.lang) params.set('lang', state.lang);
+      if (state.spec.length) params.set('spec', state.spec.join(','));
+      if (state.oss) params.set('oss', state.oss);
+      
+      const newURL = params.toString() ? `/picker/?${params}` : '/picker/';
+      history.replaceState(null, '', newURL);
+      
+      // Show copy link button when filters are active
+      document.getElementById('copy-link-btn').classList.toggle('hidden', !params.toString());
+      document.getElementById('copy-link-btn').classList.toggle('flex', !!params.toString());
+    }
+    
+    function createToolCard(match) {
+      const { tool, reasons } = match;
+      const card = document.createElement('article');
+      card.className = 'rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition-all duration-200 dark:border-zinc-800';
+      
+      // Reason chips
+      const reasonChips = reasons.map(r => {
+        let label = r;
+        if (NEED_LABELS[r]) label = NEED_LABELS[r];
+        else if (r === 'language-agnostic') label = 'Language-agnostic';
+        else if (r === 'any-language') label = 'Any language';
+        else if (r === 'web') label = 'Web';
+        else if (r === 'rn') label = 'React Native';
+        else if (r === 'node') label = 'Node.js';
+        else if (r === 'backend') label = 'Backend';
+        else if (r === 'ts') label = 'TypeScript/JS';
+        else if (r === 'py') label = 'Python';
+        else if (r === 'jvm') label = 'Java/Kotlin';
+        else if (r === 'go') label = 'Go';
+        else if (r === 'dotnet') label = '.NET';
+        else if (r === 'ruby') label = 'Ruby';
+        else label = r.charAt(0).toUpperCase() + r.slice(1);
+        
+        return `<li class="inline-flex items-center gap-1 rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300">${label}</li>`;
+      }).join('');
+      
+      const whenToUseText = tool.whenToUse || tool.bestFor || '';
+      
+      card.innerHTML = `
+        <div class="flex items-start gap-3 mb-3">
+          <img src="/logos/${tool.slug}.svg" alt="" class="w-10 h-10 rounded-lg" onerror="this.style.display='none'" />
+          <div class="flex-1 min-w-0">
+            <h3 class="font-semibold text-zinc-900 dark:text-white">${tool.name}</h3>
+            ${tool.githubStars ? `<div class="flex items-center gap-1 text-sm text-zinc-600 dark:text-zinc-400 mt-0.5">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              ${tool.githubStars >= 1000 ? `${(tool.githubStars / 1000).toFixed(1).replace(/\.0$/, '')}k` : tool.githubStars.toLocaleString()}
+            </div>` : ''}
+          </div>
+        </div>
+        
+        ${reasonChips ? `<ul class="flex flex-wrap gap-1.5 mb-3" aria-label="Matches:">${reasonChips}</ul>` : ''}
+        
+        <p class="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 mb-3">
+          ${whenToUseText}
+        </p>
+        
+        ${tool.affiliation ? `<p class="text-xs text-amber-700 dark:text-amber-400 mb-3">⚠️ ${tool.affiliation}</p>` : ''}
+        
+        <a href="/tools/${tool.slug}/" class="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
+          View details
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
+        </a>
+      `;
+      
+      return card;
+    }
+    
+    function updateResults() {
+      updateURL();
+      
+      const hasFilters = state.platform || state.need.length || state.lang || state.spec.length || state.oss;
+      
+      // Show/hide mobile summary
+      if (window.innerWidth < 640 && hasFilters) {
+        document.getElementById('mobile-summary').classList.remove('hidden');
+        const summaryParts = [];
+        if (state.platform) summaryParts.push(state.platform === 'rn' ? 'RN' : state.platform);
+        if (state.need.length) summaryParts.push(state.need.map(n => NEED_LABELS[n]).join(', '));
+        if (state.lang) summaryParts.push(state.lang === 'ts' ? 'TS' : state.lang.toUpperCase());
+        document.getElementById('mobile-summary-text').textContent = summaryParts.join(' · ') || 'No filters';
+      } else {
+        document.getElementById('mobile-summary').classList.add('hidden');
+      }
+      
+      if (!hasFilters) {
+        // Show popular tools
+        document.getElementById('popular-tools').classList.remove('hidden');
+        document.getElementById('best-match-section').classList.add('hidden');
+        document.getElementById('also-works-section').classList.add('hidden');
+        document.getElementById('empty-state').classList.add('hidden');
+        document.getElementById('per-need-picks').classList.add('hidden');
+        
+        const popular = allTools
+          .filter(t => t.githubStars)
+          .sort((a, b) => (b.githubStars || 0) - (a.githubStars || 0))
+          .slice(0, 6);
+        
+        const grid = document.getElementById('popular-tools-grid');
+        grid.innerHTML = '';
+        popular.forEach(tool => {
+          const match = { tool, reasons: [], score: 0, isLanguageAgnostic: false };
+          grid.appendChild(createToolCard(match));
+        });
+        
+        announceResults('');
+        return;
+      }
+      
+      // Filter tools
+      const bestMatches = [];
+      const alsoWorks = [];
+      
+      allTools.forEach(tool => {
+        const bestMatch = matchesTool(tool, state, 'best');
+        if (bestMatch && !bestMatch.isLanguageAgnostic) {
+          bestMatches.push(bestMatch);
+        } else {
+          const alsoMatch = matchesTool(tool, state, 'also');
+          if (alsoMatch) {
+            alsoWorks.push(alsoMatch);
+          }
+        }
+      });
+      
+      rankTools(bestMatches);
+      rankTools(alsoWorks);
+      
+      const totalMatches = bestMatches.length + alsoWorks.length;
+      
+      // Update count (debounced for aria-live)
+      const countText = totalMatches === 1 ? '1 tool matches' : `${totalMatches} tools match`;
+      announceResults(countText);
+      document.getElementById('mobile-apply-count').textContent = totalMatches;
+      
+      // Hide popular tools
+      document.getElementById('popular-tools').classList.add('hidden');
+      
+      // Show results
+      if (totalMatches === 0) {
+        showEmptyState();
+      } else {
+        document.getElementById('empty-state').classList.add('hidden');
+        
+        // When needs are selected, per-need picks ARE the best match section
+        // Tools should never appear in both sections
+        if (state.need.length > 0) {
+          const shownSlugs = showPerNeedPicks(bestMatches);
+          document.getElementById('best-match-section').classList.add('hidden');
+          
+          // Also works: tools not shown in per-need picks
+          const remainingBest = bestMatches.filter(m => !shownSlugs.has(m.tool.slug));
+          const allAlsoWorks = [...remainingBest, ...alsoWorks];
+          
+          if (allAlsoWorks.length > 0) {
+            document.getElementById('also-works-section').classList.remove('hidden');
+            const grid = document.getElementById('also-works-grid');
+            grid.innerHTML = '';
+            allAlsoWorks.slice(0, 9).forEach(match => {
+              grid.appendChild(createToolCard(match));
+            });
+          } else {
+            document.getElementById('also-works-section').classList.add('hidden');
+          }
+        } else {
+          // No needs selected: show traditional Best match / Also works
+          document.getElementById('per-need-picks').classList.add('hidden');
+          
+          if (bestMatches.length > 0) {
+            document.getElementById('best-match-section').classList.remove('hidden');
+            const grid = document.getElementById('best-match-grid');
+            grid.innerHTML = '';
+            bestMatches.slice(0, 9).forEach(match => {
+              grid.appendChild(createToolCard(match));
+            });
+          } else {
+            document.getElementById('best-match-section').classList.add('hidden');
+          }
+          
+          if (alsoWorks.length > 0) {
+            document.getElementById('also-works-section').classList.remove('hidden');
+            const grid = document.getElementById('also-works-grid');
+            grid.innerHTML = '';
+            alsoWorks.slice(0, 9).forEach(match => {
+              grid.appendChild(createToolCard(match));
+            });
+          } else {
+            document.getElementById('also-works-section').classList.add('hidden');
+          }
+        }
+      }
+    }
+    
+    function showPerNeedPicks(bestMatches) {
+      const container = document.getElementById('per-need-picks');
+      container.classList.remove('hidden');
+      container.innerHTML = '';
+      
+      const shownSlugs = new Set();
+      
+      state.need.forEach(need => {
+        const needMatches = bestMatches.filter(m => m.reasons.includes(need));
+        if (needMatches.length === 0) return;
+        
+        const section = document.createElement('div');
+        
+        // Check if Mockifyer is the only pick
+        const picks = needMatches.slice(0, 3);
+        const onlyMockifyer = picks.length === 1 && picks[0].tool.slug === 'mockifyer';
+        
+        section.innerHTML = `
+          ${onlyMockifyer ? `<p class="text-xs text-amber-700 dark:text-amber-400 mb-3">⚠️ ${picks[0].tool.affiliation}</p>` : ''}
+          <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">Best for: ${NEED_LABELS[need]}</h2>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="need-${need}-grid"></div>
+        `;
+        container.appendChild(section);
+        
+        const grid = section.querySelector(`#need-${need}-grid`);
+        picks.forEach(match => {
+          // Skip disclosure on card if already shown at group level
+          const cardHtml = createToolCard(match);
+          if (onlyMockifyer && match.tool.slug === 'mockifyer') {
+            // Remove affiliation from card
+            const affiliationP = cardHtml.querySelector('p.text-amber-700, p.text-amber-400');
+            if (affiliationP) affiliationP.remove();
+          }
+          grid.appendChild(cardHtml);
+          shownSlugs.add(match.tool.slug);
+        });
+      });
+      
+      return shownSlugs;
+    }
+    
+    function showEmptyState() {
+      document.getElementById('empty-state').classList.remove('hidden');
+      document.getElementById('best-match-section').classList.add('hidden');
+      document.getElementById('also-works-section').classList.add('hidden');
+      document.getElementById('per-need-picks').classList.add('hidden');
+      
+      // Build empty message
+      const filterParts = [];
+      if (state.platform) {
+        const platformLabels = { 'web': 'Web app', 'rn': 'React Native', 'node': 'Node.js', 'backend': 'Backend' };
+        filterParts.push(platformLabels[state.platform] || state.platform);
+      }
+      if (state.need.length) filterParts.push(state.need.map(n => NEED_LABELS[n]).join(' + '));
+      if (state.lang) {
+        const langLabels = { 'ts': 'TypeScript/JavaScript', 'py': 'Python', 'jvm': 'Java/Kotlin', 'go': 'Go', 'dotnet': 'C#/.NET', 'ruby': 'Ruby' };
+        filterParts.push(langLabels[state.lang] || state.lang.toUpperCase());
+      }
+      
+      document.getElementById('empty-message').textContent = `No tools match ${filterParts.join(' + ')}.`;
+      
+      // Find most restrictive filter
+      const countsWithout = {
+        platform: countWithoutFilter('platform'),
+        need: countWithoutFilter('need'),
+        lang: countWithoutFilter('lang'),
+        spec: countWithoutFilter('spec'),
+        oss: countWithoutFilter('oss')
+      };
+      
+      const maxFilter = Object.entries(countsWithout).reduce((a, b) => b[1] > a[1] ? b : a);
+      
+      // Buttons
+      const buttons = document.getElementById('empty-buttons');
+      buttons.innerHTML = '';
+      
+      if (maxFilter[1] > 0) {
+        let filterLabel = '';
+        if (maxFilter[0] === 'platform') {
+          const platformLabels = { 'web': 'Web app', 'rn': 'React Native', 'node': 'Node.js', 'backend': 'Backend' };
+          filterLabel = platformLabels[state.platform] || state.platform;
+        } else if (maxFilter[0] === 'need') {
+          filterLabel = state.need.length === 1 ? NEED_LABELS[state.need[0]] : `${state.need.length} needs`;
+        } else if (maxFilter[0] === 'lang') {
+          const langLabels = { 'ts': 'TypeScript/JavaScript', 'py': 'Python', 'jvm': 'Java/Kotlin', 'go': 'Go', 'dotnet': 'C#/.NET', 'ruby': 'Ruby' };
+          filterLabel = langLabels[state.lang] || state.lang;
+        } else if (maxFilter[0] === 'spec') {
+          filterLabel = state.spec.length === 1 ? state.spec[0].toUpperCase() : 'Spec filters';
+        } else if (maxFilter[0] === 'oss') {
+          filterLabel = 'OSS filter';
+        }
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800';
+        removeBtn.textContent = `Remove ${filterLabel} (${maxFilter[1]})`;
+        removeBtn.onclick = () => {
+          if (maxFilter[0] === 'platform') state.platform = '';
+          else if (maxFilter[0] === 'need') state.need = [];
+          else if (maxFilter[0] === 'lang') state.lang = '';
+          else if (maxFilter[0] === 'spec') state.spec = [];
+          else if (maxFilter[0] === 'oss') state.oss = '';
+          syncUIWithState();
+          updateResults();
+          setTimeout(() => {
+            document.getElementById('result-count')?.focus();
+          }, 100);
+        };
+        buttons.appendChild(removeBtn);
+      }
+      
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800';
+      clearBtn.textContent = 'Clear all';
+      clearBtn.onclick = () => {
+        clearFilters();
+        setTimeout(() => {
+          document.getElementById('result-count')?.focus();
+        }, 100);
+      };
+      buttons.appendChild(clearBtn);
+      
+      // Nearest matches
+      showNearestMatches();
+    }
+    
+    function countWithoutFilter(filterKey) {
+      const oldState = { ...state };
+      if (filterKey === 'platform') state.platform = '';
+      else if (filterKey === 'need') state.need = [];
+      else if (filterKey === 'lang') state.lang = '';
+      else if (filterKey === 'spec') state.spec = [];
+      else if (filterKey === 'oss') state.oss = '';
+      
+      let count = 0;
+      allTools.forEach(tool => {
+        if (matchesTool(tool, state, 'best') || matchesTool(tool, state, 'also')) {
+          count++;
+        }
+      });
+      
+      state = oldState;
+      return count;
+    }
+    
+    function showNearestMatches() {
+      // Find tools that match the most filters using matchesTool
+      // Try matching without requiring ALL filters
+      const partial = [];
+      
+      allTools.forEach(tool => {
+        // Try to match with each filter individually to see which ones match
+        let matchedFilters = [];
+        let unmatchedFilters = [];
+        
+        // Check platform
+        if (state.platform) {
+          const platformState = { platform: state.platform, need: [], lang: '', spec: [], oss: '' };
+          if (matchesTool(tool, platformState, 'also')) {
+            matchedFilters.push('✓ ' + state.platform);
+          } else {
+            unmatchedFilters.push('✗ ' + state.platform);
+          }
+        }
+        
+        // Check each need individually
+        state.need.forEach(need => {
+          const needState = { platform: '', need: [need], lang: '', spec: [], oss: '' };
+          if (matchesTool(tool, needState, 'also')) {
+            matchedFilters.push('✓ ' + need);
+          } else {
+            unmatchedFilters.push('✗ ' + need);
+          }
+        });
+        
+        // Check language
+        if (state.lang) {
+          const langState = { platform: '', need: [], lang: state.lang, spec: [], oss: '' };
+          if (matchesTool(tool, langState, 'also')) {
+            matchedFilters.push('✓ ' + state.lang);
+          } else {
+            unmatchedFilters.push('✗ ' + state.lang);
+          }
+        }
+        
+        if (matchedFilters.length > 0) {
+          partial.push({ 
+            tool, 
+            matchCount: matchedFilters.length,
+            reasons: [...matchedFilters, ...unmatchedFilters]
+          });
+        }
+      });
+      
+      partial.sort((a, b) => {
+        if (a.matchCount !== b.matchCount) return b.matchCount - a.matchCount;
+        return (b.tool.githubStars || 0) - (a.tool.githubStars || 0);
+      });
+      
+      const container = document.getElementById('nearest-matches');
+      if (partial.length > 0) {
+        container.innerHTML = '<h3 class="text-sm font-semibold text-zinc-900 dark:text-white mb-3">Nearest matches</h3>';
+        const grid = document.createElement('div');
+        grid.className = 'grid gap-3 sm:grid-cols-3';
+        
+        partial.slice(0, 3).forEach(({ tool, reasons }) => {
+          const card = document.createElement('a');
+          card.href = `/tools/${tool.slug}/`;
+          card.className = 'block rounded-lg border border-zinc-200 p-3 hover:border-indigo-400 transition dark:border-zinc-800';
+          card.innerHTML = `
+            <div class="font-medium text-zinc-900 dark:text-white">${tool.name}</div>
+            <div class="mt-1 text-xs text-zinc-500">${reasons.join(' ')}</div>
+          `;
+          grid.appendChild(card);
+        });
+        
+        container.appendChild(grid);
+      } else {
+        container.innerHTML = '';
+      }
+    }
+    
+    function syncUIWithState() {
+      document.querySelectorAll('input[name="platform"]').forEach(input => {
+        input.checked = input.value === state.platform;
+      });
+      document.querySelectorAll('input[name="need"]').forEach(input => {
+        input.checked = state.need.includes(input.value);
+      });
+      document.querySelectorAll('input[name="lang"]').forEach(input => {
+        input.checked = input.value === state.lang;
+      });
+      document.querySelectorAll('input[name="spec"]').forEach(input => {
+        input.checked = state.spec.includes(input.value);
+      });
+      document.querySelectorAll('input[name="oss"]').forEach(input => {
+        input.checked = input.value === state.oss;
+      });
+    }
+    
+    function clearFilters() {
+      state = { platform: '', need: [], lang: '', spec: [], oss: '' };
+      syncUIWithState();
+      updateResults();
+    }
+    
+    // Track if user has explicitly touched language
+    let languageInteracted = false;
+    
+    // Event listeners
+    document.querySelectorAll('input[name="platform"]').forEach(input => {
+      input.addEventListener('change', () => {
+        hasInteracted = true;
+        state.platform = input.value;
+        
+        // Auto-select TypeScript for web/RN if user hasn't explicitly touched language
+        if ((input.value === 'web' || input.value === 'rn') && !languageInteracted) {
+          state.lang = 'ts';
+          syncUIWithState();
+        }
+        
+        updateResults();
+      });
+    });
+    
+    function updateNeedState() {
+      // Update aria-disabled on unchecked needs when limit reached
+      document.querySelectorAll('input[name="need"]').forEach(input => {
+        const label = input.closest('label');
+        if (state.need.length >= 3 && !input.checked) {
+          label.setAttribute('aria-disabled', 'true');
+          label.style.opacity = '0.5';
+          label.style.cursor = 'not-allowed';
+        } else {
+          label.removeAttribute('aria-disabled');
+          label.style.opacity = '';
+          label.style.cursor = '';
+        }
+      });
+      
+      // Show/hide hint
+      const legend = document.querySelector('fieldset:has(input[name="need"]) legend');
+      if (state.need.length >= 3) {
+        const existing = legend.querySelector('.need-limit-hint');
+        if (!existing) {
+          const hint = document.createElement('span');
+          hint.className = 'need-limit-hint text-xs text-amber-600 dark:text-amber-400 ml-2';
+          hint.textContent = 'Up to 3; untick one to change.';
+          legend.appendChild(hint);
+        }
+      } else {
+        legend.querySelector('.need-limit-hint')?.remove();
+      }
+    }
+    
+    document.querySelectorAll('input[name="need"]').forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.checked) {
+          if (state.need.length < 3) {
+            state.need.push(input.value);
+            updateNeedState();
+          } else {
+            input.checked = false;
+            return;
+          }
+        } else {
+          state.need = state.need.filter(n => n !== input.value);
+          updateNeedState();
+        }
+        updateResults();
+      });
+    });
+    
+    document.querySelectorAll('input[name="lang"]').forEach(input => {
+      input.addEventListener('change', () => {
+        hasInteracted = true;
+        languageInteracted = true;
+        state.lang = input.value;
+        updateResults();
+      });
+    });
+    
+    document.querySelectorAll('input[name="spec"]').forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.checked) {
+          state.spec.push(input.value);
+        } else {
+          state.spec = state.spec.filter(s => s !== input.value);
+        }
+        updateResults();
+      });
+    });
+    
+    document.querySelectorAll('input[name="oss"]').forEach(input => {
+      input.addEventListener('change', () => {
+        state.oss = input.value;
+        updateResults();
+      });
+    });
+    
+    document.getElementById('clear-filters-btn')?.addEventListener('click', clearFilters);
+    document.getElementById('mobile-clear-btn')?.addEventListener('click', clearFilters);
+    
+    document.getElementById('copy-link-btn')?.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href);
+      const btn = document.getElementById('copy-link-btn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg> Copied!';
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+      }, 2000);
+    });
+    
+    // Mobile sheet with focus management
+    const sheet = document.getElementById('mobile-sheet');
+    const overlay = document.getElementById('mobile-sheet-overlay');
+    const editBtn = document.getElementById('edit-filters-btn');
+    let lastFocusedElement = null;
+    let focusTrap = null;
+    
+    function openSheet() {
+      // Save last focused element
+      lastFocusedElement = document.activeElement;
+      
+      // Move the form into the mobile sheet
+      const form = document.getElementById('picker-filters');
+      const mobileContainer = document.getElementById('mobile-filters-container');
+      mobileContainer.appendChild(form);
+      
+      // Show sheet and overlay
+      sheet.classList.remove('hidden');
+      overlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      // Focus the first input or the sheet title
+      setTimeout(() => {
+        const firstInput = form.querySelector('input[type="radio"]:checked, input:not([type="checkbox"])');
+        const sheetTitle = document.getElementById('mobile-sheet-title');
+        if (firstInput) {
+          firstInput.focus();
+        } else {
+          sheetTitle.focus();
+        }
+      }, 100);
+      
+      // Set up focus trap
+      setupFocusTrap();
+    }
+    
+    function closeSheet() {
+      // Move the form back to desktop wrapper
+      const form = document.getElementById('picker-filters');
+      const desktopWrapper = document.getElementById('filters-desktop-wrapper');
+      desktopWrapper.appendChild(form);
+      
+      // Hide sheet and overlay
+      sheet.classList.add('hidden');
+      overlay.classList.add('hidden');
+      document.body.style.overflow = '';
+      
+      // Return focus
+      if (lastFocusedElement && editBtn) {
+        editBtn.focus();
+      }
+      
+      // Remove focus trap
+      if (focusTrap) {
+        document.removeEventListener('keydown', focusTrap);
+        focusTrap = null;
+      }
+    }
+    
+    function setupFocusTrap() {
+      focusTrap = (e) => {
+        if (e.key !== 'Tab') return;
+        
+        const focusableElements = sheet.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      };
+      
+      document.addEventListener('keydown', focusTrap);
+    }
+    
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !sheet.classList.contains('hidden')) {
+        closeSheet();
+      }
+    });
+    
+    document.getElementById('edit-filters-btn')?.addEventListener('click', openSheet);
+    document.getElementById('close-sheet-btn')?.addEventListener('click', closeSheet);
+    document.getElementById('mobile-apply-btn')?.addEventListener('click', closeSheet);
+    overlay?.addEventListener('click', closeSheet);
+    
+    // Handle back/forward
+    window.addEventListener('popstate', initFromURL);
+    
+    // Responsive handling
+    function handleResize() {
+      if (window.innerWidth >= 640) {
+        closeSheet();
+        document.getElementById('mobile-summary').classList.add('hidden');
+      } else {
+        const hasFilters = state.platform || state.need.length || state.lang || state.spec.length || state.oss;
+        if (hasFilters) {
+          document.getElementById('mobile-summary').classList.remove('hidden');
+        }
+      }
+    }
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Initialize
+    document.getElementById('picker-app').classList.remove('hidden');
+    initFromURL();
+  </script>
+
+  <style>
+    .filter-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6875rem 1rem;
+      border: 2px solid #e4e4e7;
+      border-radius: 0.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-height: 44px;
+    }
+    
+    .dark .filter-chip {
+      border-color: #3f3f46;
+    }
+    
+    .filter-chip:hover {
+      border-color: #a5b4fc;
+    }
+    
+    .filter-chip input:checked + span::before {
+      content: '✓ ';
+      color: #6366f1;
+    }
+    
+    .filter-chip input:checked {
+      & + span {
+        background-color: #eef2ff;
+        border-radius: 0.375rem;
+        padding: 0.125rem 0.5rem;
+        color: #3730a3;
+      }
+    }
+    
+    .dark .filter-chip input:checked {
+      & + span {
+        background-color: rgba(79, 70, 229, 0.3);
+        color: #e0e7ff;
+      }
+    }
+    
+    .filter-chip input:focus-visible + span {
+      outline: 2px solid #6366f1;
+      outline-offset: 2px;
+    }
+    
+    .filter-chip-sm {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      min-height: auto;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .filter-chip,
+      article,
+      a,
+      button,
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</Layout>

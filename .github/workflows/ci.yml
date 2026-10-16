@@ -49,6 +49,11 @@ jobs:
           fi
           echo "Build successful, dist directory exists"
       
+      - name: Run smoke tests on built site
+        run: npx playwright test --config playwright.smoke.config.ts
+        env:
+          CI: true
+      
       - name: Check H1 counts
         run: bash scripts/check-h1-counts.sh
 

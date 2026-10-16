@@ -19,3 +19,5 @@ whenToUse: When you need GUI-based load test creation, want to test multiple pro
 githubStars: 9564
 lastActivity: 2026-10-01T15:37:47Z
 lastChecked: 2026-10-16
+isOpenSource: true
+languageAgnostic: true

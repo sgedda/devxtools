@@ -16,3 +16,5 @@ bestFor: Unified observability platform with metrics, traces, logs, and APM in o
 description: Full-stack monitoring and analytics platform for cloud-scale applications. Combines infrastructure monitoring, APM, log management, and distributed tracing with powerful analytics and alerting.
 whenToUse: When you need enterprise-grade observability with unified metrics, traces, and logs, want powerful querying and dashboarding, or need compliance and security monitoring at scale.
 lastChecked: 2026-10-14
+isOpenSource: false
+languageAgnostic: true

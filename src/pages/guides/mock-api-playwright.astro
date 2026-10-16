@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import StackPickerWidget from '../../components/StackPickerWidget.astro';
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -475,6 +476,10 @@ export default defineConfig({
         <li>Prism: <a href="https://github.com/stoplightio/prism" target="_blank" rel="noopener noreferrer">https://github.com/stoplightio/prism</a> · Mockoon CLI: <a href="https://mockoon.com/cli/" target="_blank" rel="noopener noreferrer">https://mockoon.com/cli/</a> · WireMock: <a href="https://wiremock.org/" target="_blank" rel="noopener noreferrer">https://wiremock.org/</a></li>
         <li>Our test project: Playwright 1.64.1 (Chromium), msw 3.0.3, @msw/playwright 0.7.0, prism-cli 5.16.0 (declares Node &gt;=24.18.0; our runs used Node 22.23.3, plus a basic mock check on 20.19.2 and 24.22.0), Node 22.23.3, Linux, 2026-10-15</li>
       </ul>
+
+      <div class="mt-12">
+        <StackPickerWidget need="mock" />
+      </div>
 
       <NewsletterSignup variant="article" />
 

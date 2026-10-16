@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ToolLogo from '../components/ToolLogo.astro';
+import StackPickerWidget from '../components/StackPickerWidget.astro';
 import { getAllTools } from '../lib/tools';
 import { CATEGORY_LABELS } from '../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass, CATEGORY_ICONS } from '../lib/ui-helpers';
@@ -148,6 +149,10 @@ const guides = [
   </section>
 
   <main class="mx-auto max-w-[1200px] px-5">
+    <section class="pt-20">
+      <StackPickerWidget />
+    </section>
+    
     <section class="pt-20">
       <div class="flex items-end justify-between">
         <div>

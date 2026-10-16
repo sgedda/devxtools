@@ -19,6 +19,9 @@ description: Record, replay, and stub HTTP interactions. Built by Netflix, works
 whenToUse: When you want to record real API interactions once and replay them for faster, deterministic tests without hitting live APIs.
 githubStars: 10248
 lastActivity: 2025-05-31T22:29:16Z
-npmPackage: '@pollyjs/core'
+npmPackage: "@pollyjs/core"
 weeklyDownloads: 200347
 lastChecked: 2026-10-14
+isOpenSource: true
+platforms:
+  - Web

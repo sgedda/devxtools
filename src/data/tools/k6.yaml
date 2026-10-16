@@ -19,3 +19,5 @@ whenToUse: When you need scriptable load tests that integrate with Grafana, want
 githubStars: 28400
 lastActivity: 2026-10-12T15:42:37Z
 lastChecked: 2026-10-14
+isOpenSource: true
+languageAgnostic: true

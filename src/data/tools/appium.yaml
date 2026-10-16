@@ -21,6 +21,7 @@ platforms:
   - iOS
   - Android
   - Web
+  - React Native
 categories:
   - e2e-testing
 bestFor: Cross-platform mobile and desktop automation using WebDriver protocol with any language
@@ -31,3 +32,4 @@ lastActivity: 2026-09-24T18:26:00Z
 npmPackage: appium
 weeklyDownloads: 1385295
 lastChecked: 2026-10-14
+isOpenSource: true

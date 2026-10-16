@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import ToolLogo from '../../components/ToolLogo.astro';
+import StackPickerWidget from '../../components/StackPickerWidget.astro';
 import { getToolsBySection } from '../../lib/tools';
 import { CATEGORY_LABELS, SECTION_TO_CATEGORIES } from '../../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass, CATEGORY_ICONS } from '../../lib/ui-helpers';
@@ -84,6 +85,10 @@ const relatedComparisons = [
         </p>
       </div>
     </div>
+
+    <section class="mt-12">
+      <StackPickerWidget need="mock" />
+    </section>
 
     <section class="mt-12">
       <h2 class="text-xl font-semibold text-zinc-900 dark:text-white">Tools in this section</h2>

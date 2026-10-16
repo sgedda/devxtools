@@ -16,3 +16,4 @@ bestFor: Spinning up a full fake REST API from a JSON file in seconds
 description: Get a full fake REST API with zero coding in less than 30 seconds. Perfect for prototyping and frontend development before the backend is ready.
 npmPackage: json-server
 lastChecked: 2026-10-14
+isOpenSource: true

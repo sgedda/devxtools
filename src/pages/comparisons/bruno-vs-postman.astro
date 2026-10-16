@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
+import StackPickerWidget from '../../components/StackPickerWidget.astro';
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -428,6 +429,10 @@ tests {
         <li>npm weekly downloads: https://api.npmjs.org/downloads/point/last-week/newman and /@usebruno/cli</li>
         <li>Our CI runs: Bru CLI 4.2.1 and Newman 6.2.3, Node 20.19.2, Linux, 2026-10-15</li>
       </ul>
+
+      <div class="mt-12">
+        <StackPickerWidget need="debug" />
+      </div>
 
       <NewsletterSignup variant="article" />
 

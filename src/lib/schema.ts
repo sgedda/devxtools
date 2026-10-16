@@ -54,7 +54,12 @@ export const ToolSchema = z.object({
   weeklyDownloads: z.number().optional(), // weekly npm downloads
   lastChecked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   affiliation: z.string().optional(), // Disclosure for affiliated tools
-});
+  isOpenSource: z.boolean(),
+  languageAgnostic: z.boolean().optional(), // True when languages=[] and tool is truly any-language
+}).refine(
+  (data) => data.languageAgnostic ? true : data.languages.length > 0,
+  { message: 'languages array must have at least one item unless languageAgnostic is true' }
+);
 
 export type Tool = z.infer<typeof ToolSchema>;
 

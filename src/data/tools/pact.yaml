@@ -20,3 +20,4 @@ categories:
 bestFor: Consumer-driven contract testing to ensure APIs meet consumer expectations
 description: Contract testing framework that verifies interactions between microservices. Define expectations on the consumer side and verify them on the provider side.
 lastChecked: 2026-10-14
+isOpenSource: true

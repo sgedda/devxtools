@@ -22,3 +22,5 @@ whenToUse: When you want to test APIs without leaving your code editor, prefer a
 githubStars: 3723
 lastActivity: 2026-10-10T14:51:11Z
 lastChecked: 2026-10-15
+isOpenSource: false
+languageAgnostic: true
