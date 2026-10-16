@@ -61,6 +61,9 @@ const createTestEnv = (): any => {
   return {
     DB: db,
     VOTE_SALT: 'test-salt',
+    RATE_LIMITER: {
+      limit: async () => ({ success: true }),
+    },
   };
 };
 
@@ -208,6 +211,45 @@ describe('Votes Worker', () => {
     expect(response.status).toBe(503);
     const data = await response.json();
     expect(data).toHaveProperty('code', 'NOT_CONFIGURED');
+  });
+
+  it('should reject POST vote when RATE_LIMITER binding is missing', async () => {
+    const env: any = {
+      ...createTestEnv(),
+      RATE_LIMITER: undefined,
+    };
+
+    const request = new Request('https://devxtools.dev/api/polls/test/vote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'CF-Connecting-IP': '192.168.1.1',
+      },
+      body: JSON.stringify({ option: 'test' }),
+    });
+
+    const response = await worker.fetch(request, env);
+
+    expect(response.status).toBe(429);
+    const data = await response.json();
+    expect(data).toHaveProperty('code', 'RATE_LIMITED');
+  });
+
+  it('should allow GET request when RATE_LIMITER binding is missing', async () => {
+    const env: any = {
+      ...createTestEnv(),
+      RATE_LIMITER: undefined,
+    };
+
+    const request = new Request('https://devxtools.dev/api/polls/test', {
+      headers: { 'CF-Connecting-IP': '192.168.1.1' },
+    });
+
+    const response = await worker.fetch(request, env);
+
+    // Should pass through to the handler (which returns 404 for unknown poll)
+    // The key is that it doesn't return 429 or block the request
+    expect(response.status).not.toBe(429);
   });
 
   it('should anonymize old votes without UNIQUE constraint violations', async () => {

@@ -7,7 +7,6 @@ Stack voting API for devxtools.dev - a privacy-first voting system backed by Clo
 - **Worker**: Cloudflare Worker handling `/api/polls/*` routes
 - **Database**: D1 (SQLite) with polls, options, and votes tables
 - **Privacy**: IP addresses are never stored; only salted hashes for duplicate prevention
-- **Cookies**: Secure, httpOnly, SameSite=Lax cookie to track participation
 - **Rate limiting**: 10 requests/minute per IP
 
 ## Local Development
@@ -31,11 +30,6 @@ Deployment is automated via `.github/workflows/votes-deploy.yml` on push to `mai
 2. **Vote salt secret**: Set a random salt for voter hashing:
    ```bash
    npx wrangler secret put VOTE_SALT --env production
-   ```
-
-3. **(Optional) Turnstile**: For captcha verification:
-   ```bash
-   npx wrangler secret put TURNSTILE_SECRET --env production
    ```
 
 ### Manual deployment
@@ -76,7 +70,7 @@ options:
 
 ### GET `/api/polls/:slug`
 
-Returns poll details and options. If the visitor has voted (based on hashed IP + cookie), includes vote counts.
+Returns poll details and options. If the visitor has voted (based on the hashed IP), includes vote counts.
 
 **Response (not voted):**
 ```json
@@ -112,8 +106,7 @@ Submit a vote. Returns 409 if the visitor already voted, 429 if rate limited.
 **Request:**
 ```json
 {
-  "option": "msw",
-  "turnstile_token": "optional-captcha-token"
+  "option": "msw"
 }
 ```
 
@@ -141,7 +134,7 @@ Tests run with Vitest + `@cloudflare/vitest-plugin` for in-memory D1.
 ## Privacy
 
 - **No raw IPs stored**: Only SHA-256 hashes of `IP + poll slug + secret salt`
-- **Retention**: Vote hashes are automatically deleted after 90 days via scheduled cron job
+- **Retention**: Vote hashes are automatically anonymized after 90 days via scheduled cron job (runs daily at 02:00 UTC). The cron replaces each expired hash with a unique `EXPIRED_` prefix, preserving vote counts while preventing re-voting.
 - **No cookies**: Deduplication is per IP address only
 - **Rate limiting**: 10 requests/minute per IP (fail-closed for POST requests)
 

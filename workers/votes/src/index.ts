@@ -36,7 +36,7 @@ interface VoteCount {
 
 async function checkRateLimit(env: Env, ip: string, failClosed: boolean = false): Promise<boolean> {
   if (!env.RATE_LIMITER) {
-    return true;
+    return !failClosed;
   }
 
   try {

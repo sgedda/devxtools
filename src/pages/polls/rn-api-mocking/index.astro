@@ -6,6 +6,7 @@ import Poll from '../../../components/Poll.astro';
 <Layout 
   title="Poll: How do you mock APIs in React Native?" 
   description="Vote for your preferred API mocking tool for React Native development."
+  noindex={true}
 >
   <div class="container mx-auto max-w-[800px] px-5 py-12">
     <div class="mb-8">
@@ -23,14 +24,14 @@ import Poll from '../../../components/Poll.astro';
 
     <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400 space-y-2">
       <p>
-        <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID, your option and the time. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days.
+        <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID, your option and the time. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days. A network can vote again after 90 days.
       </p>
       <p>
         The voting API runs on Cloudflare Workers with a D1 database. We use IP-based rate limiting (10 requests/minute). Results are shown only after you vote. VPNs and network changes allow extra votes, and a shared IP gets only one vote. Results are informal.
       </p>
       <p class="text-xs">
         <em>Disclosure:</em> The maintainer of this site (Sebastian) is the author of Mockifyer, one of the options in this poll.
-        All options are sorted alphabetically, with "Other" listed last.
+        "Other" and "I don't mock APIs" are listed last to avoid bias.
       </p>
     </div>
 
@@ -70,7 +71,7 @@ import Poll from '../../../components/Poll.astro';
             <a href="/tools/msw/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MSW (Mock Service Worker)</a>
           </h3>
           <p class="text-zinc-600 dark:text-zinc-400">
-            Network-level HTTP interception using Service Workers in browsers and native Node.js modules. In React Native: MSW 2's msw/native with polyfills ("use at your own risk"). MSW 3 removed it, and @msw/react-native isn't on npm yet.
+            Network-level HTTP interception using Service Workers in browsers and native Node.js modules. In React Native: MSW 2's msw/native with polyfills ("use at your own risk"). MSW 3 removed it, and @msw/react-native isn't on npm yet (checked 2026-10-15).
           </p>
         </div>
 
@@ -96,7 +97,7 @@ import Poll from '../../../components/Poll.astro';
 
     <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400">
       <p>
-        <strong>Note:</strong> Nock was removed from this poll because it's Node-only: works in Jest, not on device.
+        <strong>Note:</strong> Nock isn't included because it's Node-only: it works in Jest tests, not on a device or simulator.
       </p>
     </div>
 
