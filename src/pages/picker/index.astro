@@ -17,7 +17,7 @@ const toolsJson = JSON.stringify(tools);
   description="Find the right API development, testing, and mocking tools for your stack with our interactive picker."
 >
   <main class="mx-auto max-w-[1200px] px-5 pt-10 pb-20">
-    <nav class="text-sm text-zinc-500">
+    <nav class="text-sm text-zinc-600 dark:text-zinc-400">
       <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
       <span aria-hidden="true"> / </span>
       <span class="text-zinc-900 dark:text-white">Pick a Tool</span>
@@ -102,7 +102,7 @@ const toolsJson = JSON.stringify(tools);
         
         <!-- Needs -->
         <fieldset class="mb-6">
-          <legend class="text-sm font-medium text-zinc-900 dark:text-white mb-3">What do you need? <span class="text-zinc-500">(up to 3)</span></legend>
+          <legend class="text-sm font-medium text-zinc-900 dark:text-white mb-3">What do you need? <span class="text-zinc-600 dark:text-zinc-400">(up to 3)</span></legend>
           <div class="flex flex-wrap gap-2" id="need-chips">
             <label class="filter-chip">
               <input type="checkbox" name="need" value="mock" class="sr-only" />
@@ -458,7 +458,8 @@ const toolsJson = JSON.stringify(tools);
           ruby: tool.languages?.includes('Ruby')
         };
         
-        const anyLanguage = tool.languages?.includes('N/A') || tool.languageAgnostic;
+        // Only tools with N/A language (truly any-language) can bypass language filter
+        const anyLanguage = tool.languages?.includes('N/A');
         
         if (langMatches[state.lang]) {
           reasons.push(state.lang);
@@ -551,7 +552,7 @@ const toolsJson = JSON.stringify(tools);
           <img src="/logos/${tool.slug}.svg" alt="" class="w-10 h-10 rounded-lg" onerror="this.style.display='none'" />
           <div class="flex-1 min-w-0">
             <h3 class="font-semibold text-zinc-900 dark:text-white">${tool.name}</h3>
-            ${tool.githubStars ? `<div class="flex items-center gap-1 text-sm text-zinc-500 mt-0.5">
+            ${tool.githubStars ? `<div class="flex items-center gap-1 text-sm text-zinc-600 dark:text-zinc-400 mt-0.5">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               ${tool.githubStars >= 1000 ? `${(tool.githubStars / 1000).toFixed(1).replace(/\.0$/, '')}k` : tool.githubStars.toLocaleString()}
             </div>` : ''}
@@ -1178,12 +1179,15 @@ const toolsJson = JSON.stringify(tools);
         background-color: #eef2ff;
         border-radius: 0.375rem;
         padding: 0.125rem 0.5rem;
+        color: #3730a3;
       }
     }
     
-    .dark .filter-chip input:checked + span {
-      background-color: rgba(99, 102, 241, 0.2);
-      color: #c7d2fe;
+    .dark .filter-chip input:checked {
+      & + span {
+        background-color: rgba(79, 70, 229, 0.3);
+        color: #e0e7ff;
+      }
     }
     
     .filter-chip input:focus-visible + span {
