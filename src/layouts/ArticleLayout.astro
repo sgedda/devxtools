@@ -12,7 +12,9 @@ interface Props {
     h1?: string;
     breadcrumbs: Array<{ name: string; url: string }>;
     schema: string[];
+    itemList?: string[];
     author: string;
+    byline?: string;
     datePublished: string;
     dateModified: string;
     tested_with?: string;
@@ -63,6 +65,17 @@ function buildJsonLd(frontmatter: Props['frontmatter']) {
         "position": index + 1,
         "name": crumb.name,
         "item": `https://devxtools.dev${crumb.url}`
+      }))
+    });
+  }
+  
+  if (frontmatter.schema.includes('ItemList') && frontmatter.itemList) {
+    graph.push({
+      "@type": "ItemList",
+      "itemListElement": frontmatter.itemList.map((url, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": url
       }))
     });
   }
@@ -134,6 +147,10 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
       )}
 
       <h1>{displayTitle}</h1>
+
+      {frontmatter.byline && (
+        <p class="text-lg text-zinc-600 dark:text-zinc-400 italic mt-2 mb-6">{frontmatter.byline}</p>
+      )}
 
       {frontmatter.tested_with && (
         <blockquote class="border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6">

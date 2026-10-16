@@ -21,6 +21,7 @@ const articles = defineCollection({
     dateModified: z.string(),
     tested_with: z.string().optional(),
     tools: z.array(z.string()).optional(),
+    byline: z.string().optional(),
     affiliation: z.string().optional(),
   }),
 });

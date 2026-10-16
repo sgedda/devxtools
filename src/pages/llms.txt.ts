@@ -18,6 +18,7 @@ const staticPages: PageInfo[] = [
   { url: '/changelog/', title: 'Changelog', description: 'Recent additions and updates to the DevX Tools catalog' },
   { url: '/comparisons/', title: 'Tool Comparisons', description: 'Head-to-head comparisons of popular API development and testing tools' },
   { url: '/guides/', title: 'Guides', description: 'In-depth guides for API development, testing, and mocking' },
+  { url: '/blog/', title: 'Blog', description: 'Articles about developer tools, testing, and API development' },
   { url: '/mocking-test-data/', title: 'Mocking & Test Data', description: 'Browse mocking & test data tools for modern development workflows' },
   { url: '/api-development/', title: 'API Development', description: 'Browse API development tools for modern development workflows' },
   { url: '/api-development/postman-alternatives/', title: 'Postman Alternatives', description: 'Explore alternatives to Postman for API development and testing' },
@@ -68,6 +69,10 @@ export const GET: APIRoute = async () => {
   const observabilityUrls = Array.from(pageMap.keys())
     .filter(url => url.startsWith('/observability/') && url !== '/observability/')
     .sort();
+  
+  const blogUrls = Array.from(pageMap.keys())
+    .filter(url => url.startsWith('/blog/') && url !== '/blog/')
+    .sort();
 
   let content = `# DevX Tools - llms.txt\n\n`;
   content += `> A comprehensive catalog of API development, testing, and mocking tools\n\n`;
@@ -79,6 +84,7 @@ export const GET: APIRoute = async () => {
     { heading: 'About & Submit', urls: ['/about/', '/submit/', '/changelog/'] },
     { heading: 'Comparisons', urls: ['/comparisons/', ...comparisonUrls] },
     { heading: 'Guides', urls: ['/guides/', ...guideUrls] },
+    { heading: 'Blog', urls: ['/blog/', ...blogUrls] },
     { heading: 'Testing', urls: testingUrls },
     { heading: 'Observability', urls: observabilityUrls },
   ];
