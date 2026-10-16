@@ -284,7 +284,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   const allowed = await checkRateLimit(env, ip);
   
   if (!allowed) {
-    return jsonResponse({ error: 'Rate limit exceeded' }, 429);
+    return jsonResponse({ error: 'Rate limit exceeded' }, 429, { 'Cache-Control': 'no-store' });
   }
 
   if (pathname === '/' && method === 'GET') {
@@ -376,6 +376,12 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     if (code < 200 || code > 599) {
       return jsonResponse({ error: 'Invalid status code. Must be 200-599.' }, 400);
     }
+    if (code === 204 || code === 205 || code === 304) {
+      return new Response(null, {
+        status: code,
+        headers: corsHeaders({ 'X-Note': `Status ${code}` }),
+      });
+    }
     return jsonResponse({ status: code, message: `Status ${code}` }, code);
   }
 
@@ -383,7 +389,7 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   if (delayMatch && method === 'GET') {
     const ms = Math.min(parseInt(delayMatch[1], 10), 5000);
     await new Promise((resolve) => setTimeout(resolve, ms));
-    return jsonResponse({ delayed: ms, message: `Delayed ${ms}ms` });
+    return jsonResponse({ delayed: ms, message: `Delayed ${ms}ms` }, 200, { 'Cache-Control': 'no-store' });
   }
 
   if (pathname === '/flaky' && method === 'GET') {
@@ -391,10 +397,11 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
     if (shouldFail) {
       return jsonResponse(
         { error: 'Service temporarily unavailable', flaky: true },
-        503
+        503,
+        { 'Cache-Control': 'no-store' }
       );
     }
-    return jsonResponse({ success: true, message: 'Request succeeded' });
+    return jsonResponse({ success: true, message: 'Request succeeded' }, 200, { 'Cache-Control': 'no-store' });
   }
 
   return jsonResponse({ error: 'Not found' }, 404);
