@@ -1,0 +1,21 @@
+name: Apache JMeter
+slug: jmeter
+website: https://jmeter.apache.org/
+repo: https://github.com/apache/jmeter
+license: Apache-2.0
+languages:
+  - Java
+runtimes:
+  - JVM
+  - CLI
+  - GUI
+sections:
+  - testing
+categories:
+  - load-testing
+bestFor: Load testing with GUI-based test builder and extensive protocol support
+description: Open-source load testing tool for analyzing and measuring performance of web applications, databases, and various services. Features a GUI test builder, supports HTTP, FTP, JDBC, SOAP, and more, with distributed testing capabilities.
+whenToUse: When you need GUI-based load test creation, want to test multiple protocols beyond HTTP, need extensive reporting and analysis features, or require distributed load generation across multiple machines.
+githubStars: 9564
+lastActivity: 2026-10-01T15:37:47Z
+lastChecked: 2026-10-16

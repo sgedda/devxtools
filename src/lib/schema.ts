@@ -22,6 +22,7 @@ export const ToolCategory = z.enum([
   'sdk-generator',
   'e2e-testing',
   'load-testing',
+  'metrics',
   'error-monitoring',
   'distributed-tracing',
   'log-aggregation',
@@ -76,6 +77,7 @@ export const CATEGORY_LABELS: Record<ToolCategory, string> = {
   'sdk-generator': 'SDK Generator',
   'e2e-testing': 'E2E Testing',
   'load-testing': 'Load Testing',
+  'metrics': 'Metrics',
   'error-monitoring': 'Error Monitoring',
   'distributed-tracing': 'Distributed Tracing',
   'log-aggregation': 'Log Aggregation',
@@ -87,5 +89,5 @@ export const SECTION_TO_CATEGORIES: Record<ToolSection, ToolCategory[]> = {
   'mocking-test-data': ['http-interception', 'mock-server', 'spec-based-mocking', 'contract-testing', 'test-data-generation', 'hosted-mocks', 'record-replay'],
   'api-development': ['api-client', 'openapi-tooling', 'sdk-generator'],
   'testing': ['e2e-testing', 'load-testing'],
-  'observability': ['error-monitoring', 'distributed-tracing', 'log-aggregation', 'application-logging', 'network-debugging'],
+  'observability': ['metrics', 'error-monitoring', 'distributed-tracing', 'log-aggregation', 'application-logging', 'network-debugging'],
 };
