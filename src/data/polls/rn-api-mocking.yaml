@@ -17,27 +17,22 @@ options:
     tool_slug: msw
     sort: 3
   
-  - slug: nock
-    label: Nock
-    tool_slug: nock
-    sort: 4
-  
   - slug: pollyjs
     label: Polly.js
     tool_slug: pollyjs
-    sort: 5
+    sort: 4
   
   - slug: prism
     label: Prism
     tool_slug: prism
-    sort: 6
+    sort: 5
   
   - slug: other
     label: Other
     tool_slug: null
-    sort: 7
+    sort: 6
   
   - slug: no-mocking
     label: I don't mock APIs
     tool_slug: null
-    sort: 8
+    sort: 7

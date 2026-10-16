@@ -126,6 +126,10 @@ async function getPoll(env: Env, request: Request): Promise<Response> {
     return jsonResponse({ error: 'Invalid poll endpoint' }, 404);
   }
 
+  if (!env.VOTE_SALT) {
+    return jsonResponse({ error: 'Service not configured', code: 'NOT_CONFIGURED' }, 503);
+  }
+
   const pollSlug = pathMatch[1];
 
   const poll = await env.DB.prepare('SELECT * FROM polls WHERE slug = ? AND status = ?')
@@ -142,7 +146,7 @@ async function getPoll(env: Env, request: Request): Promise<Response> {
 
   const cookie = getCookie(request);
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT || 'default-salt');
+  const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT);
 
   const hasVoted = await env.DB.prepare('SELECT 1 FROM votes WHERE poll_id = ? AND voter_hash = ?')
     .bind(poll.id, voterHash)
@@ -204,6 +208,10 @@ async function vote(env: Env, request: Request): Promise<Response> {
     return jsonResponse({ error: 'Invalid vote endpoint' }, 404);
   }
 
+  if (!env.VOTE_SALT) {
+    return jsonResponse({ error: 'Service not configured', code: 'NOT_CONFIGURED' }, 503);
+  }
+
   const pollSlug = pathMatch[1];
 
   let body: { option: string; turnstile_token?: string };
@@ -234,7 +242,7 @@ async function vote(env: Env, request: Request): Promise<Response> {
   }
 
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT || 'default-salt');
+  const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT);
 
   const existingVote = await env.DB.prepare('SELECT 1 FROM votes WHERE poll_id = ? AND voter_hash = ?')
     .bind(poll.id, voterHash)
@@ -247,7 +255,7 @@ async function vote(env: Env, request: Request): Promise<Response> {
   if (body.turnstile_token) {
     const turnstileValid = await verifyTurnstile(body.turnstile_token, env, ip);
     if (!turnstileValid) {
-      return jsonResponse({ error: 'Invalid captcha' }, 400);
+      return jsonResponse({ error: 'Invalid captcha', code: 'INVALID_CAPTCHA' }, 400);
     }
   }
 
