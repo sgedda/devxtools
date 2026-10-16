@@ -305,6 +305,7 @@ const toolsJson = JSON.stringify(tools);
 
   <script type="module">
     import { matchesTool, rankTools, NEED_TO_CATEGORIES, NEED_LABELS } from '../../lib/picker.ts';
+    import { analytics } from '../../lib/analytics.ts';
     
     // Get tools data from page
     const toolsData = document.getElementById('tools-data');
@@ -339,8 +340,13 @@ const toolsJson = JSON.stringify(tools);
       state.spec = params.get('spec')?.split(',').filter(Boolean) || [];
       state.oss = params.get('oss') || '';
       
+      // If lang param exists, mark as interacted
+      if (params.has('lang')) {
+        languageInteracted = true;
+      }
+      
       // Auto-select TypeScript for web/RN platforms if user hasn't touched language yet
-      if ((state.platform === 'web' || state.platform === 'rn') && !params.get('lang') && !hasInteracted) {
+      if ((state.platform === 'web' || state.platform === 'rn') && !params.has('lang') && !hasInteracted) {
         state.lang = 'ts';
       }
       
@@ -372,7 +378,7 @@ const toolsJson = JSON.stringify(tools);
       const params = new URLSearchParams();
       if (state.platform) params.set('platform', state.platform);
       if (state.need.length) params.set('need', state.need.join(','));
-      if (state.lang) params.set('lang', state.lang);
+      if (languageInteracted) params.set('lang', state.lang);
       if (state.spec.length) params.set('spec', state.spec.join(','));
       if (state.oss) params.set('oss', state.oss);
       
@@ -774,10 +780,17 @@ const toolsJson = JSON.stringify(tools);
           const card = document.createElement('a');
           card.href = `/tools/${tool.slug}/`;
           card.className = 'block rounded-lg border border-zinc-200 p-3 hover:border-indigo-400 transition dark:border-zinc-800';
-          card.innerHTML = `
-            <div class="font-medium text-zinc-900 dark:text-white">${tool.name}</div>
-            <div class="mt-1 text-xs text-zinc-500">${reasons.join(' ')}</div>
-          `;
+          
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'font-medium text-zinc-900 dark:text-white';
+          titleDiv.textContent = tool.name;
+          
+          const reasonsDiv = document.createElement('div');
+          reasonsDiv.className = 'mt-1 text-xs text-zinc-500';
+          reasonsDiv.textContent = reasons.join(' ');
+          
+          card.appendChild(titleDiv);
+          card.appendChild(reasonsDiv);
           grid.appendChild(card);
         });
         
@@ -809,6 +822,17 @@ const toolsJson = JSON.stringify(tools);
       state = { platform: '', need: [], lang: '', spec: [], oss: '' };
       syncUIWithState();
       updateResults();
+      analytics.pickerClear();
+    }
+    
+    function countMatches() {
+      let count = 0;
+      allTools.forEach(tool => {
+        if (matchesTool(tool, state, 'best') || matchesTool(tool, state, 'also')) {
+          count++;
+        }
+      });
+      return count;
     }
     
     // Track if user has explicitly touched language
@@ -827,6 +851,7 @@ const toolsJson = JSON.stringify(tools);
         }
         
         updateResults();
+        analytics.pickerFilterChange('platform', input.value, true, countMatches());
       });
     });
     
@@ -866,6 +891,7 @@ const toolsJson = JSON.stringify(tools);
           if (state.need.length < 3) {
             state.need.push(input.value);
             updateNeedState();
+            analytics.pickerFilterChange('need', input.value, true, countMatches());
           } else {
             input.checked = false;
             return;
@@ -873,6 +899,7 @@ const toolsJson = JSON.stringify(tools);
         } else {
           state.need = state.need.filter(n => n !== input.value);
           updateNeedState();
+          analytics.pickerFilterChange('need', input.value, false, countMatches());
         }
         updateResults();
       });
@@ -884,6 +911,7 @@ const toolsJson = JSON.stringify(tools);
         languageInteracted = true;
         state.lang = input.value;
         updateResults();
+        analytics.pickerFilterChange('lang', input.value, true, countMatches());
       });
     });
     
@@ -891,8 +919,10 @@ const toolsJson = JSON.stringify(tools);
       input.addEventListener('change', () => {
         if (input.checked) {
           state.spec.push(input.value);
+          analytics.pickerFilterChange('spec', input.value, true, countMatches());
         } else {
           state.spec = state.spec.filter(s => s !== input.value);
+          analytics.pickerFilterChange('spec', input.value, false, countMatches());
         }
         updateResults();
       });
@@ -902,6 +932,7 @@ const toolsJson = JSON.stringify(tools);
       input.addEventListener('change', () => {
         state.oss = input.value;
         updateResults();
+        analytics.pickerFilterChange('oss', input.value, true, countMatches());
       });
     });
     
@@ -916,6 +947,7 @@ const toolsJson = JSON.stringify(tools);
       setTimeout(() => {
         btn.innerHTML = originalText;
       }, 2000);
+      analytics.pickerCopyLink(state);
     });
     
     // Mobile sheet with focus management
@@ -1017,7 +1049,10 @@ const toolsJson = JSON.stringify(tools);
     // Responsive handling
     function handleResize() {
       if (window.innerWidth >= 640) {
-        closeSheet();
+        // Only close sheet if it's actually open
+        if (!sheet.classList.contains('hidden')) {
+          closeSheet();
+        }
         document.getElementById('mobile-summary').classList.add('hidden');
       } else {
         const hasFilters = state.platform || state.need.length || state.lang || state.spec.length || state.oss;
@@ -1032,6 +1067,10 @@ const toolsJson = JSON.stringify(tools);
     // Initialize
     document.getElementById('picker-app').classList.remove('hidden');
     initFromURL();
+    
+    // Track picker view
+    const params = new URLSearchParams(window.location.search);
+    analytics.pickerView('direct', params.toString().length > 0);
   </script>
 
   <style>
