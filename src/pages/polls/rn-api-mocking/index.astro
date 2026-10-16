@@ -1,0 +1,113 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Poll from '../../../components/Poll.astro';
+---
+
+<Layout 
+  title="Poll: How do you mock APIs in React Native?" 
+  description="Vote for your preferred API mocking tool for React Native development."
+  noindex={true}
+>
+  <div class="container mx-auto max-w-[800px] px-5 py-12">
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">
+        How do you mock APIs in React Native?
+      </h1>
+      <p class="text-lg text-zinc-600 dark:text-zinc-400">
+        Help the community by voting for the API mocking tool you use in React Native projects.
+      </p>
+    </div>
+
+    <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-6 md:p-8 dark:bg-zinc-900 dark:border-zinc-800">
+      <Poll pollSlug="rn-api-mocking" />
+    </div>
+
+    <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400 space-y-2">
+      <p>
+        <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID, your option and the time. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days. A network can vote again after 90 days.
+      </p>
+      <p>
+        The voting API runs on Cloudflare Workers with a D1 database. We use IP-based rate limiting (10 requests/minute). Results are shown only after you vote. VPNs and network changes allow extra votes, and a shared IP gets only one vote. Results are informal.
+      </p>
+      <p class="text-xs">
+        <em>Disclosure:</em> The maintainer of this site (Sebastian) is the author of Mockifyer, one of the options in this poll.
+        "Other" and "I don't mock APIs" are listed last to avoid bias.
+      </p>
+    </div>
+
+    <div class="mt-12 border-t border-zinc-200 dark:border-zinc-800 pt-8">
+      <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6">About the Options</h2>
+      
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/miragejs/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MirageJS</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Intercepts fetch and XHR in the JavaScript runtime. In-memory database simulation for building complete frontend applications.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/mockifyer/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Mockifyer</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Record/replay HTTP mocking for axios and fetch, with JSON mocks in your repo. Supports React Native/Expo via device storage and optional Metro sync. (Built by the site's maintainer.)
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/mockoon/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Mockoon</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Local mock API server with GUI or CLI. Runs as a separate server; point your app's base URL at it (Android emulator: use 10.0.2.2).
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/msw/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MSW (Mock Service Worker)</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Network-level HTTP interception using Service Workers in browsers and native Node.js modules. In React Native: MSW 2's msw/native with polyfills ("use at your own risk"). MSW 3 removed it, and @msw/react-native isn't on npm yet (checked 2026-10-15).
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/pollyjs/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Polly.js</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Record, replay, and stub HTTP interactions. Built by Netflix, works with multiple adapters including Fetch, XHR, and Node HTTP. Its docs don't cover React Native.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/prism/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Prism</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Generate mock servers directly from OpenAPI specifications with dynamic examples and validation. Runs as a separate server; point the app's base URL at it (Android emulator: 10.0.2.2).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400">
+      <p>
+        <strong>Note:</strong> Nock isn't included because it's Node-only: it works in Jest tests, not on a device or simulator.
+      </p>
+    </div>
+
+    <div class="mt-8 text-center">
+      <a 
+        href="/polls/" 
+        class="inline-flex items-center gap-2 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+      >
+        ← Back to all polls
+      </a>
+    </div>
+  </div>
+</Layout>

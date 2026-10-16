@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout 
+  title="Stack Polls" 
+  description="Vote for your favorite tools and see what the DevX Tools community is using."
+  noindex={true}
+>
+  <div class="container mx-auto max-w-[800px] px-5 py-12">
+    <h1 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">
+      Stack Polls
+    </h1>
+    <p class="text-lg text-zinc-600 dark:text-zinc-400 mb-12">
+      Vote for your stack and see what tools the community is using.
+    </p>
+
+    <div class="space-y-6">
+      <article class="bg-zinc-50 border border-zinc-200 rounded-xl p-6 hover:border-zinc-300 transition-colors dark:bg-zinc-900 dark:border-zinc-800 dark:hover:border-zinc-700">
+        <h2 class="text-xl font-semibold text-zinc-900 dark:text-white mb-2">
+          <a href="/polls/rn-api-mocking/" class="hover:text-zinc-700 dark:hover:text-zinc-300">
+            How do you mock APIs in React Native?
+          </a>
+        </h2>
+        <p class="text-zinc-600 dark:text-zinc-400 mb-4">
+          Vote for your preferred API mocking solution for React Native development.
+        </p>
+        <div class="flex items-center gap-4 text-sm text-zinc-500">
+          <span class="inline-flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+            </svg>
+            React Native, API Mocking
+          </span>
+          <span>•</span>
+          <a 
+            href="/polls/rn-api-mocking/" 
+            class="font-medium text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white"
+          >
+            Vote now →
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <div class="mt-12 bg-zinc-100 border border-zinc-200 rounded-xl p-6 dark:bg-zinc-900/50 dark:border-zinc-800">
+      <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-3">
+        About Stack Polls
+      </h3>
+      <div class="space-y-3 text-zinc-600 dark:text-zinc-400">
+        <p>
+          Stack Polls help the DevX Tools community share their tool preferences and discover popular choices.
+        </p>
+        <p>
+          <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days.
+        </p>
+        <p class="text-sm">
+          Want to suggest a poll topic? <a href="https://github.com/sgedda/devxtools/issues" target="_blank" rel="noopener noreferrer" class="text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white underline">Open an issue on GitHub</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</Layout>

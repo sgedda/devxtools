@@ -1,0 +1,27 @@
+{
+  "name": "votes",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "d1:migrations:apply": "wrangler d1 migrations apply devxtools-votes",
+    "d1:migrations:create": "wrangler d1 migrations create devxtools-votes",
+    "seed": "tsx scripts/seed-polls.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.4.3",
+    "@cloudflare/workers-types": "^5.20261014.1",
+    "typescript": "^7.0.2",
+    "tsx": "^4.23.15",
+    "vite": "^6.0.0",
+    "vitest": "^5.0.0",
+    "wrangler": "^4.151.0",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  }
+}

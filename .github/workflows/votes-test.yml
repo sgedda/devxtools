@@ -1,0 +1,39 @@
+name: Test Votes Worker
+
+on:
+  pull_request:
+    paths:
+      - 'workers/votes/**'
+      - 'src/data/polls/**'
+  push:
+    branches: [main]
+    paths:
+      - 'workers/votes/**'
+      - 'src/data/polls/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install worker dependencies
+        working-directory: workers/votes
+        run: npm ci
+
+      - name: Validate polls
+        run: npm run validate:polls
+
+      - name: Run worker tests
+        working-directory: workers/votes
+        run: npm test

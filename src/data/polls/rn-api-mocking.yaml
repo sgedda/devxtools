@@ -1,0 +1,43 @@
+slug: rn-api-mocking
+question: How do you mock APIs in React Native?
+status: active
+options:
+  - slug: miragejs
+    label: MirageJS
+    tool_slug: miragejs
+    sort: 1
+  
+  - slug: mockifyer
+    label: Mockifyer
+    tool_slug: mockifyer
+    sort: 2
+  
+  - slug: mockoon
+    label: Mockoon
+    tool_slug: mockoon
+    sort: 3
+  
+  - slug: msw
+    label: MSW
+    tool_slug: msw
+    sort: 4
+  
+  - slug: pollyjs
+    label: Polly.js
+    tool_slug: pollyjs
+    sort: 5
+  
+  - slug: prism
+    label: Prism
+    tool_slug: prism
+    sort: 6
+  
+  - slug: other
+    label: Other
+    tool_slug: null
+    sort: 7
+  
+  - slug: no-mocking
+    label: I don't mock APIs
+    tool_slug: null
+    sort: 8
