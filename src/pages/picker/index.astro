@@ -302,7 +302,7 @@ const toolsJson = JSON.stringify(tools);
     </div>
   </main>
 
-  <script id="tools-data" type="application/json">{toolsJson}</script>
+  <script id="tools-data" type="application/json" set:html={JSON.stringify(tools).replace(/<\//g, '<\\/')}></script>
 
   <script type="module">
     import { matchesTool, rankTools, NEED_TO_CATEGORIES, NEED_LABELS } from '../../lib/picker.ts';
