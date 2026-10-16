@@ -17,4 +17,5 @@ description: Open-source load testing tool that lets you define user behavior in
 whenToUse: When you want to write load tests in Python, need distributed load testing, or prefer code-based test definitions over GUI tools.
 githubStars: 26700
 lastActivity: 2026-10-07T21:34:19Z
+pypiPackage: locust
 lastChecked: 2026-10-14
