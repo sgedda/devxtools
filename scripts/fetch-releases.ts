@@ -47,26 +47,53 @@ async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3)
   throw new Error('Max retries exceeded');
 }
 
+export function extractSemver(tagOrVersion: string): string | null {
+  const stablePatterns = [
+    /(\d+\.\d+\.\d+)$/,
+    /(\d+\.\d+)$/,
+  ];
+  
+  for (const pattern of stablePatterns) {
+    const match = tagOrVersion.match(pattern);
+    if (match) {
+      return match[1];
+    }
+  }
+  
+  return null;
+}
+
 export function normalizeVersion(version: string): string {
-  return version.replace(/^v/, '');
+  const extracted = extractSemver(version);
+  return extracted || version.replace(/^v/, '');
 }
 
 export function parseVersion(version: string): { major: number; minor: number; patch: number; prerelease: boolean } | null {
-  const normalized = normalizeVersion(version);
-  const match = normalized.match(/^(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
-  if (!match) return null;
+  const normalized = version.replace(/^v/, '');
+  const semverMatch = normalized.match(/^(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
+  if (!semverMatch) return null;
   
   return {
-    major: parseInt(match[1]),
-    minor: parseInt(match[2]),
-    patch: parseInt(match[3]),
-    prerelease: !!match[4],
+    major: parseInt(semverMatch[1]),
+    minor: parseInt(semverMatch[2]),
+    patch: parseInt(semverMatch[3]),
+    prerelease: !!semverMatch[4],
   };
 }
 
 export function isStableVersion(version: string): boolean {
-  const parsed = parseVersion(version);
+  const extracted = extractSemver(version);
+  if (extracted) {
+    return true;
+  }
+  
+  const normalized = version.replace(/^v/, '');
+  const parsed = parseVersion(normalized);
   return parsed !== null && !parsed.prerelease;
+}
+
+export function isPlainSemver(version: string): boolean {
+  return /^\d+\.\d+(?:\.\d+)?$/.test(version);
 }
 
 async function fetchGitHubRelease(repo: string): Promise<ReleaseInfo | null> {

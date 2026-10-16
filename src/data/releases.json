@@ -92,22 +92,22 @@
       "source": "pypi"
     },
     "insomnia": {
-      "version": "core@13.3.1",
+      "version": "13.3.1",
       "releaseDate": "2026-10-09T07:35:39Z",
       "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
       "source": "github"
     },
     "jmeter": {
-      "version": "rel/v5.6.3",
+      "version": "5.6.3",
       "releaseDate": "2024-01-09T08:29:40Z",
       "releaseUrl": "https://github.com/apache/jmeter/releases/tag/rel/v5.6.3",
       "source": "github"
     },
     "json-server": {
-      "version": "1.0.0-beta.15",
-      "releaseDate": "2026-03-23T19:40:05Z",
-      "releaseUrl": "https://github.com/typicode/json-server/releases/tag/v1.0.0-beta.15",
-      "source": "github"
+      "version": "0.9.6",
+      "releaseDate": "2023-06-17T00:00:00Z",
+      "releaseUrl": "https://www.npmjs.com/package/json-server/v/0.9.6",
+      "source": "npm"
     },
     "k6": {
       "version": "2.3.0",
@@ -122,7 +122,7 @@
       "source": "pypi"
     },
     "maestro": {
-      "version": "cli-2.11.0",
+      "version": "2.11.0",
       "releaseDate": "2026-09-29T13:36:34Z",
       "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.11.0",
       "source": "github"
@@ -140,7 +140,7 @@
       "source": "github"
     },
     "mockifyer": {
-      "version": "axios-v1.10.32",
+      "version": "1.10.32",
       "releaseDate": "2026-09-30T09:24:11Z",
       "releaseUrl": "https://github.com/sgedda/mockifyer/releases/tag/axios-v1.10.32",
       "source": "github"
@@ -224,7 +224,7 @@
       "source": "github"
     },
     "reactotron": {
-      "version": "reactotron-react-native@5.3.1",
+      "version": "5.3.1",
       "releaseDate": "2026-08-13T22:52:37Z",
       "releaseUrl": "https://github.com/infinitered/reactotron/releases/tag/reactotron-react-native%405.3.1",
       "source": "github"
