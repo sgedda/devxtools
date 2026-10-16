@@ -50,6 +50,7 @@ export const ToolSchema = z.object({
   githubStars: z.number().optional(),
   lastActivity: z.string().optional(), // ISO date string of last commit/release
   npmPackage: z.string().optional(), // npm package name for download stats
+  pypiPackage: z.string().optional(), // PyPI package name for download stats
   weeklyDownloads: z.number().optional(), // weekly npm downloads
   lastChecked: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   affiliation: z.string().optional(), // Disclosure for affiliated tools

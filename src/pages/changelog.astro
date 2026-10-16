@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getRecentReleases } from '../lib/releases';
+import { getToolBySlug } from '../lib/tools';
+
+const recentReleases = getRecentReleases(15);
 ---
 
 <Layout 
@@ -13,6 +17,41 @@ import Layout from '../layouts/Layout.astro';
     </p>
     
     <div class="changelog">
+      {recentReleases.length > 0 && (
+        <article class="changelog-entry">
+          <div class="changelog-header">
+            <h2>Recent Releases</h2>
+            <time>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
+          </div>
+          <div class="changelog-content">
+            <p>Latest stable releases from catalog tools:</p>
+            <ul class="releases-list">
+              {recentReleases.map(({ slug, release }) => {
+                const tool = getToolBySlug(slug);
+                if (!tool) return null;
+                
+                const releaseDate = new Date(release.releaseDate);
+                const formattedDate = releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                return (
+                  <li>
+                    <a href={`/tools/${slug}/`} class="release-link">
+                      <strong>{tool.name}</strong> <span class="version">{release.version}</span>
+                    </a>
+                    <span class="release-meta">
+                      · {formattedDate} · 
+                      <a href={release.releaseUrl} target="_blank" rel="noopener noreferrer" class="release-notes-link">
+                        Release notes ↗
+                      </a>
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </article>
+      )}
+      
       <article class="changelog-entry">
         <div class="changelog-header">
           <h2>Initial Launch</h2>
@@ -113,6 +152,53 @@ import Layout from '../layouts/Layout.astro';
   .changelog-content li {
     margin-bottom: 0.5rem;
     color: var(--text-secondary);
+  }
+  
+  .releases-list {
+    list-style: none;
+    margin-left: 0;
+  }
+  
+  .releases-list li {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+  
+  .release-link {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  
+  .release-link:hover {
+    color: var(--accent);
+  }
+  
+  .version {
+    font-family: 'Courier New', monospace;
+    background: var(--bg-secondary);
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: var(--accent);
+  }
+  
+  .release-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+  }
+  
+  .release-notes-link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  
+  .release-notes-link:hover {
+    text-decoration: underline;
   }
   
   @media (max-width: 768px) {

@@ -19,5 +19,6 @@ whenToUse: When you prefer working in the terminal and want a more user-friendly
 githubStars: 34300
 lastActivity: 2026-09-28T10:15:47Z
 npmPackage: httpie
+pypiPackage: httpie
 weeklyDownloads: 14879
 lastChecked: 2026-10-14

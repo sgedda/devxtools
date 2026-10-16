@@ -15,6 +15,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:viewport": "playwright test viewport-overflow.spec.ts",
+    "fetch-releases": "tsx scripts/fetch-releases.ts",
     "og": "tsx scripts/generate-og-cards.ts",
     "check:og": "tsx scripts/check-og-cards.ts",
     "og:articles": "tsx scripts/generate-article-og-cards.ts",
