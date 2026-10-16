@@ -302,10 +302,14 @@ const toolsJson = JSON.stringify(tools);
     </div>
   </main>
 
-  <script define:vars={{ toolsJson }}>
-    import { matchesTool, rankTools, parseUrlState, serializeUrlState, getMostRestrictiveFilter, findNearestMatches, NEED_TO_CATEGORIES, NEED_LABELS } from '../../lib/picker';
+  <script id="tools-data" type="application/json">{toolsJson}</script>
+
+  <script type="module">
+    import { matchesTool, rankTools, NEED_TO_CATEGORIES, NEED_LABELS } from '../../lib/picker.ts';
     
-    const allTools = JSON.parse(toolsJson);
+    // Get tools data from page
+    const toolsData = document.getElementById('tools-data');
+    const allTools = JSON.parse(toolsData.textContent);
     
     // State
     let state = {
