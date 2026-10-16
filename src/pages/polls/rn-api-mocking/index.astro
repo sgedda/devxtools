@@ -1,0 +1,112 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Poll from '../../../components/Poll.astro';
+---
+
+<Layout 
+  title="Poll: How do you mock APIs in React Native?" 
+  description="Vote for your preferred API mocking tool for React Native development."
+>
+  <div class="container mx-auto max-w-[800px] px-5 py-12">
+    <div class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-zinc-900 dark:text-white mb-4">
+        How do you mock APIs in React Native?
+      </h1>
+      <p class="text-lg text-zinc-600 dark:text-zinc-400">
+        Help the community by voting for the API mocking tool you use in React Native projects.
+      </p>
+    </div>
+
+    <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-6 md:p-8 dark:bg-zinc-900 dark:border-zinc-800">
+      <Poll pollSlug="rn-api-mocking" />
+    </div>
+
+    <div class="mt-8 text-sm text-zinc-500 dark:text-zinc-400 space-y-2">
+      <p>
+        <strong>Privacy:</strong> Your vote is anonymous. We store only a salted hash of your IP address to prevent duplicate votes.
+        A cookie is set to remember that you voted.
+      </p>
+      <p class="text-xs">
+        <em>Disclosure:</em> The maintainer of this site (Sebastian) is the author of Mockifyer, one of the options in this poll.
+        All options are sorted alphabetically, with "Other" listed last.
+      </p>
+    </div>
+
+    <div class="mt-12 border-t border-zinc-200 dark:border-zinc-800 pt-8">
+      <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6">About the Options</h2>
+      
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/miragejs/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MirageJS</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            In-memory mock server with database simulation. Works in Node.js and browser environments.
+            Categories: http-interception, mock-server.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/mockifyer/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Mockifyer</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Record/replay HTTP mocking for axios and fetch with distributed tracing. Explicitly supports React Native with device storage sync.
+            Categories: record-replay, http-interception, network-debugging.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/msw/" class="hover:text-zinc-600 dark:hover:text-zinc-300">MSW (Mock Service Worker)</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Network-level HTTP interception using Service Workers in browsers and native Node.js modules.
+            Works in any framework without changing application code.
+            Categories: http-interception.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/nock/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Nock</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            HTTP mocking library for Node.js. Intercepts requests at the Node.js HTTP module level.
+            Simple and widely used for unit testing.
+            Categories: http-interception.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/pollyjs/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Polly.js</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Record, replay, and stub HTTP interactions. Built by Netflix, works with multiple adapters including Fetch, XHR, and Node HTTP.
+            Categories: record-replay, http-interception.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-2">
+            <a href="/tools/prism/" class="hover:text-zinc-600 dark:hover:text-zinc-300">Prism</a>
+          </h3>
+          <p class="text-zinc-600 dark:text-zinc-400">
+            Generate mock servers directly from OpenAPI specifications with dynamic examples and validation.
+            Categories: spec-based-mocking, mock-server.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 text-center">
+      <a 
+        href="/polls/" 
+        class="inline-flex items-center gap-2 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+      >
+        ← Back to all polls
+      </a>
+    </div>
+  </div>
+</Layout>

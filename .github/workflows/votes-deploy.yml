@@ -1,0 +1,107 @@
+name: Deploy Votes Worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/votes/**'
+      - 'src/data/polls/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for Cloudflare token
+        id: check-token
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}" ]; then
+            echo "has_token=false" >> $GITHUB_OUTPUT
+            echo "⚠️ CLOUDFLARE_WORKERS_TOKEN secret is not configured. Skipping deployment."
+            echo "To enable deployment, add the CLOUDFLARE_WORKERS_TOKEN secret in repository settings."
+            echo "The token must have Account > D1 > Edit permission."
+          else
+            echo "has_token=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Node.js
+        if: steps.check-token.outputs.has_token == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'workers/votes/package-lock.json'
+
+      - name: Install dependencies
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/votes
+        run: npm ci
+
+      - name: Validate polls
+        if: steps.check-token.outputs.has_token == 'true'
+        run: npm run validate:polls
+
+      - name: Create D1 database if needed
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/votes
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 2da5448d9c00373519c97d8368d08ae3
+        run: |
+          echo "Checking for existing D1 database..."
+          DB_LIST=$(npx wrangler d1 list --json 2>/dev/null || echo "[]")
+          DB_ID=$(echo "$DB_LIST" | jq -r '.[] | select(.name == "devxtools-votes") | .uuid' | head -n 1)
+
+          if [ -z "$DB_ID" ] || [ "$DB_ID" = "null" ]; then
+            echo "Creating D1 database 'devxtools-votes'..."
+            DB_OUTPUT=$(npx wrangler d1 create devxtools-votes --json)
+            DB_ID=$(echo "$DB_OUTPUT" | jq -r '.uuid')
+            echo "Created database with ID: $DB_ID"
+
+            # Update wrangler.toml with the database ID
+            sed -i "s/database_id = \"\"/database_id = \"$DB_ID\"/" wrangler.toml
+          else
+            echo "Database 'devxtools-votes' already exists with ID: $DB_ID"
+          fi
+
+          echo "DATABASE_ID=$DB_ID" >> $GITHUB_ENV
+
+      - name: Apply migrations
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/votes
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 2da5448d9c00373519c97d8368d08ae3
+        run: |
+          if [ -z "${{ env.DATABASE_ID }}" ]; then
+            echo "❌ DATABASE_ID not set. Cannot apply migrations."
+            exit 1
+          fi
+
+          echo "Applying migrations..."
+          npx wrangler d1 migrations apply devxtools-votes --remote || {
+            echo "❌ Failed to apply migrations."
+            echo "Ensure CLOUDFLARE_WORKERS_TOKEN has Account > D1 > Edit permission."
+            exit 1
+          }
+
+      - name: Seed polls
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/votes
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 2da5448d9c00373519c97d8368d08ae3
+          DATABASE_ID: ${{ env.DATABASE_ID }}
+        run: npm run seed
+
+      - name: Deploy to Cloudflare Workers
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/votes
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 2da5448d9c00373519c97d8368d08ae3
+        run: npx wrangler deploy

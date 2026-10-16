@@ -1,0 +1,22 @@
+name = "votes"
+main = "src/index.ts"
+compatibility_date = "2024-10-16"
+compatibility_flags = ["nodejs_compat"]
+
+# Route on devxtools.dev/api/polls/*
+routes = [
+  { pattern = "devxtools.dev/api/polls/*", zone_name = "devxtools.dev" }
+]
+
+# D1 database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "devxtools-votes"
+database_id = "" # Will be populated after first database creation
+
+# Rate limiting: 10 requests per minute per IP
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1002"
+simple = { limit = 10, period = 60 }
