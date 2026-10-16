@@ -83,7 +83,7 @@ export const GET: APIRoute = async () => {
   const sections: Array<{ heading: string; urls: string[] }> = [
     { heading: 'Home', urls: ['/'] },
     { heading: 'Hubs', urls: ['/mocking-test-data/', '/api-development/', '/testing/', '/observability/'] },
-    { heading: 'Catalog & Pickers', urls: ['/catalog/', '/picker/', '/api-development/postman-alternatives/'] },
+    { heading: 'Catalog & Pickers', urls: ['/catalog/', '/picker/', '/demos/', '/api-development/postman-alternatives/'] },
     { heading: 'Polls', urls: ['/polls/', '/polls/rn-api-mocking/'] },
     { heading: 'About & Submit', urls: ['/about/', '/submit/', '/changelog/'] },
     { heading: 'Comparisons', urls: ['/comparisons/', ...comparisonUrls] },
