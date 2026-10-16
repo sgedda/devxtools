@@ -305,11 +305,14 @@ async function fetchPyPiRelease(packageName: string): Promise<ReleaseInfo | null
     }
     
     const releases = data.releases[latestVersion];
-    const releaseDate = releases && releases.length > 0 ? releases[0].upload_time : new Date().toISOString();
+    if (!releases || releases.length === 0) {
+      console.warn(`No release files found for ${packageName} ${latestVersion}, skipping...`);
+      return null;
+    }
     
     return {
       version: latestVersion,
-      releaseDate,
+      releaseDate: releases[0].upload_time,
       releaseUrl: `https://pypi.org/project/${packageName}/${latestVersion}/`,
       source: 'pypi',
     };
@@ -353,7 +356,7 @@ async function main() {
   }
   
   const newData: ReleasesData = {
-    lastUpdated: new Date().toISOString(),
+    lastUpdated: existingData.lastUpdated,
     tools: {},
   };
   
@@ -400,6 +403,10 @@ async function main() {
     }
     
     await sleep(100);
+  }
+  
+  if (successCount > 0) {
+    newData.lastUpdated = new Date().toISOString();
   }
   
   writeFileSync(RELEASES_FILE, JSON.stringify(newData, null, 2) + '\n');

@@ -48,18 +48,20 @@ jobs:
           
           git fetch origin main
           
+          git add src/data/releases.json
+          git commit -m "chore: update tool releases ($(date +%Y-%m-%d))"
+          
           if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
             echo "Branch $BRANCH_NAME exists, checking it out and updating..."
             git fetch origin "$BRANCH_NAME"
             git checkout "$BRANCH_NAME"
             git rebase origin/main
+            git cherry-pick HEAD@{1}
           else
             echo "Creating new branch $BRANCH_NAME..."
             git checkout -b "$BRANCH_NAME"
           fi
           
-          git add src/data/releases.json
-          git commit -m "chore: update tool releases ($(date +%Y-%m-%d))"
           git push -u origin "$BRANCH_NAME" --force-with-lease
           
           if gh pr list --head "$BRANCH_NAME" --state open | grep -q "$BRANCH_NAME"; then
