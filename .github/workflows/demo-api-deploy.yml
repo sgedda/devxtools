@@ -1,0 +1,48 @@
+name: Deploy Demo API
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/demo-api/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Check for Cloudflare token
+        id: check-token
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}" ]; then
+            echo "has_token=false" >> $GITHUB_OUTPUT
+            echo "⚠️ CLOUDFLARE_WORKERS_TOKEN secret is not configured. Skipping deployment."
+            echo "To enable deployment, add the CLOUDFLARE_WORKERS_TOKEN secret in repository settings."
+          else
+            echo "has_token=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Setup Node.js
+        if: steps.check-token.outputs.has_token == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'workers/demo-api/package-lock.json'
+      
+      - name: Install dependencies
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/demo-api
+        run: npm ci
+      
+      - name: Deploy to Cloudflare Workers
+        if: steps.check-token.outputs.has_token == 'true'
+        working-directory: workers/demo-api
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 2da5448d9c00373519c97d8368d08ae3
+        run: npx wrangler deploy

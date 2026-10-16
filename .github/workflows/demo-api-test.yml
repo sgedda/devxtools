@@ -1,0 +1,36 @@
+name: Demo API Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'workers/demo-api/**'
+      - '.github/workflows/demo-api-test.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'workers/demo-api/**'
+      - '.github/workflows/demo-api-test.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'workers/demo-api/package-lock.json'
+      
+      - name: Install dependencies
+        working-directory: workers/demo-api
+        run: npm ci
+      
+      - name: Run tests
+        working-directory: workers/demo-api
+        run: npm test
