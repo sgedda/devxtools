@@ -243,33 +243,21 @@ const { pollSlug } = Astro.props;
           this.renderForm(data);
         }
       } catch (error) {
-        this.showError(error instanceof Error ? error.message : 'Failed to load poll');
+        const message = error instanceof Error ? error.message : 'Voting isn\'t available right now. Please check back later.';
+        this.showError(message);
       }
     }
 
     private async fetchPoll(): Promise<PollData> {
-      try {
-        const response = await fetch(`/api/polls/${this.pollSlug}`, {
-          credentials: 'same-origin',
-        });
+      const response = await fetch(`/api/polls/${this.pollSlug}`, {
+        credentials: 'same-origin',
+      });
 
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('Poll not found. This poll may have ended or been removed.');
-          } else if (response.status === 503) {
-            throw new Error('The voting system is currently being configured. Please try again later.');
-          } else {
-            throw new Error('Failed to load poll. Please try again later.');
-          }
-        }
-
-        return response.json();
-      } catch (error) {
-        if (error instanceof TypeError) {
-          throw new Error('Network error. Please check your connection and try again.');
-        }
-        throw error;
+      if (!response.ok) {
+        throw new Error('Voting isn\'t available right now. Please check back later.');
       }
+
+      return response.json();
     }
 
     private renderForm(data: PollData) {
@@ -334,27 +322,27 @@ const { pollSlug } = Astro.props;
           body: JSON.stringify({ option }),
         });
 
-        const data: VoteResult | ErrorResponse = await response.json();
-
         if (!response.ok) {
-          const errorData = data as ErrorResponse;
-          if (response.status === 409 && errorData.code === 'ALREADY_VOTED') {
-            this.showError('You have already voted in this poll.');
-          } else if (response.status === 429 && errorData.code === 'RATE_LIMITED') {
-            this.showError('Too many requests. Please try again in a minute.');
-          } else if (response.status === 503 && errorData.code === 'NOT_CONFIGURED') {
-            this.showError('The voting system is currently being configured. Please try again later.');
-          } else if (response.status === 400 && errorData.code === 'IP_REQUIRED') {
-            this.showError('Your IP address could not be determined. Voting requires a valid IP address.');
-          } else if (response.status === 503 && errorData.code === 'RATE_LIMITED') {
-            this.showError('Service temporarily unavailable. Please try again in a moment.');
-          } else {
-            this.showError(errorData.error || 'Failed to submit vote. Please try again.');
+          let errorMessage = 'Voting isn\'t available right now. Please check back later.';
+          
+          try {
+            const data: ErrorResponse = await response.json();
+            if (response.status === 409 && data.code === 'ALREADY_VOTED') {
+              errorMessage = 'You have already voted in this poll.';
+            } else if (response.status === 429 && data.code === 'RATE_LIMITED') {
+              errorMessage = 'Too many requests. Please try again in a minute.';
+            } else if (response.status === 400 && data.code === 'IP_REQUIRED') {
+              errorMessage = 'Your IP address could not be determined. Voting requires a valid IP address.';
+            }
+          } catch {
+            // JSON parse failed, use default message
           }
+          
+          this.showError(errorMessage);
           return;
         }
 
-        const voteData = data as VoteResult;
+        const voteData = await response.json() as VoteResult;
         this.form?.classList.add('hidden');
         this.renderResults({
           slug: voteData.results.slug,
@@ -364,11 +352,7 @@ const { pollSlug } = Astro.props;
           total_votes: voteData.results.total_votes,
         });
       } catch (error) {
-        if (error instanceof TypeError) {
-          this.showError('Network error. Please check your connection and try again.');
-        } else {
-          this.showError('Failed to submit vote. Please try again.');
-        }
+        this.showError('Voting isn\'t available right now. Please check back later.');
       } finally {
         if (submitButton) {
           submitButton.disabled = false;
