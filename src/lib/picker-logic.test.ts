@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
+import { matchesTool, rankTools, type PickerState, type Tool, NEED_TO_CATEGORIES } from './picker';
 
 // Mock tools data for testing
-const mockTools = [
+const mockTools: Tool[] = [
   {
     name: 'MSW',
     slug: 'msw',
@@ -67,138 +68,6 @@ const mockTools = [
     sections: ['mocking-test-data']
   }
 ];
-
-// Test helper functions
-function matchesTool(tool: any, state: any, filterMode: 'best' | 'also' = 'best') {
-  const reasons = [];
-  let score = 0;
-  let isLanguageAgnostic = false;
-  
-  // Platform matching
-  if (state.platform) {
-    const platformMatches: Record<string, boolean> = {
-      web: tool.runtimes?.some((r: string) => ['Browser', 'Web', 'React'].includes(r)) || tool.platforms?.includes('Web'),
-      rn: tool.runtimes?.some((r: string) => r === 'React Native') || tool.platforms?.includes('React Native') || tool.platforms?.includes('iOS') || tool.platforms?.includes('Android'),
-      node: tool.runtimes?.some((r: string) => r === 'Node.js'),
-      backend: tool.runtimes?.some((r: string) => ['JVM', 'Python', '.NET'].includes(r)) || tool.languages?.some((l: string) => ['Java', 'Python', 'Go', 'C#', '.NET', 'Kotlin', 'Scala'].includes(l))
-    };
-    
-    const agnosticPlatform = tool.languageAgnostic || tool.runtimes?.some((r: string) => ['CLI', 'Desktop', 'Hosted', 'Docker', 'Self-hosted', 'Kubernetes', 'Multi-language'].includes(r));
-    
-    if (platformMatches[state.platform]) {
-      reasons.push(state.platform);
-      score += 10;
-    } else if (agnosticPlatform) {
-      isLanguageAgnostic = true;
-      if (filterMode !== 'best') {
-        reasons.push('language-agnostic');
-      }
-    } else if (filterMode === 'best') {
-      return null;
-    }
-  }
-  
-  // Needs matching
-  const NEED_TO_CATEGORIES: Record<string, string[]> = {
-    mock: ['http-interception', 'mock-server', 'spec-based-mocking', 'hosted-mocks'],
-    record: ['record-replay'],
-    data: ['test-data-generation'],
-    e2e: ['e2e-testing'],
-    contract: ['contract-testing', 'openapi-tooling', 'sdk-generator'],
-    load: ['load-testing'],
-    debug: ['api-client', 'network-debugging'],
-    observe: ['error-monitoring', 'distributed-tracing', 'log-aggregation', 'application-logging', 'metrics']
-  };
-  
-  let matchedNeeds: string[] = [];
-  if (state.need && state.need.length > 0) {
-    state.need.forEach((need: string) => {
-      const cats = NEED_TO_CATEGORIES[need] || [];
-      if (tool.categories?.some((c: string) => cats.includes(c))) {
-        matchedNeeds.push(need);
-        reasons.push(need);
-        score += 10;
-      }
-    });
-    
-    // When needs are selected, tool MUST match at least one need to appear at all
-    if (matchedNeeds.length === 0) {
-      return null;
-    }
-  }
-  
-  // Language matching
-  if (state.lang) {
-    const langMatches: Record<string, boolean> = {
-      ts: tool.languages?.some((l: string) => ['TypeScript', 'JavaScript'].includes(l)),
-      py: tool.languages?.includes('Python'),
-      jvm: tool.languages?.some((l: string) => ['Java', 'Kotlin', 'Scala'].includes(l)),
-      go: tool.languages?.includes('Go'),
-      dotnet: tool.languages?.some((l: string) => ['C#', '.NET'].includes(l)),
-      ruby: tool.languages?.includes('Ruby')
-    };
-    
-    const anyLanguage = tool.languages?.includes('N/A') || tool.languageAgnostic;
-    
-    if (langMatches[state.lang]) {
-      reasons.push(state.lang);
-      score += 5;
-    } else if (anyLanguage) {
-      isLanguageAgnostic = true;
-      if (filterMode !== 'best') {
-        reasons.push('any-language');
-      }
-    } else if (filterMode === 'best') {
-      return null;
-    }
-  }
-  
-  // Spec support
-  if (state.spec && state.spec.length > 0) {
-    const matchedSpecs = state.spec.filter((spec: string) => 
-      tool.specSupport?.some((s: string) => s.toLowerCase() === spec.toLowerCase())
-    );
-    if (matchedSpecs.length === 0 && filterMode === 'best') {
-      return null;
-    }
-    matchedSpecs.forEach((spec: string) => {
-      reasons.push(spec);
-      score += 3;
-    });
-  }
-  
-  // OSS filter
-  if (state.oss === '1') {
-    if (!tool.isOpenSource) {
-      return null;
-    }
-  }
-  
-  // For "also works", require at least one reason besides language-agnostic
-  if (filterMode === 'also' && reasons.filter(r => r !== 'language-agnostic' && r !== 'any-language').length === 0) {
-    return null;
-  }
-  
-  return {
-    tool,
-    reasons: [...new Set(reasons)],
-    score,
-    isLanguageAgnostic
-  };
-}
-
-function rankTools(matches: any[]) {
-  return matches.sort((a, b) => {
-    // First by score (fit)
-    if (a.score !== b.score) return b.score - a.score;
-    // Then by stars
-    const starsA = a.tool.githubStars || 0;
-    const starsB = b.tool.githubStars || 0;
-    if (starsA !== starsB) return starsB - starsA;
-    // Then A-Z
-    return a.tool.name.localeCompare(b.tool.name);
-  });
-}
 
 describe('Picker filtering logic', () => {
   it('filters by platform: web', () => {
@@ -564,23 +433,98 @@ describe('Nearest matches for empty state', () => {
   });
   
   it('respects need matching rules in partial matches', () => {
-    const state = { platform: '', need: ['mock'], lang: 'go', spec: [], oss: '' };
+    const state: PickerState = { platform: '', need: ['mock'], lang: 'go', spec: [], oss: '' };
     
     // When checking need individually, tools must still match that need
     mockTools.forEach(tool => {
-      const needState = { platform: '', need: ['mock'], lang: '', spec: [], oss: '' };
+      const needState: PickerState = { platform: '', need: ['mock'], lang: '', spec: [], oss: '' };
       const needMatch = matchesTool(tool, needState, 'also');
       
       if (needMatch) {
         // Tool must be in mock categories
-        const NEED_TO_CATEGORIES: Record<string, string[]> = {
-          mock: ['http-interception', 'mock-server', 'spec-based-mocking', 'hosted-mocks']
-        };
-        const hasMockCategory = tool.categories?.some((c: string) => 
+        const hasMockCategory = tool.categories?.some(c => 
           NEED_TO_CATEGORIES.mock.includes(c)
         );
         expect(hasMockCategory).toBe(true);
       }
     });
+  });
+});
+
+describe('Hard filters apply to Also works', () => {
+  it('platform filter is hard: rn+load must not show Gatling', () => {
+    const state: PickerState = { platform: 'rn', need: ['load'], lang: '', spec: [], oss: '' };
+    
+    // Create Gatling-like tool (Scala/JVM, load testing, no RN platform)
+    const gatling: Tool = {
+      name: 'Gatling',
+      slug: 'gatling',
+      githubStars: 6000,
+      isOpenSource: true,
+      languages: ['Scala', 'Java'],
+      runtimes: ['JVM'],
+      categories: ['load-testing']
+    };
+    
+    // Should NOT match because platform doesn't match and it's not language-agnostic
+    const match = matchesTool(gatling, state, 'also');
+    expect(match).toBeNull();
+  });
+  
+  it('language filter is hard: rn+load+go must not show k6 (JS/TS)', () => {
+    const state: PickerState = { platform: 'rn', need: ['load'], lang: 'go', spec: [], oss: '' };
+    
+    // k6 is JavaScript/TypeScript, not Go
+    const k6: Tool = {
+      name: 'k6',
+      slug: 'k6',
+      githubStars: 27000,
+      isOpenSource: true,
+      languages: ['JavaScript', 'TypeScript'],
+      runtimes: ['CLI'],
+      categories: ['load-testing']
+    };
+    
+    // Should NOT match because language doesn't match and it's not any-language
+    const match = matchesTool(k6, state, 'also');
+    expect(match).toBeNull();
+  });
+  
+  it('rn+load+go yields empty state (no matches)', () => {
+    const state: PickerState = { platform: 'rn', need: ['load'], lang: 'go', spec: [], oss: '' };
+    
+    const matches = mockTools
+      .map(t => matchesTool(t, state, 'also'))
+      .filter(m => m !== null);
+    
+    // Should be empty because no tool matches all three criteria
+    expect(matches.length).toBe(0);
+  });
+  
+  it('spec filter is hard: mock+openapi excludes tools without OpenAPI', () => {
+    const state: PickerState = { platform: '', need: ['mock'], lang: '', spec: ['openapi'], oss: '' };
+    
+    // MSW doesn't have GraphQL in specSupport
+    const mswLike: Tool = {
+      name: 'MSW',
+      slug: 'msw',
+      categories: ['http-interception'],
+      specSupport: ['OpenAPI'],
+      isOpenSource: true
+    };
+    
+    const match = matchesTool(mswLike, state, 'also');
+    expect(match).not.toBeNull(); // MSW has OpenAPI
+    
+    // Nock-like without spec support
+    const nockLike: Tool = {
+      name: 'Nock',
+      slug: 'nock',
+      categories: ['http-interception'],
+      isOpenSource: true
+    };
+    
+    const nockMatch = matchesTool(nockLike, state, 'also');
+    expect(nockMatch).toBeNull(); // No spec support
   });
 });
