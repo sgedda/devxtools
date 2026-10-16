@@ -16,9 +16,9 @@ categories:
   - error-monitoring
   - distributed-tracing
   - log-aggregation
-bestFor: Cost-effective observability with 140x lower storage costs and petabyte-scale performance
-description: Open-source observability platform for logs, metrics, traces, RUM, and session replay. Built in Rust with Parquet columnar storage and S3-native architecture for dramatically lower storage costs. Single binary deployment with petabyte-scale performance.
-whenToUse: When you need cost-effective observability at scale, want significantly lower storage costs than Datadog or Splunk, need high-performance log aggregation, or want unified observability with RUM and session replay.
-githubStars: 22300
-lastActivity: 2026-10-15T11:47:22Z
+bestFor: OpenObserve claims 140x lower storage costs with petabyte-scale performance
+description: Open-source observability platform for logs, metrics, traces, RUM, and session replay. Built in Rust with Parquet columnar storage and S3-native architecture. OpenObserve claims significantly lower storage costs than traditional solutions. Single binary deployment with petabyte-scale performance.
+whenToUse: When you need cost-effective observability at scale, want to evaluate OpenObserve's claimed storage cost advantages, need high-performance log aggregation, or want unified observability with RUM and session replay.
+githubStars: 22388
+lastActivity: 2026-10-16T05:08:07Z
 lastChecked: 2026-10-16
