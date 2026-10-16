@@ -1,0 +1,24 @@
+name: OpenObserve
+slug: openobserve
+website: https://openobserve.ai/
+repo: https://github.com/openobserve/openobserve
+license: AGPL-3.0
+languages:
+  - Rust
+runtimes:
+  - Self-hosted
+  - Hosted
+  - Kubernetes
+  - Docker
+sections:
+  - observability
+categories:
+  - error-monitoring
+  - distributed-tracing
+  - log-aggregation
+bestFor: Cost-effective observability with 140x lower storage costs and petabyte-scale performance
+description: Open-source observability platform for logs, metrics, traces, RUM, and session replay. Built in Rust with Parquet columnar storage and S3-native architecture for dramatically lower storage costs. Single binary deployment with petabyte-scale performance.
+whenToUse: When you need cost-effective observability at scale, want significantly lower storage costs than Datadog or Splunk, need high-performance log aggregation, or want unified observability with RUM and session replay.
+githubStars: 22300
+lastActivity: 2026-10-15T11:47:22Z
+lastChecked: 2026-10-16

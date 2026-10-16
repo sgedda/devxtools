@@ -1,0 +1,18 @@
+name: New Relic
+slug: newrelic
+website: https://newrelic.com/
+license: Proprietary
+languages:
+  - N/A
+runtimes:
+  - Hosted
+sections:
+  - observability
+categories:
+  - error-monitoring
+  - distributed-tracing
+  - log-aggregation
+bestFor: Enterprise-grade full-stack observability with AI-powered insights and pay-as-you-go pricing
+description: Comprehensive observability platform with APM, infrastructure monitoring, logs, traces, digital experience monitoring, and AI observability. Features AI-powered insights, unified telemetry data store, and integrations with 800+ tools. Pay-as-you-go pricing model.
+whenToUse: When you need enterprise-grade observability with extensive integrations, want AI-powered insights and automated remediation, need unified visibility across applications and infrastructure, or prefer usage-based pricing over per-host billing.
+lastChecked: 2026-10-16

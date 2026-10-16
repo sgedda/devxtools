@@ -1,0 +1,21 @@
+name: Prometheus
+slug: prometheus
+website: https://prometheus.io/
+repo: https://github.com/prometheus/prometheus
+license: Apache-2.0
+languages:
+  - Go
+runtimes:
+  - Self-hosted
+  - Kubernetes
+  - Docker
+sections:
+  - observability
+categories:
+  - error-monitoring
+bestFor: Time-series metrics collection and monitoring with powerful querying and alerting
+description: Open-source monitoring system and time-series database designed for reliability and scalability. Features a dimensional data model, PromQL query language, service discovery, and precise alerting. The de facto standard for Kubernetes monitoring.
+whenToUse: When you need metrics-based monitoring with powerful queries and alerting, want Kubernetes-native observability, need a pull-based metrics collection model, or are building cloud-native applications.
+githubStars: 65719
+lastActivity: 2026-10-15T14:22:08Z
+lastChecked: 2026-10-16

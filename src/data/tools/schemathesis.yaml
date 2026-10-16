@@ -1,0 +1,23 @@
+name: Schemathesis
+slug: schemathesis
+website: https://schemathesis.io/
+repo: https://github.com/schemathesis/schemathesis
+license: MIT
+languages:
+  - Python
+runtimes:
+  - Python
+  - CLI
+sections:
+  - testing
+categories:
+  - contract-testing
+specSupport:
+  - OpenAPI
+  - GraphQL
+bestFor: Property-based testing that automatically generates test cases from OpenAPI and GraphQL schemas
+description: Automated API testing tool built on Hypothesis that generates thousands of test cases from schemas. Finds edge cases, schema violations, and validation bugs without manual test scripting. Adapts to server responses and supports stateful workflows.
+whenToUse: When you want automated schema-based API testing, need to find edge cases and validation bugs, want zero-maintenance test generation, or need to validate OpenAPI/GraphQL contract compliance.
+githubStars: 3669
+lastActivity: 2026-10-14T09:33:41Z
+lastChecked: 2026-10-16
