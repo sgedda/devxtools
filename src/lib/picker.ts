@@ -117,8 +117,7 @@ export function matchesTool(
       ruby: tool.languages?.includes('Ruby')
     };
     
-    // Only tools with N/A language (truly any-language) can bypass language filter
-    const anyLanguage = tool.languages?.includes('N/A');
+    const anyLanguage = tool.languages?.includes('N/A') || tool.languageAgnostic;
     
     if (langMatches[state.lang]) {
       reasons.push(state.lang);

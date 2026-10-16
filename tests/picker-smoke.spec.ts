@@ -45,13 +45,13 @@ test.describe('Stack Picker Smoke Tests', () => {
     const pageErrors: string[] = [];
     page.on('pageerror', err => pageErrors.push(err.message));
     
-    // rn+load+ruby should yield empty state (no Ruby load testing tools)
-    await page.goto(`${PICKER_URL}?platform=rn&need=load&lang=ruby`);
+    // backend+e2e+go should yield empty state (no Go E2E testing tools for backend)
+    await page.goto(`${PICKER_URL}?platform=backend&need=e2e&lang=go`);
     
     await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
     expect(pageErrors).toHaveLength(0);
     
-    // Wait for results to render
+    // Wait for results to render and debounce
     await page.waitForTimeout(500);
     
     // Empty state should be visible

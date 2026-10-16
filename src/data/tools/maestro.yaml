@@ -16,6 +16,7 @@ sections:
 platforms:
   - iOS
   - Android
+  - Web
   - React Native
   - Flutter
 categories:

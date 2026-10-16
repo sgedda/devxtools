@@ -2,8 +2,7 @@ name: New Relic
 slug: newrelic
 website: https://newrelic.com/
 license: Proprietary
-languages:
-  - N/A
+languages: []
 runtimes:
   - Hosted
 sections:

@@ -491,6 +491,68 @@ describe('Nearest matches', () => {
   });
 });
 
+describe('languageAgnostic tools pass language filters', () => {
+  it('mock+python includes Prism, WireMock and Mockoon', () => {
+    const state: PickerState = { platform: '', need: ['mock'], lang: 'py', spec: [], oss: '' };
+    
+    const prism: Tool = {
+      name: 'Prism',
+      slug: 'prism',
+      categories: ['mock-server'],
+      languages: ['N/A'],
+      languageAgnostic: true,
+      isOpenSource: true
+    };
+    
+    const wiremock: Tool = {
+      name: 'WireMock',
+      slug: 'wiremock',
+      categories: ['mock-server'],
+      languages: ['Java'],
+      languageAgnostic: true,
+      isOpenSource: true
+    };
+    
+    const mockoon: Tool = {
+      name: 'Mockoon',
+      slug: 'mockoon',
+      categories: ['mock-server'],
+      languages: ['N/A'],
+      languageAgnostic: true,
+      isOpenSource: true
+    };
+    
+    // All three should match in "also" mode because they're languageAgnostic
+    const prismMatch = matchesTool(prism, state, 'also');
+    expect(prismMatch).not.toBeNull();
+    
+    const wiremockMatch = matchesTool(wiremock, state, 'also');
+    expect(wiremockMatch).not.toBeNull();
+    
+    const mockoonMatch = matchesTool(mockoon, state, 'also');
+    expect(mockoonMatch).not.toBeNull();
+  });
+  
+  it('backend+load+jvm includes k6', () => {
+    const state: PickerState = { platform: 'backend', need: ['load'], lang: 'jvm', spec: [], oss: '' };
+    
+    const k6: Tool = {
+      name: 'k6',
+      slug: 'k6',
+      categories: ['load-testing'],
+      languages: ['JavaScript', 'TypeScript'],
+      runtimes: ['CLI'],
+      languageAgnostic: true,
+      isOpenSource: true,
+      githubStars: 27000
+    };
+    
+    // k6 should match in "also" mode because it's languageAgnostic
+    const match = matchesTool(k6, state, 'also');
+    expect(match).not.toBeNull();
+  });
+});
+
 describe('Hard filters apply to Also works', () => {
   it('platform filter is hard: rn+load must not show Gatling', () => {
     const state: PickerState = { platform: 'rn', need: ['load'], lang: '', spec: [], oss: '' };

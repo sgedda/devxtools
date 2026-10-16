@@ -162,8 +162,8 @@ test.describe('Stack Picker Accessibility', () => {
     });
     
     test('empty state - no critical/serious violations', async ({ page }) => {
-      // rn+load+ruby yields empty state (no Ruby load testing tools)
-      await page.goto(`${PICKER_URL}?platform=rn&need=load&lang=ruby`);
+      // backend+e2e+go yields empty state (no Go E2E testing tools for backend)
+      await page.goto(`${PICKER_URL}?platform=backend&need=e2e&lang=go`);
       await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
       await page.waitForTimeout(500);
       await page.waitForSelector('#empty-state:not(.hidden)', { timeout: 3000 });

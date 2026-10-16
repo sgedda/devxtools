@@ -236,7 +236,7 @@ const toolsJson = JSON.stringify(tools);
       
       <!-- Results -->
       <div class="mt-6">
-        <div id="result-count" class="text-sm text-zinc-600 dark:text-zinc-400" role="status" aria-live="polite" aria-atomic="true"></div>
+        <div id="result-count" class="text-sm text-zinc-600 dark:text-zinc-400" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
         <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Ranked by fit, then GitHub stars. No sponsored placement.</p>
         
         <!-- Per-need picks (when needs are selected) -->
@@ -280,10 +280,9 @@ const toolsJson = JSON.stringify(tools);
         aria-modal="true"
         aria-labelledby="mobile-sheet-title"
       >
-        <div class="sticky top-0 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-5 py-4 flex items-center justify-between">
-          <div class="w-12 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full mx-auto"></div>
+        <div class="sticky top-0 z-10 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-5 py-4 flex items-center justify-between">
           <h2 id="mobile-sheet-title" class="font-semibold text-zinc-900 dark:text-white">Filters</h2>
-          <button id="close-sheet-btn" class="text-zinc-500 hover:text-zinc-900 dark:hover:text-white" aria-label="Close filters">
+          <button id="close-sheet-btn" class="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white" aria-label="Close filters">
             <Icon name="x" size={24} />
           </button>
         </div>
@@ -388,7 +387,7 @@ const toolsJson = JSON.stringify(tools);
     function createToolCard(match) {
       const { tool, reasons } = match;
       const card = document.createElement('article');
-      card.className = 'rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition dark:border-zinc-800';
+      card.className = 'rounded-xl border border-zinc-200 p-5 hover:border-indigo-400 hover:shadow-md transition-all duration-200 dark:border-zinc-800';
       
       // Reason chips
       const reasonChips = reasons.map(r => {
@@ -616,9 +615,15 @@ const toolsJson = JSON.stringify(tools);
       
       // Build empty message
       const filterParts = [];
-      if (state.platform) filterParts.push(state.platform === 'rn' ? 'React Native' : state.platform);
+      if (state.platform) {
+        const platformLabels = { 'web': 'Web app', 'rn': 'React Native', 'node': 'Node.js', 'backend': 'Backend' };
+        filterParts.push(platformLabels[state.platform] || state.platform);
+      }
       if (state.need.length) filterParts.push(state.need.map(n => NEED_LABELS[n]).join(' + '));
-      if (state.lang) filterParts.push(state.lang.toUpperCase());
+      if (state.lang) {
+        const langLabels = { 'ts': 'TypeScript/JavaScript', 'py': 'Python', 'jvm': 'Java/Kotlin', 'go': 'Go', 'dotnet': 'C#/.NET', 'ruby': 'Ruby' };
+        filterParts.push(langLabels[state.lang] || state.lang.toUpperCase());
+      }
       
       document.getElementById('empty-message').textContent = `No tools match ${filterParts.join(' + ')}.`;
       
@@ -638,10 +643,20 @@ const toolsJson = JSON.stringify(tools);
       buttons.innerHTML = '';
       
       if (maxFilter[1] > 0) {
-        let filterLabel = maxFilter[0];
-        if (filterLabel === 'platform') filterLabel = state.platform;
-        else if (filterLabel === 'lang') filterLabel = state.lang;
-        else if (filterLabel === 'oss') filterLabel = 'OSS filter';
+        let filterLabel = '';
+        if (maxFilter[0] === 'platform') {
+          const platformLabels = { 'web': 'Web app', 'rn': 'React Native', 'node': 'Node.js', 'backend': 'Backend' };
+          filterLabel = platformLabels[state.platform] || state.platform;
+        } else if (maxFilter[0] === 'need') {
+          filterLabel = state.need.length === 1 ? NEED_LABELS[state.need[0]] : `${state.need.length} needs`;
+        } else if (maxFilter[0] === 'lang') {
+          const langLabels = { 'ts': 'TypeScript/JavaScript', 'py': 'Python', 'jvm': 'Java/Kotlin', 'go': 'Go', 'dotnet': 'C#/.NET', 'ruby': 'Ruby' };
+          filterLabel = langLabels[state.lang] || state.lang;
+        } else if (maxFilter[0] === 'spec') {
+          filterLabel = state.spec.length === 1 ? state.spec[0].toUpperCase() : 'Spec filters';
+        } else if (maxFilter[0] === 'oss') {
+          filterLabel = 'OSS filter';
+        }
         
         const removeBtn = document.createElement('button');
         removeBtn.className = 'rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800';
@@ -654,6 +669,9 @@ const toolsJson = JSON.stringify(tools);
           else if (maxFilter[0] === 'oss') state.oss = '';
           syncUIWithState();
           updateResults();
+          setTimeout(() => {
+            document.getElementById('result-count')?.focus();
+          }, 100);
         };
         buttons.appendChild(removeBtn);
       }
@@ -661,7 +679,12 @@ const toolsJson = JSON.stringify(tools);
       const clearBtn = document.createElement('button');
       clearBtn.className = 'rounded-lg border border-zinc-300 px-4 py-2 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800';
       clearBtn.textContent = 'Clear all';
-      clearBtn.onclick = clearFilters;
+      clearBtn.onclick = () => {
+        clearFilters();
+        setTimeout(() => {
+          document.getElementById('result-count')?.focus();
+        }, 100);
+      };
       buttons.appendChild(clearBtn);
       
       // Nearest matches
@@ -1017,7 +1040,7 @@ const toolsJson = JSON.stringify(tools);
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.625rem 1rem;
+      padding: 0.6875rem 1rem;
       border: 2px solid #e4e4e7;
       border-radius: 0.5rem;
       font-size: 0.9375rem;
@@ -1071,8 +1094,10 @@ const toolsJson = JSON.stringify(tools);
       .filter-chip,
       article,
       a,
-      button {
+      button,
+      * {
         transition: none !important;
+        animation: none !important;
       }
     }
   </style>

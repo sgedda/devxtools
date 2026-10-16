@@ -21,6 +21,7 @@ platforms:
   - iOS
   - Android
   - Web
+  - React Native
 categories:
   - e2e-testing
 bestFor: Cross-platform mobile and desktop automation using WebDriver protocol with any language
