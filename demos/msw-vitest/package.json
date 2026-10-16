@@ -1,0 +1,14 @@
+{
+  "name": "msw-vitest-demo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "msw": "3.0.3"
+  },
+  "devDependencies": {
+    "vitest": "5.0.5"
+  }
+}

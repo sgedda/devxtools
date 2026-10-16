@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import NewsletterSignup from '../../components/NewsletterSignup.astro';
 import Code from '../../components/Code.astro';
 import ReportError from '../../components/ReportError.astro';
+import RunIt from '../../components/RunIt.astro';
 import { getToolBySlug } from '../../lib/tools';
 
 const msw = getToolBySlug('msw');
@@ -184,6 +185,9 @@ nock('https://api.example.com')
             />
           </div>
         </div>
+
+        <RunIt project="msw-vitest" file="api.test.js" title="Try MSW + Vitest Live" />
+        <p class="demo-caption">Run this MSW test example in your browser with StackBlitz (a third-party service).</p>
       </section>
       
       <section class="detailed-comparison">
@@ -504,6 +508,13 @@ nock('https://api.example.com')
     color: var(--text-secondary);
   }
   
+  .demo-caption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
   @media (max-width: 768px) {
     .comparison-grid,
     .code-grid {

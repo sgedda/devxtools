@@ -1,0 +1,117 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import RunIt from '../../components/RunIt.astro';
+
+const allArticles = await getCollection('articles');
+const entry = allArticles.find(a => a.data.slug === '/guides/faker-js-test-data-factories/');
+if (!entry) throw new Error('Article not found');
+
+const { Content, headings } = await render(entry);
+---
+
+<ArticleLayout frontmatter={entry.data} headings={headings}>
+  <div id="article-content">
+    <Content />
+  </div>
+  <script is:inline>
+    (function() {
+      function insertDemo() {
+        const paragraphs = document.querySelectorAll('#article-content p');
+        for (let p of paragraphs) {
+          if (p.textContent.includes('Jest works identically')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'run-it-wrapper';
+            wrapper.innerHTML = `
+              <div class="run-it" data-project="faker-factories" data-file="factory.test.js">
+                <noscript>
+                  <a href="https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/faker-factories?file=factory.test.js" target="_blank" rel="noopener noreferrer" class="run-it-link">
+                    Try Faker.js Factories Live →
+                  </a>
+                </noscript>
+                <button type="button" class="run-it-button" data-stackblitz-url="https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/faker-factories?file=factory.test.js">
+                  Try Faker.js Factories Live
+                </button>
+              </div>
+              <p class="demo-caption"><em>Run this Faker.js test example in your browser with StackBlitz (a third-party service).</em></p>
+            `;
+            p.after(wrapper);
+            
+            // Initialize button
+            const button = wrapper.querySelector('.run-it-button');
+            if (button) {
+              button.addEventListener('click', function() {
+                const url = this.dataset.stackblitzUrl;
+                if (url) {
+                  window.open(url, '_blank', 'noopener,noreferrer');
+                }
+              });
+            }
+            break;
+          }
+        }
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', insertDemo);
+      } else {
+        insertDemo();
+      }
+    })();
+  </script>
+</ArticleLayout>
+
+<style>
+  .run-it-wrapper {
+    margin: 2rem 0;
+  }
+  
+  .demo-caption {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  .run-it-link,
+  .run-it-button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #1389fd 0%, #0d6efd 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .run-it-button:hover,
+  .run-it-link:hover {
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+  }
+
+  .run-it-button:active,
+  .run-it-link:active {
+    transform: translateY(0);
+  }
+
+  noscript .run-it-link {
+    display: inline-block;
+  }
+
+  .run-it-button {
+    display: none;
+  }
+
+  @media (scripting: enabled) {
+    .run-it-button {
+      display: inline-block;
+    }
+  }
+</style>
