@@ -13,8 +13,8 @@ const { variant = 'footer' } = Astro.props;
     )}
     <p class="newsletter-description">
       {variant === 'article' 
-        ? 'Get notified when we publish new guides and comparisons. No spam, unsubscribe anytime.'
-        : 'Get occasional emails about new dev/test tools and guides'}
+        ? 'Every two weeks: what changed in API and testing tools. No spam, unsubscribe anytime.'
+        : 'Every two weeks: what changed in API and testing tools.'}
     </p>
     <form class="newsletter-form" method="POST" action="/api/newsletter/signup" data-placement={variant}>
       <div class="form-fields">
