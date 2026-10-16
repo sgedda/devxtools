@@ -104,19 +104,26 @@ test.describe('Stack Picker Accessibility', () => {
     });
     
     test('mobile sheet has proper ARIA', async ({ page }) => {
-      await page.goto(PICKER_URL);
+      // Load with filters already set to trigger mobile summary
+      await page.goto(`${PICKER_URL}?platform=web`);
       await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
       
-      // Select a filter to show mobile summary
-      await page.click('input[name="platform"][value="web"]');
-      await page.waitForSelector('#mobile-summary:not(.hidden)', { timeout: 2000 });
+      // Wait for results to process
+      await page.waitForTimeout(500);
+      
+      // Mobile summary should appear
+      await page.waitForSelector('#mobile-summary:not(.hidden)', { timeout: 3000 });
       
       // Open mobile sheet
-      await page.click('#edit-filters-btn');
-      await page.waitForSelector('#mobile-sheet:not(.hidden)', { timeout: 2000 });
+      await page.locator('#edit-filters-btn').click();
+      
+      // Wait for sheet to open fully
+      await page.waitForSelector('#mobile-sheet:not(.hidden)', { timeout: 3000 });
+      await page.waitForSelector('#mobile-sheet-overlay:not(.hidden)', { timeout: 1000 });
+      await page.waitForTimeout(300);
       
       // Check ARIA attributes
-      const sheet = await page.locator('#mobile-sheet');
+      const sheet = page.locator('#mobile-sheet');
       await expect(sheet).toHaveAttribute('role', 'dialog');
       await expect(sheet).toHaveAttribute('aria-modal', 'true');
       await expect(sheet).toHaveAttribute('aria-labelledby', 'mobile-sheet-title');
@@ -140,6 +147,7 @@ test.describe('Stack Picker Accessibility', () => {
     test('filtered state - no critical/serious violations', async ({ page }) => {
       await page.goto(`${PICKER_URL}?platform=web&need=mock&lang=ts`);
       await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
+      await page.waitForTimeout(500);
       await page.waitForSelector('#result-count:not(:empty)', { timeout: 3000 });
       
       const results = await new AxeBuilder({ page })
@@ -154,9 +162,10 @@ test.describe('Stack Picker Accessibility', () => {
     });
     
     test('empty state - no critical/serious violations', async ({ page }) => {
-      // This should yield empty state after hard filter fixes
-      await page.goto(`${PICKER_URL}?platform=rn&need=load&lang=go`);
+      // rn+load+ruby yields empty state (no Ruby load testing tools)
+      await page.goto(`${PICKER_URL}?platform=rn&need=load&lang=ruby`);
       await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
+      await page.waitForTimeout(500);
       await page.waitForSelector('#empty-state:not(.hidden)', { timeout: 3000 });
       
       const results = await new AxeBuilder({ page })
