@@ -126,7 +126,7 @@ describe('Votes Worker', () => {
     expect(data).toHaveProperty('code', 'RATE_LIMITED');
   });
 
-  it('should return 503 for rate limited POST request (fail closed)', async () => {
+  it('should return 429 for rate limited POST request (fail closed)', async () => {
     const env: any = {
       ...createTestEnv(),
       RATE_LIMITER: {
@@ -147,7 +147,7 @@ describe('Votes Worker', () => {
 
     const response = await worker.fetch(request, env);
 
-    expect(response.status).toBe(503);
+    expect(response.status).toBe(429);
     const data = await response.json();
     expect(data).toHaveProperty('code', 'RATE_LIMITED');
   });
