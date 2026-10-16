@@ -14,48 +14,29 @@ const { Content, headings } = await render(entry);
   <div id="article-content">
     <Content />
   </div>
+  <div class="run-it-wrapper">
+    <RunIt project="faker-factories" file="factory.test.js" title="Try Faker.js Factories Live" />
+    <p class="demo-caption"><em>Run this Faker.js test example in your browser with StackBlitz (a third-party service).</em></p>
+  </div>
   <script is:inline>
     (function() {
-      function insertDemo() {
+      function moveDemo() {
         const paragraphs = document.querySelectorAll('#article-content p');
+        const wrapper = document.querySelector('.run-it-wrapper');
+        if (!wrapper) return;
+        
         for (let p of paragraphs) {
           if (p.textContent.includes('Jest works identically')) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'run-it-wrapper';
-            const stackblitzUrl = 'https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/faker-factories?file=factory.test.js';
-            wrapper.innerHTML = 
-              '<div class="run-it" data-project="faker-factories" data-file="factory.test.js">' +
-                '<noscript>' +
-                  '<a href="' + stackblitzUrl + '" target="_blank" rel="noopener noreferrer" class="run-it-link">' +
-                    'Try Faker.js Factories Live →' +
-                  '</a>' +
-                '</noscript>' +
-                '<button type="button" class="run-it-button" data-stackblitz-url="' + stackblitzUrl + '">' +
-                  'Try Faker.js Factories Live' +
-                '</button>' +
-              '</div>' +
-              '<p class="demo-caption"><em>Run this Faker.js test example in your browser with StackBlitz (a third-party service).</em></p>';
             p.after(wrapper);
-            
-            // Initialize button
-            const button = wrapper.querySelector('.run-it-button');
-            if (button) {
-              button.addEventListener('click', function() {
-                const url = this.dataset.stackblitzUrl;
-                if (url) {
-                  window.open(url, '_blank', 'noopener,noreferrer');
-                }
-              });
-            }
             break;
           }
         }
       }
       
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', insertDemo);
+        document.addEventListener('DOMContentLoaded', moveDemo);
       } else {
-        insertDemo();
+        moveDemo();
       }
     })();
   </script>
@@ -71,47 +52,5 @@ const { Content, headings } = await render(entry);
     font-size: 0.875rem;
     color: var(--text-secondary);
     font-style: italic;
-  }
-
-  .run-it-link,
-  .run-it-button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #1389fd 0%, #0d6efd 100%);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
-  }
-
-  .run-it-button:hover,
-  .run-it-link:hover {
-    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
-  }
-
-  .run-it-button:active,
-  .run-it-link:active {
-    transform: translateY(0);
-  }
-
-  noscript .run-it-link {
-    display: inline-block;
-  }
-
-  .run-it-button {
-    display: none;
-  }
-
-  @media (scripting: enabled) {
-    .run-it-button {
-      display: inline-block;
-    }
   }
 </style>

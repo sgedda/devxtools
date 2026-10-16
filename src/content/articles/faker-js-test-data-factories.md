@@ -189,10 +189,6 @@ it('is deterministic with a seed', () => {
 
 Jest works identically. Swap the imports for Jest globals.
 
-<RunIt project="faker-factories" file="factory.test.js" title="Try Faker.js Factories Live" />
-
-_Run this Faker.js test example in your browser with StackBlitz (a third-party service)._
-
 ### MSW handlers that return factory data
 
 [MSW](/tools/msw/) handlers can return factory-built data, so your mocked API looks like production data and respects query parameters:
