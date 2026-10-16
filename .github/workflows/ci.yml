@@ -50,7 +50,7 @@ jobs:
           echo "Build successful, dist directory exists"
       
       - name: Run smoke tests on built site
-        run: npx playwright test picker-smoke.spec.ts --config playwright.config.ts
+        run: npx playwright test --config playwright.smoke.config.ts
         env:
           CI: true
       
