@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const blogPosts = await getCollection('articles', ({ data }) => 
+  data.slug.startsWith('/blog/')
+);
+
+const sortedPosts = blogPosts.sort((a, b) => 
+  new Date(b.data.datePublished).getTime() - new Date(a.data.datePublished).getTime()
+);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "DevX Tools Blog",
+  "description": "Articles about developer tools, testing, and API development",
+  "url": "https://devxtools.dev/blog/",
+  "publisher": {
+    "@type": "Organization",
+    "name": "DevX Tools"
+  }
+};
+---
+
+<Layout 
+  title="Blog - DevX Tools"
+  description="Articles about developer tools, testing, and API development."
+  jsonLd={jsonLd}
+>
+  <div class="container mx-auto max-w-4xl px-5 py-10">
+    <header class="mb-10">
+      <h1 class="text-4xl font-bold text-zinc-900 dark:text-white mb-4">Blog</h1>
+      <p class="text-xl text-zinc-600 dark:text-zinc-400">
+        Articles about developer tools, testing, and API development.
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      {sortedPosts.map((post) => (
+        <article class="border-b border-zinc-200 dark:border-zinc-800 pb-8 last:border-b-0">
+          <a 
+            href={post.data.slug} 
+            class="block group"
+          >
+            <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
+              {post.data.h1 || post.data.title}
+            </h2>
+            {post.data.byline && (
+              <p class="text-sm text-zinc-600 dark:text-zinc-400 italic mb-2">
+                {post.data.byline}
+              </p>
+            )}
+            <p class="text-zinc-600 dark:text-zinc-400 mb-3">
+              {post.data.description}
+            </p>
+            <time class="text-sm text-zinc-500 dark:text-zinc-500">
+              {new Date(post.data.datePublished).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                timeZone: 'UTC'
+              })}
+            </time>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</Layout>
