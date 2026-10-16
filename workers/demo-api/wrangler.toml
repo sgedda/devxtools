@@ -1,0 +1,7 @@
+name = "demo-api"
+main = "src/index.ts"
+compatibility_date = "2024-10-16"
+compatibility_flags = ["nodejs_compat"]
+
+# Workers AI and other bindings would go here if needed
+# Rate limiting binding is not available on free plan as of Oct 2024
