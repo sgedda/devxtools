@@ -451,6 +451,46 @@ describe('Nearest matches for empty state', () => {
   });
 });
 
+describe('Nearest matches', () => {
+  it('showNearestMatches logic - checks individual filters', () => {
+    // This tests the showNearestMatches approach: checking each filter individually
+    const state: PickerState = { platform: 'rn', need: ['load'], lang: 'go', spec: [], oss: '' };
+    
+    const k6: Tool = {
+      name: 'k6',
+      slug: 'k6',
+      githubStars: 27000,
+      isOpenSource: true,
+      languages: ['JavaScript', 'TypeScript'],
+      runtimes: ['CLI'],
+      categories: ['load-testing']
+    };
+    
+    // Check individual filters
+    // Platform-only check returns null because agnostic platform alone isn't enough for "also works"
+    const platformOnlyState: PickerState = { platform: 'rn', need: [], lang: '', spec: [], oss: '' };
+    const platformOnlyMatch = matchesTool(k6, platformOnlyState, 'also');
+    expect(platformOnlyMatch).toBeNull(); // Agnostic platform alone is not enough
+    
+    // Need check - this should match
+    const needState: PickerState = { platform: '', need: ['load'], lang: '', spec: [], oss: '' };
+    const needMatch = matchesTool(k6, needState, 'also');
+    expect(needMatch).not.toBeNull(); // k6 has load-testing category
+    
+    // Language check - should not match
+    const langState: PickerState = { platform: '', need: [], lang: 'go', spec: [], oss: '' };
+    const langMatch = matchesTool(k6, langState, 'also');
+    expect(langMatch).toBeNull(); // k6 is JS/TS, not Go, and not N/A language
+    
+    // Platform + need - should match because need matches specifically
+    const platformNeedState: PickerState = { platform: 'rn', need: ['load'], lang: '', spec: [], oss: '' };
+    const platformNeedMatch = matchesTool(k6, platformNeedState, 'also');
+    expect(platformNeedMatch).not.toBeNull(); // Platform passes via agnostic, need matches specifically
+    
+    // So k6 would show in nearest matches with platform✓ need✓ lang✗
+  });
+});
+
 describe('Hard filters apply to Also works', () => {
   it('platform filter is hard: rn+load must not show Gatling', () => {
     const state: PickerState = { platform: 'rn', need: ['load'], lang: '', spec: [], oss: '' };
