@@ -1,6 +1,12 @@
 # Mockifyer + Vitest Demo
 
+**Disclosure:** Mockifyer is built by this site's maintainer.
+
 This demo shows record/replay HTTP mocking with Mockifyer and Vitest. Mocks are stored as JSON files in your repo and replayed offline—no network required.
+
+## Requirements
+
+- Node 22.12+ (required by vitest 5)
 
 ## Run it
 
@@ -12,10 +18,10 @@ npm test
 ## What it demonstrates
 
 - Recording HTTP responses as JSON files with Mockifyer
-- Replaying recorded responses completely offline
-- Using Mockifyer's filesystem provider for Node.js/WebContainers
+- Replaying recorded responses offline
+- Using Mockifyer's filesystem provider for Node.js
 - Date manipulation with `getCurrentDate()`
-- Proof that mocks are replayed, not hitting the live API
+- Strict replay mode with `failOnMissingMock: true`
 
 ## Verifying replay works
 
@@ -37,8 +43,6 @@ To prove the tests are using mocks (not the live API):
 
 3. **Observe**: Tests will fail with `Expected: "Set up project repository" Received: "OFFLINE-CHECK"`, proving the mock was replayed.
 
-This demo includes a test that temporarily blocks network access to verify mocks are replayed locally.
-
 ## Recording new mocks
 
 The demo includes pre-recorded mocks. To record fresh responses:
@@ -47,20 +51,20 @@ The demo includes pre-recorded mocks. To record fresh responses:
 npm run record
 ```
 
-This hits `https://demo.devxtools.dev/tasks/1` and saves the response to `mock-data/default/`. The mock is immediately ready for replay (no `alwaysUseRealApi` flag).
+**Important:** By default, Mockifyer records with `alwaysUseRealApi: true`, which means the mock is saved but **the live API is still used** for subsequent requests until you manually activate the mock. To make mocks immediately replayable, the `record.js` script sets `process.env.MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API = 'false'` before calling `setupMockifyer`.
+
+Without this setting, `npm run record` would save a mock that doesn't replay, and offline tests would hang trying to reach the real API.
 
 ## Running with networking disabled
 
-To prove tests run completely offline:
+To prove tests run offline:
 
 ```bash
-# Block outbound connections (Linux/macOS)
-unshare --net npm test  # Linux
-# or
-networksetup -setairportpower en0 off && npm test && networksetup -setairportpower en0 on  # macOS
-
-# Tests should still pass because they use local mocks
+# Block outbound connections (Linux)
+unshare -rn npm test
 ```
+
+Tests pass because `failOnMissingMock: true` enforces strict replay mode—requests without mocks throw an error instead of trying the network.
 
 ## Packages
 
@@ -73,7 +77,13 @@ networksetup -setairportpower en0 off && npm test && networksetup -setairportpow
 The test uses:
 - `useGlobalFetch: true` — patches global `fetch` to intercept requests
 - `recordMode: false` — replay only (no live API calls)
-- `failOnMissingMock: true` — throws if a mock is missing
+- `failOnMissingMock: true` — throws if a mock is missing (enforces offline replay)
 - `domainPathRulesMode: 'record_all'` — allows mocking without explicit rules
 
-When recording, set `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false` so mocks are replayed immediately (without this env var, new mocks keep using the live API until manually activated).
+## Limits
+
+Based on Mockifyer's implementation:
+
+- **Request matching**: Method + full URL (including query string). Headers are not matched by default unless configured via `requestMatching` options.
+- **Date behavior**: `getCurrentDate()` returns the fixed date from `dateManipulation.fixedDate`. `new Date()` returns real system time—use `getCurrentDate()` for consistent test dates.
+- **Mock file naming**: Timestamped files like `2026-10-16T21-42-28-914Z_GET_demo_devxtools_dev_tasks_1.json`. Mockifyer finds the most recent match for each request.
