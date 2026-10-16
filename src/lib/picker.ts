@@ -176,3 +176,56 @@ export function rankTools(matches: ToolMatch[]): ToolMatch[] {
     return a.tool.name.localeCompare(b.tool.name);
   });
 }
+
+export function parseUrlState(): PickerState {
+  if (typeof window === 'undefined') {
+    return { platform: '', need: [], lang: '', spec: [], oss: '' };
+  }
+  const params = new URLSearchParams(window.location.search);
+  return {
+    platform: params.get('platform') || '',
+    need: params.get('need')?.split(',').filter(Boolean).slice(0, 3) || [],
+    lang: params.get('lang') || '',
+    spec: params.get('spec')?.split(',').filter(Boolean) || [],
+    oss: params.get('oss') || ''
+  };
+}
+
+export function serializeUrlState(state: PickerState): string {
+  const params = new URLSearchParams();
+  if (state.platform) params.set('platform', state.platform);
+  if (state.need.length) params.set('need', state.need.join(','));
+  if (state.lang) params.set('lang', state.lang);
+  if (state.spec.length) params.set('spec', state.spec.join(','));
+  if (state.oss) params.set('oss', state.oss);
+  return params.toString();
+}
+
+export function getMostRestrictiveFilter(state: PickerState): string {
+  // Determine which filter is most restrictive
+  if (state.need.length > 0) return 'need';
+  if (state.spec.length > 0) return 'spec';
+  if (state.lang) return 'lang';
+  if (state.platform) return 'platform';
+  if (state.oss) return 'oss';
+  return '';
+}
+
+export function findNearestMatches(tools: Tool[], state: PickerState, limit: number = 3): ToolMatch[] {
+  // Try relaxing filters one at a time
+  const relaxed = { ...state };
+  const restrictive = getMostRestrictiveFilter(relaxed);
+  
+  // Relax the most restrictive filter
+  if (restrictive === 'need') relaxed.need = [];
+  else if (restrictive === 'spec') relaxed.spec = [];
+  else if (restrictive === 'lang') relaxed.lang = '';
+  else if (restrictive === 'platform') relaxed.platform = '';
+  else if (restrictive === 'oss') relaxed.oss = '';
+  
+  const matches = tools
+    .map(t => matchesTool(t, relaxed, 'best'))
+    .filter((m): m is ToolMatch => m !== null);
+  
+  return rankTools(matches).slice(0, limit);
+}

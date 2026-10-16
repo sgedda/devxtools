@@ -55,10 +55,10 @@ const toolsJson = JSON.stringify(tools);
     
     <!-- JS version -->
     <div id="picker-app" class="hidden">
-      <!-- Desktop filters -->
-      <div id="filters-desktop" class="mt-8 rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
+      <!-- Desktop filters container -->
+      <div id="filters-desktop-wrapper" class="mt-8 rounded-xl border border-zinc-200 p-6 dark:border-zinc-800">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Filters</h2>
+          <h2 id="filters-title" class="text-sm font-medium text-zinc-500 dark:text-zinc-400">Filters</h2>
           <div class="flex items-center gap-3">
             <button id="copy-link-btn" class="hidden items-center gap-1.5 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
               <Icon name="link" size={16} />
@@ -69,6 +69,9 @@ const toolsJson = JSON.stringify(tools);
             </button>
           </div>
         </div>
+        
+        <!-- Shared filters form (moves between desktop and mobile) -->
+        <form id="picker-filters">
         
         <!-- Platform -->
         <fieldset class="mb-6">
@@ -216,6 +219,7 @@ const toolsJson = JSON.stringify(tools);
             </fieldset>
           </div>
         </details>
+        </form>
       </div>
       
       <!-- Mobile summary bar (sticky) -->
@@ -223,7 +227,6 @@ const toolsJson = JSON.stringify(tools);
         <div class="flex items-center justify-between">
           <div class="flex-1 min-w-0">
             <div id="mobile-summary-text" class="text-sm text-zinc-600 dark:text-zinc-400 truncate"></div>
-            <div id="mobile-result-count" class="text-xs text-zinc-500" role="status" aria-live="polite"></div>
           </div>
           <button id="edit-filters-btn" class="ml-3 text-sm font-medium text-indigo-600 dark:text-indigo-400">
             Edit
@@ -233,8 +236,8 @@ const toolsJson = JSON.stringify(tools);
       
       <!-- Results -->
       <div class="mt-6">
-        <div id="result-count" class="text-sm text-zinc-500" role="status" aria-live="polite" aria-atomic="true"></div>
-        <p class="mt-1 text-xs text-zinc-400">Ranked by fit, then GitHub stars. No sponsored placement.</p>
+        <div id="result-count" class="text-sm text-zinc-600 dark:text-zinc-400" role="status" aria-live="polite" aria-atomic="true"></div>
+        <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Ranked by fit, then GitHub stars. No sponsored placement.</p>
         
         <!-- Per-need picks (when needs are selected) -->
         <div id="per-need-picks" class="hidden mt-6 space-y-8"></div>
@@ -269,16 +272,24 @@ const toolsJson = JSON.stringify(tools);
       </div>
       
       <!-- Mobile bottom sheet -->
-      <div id="mobile-sheet-overlay" class="hidden fixed inset-0 bg-black/50 z-40"></div>
-      <div id="mobile-sheet" class="hidden fixed inset-x-0 bottom-0 z-50 bg-white dark:bg-zinc-950 rounded-t-2xl border-t border-zinc-200 dark:border-zinc-800 max-h-[85vh] overflow-y-auto">
+      <div id="mobile-sheet-overlay" class="hidden fixed inset-0 bg-black/50 z-40" aria-hidden="true"></div>
+      <div 
+        id="mobile-sheet" 
+        class="hidden fixed inset-x-0 bottom-0 z-50 bg-white dark:bg-zinc-950 rounded-t-2xl border-t border-zinc-200 dark:border-zinc-800 max-h-[85vh] overflow-y-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="mobile-sheet-title"
+      >
         <div class="sticky top-0 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 px-5 py-4 flex items-center justify-between">
           <div class="w-12 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full mx-auto"></div>
-          <h2 class="font-semibold text-zinc-900 dark:text-white">Filters</h2>
-          <button id="close-sheet-btn" class="text-zinc-500 hover:text-zinc-900 dark:hover:text-white">
+          <h2 id="mobile-sheet-title" class="font-semibold text-zinc-900 dark:text-white">Filters</h2>
+          <button id="close-sheet-btn" class="text-zinc-500 hover:text-zinc-900 dark:hover:text-white" aria-label="Close filters">
             <Icon name="x" size={24} />
           </button>
         </div>
-        <div class="p-5" id="mobile-filters-content"></div>
+        <div class="p-5" id="mobile-filters-container">
+          <!-- picker-filters form will be moved here when sheet opens -->
+        </div>
         <div class="sticky bottom-0 bg-white dark:bg-zinc-950 border-t border-zinc-200 dark:border-zinc-800 p-5 flex gap-3">
           <button id="mobile-clear-btn" class="flex-1 rounded-lg border border-zinc-300 px-4 py-2.5 font-medium dark:border-zinc-700">
             Clear all
@@ -327,6 +338,15 @@ const toolsJson = JSON.stringify(tools);
     };
     
     let hasInteracted = false;
+    
+    // Debounced aria-live announcements
+    let announceTimer = null;
+    function announceResults(text) {
+      clearTimeout(announceTimer);
+      announceTimer = setTimeout(() => {
+        document.getElementById('result-count').textContent = text;
+      }, 400);
+    }
     
     function initFromURL() {
       const params = new URLSearchParams(window.location.search);
@@ -387,7 +407,7 @@ const toolsJson = JSON.stringify(tools);
       let score = 0;
       let isLanguageAgnostic = false;
       
-      // Platform matching
+      // Platform matching (HARD FILTER for both modes)
       if (state.platform) {
         const platformMatches = {
           web: tool.runtimes?.some(r => ['Browser', 'Web', 'React'].includes(r)) || tool.platforms?.includes('Web'),
@@ -401,17 +421,15 @@ const toolsJson = JSON.stringify(tools);
         if (platformMatches[state.platform]) {
           reasons.push(state.platform);
           score += 10;
-        } else if (agnosticPlatform) {
+        } else if (agnosticPlatform && filterMode === 'also') {
           isLanguageAgnostic = true;
-          if (filterMode !== 'best') {
-            reasons.push('language-agnostic');
-          }
-        } else if (filterMode === 'best') {
-          return null;
+          reasons.push('language-agnostic');
+        } else {
+          return null; // Hard filter: no platform match
         }
       }
       
-      // Needs matching
+      // Needs matching (HARD FILTER for both modes)
       let matchedNeeds = [];
       if (state.need.length > 0) {
         state.need.forEach(need => {
@@ -429,7 +447,7 @@ const toolsJson = JSON.stringify(tools);
         }
       }
       
-      // Language matching
+      // Language matching (HARD FILTER for both modes)
       if (state.lang) {
         const langMatches = {
           ts: tool.languages?.some(l => ['TypeScript', 'JavaScript'].includes(l)),
@@ -445,23 +463,21 @@ const toolsJson = JSON.stringify(tools);
         if (langMatches[state.lang]) {
           reasons.push(state.lang);
           score += 5;
-        } else if (anyLanguage) {
+        } else if (anyLanguage && filterMode === 'also') {
           isLanguageAgnostic = true;
-          if (filterMode !== 'best') {
-            reasons.push('any-language');
-          }
-        } else if (filterMode === 'best') {
-          return null;
+          reasons.push('any-language');
+        } else {
+          return null; // Hard filter: no language match
         }
       }
       
-      // Spec support
+      // Spec support (HARD FILTER for both modes)
       if (state.spec.length > 0) {
         const matchedSpecs = state.spec.filter(spec => 
           tool.specSupport?.some(s => s.toLowerCase() === spec.toLowerCase())
         );
-        if (matchedSpecs.length === 0 && filterMode === 'best') {
-          return null;
+        if (matchedSpecs.length === 0) {
+          return null; // Hard filter: no spec match
         }
         matchedSpecs.forEach(spec => {
           reasons.push(spec);
@@ -469,7 +485,7 @@ const toolsJson = JSON.stringify(tools);
         });
       }
       
-      // OSS filter
+      // OSS filter (HARD FILTER for both modes)
       if (state.oss === '1') {
         if (!tool.isOpenSource) {
           return null;
@@ -542,7 +558,7 @@ const toolsJson = JSON.stringify(tools);
           </div>
         </div>
         
-        ${reasonChips ? `<ul class="flex flex-wrap gap-1.5 mb-3" aria-label="Matches:"><span class="sr-only">Matches:</span>${reasonChips}</ul>` : ''}
+        ${reasonChips ? `<ul class="flex flex-wrap gap-1.5 mb-3" aria-label="Matches:">${reasonChips}</ul>` : ''}
         
         <p class="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 mb-3">
           ${whenToUseText}
@@ -596,7 +612,7 @@ const toolsJson = JSON.stringify(tools);
           grid.appendChild(createToolCard(match));
         });
         
-        document.getElementById('result-count').textContent = '';
+        announceResults('');
         return;
       }
       
@@ -621,10 +637,9 @@ const toolsJson = JSON.stringify(tools);
       
       const totalMatches = bestMatches.length + alsoWorks.length;
       
-      // Update count
+      // Update count (debounced for aria-live)
       const countText = totalMatches === 1 ? '1 tool matches' : `${totalMatches} tools match`;
-      document.getElementById('result-count').textContent = countText;
-      document.getElementById('mobile-result-count').textContent = countText;
+      announceResults(countText);
       document.getElementById('mobile-apply-count').textContent = totalMatches;
       
       // Hide popular tools
@@ -697,15 +712,28 @@ const toolsJson = JSON.stringify(tools);
         if (needMatches.length === 0) return;
         
         const section = document.createElement('div');
+        
+        // Check if Mockifyer is the only pick
+        const picks = needMatches.slice(0, 3);
+        const onlyMockifyer = picks.length === 1 && picks[0].tool.slug === 'mockifyer';
+        
         section.innerHTML = `
+          ${onlyMockifyer ? `<p class="text-xs text-amber-700 dark:text-amber-400 mb-3">⚠️ ${picks[0].tool.affiliation}</p>` : ''}
           <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mb-4">Best for: ${NEED_LABELS[need]}</h2>
           <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="need-${need}-grid"></div>
         `;
         container.appendChild(section);
         
         const grid = section.querySelector(`#need-${need}-grid`);
-        needMatches.slice(0, 3).forEach(match => {
-          grid.appendChild(createToolCard(match));
+        picks.forEach(match => {
+          // Skip disclosure on card if already shown at group level
+          const cardHtml = createToolCard(match);
+          if (onlyMockifyer && match.tool.slug === 'mockifyer') {
+            // Remove affiliation from card
+            const affiliationP = cardHtml.querySelector('p.text-amber-700, p.text-amber-400');
+            if (affiliationP) affiliationP.remove();
+          }
+          grid.appendChild(cardHtml);
           shownSlugs.add(match.tool.slug);
         });
       });
@@ -893,26 +921,68 @@ const toolsJson = JSON.stringify(tools);
       updateResults();
     }
     
+    // Track if user has explicitly touched language
+    let languageInteracted = false;
+    
     // Event listeners
     document.querySelectorAll('input[name="platform"]').forEach(input => {
       input.addEventListener('change', () => {
         hasInteracted = true;
         state.platform = input.value;
+        
+        // Auto-select TypeScript for web/RN if user hasn't explicitly touched language
+        if ((input.value === 'web' || input.value === 'rn') && !languageInteracted) {
+          state.lang = 'ts';
+          syncUIWithState();
+        }
+        
         updateResults();
       });
     });
+    
+    function updateNeedState() {
+      // Update aria-disabled on unchecked needs when limit reached
+      document.querySelectorAll('input[name="need"]').forEach(input => {
+        const label = input.closest('label');
+        if (state.need.length >= 3 && !input.checked) {
+          label.setAttribute('aria-disabled', 'true');
+          label.style.opacity = '0.5';
+          label.style.cursor = 'not-allowed';
+        } else {
+          label.removeAttribute('aria-disabled');
+          label.style.opacity = '';
+          label.style.cursor = '';
+        }
+      });
+      
+      // Show/hide hint
+      const legend = document.querySelector('fieldset:has(input[name="need"]) legend');
+      if (state.need.length >= 3) {
+        const existing = legend.querySelector('.need-limit-hint');
+        if (!existing) {
+          const hint = document.createElement('span');
+          hint.className = 'need-limit-hint text-xs text-amber-600 dark:text-amber-400 ml-2';
+          hint.textContent = 'Up to 3; untick one to change.';
+          legend.appendChild(hint);
+        }
+      } else {
+        legend.querySelector('.need-limit-hint')?.remove();
+      }
+    }
     
     document.querySelectorAll('input[name="need"]').forEach(input => {
       input.addEventListener('change', () => {
         if (input.checked) {
           if (state.need.length < 3) {
             state.need.push(input.value);
+            updateNeedState();
           } else {
             input.checked = false;
             return;
           }
         } else {
           state.need = state.need.filter(n => n !== input.value);
+          updateNeedState();
         }
         updateResults();
       });
@@ -921,6 +991,7 @@ const toolsJson = JSON.stringify(tools);
     document.querySelectorAll('input[name="lang"]').forEach(input => {
       input.addEventListener('change', () => {
         hasInteracted = true;
+        languageInteracted = true;
         state.lang = input.value;
         updateResults();
       });
@@ -957,37 +1028,93 @@ const toolsJson = JSON.stringify(tools);
       }, 2000);
     });
     
-    // Mobile sheet
+    // Mobile sheet with focus management
     const sheet = document.getElementById('mobile-sheet');
     const overlay = document.getElementById('mobile-sheet-overlay');
+    const editBtn = document.getElementById('edit-filters-btn');
+    let lastFocusedElement = null;
+    let focusTrap = null;
     
     function openSheet() {
+      // Save last focused element
+      lastFocusedElement = document.activeElement;
+      
+      // Move the form into the mobile sheet
+      const form = document.getElementById('picker-filters');
+      const mobileContainer = document.getElementById('mobile-filters-container');
+      mobileContainer.appendChild(form);
+      
+      // Show sheet and overlay
       sheet.classList.remove('hidden');
       overlay.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
       
-      // Clone filters into sheet
-      const filtersDesktop = document.getElementById('filters-desktop');
-      const mobileContent = document.getElementById('mobile-filters-content');
-      mobileContent.innerHTML = filtersDesktop.innerHTML;
-      
-      // Re-attach event listeners in mobile sheet
-      mobileContent.querySelectorAll('input').forEach(input => {
-        const desktopInput = filtersDesktop.querySelector(`input[name="${input.name}"][value="${input.value}"]`);
-        if (desktopInput) {
-          input.addEventListener('change', () => {
-            desktopInput.checked = input.checked;
-            desktopInput.dispatchEvent(new Event('change'));
-          });
+      // Focus the first input or the sheet title
+      setTimeout(() => {
+        const firstInput = form.querySelector('input[type="radio"]:checked, input:not([type="checkbox"])');
+        const sheetTitle = document.getElementById('mobile-sheet-title');
+        if (firstInput) {
+          firstInput.focus();
+        } else {
+          sheetTitle.focus();
         }
-      });
+      }, 100);
+      
+      // Set up focus trap
+      setupFocusTrap();
     }
     
     function closeSheet() {
+      // Move the form back to desktop wrapper
+      const form = document.getElementById('picker-filters');
+      const desktopWrapper = document.getElementById('filters-desktop-wrapper');
+      desktopWrapper.appendChild(form);
+      
+      // Hide sheet and overlay
       sheet.classList.add('hidden');
       overlay.classList.add('hidden');
       document.body.style.overflow = '';
+      
+      // Return focus
+      if (lastFocusedElement && editBtn) {
+        editBtn.focus();
+      }
+      
+      // Remove focus trap
+      if (focusTrap) {
+        document.removeEventListener('keydown', focusTrap);
+        focusTrap = null;
+      }
     }
+    
+    function setupFocusTrap() {
+      focusTrap = (e) => {
+        if (e.key !== 'Tab') return;
+        
+        const focusableElements = sheet.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      };
+      
+      document.addEventListener('keydown', focusTrap);
+    }
+    
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !sheet.classList.contains('hidden')) {
+        closeSheet();
+      }
+    });
     
     document.getElementById('edit-filters-btn')?.addEventListener('click', openSheet);
     document.getElementById('close-sheet-btn')?.addEventListener('click', closeSheet);
@@ -1055,7 +1182,8 @@ const toolsJson = JSON.stringify(tools);
     }
     
     .dark .filter-chip input:checked + span {
-      background-color: rgba(99, 102, 241, 0.1);
+      background-color: rgba(99, 102, 241, 0.2);
+      color: #c7d2fe;
     }
     
     .filter-chip input:focus-visible + span {
@@ -1070,8 +1198,11 @@ const toolsJson = JSON.stringify(tools);
     }
     
     @media (prefers-reduced-motion: reduce) {
-      .filter-chip {
-        transition: none;
+      .filter-chip,
+      article,
+      a,
+      button {
+        transition: none !important;
       }
     }
   </style>

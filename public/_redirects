@@ -1,4 +1,5 @@
 # Redirect stack-picker to picker
+/stack-picker /picker/ 301
 /stack-picker/ /picker/ 301
 
 # Redirect duplicate MSW vs Nock vs Polly guide to the comparison page
