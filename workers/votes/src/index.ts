@@ -308,7 +308,7 @@ export default {
       const cutoffDate = ninetyDaysAgo.toISOString().replace('T', ' ').substring(0, 19);
 
       const result = await env.DB.prepare(
-        "UPDATE votes SET voter_hash = 'EXPIRED_' || poll_id || '_' || option_id || '_' || created_at WHERE created_at < ? AND voter_hash NOT LIKE 'EXPIRED_%'"
+        "UPDATE votes SET voter_hash = 'EXPIRED_' || id || '_' || poll_id || '_' || option_id || '_' || created_at WHERE created_at < ? AND voter_hash NOT LIKE 'EXPIRED_%'"
       ).bind(cutoffDate).run();
 
       console.log(`Anonymized ${result.meta.changes || 0} vote hashes older than 90 days`);

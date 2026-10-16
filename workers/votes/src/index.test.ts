@@ -2,17 +2,58 @@ import { describe, it, expect } from 'vitest';
 import worker from './index';
 
 const createTestEnv = (): any => {
+  const votes = new Map<string, { poll_id: string; option_id: string; voter_hash: string; created_at: string; id: number }>();
+  let nextId = 1;
+
   const db: any = {
-    prepare: (sql: string) => ({
-      bind: (...args: any[]) => ({
+    prepare: (sql: string) => {
+      const boundArgs: any[] = [];
+      const prepared = {
+        bind: (...args: any[]) => {
+          boundArgs.push(...args);
+          return prepared;
+        },
         first: async () => null,
-        all: async () => ({ results: [] }),
-        run: async () => ({ success: true, meta: { changes: 0 } }),
-      }),
-      first: async () => null,
-      all: async () => ({ results: [] }),
-      run: async () => ({ success: true, meta: { changes: 0 } }),
-    }),
+        all: async () => {
+          if (sql.includes('SELECT * FROM votes WHERE created_at')) {
+            const timestamp = boundArgs[0];
+            const results = Array.from(votes.values()).filter(v => v.created_at === timestamp);
+            return { results };
+          }
+          return { results: [] };
+        },
+        run: async () => {
+          if (sql.includes('CREATE TABLE')) {
+            return { success: true, meta: { changes: 0 } };
+          }
+          if (sql.includes('INSERT INTO votes')) {
+            const id = nextId++;
+            const vote = {
+              id,
+              poll_id: boundArgs[0],
+              option_id: boundArgs[1],
+              voter_hash: boundArgs[2],
+              created_at: boundArgs[3],
+            };
+            votes.set(`${id}`, vote);
+            return { success: true, meta: { changes: 1 } };
+          }
+          if (sql.includes('UPDATE votes SET voter_hash')) {
+            const cutoffDate = boundArgs[0];
+            let changes = 0;
+            for (const [key, vote] of votes.entries()) {
+              if (vote.created_at < cutoffDate && !vote.voter_hash.startsWith('EXPIRED_')) {
+                vote.voter_hash = `EXPIRED_${vote.id}_${vote.poll_id}_${vote.option_id}_${vote.created_at}`;
+                changes++;
+              }
+            }
+            return { success: true, meta: { changes } };
+          }
+          return { success: true, meta: { changes: 0 } };
+        },
+      };
+      return prepared;
+    },
     exec: async () => {},
     batch: async () => [],
   };
@@ -167,5 +208,34 @@ describe('Votes Worker', () => {
     expect(response.status).toBe(503);
     const data = await response.json();
     expect(data).toHaveProperty('code', 'NOT_CONFIGURED');
+  });
+
+  it('should anonymize old votes without UNIQUE constraint violations', async () => {
+    const env = createTestEnv();
+
+    await env.DB.prepare(
+      'CREATE TABLE IF NOT EXISTS votes (id INTEGER PRIMARY KEY AUTOINCREMENT, poll_id TEXT, option_id TEXT, voter_hash TEXT, created_at TEXT, UNIQUE(poll_id, voter_hash))'
+    ).run();
+
+    const oldDate = new Date();
+    oldDate.setDate(oldDate.getDate() - 91);
+    const oldTimestamp = oldDate.toISOString().replace('T', ' ').substring(0, 19);
+
+    await env.DB.prepare(
+      'INSERT INTO votes (poll_id, option_id, voter_hash, created_at) VALUES (?, ?, ?, ?)'
+    ).bind('test-poll', 'option-1', 'hash1', oldTimestamp).run();
+
+    await env.DB.prepare(
+      'INSERT INTO votes (poll_id, option_id, voter_hash, created_at) VALUES (?, ?, ?, ?)'
+    ).bind('test-poll', 'option-1', 'hash2', oldTimestamp).run();
+
+    await worker.scheduled({ scheduledTime: Date.now(), cron: '0 2 * * *' } as any, env);
+
+    const votes = await env.DB.prepare('SELECT * FROM votes WHERE created_at = ?').bind(oldTimestamp).all();
+    
+    expect(votes.results?.length).toBe(2);
+    expect(votes.results?.[0].voter_hash).toMatch(/^EXPIRED_/);
+    expect(votes.results?.[1].voter_hash).toMatch(/^EXPIRED_/);
+    expect(votes.results?.[0].voter_hash).not.toBe(votes.results?.[1].voter_hash);
   });
 });

@@ -51,8 +51,7 @@ import Layout from '../../layouts/Layout.astro';
           Stack Polls help the DevX Tools community share their tool preferences and discover popular choices.
         </p>
         <p>
-          <strong>Privacy:</strong> All votes are anonymous. We store only a salted hash to prevent duplicate votes,
-          and use a secure cookie to track participation.
+          <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days.
         </p>
         <p class="text-sm">
           Want to suggest a poll topic? <a href="https://github.com/sgedda/devxtools/issues" target="_blank" rel="noopener noreferrer" class="text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white underline">Open an issue on GitHub</a>.

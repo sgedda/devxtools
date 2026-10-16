@@ -249,15 +249,29 @@ const { pollSlug } = Astro.props;
     }
 
     private async fetchPoll(): Promise<PollData> {
-      const response = await fetch(`/api/polls/${this.pollSlug}`, {
-        credentials: 'same-origin',
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-      if (!response.ok) {
-        throw new Error('Voting isn\'t available right now. Please check back later.');
+      try {
+        const response = await fetch(`/api/polls/${this.pollSlug}`, {
+          credentials: 'same-origin',
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          throw new Error('Voting isn\'t available right now. Please check back later.');
+        }
+
+        return response.json();
+      } catch (error) {
+        clearTimeout(timeoutId);
+        if (error instanceof Error && error.name === 'AbortError') {
+          throw new Error('Voting isn\'t available right now. Please check back later.');
+        }
+        throw error;
       }
-
-      return response.json();
     }
 
     private renderForm(data: PollData) {
