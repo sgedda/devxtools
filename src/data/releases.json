@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16T06:07:34.866Z",
+  "lastUpdated": "2026-10-16T06:13:58.464Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -14,14 +14,14 @@
       "source": "npm"
     },
     "bruno": {
-      "version": "v4.2.1",
+      "version": "4.2.1",
       "releaseDate": "2026-09-30T13:52:52Z",
       "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.2.1",
       "source": "github"
     },
     "chance": {
-      "version": "v2.2.6",
-      "releaseDate": "2026-10-16T06:07:36.115Z",
+      "version": "2.2.6",
+      "releaseDate": "2019-08-31T23:33:07Z",
       "releaseUrl": "https://github.com/chancejs/chancejs/releases/tag/v2.2.6",
       "source": "github"
     },
@@ -38,7 +38,7 @@
       "source": "npm"
     },
     "faker": {
-      "version": "v10.6.0",
+      "version": "10.6.0",
       "releaseDate": "2026-08-14T16:53:55Z",
       "releaseUrl": "https://github.com/faker-js/faker/releases/tag/v10.6.0",
       "source": "github"
@@ -50,25 +50,25 @@
       "source": "github"
     },
     "fishery": {
-      "version": "v2.4.0",
+      "version": "2.4.0",
       "releaseDate": "2025-12-08T21:18:40Z",
       "releaseUrl": "https://github.com/thoughtbot/fishery/releases/tag/v2.4.0",
       "source": "github"
     },
     "flipper": {
-      "version": "v0.273.0",
+      "version": "0.273.0",
       "releaseDate": "2024-11-21T15:13:10Z",
       "releaseUrl": "https://github.com/facebook/flipper/releases/tag/v0.273.0",
       "source": "github"
     },
     "gatling": {
-      "version": "v3.16.0",
+      "version": "3.16.0",
       "releaseDate": "2026-09-29T12:21:15Z",
       "releaseUrl": "https://github.com/gatling/gatling/releases/tag/v3.16.0",
       "source": "github"
     },
     "grafana-loki": {
-      "version": "v3.7.8",
+      "version": "3.7.8",
       "releaseDate": "2026-09-17T15:51:10Z",
       "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.8",
       "source": "github"
@@ -80,7 +80,7 @@
       "source": "github"
     },
     "hoverfly": {
-      "version": "v1.12.15",
+      "version": "1.12.15",
       "releaseDate": "2026-09-21T21:14:58Z",
       "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.15",
       "source": "github"
@@ -97,14 +97,20 @@
       "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
       "source": "github"
     },
+    "jmeter": {
+      "version": "rel/v5.6.3",
+      "releaseDate": "2024-01-09T08:29:40Z",
+      "releaseUrl": "https://github.com/apache/jmeter/releases/tag/rel/v5.6.3",
+      "source": "github"
+    },
     "json-server": {
-      "version": "v1.0.0-beta.15",
+      "version": "1.0.0-beta.15",
       "releaseDate": "2026-03-23T19:40:05Z",
       "releaseUrl": "https://github.com/typicode/json-server/releases/tag/v1.0.0-beta.15",
       "source": "github"
     },
     "k6": {
-      "version": "v2.3.0",
+      "version": "2.3.0",
       "releaseDate": "2026-09-21T15:17:03Z",
       "releaseUrl": "https://github.com/grafana/k6/releases/tag/v2.3.0",
       "source": "github"
@@ -128,7 +134,7 @@
       "source": "github"
     },
     "miragejs": {
-      "version": "v0.1.48",
+      "version": "0.1.48",
       "releaseDate": "2023-10-30T11:27:30Z",
       "releaseUrl": "https://github.com/miragejs/miragejs/releases/tag/v0.1.48",
       "source": "github"
@@ -146,7 +152,7 @@
       "source": "npm"
     },
     "mountebank": {
-      "version": "v2.9.4",
+      "version": "2.9.4",
       "releaseDate": "2026-04-15T16:22:19Z",
       "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.9.4",
       "source": "github"
@@ -164,9 +170,15 @@
       "source": "npm"
     },
     "openapi-generator": {
-      "version": "v7.26.0",
+      "version": "7.26.0",
       "releaseDate": "2026-10-06T09:33:32Z",
       "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
+      "source": "github"
+    },
+    "openobserve": {
+      "version": "1.1.0",
+      "releaseDate": "2026-10-14T12:47:10Z",
+      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.0",
       "source": "github"
     },
     "opentelemetry": {
@@ -176,7 +188,7 @@
       "source": "npm"
     },
     "pact": {
-      "version": "v17.1.4",
+      "version": "17.1.4",
       "releaseDate": "2026-09-07T07:08:51Z",
       "releaseUrl": "https://github.com/pact-foundation/pact-js/releases/tag/v17.1.4",
       "source": "github"
@@ -205,6 +217,12 @@
       "releaseUrl": "https://www.npmjs.com/package/@stoplight/prism-cli/v/5.16.0",
       "source": "npm"
     },
+    "prometheus": {
+      "version": "3.15.0",
+      "releaseDate": "2026-09-25T08:56:22Z",
+      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.0",
+      "source": "github"
+    },
     "reactotron": {
       "version": "reactotron-react-native@5.3.1",
       "releaseDate": "2026-08-13T22:52:37Z",
@@ -217,14 +235,26 @@
       "releaseUrl": "https://www.npmjs.com/package/@redocly/cli/v/2.64.0",
       "source": "npm"
     },
+    "schemathesis": {
+      "version": "4.31.1",
+      "releaseDate": "2026-10-14T23:49:24Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.31.1",
+      "source": "github"
+    },
     "sentry": {
       "version": "26.10.0",
       "releaseDate": "2026-10-16T00:55:43Z",
       "releaseUrl": "https://github.com/getsentry/sentry/releases/tag/26.10.0",
       "source": "github"
     },
+    "signoz": {
+      "version": "0.146.0",
+      "releaseDate": "2026-10-14T06:42:10Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.146.0",
+      "source": "github"
+    },
     "speakeasy": {
-      "version": "v1.802.0",
+      "version": "1.802.0",
       "releaseDate": "2026-10-11T15:17:50Z",
       "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.802.0",
       "source": "github"
@@ -236,13 +266,13 @@
       "source": "npm"
     },
     "swagger-editor": {
-      "version": "v5.9.1",
+      "version": "5.9.1",
       "releaseDate": "2026-10-15T13:53:21Z",
       "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.9.1",
       "source": "github"
     },
     "thunder-client": {
-      "version": "v2.41.6",
+      "version": "2.41.6",
       "releaseDate": "2026-10-10T14:51:12Z",
       "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v2.41.6",
       "source": "github"
@@ -260,7 +290,7 @@
       "source": "github"
     },
     "yaak": {
-      "version": "v2026.9.0",
+      "version": "2026.9.0",
       "releaseDate": "2026-10-10T17:17:54Z",
       "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.0",
       "source": "github"
