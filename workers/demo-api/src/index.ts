@@ -225,7 +225,8 @@ function getOpenApiSpec() {
               name: 'code',
               in: 'path',
               required: true,
-              schema: { type: 'integer' },
+              schema: { type: 'integer', minimum: 200, maximum: 599 },
+              description: 'HTTP status code (200-599). 1xx codes cannot be returned as final responses from Workers.',
             },
           ],
           responses: {
@@ -372,8 +373,8 @@ async function handleRequest(request: Request, env: Env): Promise<Response> {
   const statusMatch = pathname.match(/^\/status\/(\d+)$/);
   if (statusMatch && method === 'GET') {
     const code = parseInt(statusMatch[1], 10);
-    if (code < 100 || code > 599) {
-      return jsonResponse({ error: 'Invalid status code' }, 400);
+    if (code < 200 || code > 599) {
+      return jsonResponse({ error: 'Invalid status code. Must be 200-599.' }, 400);
     }
     return jsonResponse({ status: code, message: `Status ${code}` }, code);
   }

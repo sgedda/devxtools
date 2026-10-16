@@ -3,5 +3,9 @@ main = "src/index.ts"
 compatibility_date = "2024-10-16"
 compatibility_flags = ["nodejs_compat"]
 
-# Workers AI and other bindings would go here if needed
-# Rate limiting binding is not available on free plan as of Oct 2024
+# Rate limiting: 60 requests per minute per IP
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 60, period = 60 }

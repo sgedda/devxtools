@@ -9,7 +9,7 @@ A stable, read-only fake REST API for devxtools.dev guides and demos, deployed a
 - **Scenario helpers**: Test different HTTP behaviors
 - **CORS-enabled**: Works from any origin
 - **OpenAPI 3.1**: Full specification at `/openapi.json`
-- **Rate limited**: Per-IP rate limiting (when available)
+- **Rate limited**: 60 requests per minute per IP
 
 ## Endpoints
 
@@ -25,7 +25,7 @@ A stable, read-only fake REST API for devxtools.dev guides and demos, deployed a
 
 ### Scenario Helpers
 
-- `GET /status/:code` - Return any HTTP status code (100-599)
+- `GET /status/:code` - Return any HTTP status code (200-599)
 - `GET /delay/:ms` - Delay response by specified milliseconds (max 5000ms)
 - `GET /flaky` - Randomly fails ~1 in 3 requests (200 or 503)
 
@@ -63,9 +63,16 @@ npm run deploy
 
 ### Required Secrets
 
-The following secrets must be configured in the GitHub repository:
+The following secret must be configured in the GitHub repository (Settings → Secrets and variables → Actions):
 
-- `CLOUDFLARE_API_TOKEN` - Cloudflare API token with Workers deploy permission
+- `CLOUDFLARE_WORKERS_TOKEN` - Cloudflare API token with the following permissions:
+  - **Account > Workers Scripts > Edit**
+  - **Zone > Workers Routes > Edit** (only if using routes; not needed for `*.workers.dev` domains)
+
+To create the token:
+1. Go to Cloudflare Dashboard → My Profile → API Tokens → Create Token
+2. Use "Edit Cloudflare Workers" template or create a custom token with the above permissions
+3. Add the token as a repository secret named `CLOUDFLARE_WORKERS_TOKEN`
 
 Account ID is already configured in the workflow: `2da5448d9c00373519c97d8368d08ae3`
 
@@ -82,19 +89,27 @@ This step cannot be automated in code without prior DNS configuration.
 
 ## Rate Limiting
 
-**Note**: The Workers Rate Limiting binding is not available on the Cloudflare Workers free plan as of October 2024. The code includes the rate limiting logic with a graceful fallback that allows all requests if the binding is unavailable.
+Rate limiting is enabled at **60 requests per minute per IP address** using Cloudflare's Workers Rate Limiting API (open beta). This binding is available on the Workers Free plan.
 
-To enable rate limiting in production:
-1. Upgrade to a Workers paid plan
-2. Add the rate limiting binding to `wrangler.toml`
-3. Redeploy
+The rate limiter uses the `CF-Connecting-IP` header to identify clients. When the limit is exceeded, the API returns HTTP 429 with a JSON error message.
+
+Configuration in `wrangler.toml`:
+```toml
+[[unsafe.bindings]]
+name = "RATE_LIMITER"
+type = "ratelimit"
+namespace_id = "1001"
+simple = { limit = 60, period = 60 }
+```
+
+**Reference:** [Cloudflare Workers Rate Limiting documentation](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)
 
 ## Architecture
 
 - **Runtime**: Cloudflare Workers (Edge)
 - **Language**: TypeScript 7.0.2
 - **Deployment**: Wrangler 4.151.0
-- **Testing**: Vitest with @cloudflare/vitest-pool-workers
+- **Testing**: Vitest 5.0.5 with @cloudflare/vitest-plugin 1.4.3
 - **No external storage**: No KV, D1, or databases
 - **No secrets**: No API keys or user data
 

@@ -122,6 +122,21 @@ describe('Demo API', () => {
     expect(response.status).toBe(404);
   });
 
+  it('GET /status/100 returns 400 (1xx not allowed)', async () => {
+    const request = new Request('http://localhost/status/100');
+    const response = await SELF.fetch(request, {} as any, {} as any);
+    expect(response.status).toBe(400);
+    
+    const data = await response.json();
+    expect(data).toHaveProperty('error');
+  });
+
+  it('GET /status/600 returns 400 (out of range)', async () => {
+    const request = new Request('http://localhost/status/600');
+    const response = await SELF.fetch(request, {} as any, {} as any);
+    expect(response.status).toBe(400);
+  });
+
   it('GET /delay/100 delays response', async () => {
     const start = Date.now();
     const request = new Request('http://localhost/delay/100');
