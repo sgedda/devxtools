@@ -421,6 +421,31 @@ describe('Empty state logic', () => {
 });
 
 describe('Need filter enforcement', () => {
+  it('Mockifyer must not appear as best match for platform=web, need=mock, lang=ts', () => {
+    const state = { platform: 'web', need: ['mock'], lang: 'ts', spec: [], oss: '' };
+    
+    // Find Mockifyer in mock tools
+    const mockifyer = mockTools.find(t => t.slug === 'mockifyer') || {
+      name: 'Mockifyer',
+      slug: 'mockifyer',
+      categories: ['record-replay', 'http-interception'],
+      platforms: ['React Native'],
+      runtimes: ['Node.js', 'React Native'],
+      languages: ['TypeScript', 'JavaScript'],
+      isOpenSource: true
+    };
+    
+    const mockifyerMatch = matchesTool(mockifyer, state, 'best');
+    
+    // Mockifyer should NOT be a best match because:
+    // 1. It doesn't have Web platform (only React Native)
+    // 2. Even though it matches need=mock and lang=ts
+    expect(mockifyerMatch).toBeNull();
+    
+    // It might appear in "also works" if language-agnostic rules apply
+    // but that's acceptable - the key is it's not a best match
+  });
+  
   it('requires tools to match at least one need when needs are selected', () => {
     const state = { platform: 'web', need: ['mock'], lang: 'ts', spec: [], oss: '' };
     
@@ -486,5 +511,76 @@ describe('Need filter enforcement', () => {
     
     // Should get multiple tools including e2e tools
     expect(allMatches.length).toBeGreaterThan(0);
+  });
+});
+
+describe('Nearest matches for empty state', () => {
+  it('finds partial matches when no exact matches exist', () => {
+    // A state that yields no exact matches
+    const state = { platform: 'web', need: ['load'], lang: 'go', spec: [], oss: '' };
+    
+    // No tools should match all three filters
+    const exactMatches = mockTools
+      .map(t => matchesTool(t, state, 'also'))
+      .filter(m => m !== null);
+    
+    expect(exactMatches.length).toBe(0);
+    
+    // But individual filter checks should find partial matches
+    const partialMatches: any[] = [];
+    
+    mockTools.forEach(tool => {
+      let matchCount = 0;
+      
+      // Check platform individually
+      const platformState = { platform: state.platform, need: [], lang: '', spec: [], oss: '' };
+      if (matchesTool(tool, platformState, 'also')) matchCount++;
+      
+      // Check each need individually
+      state.need.forEach(need => {
+        const needState = { platform: '', need: [need], lang: '', spec: [], oss: '' };
+        if (matchesTool(tool, needState, 'also')) matchCount++;
+      });
+      
+      // Check language individually
+      if (state.lang) {
+        const langState = { platform: '', need: [], lang: state.lang, spec: [], oss: '' };
+        if (matchesTool(tool, langState, 'also')) matchCount++;
+      }
+      
+      if (matchCount > 0) {
+        partialMatches.push({ tool, matchCount });
+      }
+    });
+    
+    // Should find some partial matches
+    expect(partialMatches.length).toBeGreaterThan(0);
+    
+    // Web tools should match the platform filter at least
+    const webMatches = partialMatches.filter(m => 
+      ['msw', 'playwright', 'cypress'].includes(m.tool.slug)
+    );
+    expect(webMatches.length).toBeGreaterThan(0);
+  });
+  
+  it('respects need matching rules in partial matches', () => {
+    const state = { platform: '', need: ['mock'], lang: 'go', spec: [], oss: '' };
+    
+    // When checking need individually, tools must still match that need
+    mockTools.forEach(tool => {
+      const needState = { platform: '', need: ['mock'], lang: '', spec: [], oss: '' };
+      const needMatch = matchesTool(tool, needState, 'also');
+      
+      if (needMatch) {
+        // Tool must be in mock categories
+        const NEED_TO_CATEGORIES: Record<string, string[]> = {
+          mock: ['http-interception', 'mock-server', 'spec-based-mocking', 'hosted-mocks']
+        };
+        const hasMockCategory = tool.categories?.some((c: string) => 
+          NEED_TO_CATEGORIES.mock.includes(c)
+        );
+        expect(hasMockCategory).toBe(true);
+      }
+    });
   });
 });

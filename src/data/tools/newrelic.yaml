@@ -2,7 +2,8 @@ name: New Relic
 slug: newrelic
 website: https://newrelic.com/
 license: Proprietary
-languages: []
+languages:
+  - N/A
 runtimes:
   - Hosted
 sections:
@@ -16,3 +17,4 @@ description: Comprehensive observability platform with APM, infrastructure monit
 whenToUse: When you need enterprise-grade observability, need unified visibility across applications and infrastructure, or prefer usage-based pricing over per-host billing.
 lastChecked: 2026-10-16
 isOpenSource: false
+languageAgnostic: true

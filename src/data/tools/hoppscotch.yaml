@@ -24,5 +24,6 @@ githubStars: 73200
 lastActivity: 2026-10-13T14:28:19Z
 lastChecked: 2026-10-14
 isOpenSource: true
+languageAgnostic: true
 platforms:
   - Web

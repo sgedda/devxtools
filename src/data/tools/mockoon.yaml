@@ -25,3 +25,4 @@ npmPackage: "@mockoon/cli"
 weeklyDownloads: 47326
 lastChecked: 2026-10-14
 isOpenSource: true
+languageAgnostic: true

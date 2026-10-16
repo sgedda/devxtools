@@ -26,3 +26,4 @@ npmPackage: "@stoplight/prism-cli"
 weeklyDownloads: 226708
 lastChecked: 2026-10-14
 isOpenSource: true
+languageAgnostic: true

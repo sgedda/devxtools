@@ -793,39 +793,51 @@ const toolsJson = JSON.stringify(tools);
     }
     
     function showNearestMatches() {
-      // Find tools that match the most filters
+      // Find tools that match the most filters using matchesTool
+      // Try matching without requiring ALL filters
       const partial = [];
+      
       allTools.forEach(tool => {
-        let matchCount = 0;
-        const reasons = [];
+        // Try to match with each filter individually to see which ones match
+        let matchedFilters = [];
+        let unmatchedFilters = [];
         
+        // Check platform
         if (state.platform) {
-          const platformMatches = {
-            web: tool.runtimes?.some(r => ['Browser', 'Web', 'React'].includes(r)) || tool.platforms?.includes('Web'),
-            rn: tool.runtimes?.some(r => r === 'React Native') || tool.platforms?.includes('React Native'),
-            node: tool.runtimes?.some(r => r === 'Node.js'),
-            backend: tool.runtimes?.some(r => ['JVM', 'Python', '.NET'].includes(r))
-          };
-          if (platformMatches[state.platform]) {
-            matchCount++;
-            reasons.push('✓ ' + state.platform);
+          const platformState = { platform: state.platform, need: [], lang: '', spec: [], oss: '' };
+          if (matchesTool(tool, platformState, 'also')) {
+            matchedFilters.push('✓ ' + state.platform);
           } else {
-            reasons.push('✗ ' + state.platform);
+            unmatchedFilters.push('✗ ' + state.platform);
           }
         }
         
+        // Check each need individually
         state.need.forEach(need => {
-          const cats = NEED_TO_CATEGORIES[need] || [];
-          if (tool.categories?.some(c => cats.includes(c))) {
-            matchCount++;
-            reasons.push('✓ ' + need);
+          const needState = { platform: '', need: [need], lang: '', spec: [], oss: '' };
+          if (matchesTool(tool, needState, 'also')) {
+            matchedFilters.push('✓ ' + need);
           } else {
-            reasons.push('✗ ' + need);
+            unmatchedFilters.push('✗ ' + need);
           }
         });
         
-        if (matchCount > 0) {
-          partial.push({ tool, matchCount, reasons });
+        // Check language
+        if (state.lang) {
+          const langState = { platform: '', need: [], lang: state.lang, spec: [], oss: '' };
+          if (matchesTool(tool, langState, 'also')) {
+            matchedFilters.push('✓ ' + state.lang);
+          } else {
+            unmatchedFilters.push('✗ ' + state.lang);
+          }
+        }
+        
+        if (matchedFilters.length > 0) {
+          partial.push({ 
+            tool, 
+            matchCount: matchedFilters.length,
+            reasons: [...matchedFilters, ...unmatchedFilters]
+          });
         }
       });
       

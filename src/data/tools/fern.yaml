@@ -2,7 +2,7 @@ name: Fern
 slug: fern
 website: https://buildwithfern.com
 repo: https://github.com/fern-api/fern
-license: MIT
+license: Apache-2.0
 languages:
   - TypeScript
 runtimes:

@@ -48,9 +48,9 @@ This document lists all platforms values added to tool YAMLs and their sources f
     - Source: https://wix.github.io/Detox/ - "Gray box end-to-end testing and automation framework for mobile apps"
     - README explicitly lists React Native, iOS, and Android support
 
-11. **Mockifyer** - `platforms: [React Native, Web]`
-    - Source: https://github.com/sgedda/mockifyer - "HTTP mocking and recording for axios and fetch"
-    - README: "Supports React Native with device storage sync" and browser usage
+11. **Mockifyer** - `platforms: [React Native]`
+    - Source: https://github.com/sgedda/mockifyer - README
+    - "Usage in React Native / Expo" and "Usage in Node.js" sections present; Web/browser usage not documented in README
 
 12. **Reactotron** - `platforms: [React Native, iOS, Android]`
     - Source: https://github.com/infinitered/reactotron - "A desktop app for inspecting your React JS and React Native projects"
@@ -59,18 +59,21 @@ This document lists all platforms values added to tool YAMLs and their sources f
 13. **Flipper** - `platforms: [React Native, iOS, Android]`
     - Source: https://fbflipper.com/ - "Extensible mobile app debugger"
     - Supports React Native, iOS, and Android per documentation
+    - Note: React Native removed built-in Flipper support in v0.74 (https://github.com/react-native-community/discussions-and-proposals/discussions/641)
 
-14. **Appium** - `platforms: [iOS, Android, React Native]`
+14. **Appium** - `platforms: [iOS, Android, React Native, Web]`
     - Source: https://appium.io/ - "Automation for Apps"
-    - Supports native, hybrid, and mobile-web apps on iOS and Android, including React Native
+    - Homepage: "mobile apps on iOS, Android, and Windows Desktop platforms" and "mobile-web apps"
+    - Supports native, hybrid, mobile-web, and desktop apps including React Native
 
 15. **Maestro** - `platforms: [iOS, Android, React Native, Flutter, Web]`
     - Source: https://maestro.mobile.dev/ - "The easiest way to automate UI testing for your mobile app"
-    - README lists support for iOS, Android, React Native, Flutter, and Web
+    - Documentation shows iOS, Android, React Native, Flutter support
+    - Web support is in beta per https://maestro.mobile.dev/platform-support/web
 
-16. **Proxyman** - `platforms: [iOS, Android]`
+16. **Proxyman** - `platforms: [iOS, Android, Web]`
     - Source: https://proxyman.io/ - "Modern and Delightful HTTP Debugging Proxy"
-    - Features page lists iOS and Android support
+    - Features page: "Debug iOS, Android, and Web apps" and "Intercept HTTP/HTTPS requests from iOS, Android, and Web apps"
 
 17. **Charles Proxy** - `platforms: [iOS, Android, Web]`
     - Source: https://www.charlesproxy.com/ - "Web Debugging Proxy Application"
@@ -78,9 +81,9 @@ This document lists all platforms values added to tool YAMLs and their sources f
 
 ### Language-Agnostic / Multi-Platform
 
-18. **Sentry** - No specific platforms added (language-agnostic tool)
-    - Source: https://sentry.io/ - Error tracking for all platforms
-    - Supports web, mobile, desktop - truly multi-platform, so no specific platforms listed
+18. **Sentry** - `platforms: [Web, iOS, Android, React Native]`
+    - Source: https://sentry.io/ - "Application Monitoring and Error Tracking Software"
+    - Supports many platforms; YAML lists Web, iOS, Android, React Native as primary mobile/web platforms
 
 Note: Tools without platforms listed are either:
 - Language-agnostic with CLI/Desktop/Hosted runtimes (Postman, Bruno, Mockoon, etc.)

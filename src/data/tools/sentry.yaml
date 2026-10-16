@@ -2,7 +2,7 @@ name: Sentry
 slug: sentry
 website: https://sentry.io
 repo: https://github.com/getsentry/sentry
-license: BUSL-1.1
+license: FSL-1.1-Apache-2.0
 languages:
   - Python
   - JavaScript
