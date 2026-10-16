@@ -20,6 +20,7 @@ const staticPages: PageInfo[] = [
   { url: '/changelog/', title: 'Changelog', description: 'Recent additions and updates to the DevX Tools catalog' },
   { url: '/comparisons/', title: 'Tool Comparisons', description: 'Head-to-head comparisons of popular API development and testing tools' },
   { url: '/guides/', title: 'Guides', description: 'In-depth guides for API development, testing, and mocking' },
+  { url: '/demos/', title: 'Live Demos', description: 'Run interactive demos of API mocking and testing tools directly in your browser via StackBlitz' },
   { url: '/blog/', title: 'Blog', description: 'Articles about developer tools, testing, and API development' },
   { url: '/mocking-test-data/', title: 'Mocking & Test Data', description: 'Browse mocking & test data tools for modern development workflows' },
   { url: '/api-development/', title: 'API Development', description: 'Browse API development tools for modern development workflows' },
@@ -82,7 +83,7 @@ export const GET: APIRoute = async () => {
   const sections: Array<{ heading: string; urls: string[] }> = [
     { heading: 'Home', urls: ['/'] },
     { heading: 'Hubs', urls: ['/mocking-test-data/', '/api-development/', '/testing/', '/observability/'] },
-    { heading: 'Catalog & Pickers', urls: ['/catalog/', '/picker/', '/api-development/postman-alternatives/'] },
+    { heading: 'Catalog & Pickers', urls: ['/catalog/', '/picker/', '/demos/', '/api-development/postman-alternatives/'] },
     { heading: 'Polls', urls: ['/polls/', '/polls/rn-api-mocking/'] },
     { heading: 'About & Submit', urls: ['/about/', '/submit/', '/changelog/'] },
     { heading: 'Comparisons', urls: ['/comparisons/', ...comparisonUrls] },
