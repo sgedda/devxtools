@@ -26,6 +26,9 @@ jobs:
       - name: Validate catalog
         run: npm run validate
       
+      - name: Validate demos
+        run: npm run validate:demos
+      
       - name: Run tests
         run: npm test
       

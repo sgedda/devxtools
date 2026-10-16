@@ -12,6 +12,7 @@
     "astro": "astro",
     "validate": "tsx scripts/validate-catalog.ts",
     "validate:releases": "tsx scripts/validate-releases.ts",
+    "validate:demos": "tsx scripts/validate-demos.ts",
     "validate:llms-txt": "tsx scripts/validate-llms-txt.ts",
     "test": "vitest run",
     "test:watch": "vitest",

@@ -22,19 +22,19 @@ const { Content, headings } = await render(entry);
           if (p.textContent.includes('Jest works identically')) {
             const wrapper = document.createElement('div');
             wrapper.className = 'run-it-wrapper';
-            wrapper.innerHTML = `
-              <div class="run-it" data-project="faker-factories" data-file="factory.test.js">
-                <noscript>
-                  <a href="https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/faker-factories?file=factory.test.js" target="_blank" rel="noopener noreferrer" class="run-it-link">
-                    Try Faker.js Factories Live →
-                  </a>
-                </noscript>
-                <button type="button" class="run-it-button" data-stackblitz-url="https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/faker-factories?file=factory.test.js">
-                  Try Faker.js Factories Live
-                </button>
-              </div>
-              <p class="demo-caption"><em>Run this Faker.js test example in your browser with StackBlitz (a third-party service).</em></p>
-            `;
+            const stackblitzUrl = 'https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/faker-factories?file=factory.test.js';
+            wrapper.innerHTML = 
+              '<div class="run-it" data-project="faker-factories" data-file="factory.test.js">' +
+                '<noscript>' +
+                  '<a href="' + stackblitzUrl + '" target="_blank" rel="noopener noreferrer" class="run-it-link">' +
+                    'Try Faker.js Factories Live →' +
+                  '</a>' +
+                '</noscript>' +
+                '<button type="button" class="run-it-button" data-stackblitz-url="' + stackblitzUrl + '">' +
+                  'Try Faker.js Factories Live' +
+                '</button>' +
+              '</div>' +
+              '<p class="demo-caption"><em>Run this Faker.js test example in your browser with StackBlitz (a third-party service).</em></p>';
             p.after(wrapper);
             
             // Initialize button

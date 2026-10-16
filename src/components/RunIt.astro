@@ -7,8 +7,10 @@ interface Props {
 
 const { project, file, title = 'Run in StackBlitz' } = Astro.props;
 
-const githubUrl = `https://github.com/sgedda/devxtools/tree/main/demos/${project}`;
-const stackblitzUrl = `https://stackblitz.com/github/sgedda/devxtools/tree/main/demos/${project}${file ? `?file=${file}` : ''}`;
+const GITHUB_REPO = 'sgedda/devxtools';
+const DEFAULT_BRANCH = 'main';
+
+const stackblitzUrl = `https://stackblitz.com/github/${GITHUB_REPO}/tree/${DEFAULT_BRANCH}/demos/${project}${file ? `?file=${file}` : ''}`;
 ---
 
 <div class="run-it" data-project={project} data-file={file}>
