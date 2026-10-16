@@ -47,8 +47,13 @@ async function fetchWithRetry(url: string, options: RequestInit, maxRetries = 3)
   throw new Error('Max retries exceeded');
 }
 
+export function normalizeVersion(version: string): string {
+  return version.replace(/^v/, '');
+}
+
 export function parseVersion(version: string): { major: number; minor: number; patch: number; prerelease: boolean } | null {
-  const match = version.match(/^v?(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
+  const normalized = normalizeVersion(version);
+  const match = normalized.match(/^(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
   if (!match) return null;
   
   return {
@@ -96,7 +101,7 @@ async function fetchGitHubRelease(repo: string): Promise<ReleaseInfo | null> {
     }
     
     return {
-      version: data.tag_name,
+      version: normalizeVersion(data.tag_name),
       releaseDate: data.published_at,
       releaseUrl: data.html_url,
       source: 'github',
@@ -135,7 +140,7 @@ async function fetchLatestStableGitHubRelease(repo: string): Promise<ReleaseInfo
     }
     
     return {
-      version: stableRelease.tag_name,
+      version: normalizeVersion(stableRelease.tag_name),
       releaseDate: stableRelease.published_at,
       releaseUrl: stableRelease.html_url,
       source: 'github',
@@ -173,9 +178,25 @@ async function fetchGitHubTag(repo: string): Promise<ReleaseInfo | null> {
       return null;
     }
     
+    const commitUrl = `https://api.github.com/repos/${repoPath}/commits/${stableTag.commit.sha}`;
+    const commitResponse = await fetchWithRetry(commitUrl, { headers });
+    
+    if (!commitResponse.ok) {
+      console.warn(`Failed to fetch commit date for ${stableTag.name}, skipping...`);
+      return null;
+    }
+    
+    const commitData = await commitResponse.json();
+    const commitDate = commitData.commit?.committer?.date;
+    
+    if (!commitDate) {
+      console.warn(`No commit date found for ${stableTag.name}, skipping...`);
+      return null;
+    }
+    
     return {
-      version: stableTag.name,
-      releaseDate: stableTag.commit.committer?.date || new Date().toISOString(),
+      version: normalizeVersion(stableTag.name),
+      releaseDate: commitDate,
       releaseUrl: `https://github.com/${repoPath}/releases/tag/${stableTag.name}`,
       source: 'github',
     };

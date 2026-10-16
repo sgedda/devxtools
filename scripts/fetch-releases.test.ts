@@ -1,5 +1,19 @@
 import { describe, it, expect } from 'vitest';
-import { parseVersion, isStableVersion } from './fetch-releases';
+import { parseVersion, isStableVersion, normalizeVersion } from './fetch-releases';
+
+describe('normalizeVersion', () => {
+  it('removes leading v from versions', () => {
+    expect(normalizeVersion('v1.2.3')).toBe('1.2.3');
+    expect(normalizeVersion('v10.5.2')).toBe('10.5.2');
+    expect(normalizeVersion('v2.0.0-beta.1')).toBe('2.0.0-beta.1');
+  });
+
+  it('leaves versions without v unchanged', () => {
+    expect(normalizeVersion('1.2.3')).toBe('1.2.3');
+    expect(normalizeVersion('3.14.159')).toBe('3.14.159');
+    expect(normalizeVersion('cli-2.11.0')).toBe('cli-2.11.0');
+  });
+});
 
 describe('parseVersion', () => {
   it('parses simple semantic versions', () => {
@@ -80,5 +94,36 @@ describe('isStableVersion', () => {
     expect(isStableVersion('invalid')).toBe(false);
     expect(isStableVersion('')).toBe(false);
     expect(isStableVersion('latest')).toBe(false);
+  });
+});
+
+describe('releases.json validation', () => {
+  it('should not contain release dates equal to script execution time', () => {
+    const fs = require('fs');
+    const path = require('path');
+    
+    const releasesPath = path.join(process.cwd(), 'src/data/releases.json');
+    
+    if (!fs.existsSync(releasesPath)) {
+      return;
+    }
+    
+    const releases = JSON.parse(fs.readFileSync(releasesPath, 'utf-8'));
+    const lastUpdated = new Date(releases.lastUpdated);
+    
+    const invalidEntries: string[] = [];
+    
+    for (const [slug, release] of Object.entries(releases.tools)) {
+      const releaseDate = new Date((release as any).releaseDate);
+      const timeDiff = Math.abs(releaseDate.getTime() - lastUpdated.getTime());
+      
+      if (timeDiff < 60000) {
+        invalidEntries.push(`${slug}: ${(release as any).releaseDate} (within 1 minute of lastUpdated: ${releases.lastUpdated})`);
+      }
+    }
+    
+    if (invalidEntries.length > 0) {
+      throw new Error(`Found ${invalidEntries.length} release(s) with dates equal to script execution time:\n${invalidEntries.join('\n')}`);
+    }
   });
 });
