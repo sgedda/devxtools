@@ -62,7 +62,7 @@ jobs:
     
     strategy:
       matrix:
-        demo: [msw-vitest, faker-factories]
+        demo: [msw-vitest, faker-factories, mockifyer-vitest]
     
     steps:
       - name: Checkout

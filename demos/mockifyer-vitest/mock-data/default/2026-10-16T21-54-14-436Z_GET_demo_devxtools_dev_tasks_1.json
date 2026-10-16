@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "https://demo.devxtools.dev/tasks/1",
+    "headers": {
+      "x-mockifyer-request-id": "59633dd1-c61d-4f53-b3a6-4160c67b4c6d"
+    }
+  },
+  "response": {
+    "status": 200,
+    "data": {
+      "id": 1,
+      "title": "Set up project repository",
+      "completed": true,
+      "userId": 1
+    },
+    "headers": {
+      "content-type": "application/json"
+    }
+  },
+  "timestamp": "2026-10-16T21:54:14.436Z",
+  "duration": 123,
+  "sessionId": "session-1792187654435-qy31ojt9u",
+  "requestId": "59633dd1-c61d-4f53-b3a6-4160c67b4c6d"
+}
