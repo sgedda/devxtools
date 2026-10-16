@@ -233,6 +233,17 @@ async function fetchGitHubTag(repo: string): Promise<ReleaseInfo | null> {
   }
 }
 
+function compareVersions(v1: string, v2: string): number {
+  const p1 = parseVersion(v1);
+  const p2 = parseVersion(v2);
+  
+  if (!p1 || !p2) return 0;
+  
+  if (p1.major !== p2.major) return p1.major - p2.major;
+  if (p1.minor !== p2.minor) return p1.minor - p2.minor;
+  return p1.patch - p2.patch;
+}
+
 async function fetchNpmRelease(packageName: string): Promise<ReleaseInfo | null> {
   try {
     const url = `https://registry.npmjs.org/${packageName}`;
@@ -248,16 +259,24 @@ async function fetchNpmRelease(packageName: string): Promise<ReleaseInfo | null>
     const data = await response.json();
     const latestVersion = data['dist-tags']?.latest;
     
+    let targetVersion = latestVersion;
+    
     if (!latestVersion || !isStableVersion(latestVersion)) {
-      return null;
+      const stableVersions = Object.keys(data.versions || {})
+        .filter(v => isStableVersion(v))
+        .sort(compareVersions);
+      
+      if (stableVersions.length === 0) {
+        return null;
+      }
+      
+      targetVersion = stableVersions[stableVersions.length - 1];
     }
     
-    const versionData = data.versions[latestVersion];
-    
     return {
-      version: latestVersion,
-      releaseDate: data.time[latestVersion],
-      releaseUrl: `https://www.npmjs.com/package/${packageName}/v/${latestVersion}`,
+      version: normalizeVersion(targetVersion),
+      releaseDate: data.time[targetVersion],
+      releaseUrl: `https://www.npmjs.com/package/${packageName}/v/${targetVersion}`,
       source: 'npm',
     };
   } catch (error) {

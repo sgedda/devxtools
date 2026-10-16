@@ -20,5 +20,6 @@ categories:
 bestFor: Record/replay mocking with multi-service traffic logging and client lane isolation
 description: HTTP mocking and recording for axios and fetch with distributed tracing across services. Features client lanes for isolating traffic, dashboard for visualizing request/response flows, and X-Mockifyer-Client-Id header propagation for multi-service debugging. Supports React Native with device storage sync.
 whenToUse: When you need HTTP mocking with record/replay, want to trace and log traffic across multiple services, or need client-specific test lanes for parallel development workflows.
+npmPackage: '@sgedda/mockifyer-core'
 affiliation: The maintainer of this site (Sebastian) is the author of Mockifyer.
 lastChecked: 2026-10-14
