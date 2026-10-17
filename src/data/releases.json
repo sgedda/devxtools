@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16T06:29:51.784Z",
+  "lastUpdated": "2026-10-17T10:27:44.753Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -164,9 +164,9 @@
       "source": "npm"
     },
     "nock": {
-      "version": "15.0.1",
-      "releaseDate": "2026-10-06T20:54:56.856Z",
-      "releaseUrl": "https://www.npmjs.com/package/nock/v/15.0.1",
+      "version": "15.0.2",
+      "releaseDate": "2026-10-16T18:55:23.193Z",
+      "releaseUrl": "https://www.npmjs.com/package/nock/v/15.0.2",
       "source": "npm"
     },
     "openapi-generator": {
@@ -176,9 +176,9 @@
       "source": "github"
     },
     "openobserve": {
-      "version": "1.1.0",
-      "releaseDate": "2026-10-14T12:47:10Z",
-      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.0",
+      "version": "1.1.1",
+      "releaseDate": "2026-10-16T10:17:55Z",
+      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.1",
       "source": "github"
     },
     "opentelemetry": {
@@ -230,9 +230,9 @@
       "source": "github"
     },
     "redocly": {
-      "version": "2.64.0",
-      "releaseDate": "2026-10-15T07:20:07.640Z",
-      "releaseUrl": "https://www.npmjs.com/package/@redocly/cli/v/2.64.0",
+      "version": "2.64.1",
+      "releaseDate": "2026-10-16T08:35:05.024Z",
+      "releaseUrl": "https://www.npmjs.com/package/@redocly/cli/v/2.64.1",
       "source": "npm"
     },
     "schemathesis": {
