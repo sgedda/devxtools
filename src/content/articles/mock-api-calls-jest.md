@@ -14,8 +14,6 @@ tested_with: "Jest 30.5.2, ts-jest 29.4.15, TypeScript 6.0.3, axios 1.20.0, axio
 tools: ["msw", "nock", "miragejs", "pollyjs", "faker", "fishery"]
 ---
 
-# How to Mock API Calls in Jest: 4 Approaches Compared
-
 To mock API calls in Jest, you can work at four levels: your own API module, the HTTP client (axios), the global `fetch`, or the network itself with MSW or Nock. Mock your module for fast component tests, and use MSW when you want the real request code to run against realistic responses.
 
 > **Tested with Jest 30.5.2** (ts-jest 29.4.15, TypeScript 6.0.3) on Node 22.23.3, and the MSW section on Node 24.22.0 (2026-10-15). Every snippet comes from a test file that passed. devxtools.dev is independent and has no relationship with any project mentioned here.
