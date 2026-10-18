@@ -14,7 +14,7 @@ interface Article {
 
 function loadArticles(): { guides: Article[], comparisons: Article[] } {
   const articlesDir = join(process.cwd(), 'src', 'content', 'articles');
-  const articleFiles = readdirSync(articlesDir).filter(f => f.endsWith('.md'));
+  const articleFiles = readdirSync(articlesDir).filter(f => /\.mdx?$/.test(f));
   const guides: Article[] = [];
   const comparisons: Article[] = [];
 
