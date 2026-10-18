@@ -39,6 +39,18 @@ For React Native, use **MSW** (`msw/node`) in Jest tests. For the running app, M
 
 Most confusion comes from using a tool designed for one place in another.
 
+```mermaid caption="Figure 1. Pick the mock by where the code runs, not by tool popularity." alt="Flowchart. Where does the code run? Jest and RNTL in Node: use MSW's msw/node. The running app: if adding mock code to the app is OK, use an in-app interceptor (msw 2 msw/native, Mirage JS or record/replay); if not, point the base URL at a mock server (Prism, Mockoon, WireMock). E2E with Detox or Maestro: a launch argument picks a scenario for either option."
+flowchart TD
+  Q{"Where does the<br/>code run?"}:::accent
+  Q -->|"Jest + RNTL (Node)"| J("MSW in Node<br/>msw/node · setupServer")
+  Q -->|"Running app"| A{"OK to add<br/>mock code to the app?"}
+  Q -->|"E2E: Detox / Maestro"| E("Launch argument<br/>picks a scenario")
+  A -->|"Yes"| I("In-app interceptor<br/>msw 2 msw/native · Mirage JS<br/>· record/replay")
+  A -->|"No"| S("Mock server via base URL<br/>Prism · Mockoon · WireMock")
+  E --> I
+  E --> S
+```
+
 ## Mocking in Jest and RNTL with MSW
 
 MSW intercepts `fetch` at the network level, so your component calls the real `fetch` and your tests describe responses, not implementation details. This is the setup we ran with React Native 0.88:
@@ -115,6 +127,15 @@ Both tests passed. Three things tripped us up, and they'll trip you up too:
 
 ## Mocking in the running app
 
+```mermaid caption="Figure 2. One guard, two ways to mock: patch fetch inside the app, or send it to a mock server. Release builds always hit the real API." alt="Flowchart. The screen calls fetch. A guard checks __DEV__ and the API_MOCKING flag. If off (release build) the request goes to the real API. If on with in-app mocking, an interceptor patches fetch and a handler returns JSON without a network call. If on with a base URL, the request goes to a mock server on port 4010."
+flowchart TD
+  F("Screen calls<br/>fetch('/users/1')") --> G{"__DEV__ and<br/>API_MOCKING<br/>enabled?"}:::accent
+  G -->|"No · release build"| R[("Real API<br/>api.example.com")]
+  G -->|"Yes · in-app"| I("Interceptor patches fetch<br/>msw/native handlers"):::accent
+  I --> H("Handler returns JSON<br/>no network call")
+  G -->|"Yes · base URL"| M[("Mock server :4010<br/>Prism · Mockoon · WireMock")]
+```
+
 ### MSW in the app: the MSW 3 situation
 
 MSW 3.0 (released 2026-09-28) **removed the `msw/native` export**. MSW's docs now tell you to install `@msw/react-native`, but on 2026-10-15 **`npm install @msw/react-native` fails with a 404**: the package isn't published. Until it ships, you have two options:
@@ -164,6 +185,11 @@ Run with `EXPO_PUBLIC_API_MOCKING=enabled npx expo start`. Because `EXPO_PUBLIC_
 - **`__DEV__`** is `false` in release builds. Use it as an outer guard so mocks can never ship enabled.
 - **An env var** (`EXPO_PUBLIC_API_MOCKING`, or `react-native-config` in bare apps) chooses mocks per Metro session.
 - **A dev-menu or in-app switch** lets QA change scenarios without rebuilding. A common pattern is a hidden settings screen that stores the scenario (`happy`, `empty`, `server-error`) in AsyncStorage and calls `server.use(...scenarioHandlers)` on change.
+
+<figure>
+  <div class="dx-figure__frame"><img src="/assets/rn-sample-500-scenario.png" width="800" height="550" loading="lazy" alt="Two screens from the devxtools React Native sample app. Left: the task list shows 'No tasks yet' with a 'Mocked · Server error 500' badge. Right: the Lab panel with MSW selected, the 'Server error 500' scenario chip highlighted, and the request log listing GET /tasks returning 500."></div>
+  <figcaption><strong>Figure 3.</strong> An in-app scenario switch in the devxtools RN sample: choosing "Server error 500" changes what <code>fetch</code> returns without a rebuild, and the request log shows which handler answered.</figcaption>
+</figure>
 
 ## Mirage JS in React Native
 
@@ -241,6 +267,21 @@ await device.launchApp({ newInstance: true, launchArgs: { mockScenario: 'empty-c
     clearState: true
     arguments:
       mockScenario: "empty-cart"
+```
+
+```mermaid caption="Figure 4. The test picks the scenario at launch; the app never knows it's under test." alt="Sequence diagram. 1: Detox or Maestro launches the app with mockScenario 'empty-cart'. 2: At start-up the app reads the launch argument. 3: The mock layer switches to the empty-cart handlers. 4: The cart screen fetches /cart. 5: The mock layer returns 200 with an empty items list. 6: The test asserts 'Your cart is empty'."
+sequenceDiagram
+  autonumber
+  participant T as Detox / Maestro
+  participant A as App start-up
+  participant M as Mock layer
+  participant S as Cart screen
+  T->>A: launchApp(mockScenario: "empty-cart")
+  A->>M: read launch arg
+  M->>M: use emptyCart handlers
+  S->>M: fetch("/cart")
+  M-->>S: 200 { items: [] }
+  T->>S: expect "Your cart is empty"
 ```
 
 In the app, read them with `react-native-launch-arguments` (4.1.1) and select handlers or a base URL. Two common setups:
