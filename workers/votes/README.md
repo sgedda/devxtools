@@ -7,7 +7,7 @@ Stack voting API for devxtools.dev - a privacy-first voting system backed by Clo
 - **Worker**: Cloudflare Worker handling `/api/polls/*` routes
 - **Database**: D1 (SQLite) with polls, options, and votes tables
 - **Privacy**: IP addresses are never stored; only salted hashes for duplicate prevention
-- **Rate limiting**: 10 requests/minute per IP
+- **Rate limiting**: 10 requests/minute per IP (Cloudflare rate limiter, per location) + 5 vote attempts/minute per voter (in-memory burst protection)
 
 ## Local Development
 
@@ -136,7 +136,10 @@ Tests run with Vitest + `@cloudflare/vitest-plugin` for in-memory D1.
 - **No raw IPs stored**: Only SHA-256 hashes of `IP + poll slug + secret salt`
 - **Retention**: Vote hashes are automatically anonymized after 90 days via scheduled cron job (runs daily at 02:00 UTC). The cron replaces each expired hash with a unique `EXPIRED_` prefix, preserving vote counts; after expiry the same network can vote again.
 - **No cookies**: Deduplication is per IP address only
-- **Rate limiting**: 10 requests/minute per IP (fail-closed for POST requests)
+- **Rate limiting**: Two layers of protection:
+  - **Cloudflare rate limiter**: 10 requests/minute per IP, enforced per Cloudflare location (eventually consistent)
+  - **In-memory burst protection**: 5 vote attempts/minute per voter_hash (defense-in-depth against location-based bursts)
+  - POST requests fail closed if the Cloudflare rate limiter binding is unavailable
 
 ## Permissions
 

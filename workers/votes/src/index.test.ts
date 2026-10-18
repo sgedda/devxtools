@@ -252,6 +252,54 @@ describe('Votes Worker', () => {
     expect(response.status).not.toBe(429);
   });
 
+  it('should enforce in-memory burst protection for rapid POST votes', async () => {
+    const env = createTestEnv();
+    
+    // Override DB to return a valid poll and option
+    env.DB.prepare = (sql: string) => {
+      const boundArgs: any[] = [];
+      const prepared = {
+        bind: (...args: any[]) => {
+          boundArgs.push(...args);
+          return prepared;
+        },
+        first: async () => {
+          if (sql.includes('SELECT * FROM polls')) {
+            return { id: 1, slug: 'test', question: 'Test?', status: 'active' };
+          }
+          if (sql.includes('SELECT * FROM options')) {
+            return { id: 1, poll_id: 1, slug: 'option-1', label: 'Option 1', tool_slug: null, sort: 1 };
+          }
+          return null;
+        },
+        all: async () => ({ results: [] }),
+        run: async () => ({ success: true, meta: { changes: 1 } }),
+      };
+      return prepared;
+    };
+
+    const makeRequest = () => new Request('https://devxtools.dev/api/polls/test/vote', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'CF-Connecting-IP': '192.168.1.100',
+      },
+      body: JSON.stringify({ option: 'option-1' }),
+    });
+
+    // First 5 attempts should succeed (rate limit allows them)
+    for (let i = 0; i < 5; i++) {
+      const response = await worker.fetch(makeRequest(), env);
+      expect(response.status).not.toBe(429);
+    }
+
+    // 6th attempt within the same minute should be rate limited by burst protection
+    const response = await worker.fetch(makeRequest(), env);
+    expect(response.status).toBe(429);
+    const data = await response.json();
+    expect(data).toHaveProperty('code', 'RATE_LIMITED');
+  });
+
   it('should anonymize old votes without UNIQUE constraint violations', async () => {
     const env = createTestEnv();
 
