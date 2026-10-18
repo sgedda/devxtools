@@ -78,6 +78,7 @@
   /* Other block elements */
   .dx-prose :where(ul, ol, pre, blockquote, figure, .dx-table, hr) { margin-top: var(--dx-flow); }
   .dx-prose :where(section) { margin-top: 2.75rem; }  /* section gets h2-level spacing */
+  .dx-prose > :where(section:first-child) { margin-top: 0; }
 
   /* text-y blocks keep the measure; wide blocks span the column */
   .dx-prose > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
@@ -97,6 +98,8 @@
   @media (min-width: 1024px) { 
     .dx-prose :where(h2) { margin-top: 3.5rem; }  /* 56px desktop */
   }
+  /* a section already carries the h2 gap; its leading h2 must not add a second one */
+  .dx-prose :where(section) > :where(h2:first-child) { margin-top: 0; }
   .dx-prose h3 {
     font-size: var(--dx-h3);
     line-height: 1.35;
@@ -302,19 +305,11 @@
     overscroll-behavior-x: contain;
   }
   .dx-diagram .dx-figure__frame:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
-  .dx-diagram svg {
+  .dx-diagram img {
     display: block;
     margin-inline: auto;
-    width: var(--w, 100%);                 /* --w = natural SVG width, set by the build step */
-    max-width: 100%;                       /* desktop: shrink to fit the column */
+    max-width: 100%;
     height: auto;
-  }
-  @media (max-width: 767px) {
-    .dx-diagram svg {                      /* phones: don't shrink text below ~11px; scroll instead */
-      max-width: none;
-      width: calc(var(--w, 640px) * 0.8);
-    }
-    .dx-diagram svg[data-narrow] { width: 100%; max-width: var(--w); }  /* small diagrams just fit */
   }
   /* each diagram is emitted twice; show the one that matches the theme */
   .dx-diagram .mmd-dark { display: none; }
