@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run check:og && npm run check:og:articles && npm run validate:releases && astro build && node scripts/post-build-mermaid.mjs && npm run validate:llms-txt",
+    "build": "npm run check:og && npm run check:og:articles && npm run validate:releases && astro build && npm run validate:llms-txt",
     "preview": "astro preview",
     "astro": "astro",
     "validate": "tsx scripts/validate-catalog.ts",
