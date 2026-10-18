@@ -1,17 +1,16 @@
-// remark-dx-mermaid.mjs — TEST
+// remark-dx-mermaid.mjs
 import { visit } from 'unist-util-visit';
 
 export default function remarkDxMermaid() {
-  return (tree, file) => {
-    let count = 0;
-    
+  return function transformer(tree) {
     visit(tree, 'code', (node, index, parent) => {
-      if (node.lang !== 'mermaid' || index == null || !parent) return;
+      if (node.lang !== 'mermaid') return;
+      if (index == null || !parent) return;
       
-      count++;
+      // Replace with simple test HTML
       parent.children[index] = {
         type: 'html',
-        value: `<div class="MERMAID-${count}">DIAGRAM ${count}</div>`,
+        value: '<div class="TEST-MERMAID">Mermaid diagram here</div>',
       };
     });
   };
