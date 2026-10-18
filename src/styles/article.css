@@ -83,6 +83,8 @@
   /* text-y blocks keep the measure; wide blocks span the column */
   .dx-prose > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
   .dx-prose > section > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
+  /* paragraphs inside wrappers (details, demo blocks, …) keep the measure too */
+  .dx-prose :where(p):not(:where(table p, figure p)) { max-width: var(--dx-measure); }
 
   /* ---- headings ---- */
   .dx-prose :is(h2, h3, h4) {

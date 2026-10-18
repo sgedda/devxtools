@@ -305,6 +305,15 @@ const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
         if (f.scrollWidth > f.clientWidth) f.scrollLeft = (f.scrollWidth - f.clientWidth) / 2;
       });
       dxCenterDiagrams();
+      // Tap-to-open target follows the theme (system dark sets .dark too).
+      const dxDiagramLinks = () => {
+        const mode = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        document.querySelectorAll('.dx-diagram a.dx-figure__frame').forEach((a) => {
+          a.href = a.getAttribute('href').replace(/-(light|dark)\.svg$/, `-${mode}.svg`);
+        });
+      };
+      dxDiagramLinks();
+      new MutationObserver(dxDiagramLinks).observe(document.documentElement, { attributeFilter: ['class'] });
       addEventListener('load', dxCenterDiagrams);
       addEventListener('resize', dxCenterDiagrams);
     </script>

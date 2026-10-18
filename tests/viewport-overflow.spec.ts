@@ -3,7 +3,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 
 // Every article page (comparisons, guides, hub articles) from the built sitemap, plus a few hubs.
 const ARTICLE_RE = /^\/(comparisons|guides|api-development|testing|observability|blog)\/[^/]+\/$/;
-const HUBS = ['/', '/api-development/', '/catalog/', '/tools/postman/'];
+const HUBS = ['/', '/api-development/', '/guides/', '/comparisons/', '/testing/', '/catalog/', '/tools/postman/'];
 
 // Same set the sitemap lists: content-collection slugs plus hand-written .astro article pages.
 function sourcePaths(): string[] {
