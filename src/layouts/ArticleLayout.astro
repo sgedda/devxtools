@@ -31,6 +31,8 @@ const { frontmatter, headings } = Astro.props;
 const POLL_CARD_PATHS = new Set([
   '/guides/mock-api-react-native/',
   '/comparisons/pollyjs-alternatives/',
+  '/guides/mock-api-calls-jest/',
+  '/blog/why-i-built-mockifyer/',
 ]);
 const pagePath = (() => {
   try { return new URL(frontmatter.canonical).pathname; } catch { return ''; }
