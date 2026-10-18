@@ -188,7 +188,7 @@ Run with `EXPO_PUBLIC_API_MOCKING=enabled npx expo start`. Because `EXPO_PUBLIC_
 
 <figure>
   <div class="dx-figure__frame"><img src="/assets/rn-sample-500-scenario.png" width="800" height="550" loading="lazy" alt="Two screens from the devxtools React Native sample app. Left: the task list shows 'No tasks yet' with a 'Mocked · Server error 500' badge. Right: the Lab panel with MSW selected, the 'Server error 500' scenario chip highlighted, and the request log listing GET /tasks returning 500."></div>
-  <figcaption><strong>Figure 3.</strong> An in-app scenario switch in the devxtools RN sample: choosing "Server error 500" changes what <code>fetch</code> returns without a rebuild, and the request log shows which handler answered.</figcaption>
+  <figcaption><strong>Figure 4.</strong> An in-app scenario switch in the devxtools RN sample: choosing "Server error 500" changes what <code>fetch</code> returns without a rebuild, and the request log shows which handler answered.</figcaption>
 </figure>
 
 ## Mirage JS in React Native
