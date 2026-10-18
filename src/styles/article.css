@@ -299,6 +299,7 @@
 
   /* ===================== MERMAID (build-time SVG) ===================== */
   .dx-diagram .dx-figure__frame {
+    display: block;                        /* frame is an <a> to the full-size SVG */
     padding: 1.25rem;
     background: var(--dx-surface-2);
     overflow-x: auto;                      /* wide diagrams scroll on phones */
