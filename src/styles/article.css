@@ -64,7 +64,6 @@
 
   /* ---- vertical rhythm: reset defaults, then apply spacing ---- */
   .dx-prose > * { margin-block: 0; }
-  .dx-prose :where(:first-child) { margin-top: 0; }
   
   /* Heading spacing that works regardless of wrapper elements */
   .dx-prose :where(h2) { margin-top: 2.75rem; }
@@ -80,15 +79,30 @@
   .dx-prose :where(section) { margin-top: 2.75rem; }  /* section gets h2-level spacing */
   .dx-prose > :where(section:first-child) { margin-top: 0; }
 
+  /* First-child reset - must come after element-specific rules to win */
+  .dx-prose > :first-child,
+  .dx-prose :where(* > :first-child) { margin-top: 0 !important; }
+
   /* text-y blocks keep the measure; wide blocks span the column */
   .dx-prose > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
 
   /* ---- headings ---- */
-  .dx-prose :is(h2, h3, h4) {
+  .dx-prose :is(h1, h2, h3, h4) {
     color: var(--dx-heading);
     text-wrap: balance;
     scroll-margin-top: 5rem;       /* sticky header */
   }
+  .dx-prose h1 {
+    font-size: 2.25rem;            /* 36px */
+    line-height: 1.15;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-top: 0;
+  }
+  @media (min-width: 1024px) {
+    .dx-prose h1 { font-size: 2.5rem; }  /* 40px desktop */
+  }
+  .dx-prose h1 + * { margin-top: 1rem; }
   .dx-prose h2 {
     font-size: var(--dx-h2);
     line-height: 1.25;
@@ -112,6 +126,15 @@
 
   /* ---- paragraphs, emphasis, links ---- */
   .dx-prose p { text-wrap: pretty; }
+  .dx-prose .lead {
+    font-size: 1.125rem;           /* 18px */
+    line-height: 1.6;
+    color: var(--dx-muted);
+    margin-top: 1rem;
+  }
+  @media (min-width: 1024px) {
+    .dx-prose .lead { font-size: 1.1875rem; }  /* 19px desktop */
+  }
   .dx-prose strong { font-weight: 600; color: var(--dx-heading); }
   .dx-prose a {
     color: var(--dx-accent);
@@ -299,13 +322,18 @@
 
   /* ===================== MERMAID (build-time SVG) ===================== */
   .dx-diagram .dx-figure__frame {
-    display: block;                        /* frame is an <a> to the full-size SVG */
     padding: 1.25rem;
     background: var(--dx-surface-2);
     overflow-x: auto;                      /* wide diagrams scroll on phones */
     overscroll-behavior-x: contain;
+    border: 1px solid var(--dx-border);
+    border-radius: 0.75rem;
   }
-  .dx-diagram .dx-figure__frame:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
+  .dx-diagram .dx-figure__frame a {
+    display: block;
+    cursor: pointer;
+  }
+  .dx-diagram .dx-figure__frame a:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
   .dx-diagram img {
     display: block;
     margin-inline: auto;

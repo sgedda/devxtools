@@ -178,7 +178,7 @@ const jsonLd = {
           </thead>
           <tbody>
             <tr>
-              <td><strong>Postman</strong> (baseline)</td>
+              <th scope="row"><strong>Postman</strong> (baseline)</th>
               <td>Proprietary</td>
               <td>Cloud; Native Git (YAML)</td>
               <td>Lightweight client only</td>
@@ -188,7 +188,7 @@ const jsonLd = {
               <td>Solo $9/mo; Team $19/user/mo (annual)</td>
             </tr>
             <tr>
-              <td><strong><a href="/tools/bruno/">Bruno</a></strong></td>
+              <th scope="row"><strong><a href="/tools/bruno/">Bruno</a></strong></th>
               <td>MIT (core)</td>
               <td>Local files / Git</td>
               <td>Yes</td>
@@ -198,7 +198,7 @@ const jsonLd = {
               <td>Pro $6, Ultimate $11 /user/mo (annual)</td>
             </tr>
             <tr>
-              <td><strong><a href="/tools/hoppscotch/">Hoppscotch</a></strong></td>
+              <th scope="row"><strong><a href="/tools/hoppscotch/">Hoppscotch</a></strong></th>
               <td>MIT</td>
               <td>Browser/desktop; cloud workspaces; self-host</td>
               <td>Yes (web app)</td>
@@ -208,7 +208,7 @@ const jsonLd = {
               <td>$6 and $11 /user/mo (annual, cloud)</td>
             </tr>
             <tr>
-              <td><strong><a href="/tools/insomnia/">Insomnia</a></strong></td>
+              <th scope="row"><strong><a href="/tools/insomnia/">Insomnia</a></strong></th>
               <td>Apache-2.0</td>
               <td>Local, cloud or Git Sync</td>
               <td>Scratch Pad only</td>
@@ -218,7 +218,7 @@ const jsonLd = {
               <td>Pro $12/user/mo; Enterprise $45/user/mo</td>
             </tr>
             <tr>
-              <td><strong><a href="/tools/httpie/">HTTPie</a></strong></td>
+              <th scope="row"><strong><a href="/tools/httpie/">HTTPie</a></strong></th>
               <td>CLI: BSD-3-Clause</td>
               <td>CLI: none; app: spaces, sync</td>
               <td>Yes</td>
@@ -228,7 +228,7 @@ const jsonLd = {
               <td>No public pricing page found</td>
             </tr>
             <tr>
-              <td><strong>Yaak</strong></td>
+              <th scope="row"><strong>Yaak</strong></th>
               <td>MIT (source)</td>
               <td>Local YAML files; Git sync</td>
               <td>Yes</td>
@@ -238,7 +238,7 @@ const jsonLd = {
               <td>$79/yr individual; $149/user/yr business (for work use)</td>
             </tr>
             <tr>
-              <td><strong>Thunder Client</strong></td>
+              <th scope="row"><strong>Thunder Client</strong></th>
               <td>Proprietary</td>
               <td>Local (Git Sync on paid plans)</td>
               <td>Yes</td>
@@ -248,7 +248,7 @@ const jsonLd = {
               <td>Starter $3, Business $7, Enterprise $16 /user/mo</td>
             </tr>
             <tr>
-              <td><strong>VS Code REST Client</strong></td>
+              <th scope="row"><strong>VS Code REST Client</strong></th>
               <td>MIT</td>
               <td><code>.http</code> / <code>.rest</code> files</td>
               <td>Yes</td>
@@ -258,7 +258,7 @@ const jsonLd = {
               <td>Free</td>
             </tr>
             <tr>
-              <td><strong>Apidog</strong></td>
+              <th scope="row"><strong>Apidog</strong></th>
               <td>Proprietary</td>
               <td>Cloud-first</td>
               <td>Not listed</td>
@@ -388,35 +388,35 @@ Accept: application/json`}</code></pre>
           </thead>
           <tbody>
             <tr>
-              <td>Postman (Newman)</td>
+              <th scope="row">Postman (Newman)</th>
               <td><code>npm i -g newman</code></td>
               <td><code>newman run postman_collection.json -e local.postman_environment.json</code></td>
               <td><code>-r cli,junit --reporter-junit-export out.xml</code></td>
               <td>Run by us</td>
             </tr>
             <tr>
-              <td>Postman CLI</td>
+              <th scope="row">Postman CLI</th>
               <td>See Postman docs</td>
               <td><code>postman collection run &lt;path-or-id&gt;</code></td>
               <td>Not for v3 YAML collections</td>
               <td>Docs</td>
             </tr>
             <tr>
-              <td>Bruno</td>
+              <th scope="row">Bruno</th>
               <td><code>npm i -g @usebruno/cli</code></td>
               <td><code>bru run --env local</code> (in the collection folder)</td>
               <td><code>--reporter-junit out.xml</code></td>
               <td>Run by us</td>
             </tr>
             <tr>
-              <td>Hoppscotch</td>
+              <th scope="row">Hoppscotch</th>
               <td><code>npm i -g @hoppscotch/cli</code></td>
               <td><code>hopp test collection.json --env env.json</code></td>
               <td>Not listed</td>
               <td>Docs</td>
             </tr>
             <tr>
-              <td>Insomnia</td>
+              <th scope="row">Insomnia</th>
               <td>Inso CLI (Kong docs)</td>
               <td><code>inso run collection "&lt;name&gt;" --env "&lt;env&gt;" --ci</code></td>
               <td>Not listed</td>
@@ -489,35 +489,35 @@ Accept: application/json`}</code></pre>
           </thead>
           <tbody>
             <tr>
-              <td>want collections in Git, reviewed in PRs, with no cloud and no account</td>
+              <th scope="row">want collections in Git, reviewed in PRs, with no cloud and no account</th>
               <td>Bruno</td>
             </tr>
             <tr>
-              <td>want a browser client, or need to self-host</td>
+              <th scope="row">want a browser client, or need to self-host</th>
               <td>Hoppscotch</td>
             </tr>
             <tr>
-              <td>want the most Postman-like desktop app, with Git <em>or</em> cloud, and more protocols</td>
+              <th scope="row">want the most Postman-like desktop app, with Git <em>or</em> cloud, and more protocols</th>
               <td>Insomnia</td>
             </tr>
             <tr>
-              <td>mostly work in the terminal</td>
+              <th scope="row">mostly work in the terminal</th>
               <td>HTTPie (or curl)</td>
             </tr>
             <tr>
-              <td>want to stay in VS Code</td>
+              <th scope="row">want to stay in VS Code</th>
               <td>Thunder Client or REST Client</td>
             </tr>
             <tr>
-              <td>want a polished local-first app and will pay for work use</td>
+              <th scope="row">want a polished local-first app and will pay for work use</th>
               <td>Yaak</td>
             </tr>
             <tr>
-              <td>want one platform for design, testing, mocks and docs</td>
+              <th scope="row">want one platform for design, testing, mocks and docs</th>
               <td>Apidog, or stay on Postman</td>
             </tr>
             <tr>
-              <td>need to replace Postman mock servers</td>
+              <th scope="row">need to replace Postman mock servers</th>
               <td>Mockoon, WireMock or Prism</td>
             </tr>
           </tbody>

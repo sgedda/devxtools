@@ -4,7 +4,8 @@
     "fontFamily": "Inter, ui-sans-serif, system-ui, sans-serif",
     "flowchart": { "htmlLabels": false, "curve": "basis", "padding": 14, "nodeSpacing": 36, "rankSpacing": 44, "useMaxWidth": false },
     "sequence": { "useMaxWidth": false, "mirrorActors": false, "actorMargin": 40, "boxMargin": 8, "messageFontWeight": 400 },
-    "themeCSS": ".node rect, .node polygon, .node path { stroke-width: 1.25px; } .node rect { rx: 10px; ry: 10px; } rect.actor { rx: 10px; ry: 10px; stroke-width: 1.25px; } .edgeLabel, .edgeLabel rect { rx: 6px; ry: 6px; } .messageText { font-size: 13px !important; } .edgeLabel text, .edgeLabel span { font-size: 12.5px; }"
+    "themeCSS": ".node rect, .node polygon, .node path { stroke-width: 1.25px; } .node rect { rx: 10px; ry: 10px; } rect.actor { rx: 10px; ry: 10px; stroke-width: 1.25px; } .edgeLabel, .edgeLabel rect { rx: 6px; ry: 6px; } .messageText { font-size: 13px !important; } .edgeLabel text, .edgeLabel span { font-size: 12.5px; }",
+    "htmlLabels": false
   },
   "light": {
     "themeVariables": {

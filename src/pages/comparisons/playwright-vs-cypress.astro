@@ -134,67 +134,67 @@ const jsonLd = {
           </thead>
           <tbody>
             <tr>
-              <td>Licence</td>
+              <th scope="row">Licence</th>
               <td>Apache-2.0</td>
               <td>MIT (app); Cypress Cloud is a paid SaaS with a free tier</td>
             </tr>
             <tr>
-              <td>Latest version (2026-10-15)</td>
+              <th scope="row">Latest version (2026-10-15)</th>
               <td>1.64.1</td>
               <td>16.2.0</td>
             </tr>
             <tr>
-              <td>Test languages</td>
+              <th scope="row">Test languages</th>
               <td>JavaScript/TypeScript, Python, Java, .NET</td>
               <td>JavaScript/TypeScript</td>
             </tr>
             <tr>
-              <td>Where the test runs</td>
+              <th scope="row">Where the test runs</th>
               <td>Node (or another language) process, driving the browser out of process</td>
               <td>Inside the browser, next to your app</td>
             </tr>
             <tr>
-              <td>Browsers</td>
+              <th scope="row">Browsers</th>
               <td>Chromium, Firefox, WebKit</td>
               <td>Chrome family (Chrome, Chromium, Edge), Firefox (WebDriver BiDi, Firefox 140+); WebKit is experimental; Electron is deprecated</td>
             </tr>
             <tr>
-              <td>Multiple tabs / browsers in one test</td>
+              <th scope="row">Multiple tabs / browsers in one test</th>
               <td>Yes</td>
               <td>No (multi-tab only via the <code>@cypress/puppeteer</code> plugin)</td>
             </tr>
             <tr>
-              <td>Network mocking</td>
+              <th scope="row">Network mocking</th>
               <td><code>page.route()</code> / <code>context.route()</code>, <code>routeFromHAR()</code>, <code>routeWebSocket()</code></td>
               <td><code>cy.intercept()</code>, with fixtures, delay and throttling</td>
             </tr>
             <tr>
-              <td>WebSocket mocking</td>
+              <th scope="row">WebSocket mocking</th>
               <td>Yes (<code>routeWebSocket</code>, since v1.48)</td>
               <td>No frame-level interception</td>
             </tr>
             <tr>
-              <td>Parallel CI</td>
+              <th scope="row">Parallel CI</th>
               <td>Built-in workers and <code>--shard</code>, free</td>
               <td>Needs <code>--record</code> to Cypress Cloud (free Starter plan includes parallelization, but it switches off after 500 test results/month until the cycle resets)</td>
             </tr>
             <tr>
-              <td>Debugging</td>
+              <th scope="row">Debugging</th>
               <td>Trace viewer, UI mode, codegen, HTML report</td>
               <td>Interactive runner with time-travel snapshots; Test Replay in Cloud</td>
             </tr>
             <tr>
-              <td>Component testing</td>
+              <th scope="row">Component testing</th>
               <td>New framework-agnostic "stories" model (v1.62)</td>
               <td>React, Angular, Vue, Svelte</td>
             </tr>
             <tr>
-              <td>GitHub stars (2026-10-15)</td>
+              <th scope="row">GitHub stars (2026-10-15)</th>
               <td>97,773</td>
               <td>51,041</td>
             </tr>
             <tr>
-              <td>npm weekly downloads (2026-10-06 to 10-12)</td>
+              <th scope="row">npm weekly downloads (2026-10-06 to 10-12)</th>
               <td><code>@playwright/test</code> ~76.2M; <code>playwright</code> ~113.6M</td>
               <td><code>cypress</code> ~5.95M</td>
             </tr>
@@ -260,57 +260,57 @@ test('mocks a GET request', async ({ page }) => {
           </thead>
           <tbody>
             <tr>
-              <td>Stub JSON</td>
+              <th scope="row">Stub JSON</th>
               <td><code>route.fulfill({`{ json }`})</code></td>
               <td><code>cy.intercept(url, {`{ body }`})</code></td>
             </tr>
             <tr>
-              <td>Serve a fixture file</td>
+              <th scope="row">Serve a fixture file</th>
               <td><code>route.fulfill({`{ path: 'fixtures/users.json' }`})</code></td>
               <td><code>{`{ fixture: 'users.json' }`}</code></td>
             </tr>
             <tr>
-              <td>Error status</td>
+              <th scope="row">Error status</th>
               <td><code>route.fulfill({`{ status: 500 }`})</code></td>
               <td><code>{`{ statusCode: 500 }`}</code></td>
             </tr>
             <tr>
-              <td>Network failure</td>
+              <th scope="row">Network failure</th>
               <td><code>route.abort('failed')</code> (also <code>'timedout'</code>, etc.)</td>
               <td><code>{`{ forceNetworkError: true }`}</code> (not on WebKit)</td>
             </tr>
             <tr>
-              <td>Delay / slow network</td>
+              <th scope="row">Delay / slow network</th>
               <td>Your own <code>await</code> before <code>fulfill</code></td>
               <td><code>delay</code>, <code>throttleKbps</code> built in</td>
             </tr>
             <tr>
-              <td>Modify the real response</td>
+              <th scope="row">Modify the real response</th>
               <td><code>route.fetch()</code> then <code>fulfill({`{ response, json }`})</code></td>
               <td><code>req.continue((res) =&gt; {`{ res.body = … }`})</code></td>
             </tr>
             <tr>
-              <td>Match only N times</td>
+              <th scope="row">Match only N times</th>
               <td><code>{`{ times: 1 }`}</code> (v1.44+)</td>
               <td><code>{`{ times: 1 }`}</code> in the route matcher</td>
             </tr>
             <tr>
-              <td>Precedence</td>
+              <th scope="row">Precedence</th>
               <td>Last registered handler runs first; <code>route.fallback()</code> passes on</td>
               <td>Last defined route matches first; <code>middleware: true</code> routes run first</td>
             </tr>
             <tr>
-              <td>Lifetime</td>
+              <th scope="row">Lifetime</th>
               <td>Per page/context (new for each test by default)</td>
               <td>Cleared before each test</td>
             </tr>
             <tr>
-              <td>URL matching</td>
+              <th scope="row">URL matching</th>
               <td>Glob (<code>*</code> doesn't cross <code>/</code>, <code>**</code> does, must match the whole URL), RegExp or a predicate <code>(url) =&gt; boolean</code></td>
               <td>minimatch glob with <code>matchBase</code>, RegExp, or a route-matcher object (<code>pathname</code>, <code>query</code>, <code>method</code>, …)</td>
             </tr>
             <tr>
-              <td>Gotcha</td>
+              <th scope="row">Gotcha</th>
               <td>Service-worker traffic isn't seen unless you block service workers</td>
               <td><code>?</code> is a wildcard in globs, so escape it as <code>\\?</code>. <code>cy.request()</code> calls aren't intercepted</td>
             </tr>
@@ -422,22 +422,22 @@ steps:
           </thead>
           <tbody>
             <tr>
-              <td>Starter</td>
+              <th scope="row">Starter</th>
               <td>Free</td>
               <td>10 users, 500 test results/month, parallelization (disabled once the 500 results are used, until the cycle resets), load balancing, Test Replay</td>
             </tr>
             <tr>
-              <td>Team</td>
+              <th scope="row">Team</th>
               <td>$799/year ($67/month)</td>
               <td>50 users, 120K results/year, flake detection</td>
             </tr>
             <tr>
-              <td>Business</td>
+              <th scope="row">Business</th>
               <td>$3,199/year ($267/month)</td>
               <td>Adds SSO, spec prioritization, auto-cancellation</td>
             </tr>
             <tr>
-              <td>Enterprise</td>
+              <th scope="row">Enterprise</th>
               <td>Custom</td>
               <td></td>
             </tr>
@@ -488,67 +488,67 @@ steps:
           </thead>
           <tbody>
             <tr>
-              <td><code>cy.visit('/')</code></td>
+              <th scope="row"><code>cy.visit('/')</code></th>
               <td><code>await page.goto('/')</code></td>
             </tr>
             <tr>
-              <td><code>cy.get('[data-cy=save]')</code></td>
+              <th scope="row"><code>cy.get('[data-cy=save]')</code></th>
               <td><code>page.locator('[data-cy=save]')</code> or <code>page.getByTestId('save')</code> (set <code>testIdAttribute: 'data-cy'</code>)</td>
             </tr>
             <tr>
-              <td><code>cy.contains('Save')</code></td>
+              <th scope="row"><code>cy.contains('Save')</code></th>
               <td><code>page.getByText('Save')</code></td>
             </tr>
             <tr>
-              <td><code>.click()</code> / <code>.type('x')</code></td>
+              <th scope="row"><code>.click()</code> / <code>.type('x')</code></th>
               <td><code>await locator.click()</code> / <code>await locator.fill('x')</code></td>
             </tr>
             <tr>
-              <td><code>.should('have.text', 'x')</code></td>
+              <th scope="row"><code>.should('have.text', 'x')</code></th>
               <td><code>await expect(locator).toHaveText('x')</code></td>
             </tr>
             <tr>
-              <td><code>.should('be.visible')</code></td>
+              <th scope="row"><code>.should('be.visible')</code></th>
               <td><code>await expect(locator).toBeVisible()</code></td>
             </tr>
             <tr>
-              <td><code>cy.intercept(url, {`{ body }`})</code></td>
+              <th scope="row"><code>cy.intercept(url, {`{ body }`})</code></th>
               <td><code>await page.route(url, r =&gt; r.fulfill({`{ json }`}))</code></td>
             </tr>
             <tr>
-              <td><code>cy.intercept(...).as('a'); cy.wait('@a')</code></td>
+              <th scope="row"><code>cy.intercept(...).as('a'); cy.wait('@a')</code></th>
               <td><code>const resp = page.waitForResponse(url); … await resp</code></td>
             </tr>
             <tr>
-              <td><code>{`{ fixture: 'users.json' }`}</code></td>
+              <th scope="row"><code>{`{ fixture: 'users.json' }`}</code></th>
               <td><code>route.fulfill({`{ path: 'fixtures/users.json' }`})</code></td>
             </tr>
             <tr>
-              <td><code>{`{ forceNetworkError: true }`}</code></td>
+              <th scope="row"><code>{`{ forceNetworkError: true }`}</code></th>
               <td><code>route.abort('failed')</code></td>
             </tr>
             <tr>
-              <td><code>cy.request()</code></td>
+              <th scope="row"><code>cy.request()</code></th>
               <td><code>request</code> fixture (<code>await request.get(url)</code>)</td>
             </tr>
             <tr>
-              <td><code>cy.task()</code></td>
+              <th scope="row"><code>cy.task()</code></th>
               <td>Plain Node code in the test or a fixture</td>
             </tr>
             <tr>
-              <td><code>beforeEach</code> + custom commands</td>
+              <th scope="row"><code>beforeEach</code> + custom commands</th>
               <td><code>test.beforeEach</code> + fixtures (<code>test.extend</code>)</td>
             </tr>
             <tr>
-              <td><code>cy.session()</code></td>
+              <th scope="row"><code>cy.session()</code></th>
               <td><code>storageState</code> (log in once in a setup project)</td>
             </tr>
             <tr>
-              <td><code>cy.viewport(375, 667)</code></td>
+              <th scope="row"><code>cy.viewport(375, 667)</code></th>
               <td><code>test.use({`{ viewport: { width: 375, height: 667 } }`})</code> or a device descriptor</td>
             </tr>
             <tr>
-              <td><code>cypress run --record --parallel</code></td>
+              <th scope="row"><code>cypress run --record --parallel</code></th>
               <td><code>npx playwright test --shard=1/4</code> (plus workers)</td>
             </tr>
           </tbody>
