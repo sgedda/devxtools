@@ -315,8 +315,8 @@
     height: auto;
   }
   /* each diagram is emitted twice; show the one that matches the theme */
-  /* inline SVG labels are HTML <p>s in foreignObject: keep prose rules off them */
-  .dx-prose .dx-diagram svg p { margin: 0; max-width: none; line-height: inherit; font-size: inherit; }
+  /* reset link styles inherited from .dx-prose a so SVG text elements keep their mermaid styling */
+  .dx-diagram svg { font-weight: normal; text-decoration: none; }
   /* phones: wide diagrams keep their natural size (labels ≥11px) and scroll inside the frame */
   .dx-diagram__hint { display: none; margin-top: 0.5rem; font-size: 0.8125rem; color: var(--dx-subtle); }
   @media (max-width: 767px) {
