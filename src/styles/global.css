@@ -8,7 +8,7 @@
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url('https://rsms.me/inter/font-files/Inter-roman.var.woff2') format('woff2');
+    src: url('https://rsms.me/inter/font-files/InterVariable.woff2') format('woff2');
   }
   
   :root {
@@ -227,129 +227,6 @@
     }
   }
 
-  /* Table wrapper for markdown tables - prose context handles overflow */
-  .prose {
-    overflow-x: visible;
-  }
-
-  .prose table {
-    width: 100%;
-    max-width: 100%;
-    border-collapse: collapse;
-    background: rgb(250 250 250);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    margin: 1.5rem 0;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(228 228 231);
-    overflow: hidden;
-  }
-
-  .dark .prose table {
-    background: rgb(24 24 27);
-    border-color: rgb(39 39 42);
-  }
-
-  /* Tables - site-wide styling */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: rgb(250 250 250);
-    font-size: 0.9375rem;
-    line-height: 1.5;
-    border-radius: 0.5rem;
-    border: 1px solid rgb(228 228 231);
-    overflow: hidden;
-  }
-
-  .dark table {
-    background: rgb(24 24 27);
-    border-color: rgb(39 39 42);
-  }
-
-  /* Table header */
-  thead {
-    background: rgb(244 244 245);
-    font-weight: 600;
-    font-size: 0.8125rem;
-  }
-
-  .dark thead {
-    background: rgb(39 39 42);
-  }
-
-  thead th {
-    border-bottom: 1px solid rgb(228 228 231);
-  }
-
-  .dark thead th {
-    border-color: rgb(39 39 42);
-  }
-
-  /* Table cells */
-  th, td {
-    padding: 0.625rem 0.75rem;
-    text-align: left;
-    vertical-align: top;
-    min-width: 140px;
-  }
-
-  /* First column - semibold */
-  tbody th:first-child,
-  tbody td:first-child {
-    font-weight: 600;
-  }
-
-  /* Row borders */
-  tbody tr {
-    border-bottom: 1px solid rgb(228 228 231);
-  }
-
-  .dark tbody tr {
-    border-color: rgb(39 39 42);
-  }
-
-  tbody tr:last-child {
-    border-bottom: none;
-  }
-
-  /* Keep inline code compact in table cells */
-  table code {
-    padding: 0.0625rem 0.25rem;
-    font-size: 0.8125em;
-  }
-
-  /* Mobile: sticky first column and scroll fade hint */
-  @media (max-width: 768px) {
-    .prose table {
-      display: block;
-      position: relative;
-    }
-
-    /* Sticky first column */
-    tbody th:first-child,
-    tbody td:first-child,
-    thead th:first-child {
-      position: sticky;
-      left: 0;
-      background: rgb(250 250 250);
-      border-right: 1px solid rgb(228 228 231);
-      z-index: 1;
-    }
-
-    .dark tbody th:first-child,
-    .dark tbody td:first-child,
-    .dark thead th:first-child {
-      background: rgb(24 24 27);
-      border-color: rgb(39 39 42);
-    }
-
-    th, td {
-      font-size: 0.875rem;
-      padding: 0.5rem 0.625rem;
-    }
-  }
-
   /* Comparison table wrappers for hand-coded tables (non-markdown) */
   .comparison-table-wrapper,
   .table-wrapper,
@@ -381,3 +258,6 @@
     }
   }
 }
+
+/* Article typography and components */
+@import "./article.css";

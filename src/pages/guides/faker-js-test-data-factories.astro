@@ -11,9 +11,7 @@ const { Content, headings } = await render(entry);
 ---
 
 <ArticleLayout frontmatter={entry.data} headings={headings}>
-  <div id="article-content">
-    <Content />
-  </div>
+  <Content />
   <script is:inline>
     (function() {
       function insertDemo() {

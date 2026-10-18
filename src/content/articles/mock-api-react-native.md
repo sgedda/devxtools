@@ -39,6 +39,14 @@ For React Native, use **MSW** (`msw/node`) in Jest tests. For the running app, M
 
 Most confusion comes from using a tool designed for one place in another.
 
+<figure class="dx-diagram">
+  <a class="dx-figure__frame" href="/diagrams/where-code-runs-light.svg" aria-label="Open full-size diagram">
+    <img class="mmd-light" src="/diagrams/where-code-runs-light.svg" alt="Flowchart. Where does the code run? Jest and RNTL in Node: use MSW's msw/node. The running app: if adding mock code to the app is OK, use an in-app interceptor (msw 2 msw/native, Mirage JS or record/replay); if not, point the base URL at a mock server (Prism, Mockoon, WireMock). E2E with Detox or Maestro: a launch argument picks a scenario for either option." width="603" height="822" loading="lazy" decoding="async" />
+    <img class="mmd-dark" src="/diagrams/where-code-runs-dark.svg" alt="Flowchart. Where does the code run? Jest and RNTL in Node: use MSW's msw/node. The running app: if adding mock code to the app is OK, use an in-app interceptor (msw 2 msw/native, Mirage JS or record/replay); if not, point the base URL at a mock server (Prism, Mockoon, WireMock). E2E with Detox or Maestro: a launch argument picks a scenario for either option." width="603" height="822" loading="lazy" decoding="async" />
+  </a>
+  <figcaption><strong>Figure 1.</strong> Pick the mock by where the code runs, not by tool popularity.</figcaption>
+</figure>
+
 ## Mocking in Jest and RNTL with MSW
 
 MSW intercepts `fetch` at the network level, so your component calls the real `fetch` and your tests describe responses, not implementation details. This is the setup we ran with React Native 0.88:
@@ -115,6 +123,14 @@ Both tests passed. Three things tripped us up, and they'll trip you up too:
 
 ## Mocking in the running app
 
+<figure class="dx-diagram">
+  <a class="dx-figure__frame" href="/diagrams/request-flow-light.svg" aria-label="Open full-size diagram">
+    <img class="mmd-light" src="/diagrams/request-flow-light.svg" alt="Flowchart. The screen calls fetch. A guard checks __DEV__ and the API_MOCKING flag. If off (release build) the request goes to the real API. If on with in-app mocking, an interceptor patches fetch and a handler returns JSON without a network call. If on with a base URL, the request goes to a mock server on port 4010." width="532" height="717" loading="lazy" decoding="async" />
+    <img class="mmd-dark" src="/diagrams/request-flow-dark.svg" alt="Flowchart. The screen calls fetch. A guard checks __DEV__ and the API_MOCKING flag. If off (release build) the request goes to the real API. If on with in-app mocking, an interceptor patches fetch and a handler returns JSON without a network call. If on with a base URL, the request goes to a mock server on port 4010." width="532" height="717" loading="lazy" decoding="async" />
+  </a>
+  <figcaption><strong>Figure 2.</strong> One guard, two ways to mock: patch fetch inside the app, or send it to a mock server. Release builds always hit the real API.</figcaption>
+</figure>
+
 ### MSW in the app: the MSW 3 situation
 
 MSW 3.0 (released 2026-09-28) **removed the `msw/native` export**. MSW's docs now tell you to install `@msw/react-native`, but on 2026-10-15 **`npm install @msw/react-native` fails with a 404**: the package isn't published. Until it ships, you have two options:
@@ -164,6 +180,11 @@ Run with `EXPO_PUBLIC_API_MOCKING=enabled npx expo start`. Because `EXPO_PUBLIC_
 - **`__DEV__`** is `false` in release builds. Use it as an outer guard so mocks can never ship enabled.
 - **An env var** (`EXPO_PUBLIC_API_MOCKING`, or `react-native-config` in bare apps) chooses mocks per Metro session.
 - **A dev-menu or in-app switch** lets QA change scenarios without rebuilding. A common pattern is a hidden settings screen that stores the scenario (`happy`, `empty`, `server-error`) in AsyncStorage and calls `server.use(...scenarioHandlers)` on change.
+
+<figure>
+  <div class="dx-figure__frame"><img src="/assets/rn-sample-500-scenario.png" width="800" height="550" loading="lazy" alt="Two screens from the devxtools React Native sample app. Left: the task list shows 'No tasks yet' with a 'Mocked · Server error 500' badge. Right: the Lab panel with MSW selected, the 'Server error 500' scenario chip highlighted, and the request log listing GET /tasks returning 500."></div>
+  <figcaption><strong>Figure 3.</strong> An in-app scenario switch in the devxtools RN sample: choosing "Server error 500" changes what <code>fetch</code> returns without a rebuild, and the request log shows which handler answered.</figcaption>
+</figure>
 
 ## Mirage JS in React Native
 
@@ -242,6 +263,14 @@ await device.launchApp({ newInstance: true, launchArgs: { mockScenario: 'empty-c
     arguments:
       mockScenario: "empty-cart"
 ```
+
+<figure class="dx-diagram">
+  <a class="dx-figure__frame" href="/diagrams/scenario-switch-light.svg" aria-label="Open full-size diagram">
+    <img class="mmd-light" src="/diagrams/scenario-switch-light.svg" alt="Sequence diagram. 1: Detox or Maestro launches the app with mockScenario 'empty-cart'. 2: At start-up the app reads the launch argument. 3: The mock layer switches to the empty-cart handlers. 4: The cart screen fetches /cart. 5: The mock layer returns 200 with an empty items list. 6: The test asserts 'Your cart is empty'." width="996" height="444" loading="lazy" decoding="async" />
+    <img class="mmd-dark" src="/diagrams/scenario-switch-dark.svg" alt="Sequence diagram. 1: Detox or Maestro launches the app with mockScenario 'empty-cart'. 2: At start-up the app reads the launch argument. 3: The mock layer switches to the empty-cart handlers. 4: The cart screen fetches /cart. 5: The mock layer returns 200 with an empty items list. 6: The test asserts 'Your cart is empty'." width="996" height="444" loading="lazy" decoding="async" />
+  </a>
+  <figcaption><strong>Figure 4.</strong> The test picks the scenario at launch; the app never knows it's under test.</figcaption>
+</figure>
 
 In the app, read them with `react-native-launch-arguments` (4.1.1) and select handlers or a base URL. Two common setups:
 

@@ -68,6 +68,7 @@ const jsonLd = {
         <p class="meta">Last updated: {new Date(updated).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</p>
       </header>
       
+      <div class="dx-prose">
       <section class="tldr">
         <h2>TL;DR</h2>
         <p>{tldr}</p>
@@ -82,8 +83,9 @@ const jsonLd = {
       
       <section class="comparison-table-section">
         <h2>Quick Comparison</h2>
-        <div class="table-wrapper">
-          <table class="comparison-table">
+        <div class="dx-table" style="--cols:4">
+          <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Feature comparison table">
+          <table>
             <thead>
               <tr>
                 <th>Feature</th>
@@ -131,7 +133,9 @@ const jsonLd = {
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
+        <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
       </section>
       
       <section class="tool-deep-dive">
@@ -281,6 +285,8 @@ const polly = new Polly('My Test', {
           </ul>
         </div>
       </section>
+      
+      </div>
       
       <ReportError 
         pageTitle="MSW vs Nock vs Polly.js"

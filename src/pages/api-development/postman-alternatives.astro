@@ -103,7 +103,7 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <div class="container mx-auto max-w-4xl px-5">
-    <article class="prose prose-zinc dark:prose-invert max-w-none py-10" style="min-width: 0;">
+    <article class="comparison">
       <nav class="text-sm text-zinc-500 mb-6">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
         <span aria-hidden="true"> / </span>
@@ -112,6 +112,7 @@ const jsonLd = {
         <span class="text-zinc-900 dark:text-white">Postman alternatives</span>
       </nav>
 
+      <div class="dx-prose">
       <h1>Postman Alternatives: The Best API Clients by What You Actually Need</h1>
 
       <p class="lead">Postman is no longer just an API client. It's a platform with workspaces, mock servers, monitors, Flows, AI credits and an API catalog. If you only used it to send requests and keep a few collections, that's a lot of product to carry, and a good reason to look around.</p>
@@ -160,7 +161,8 @@ const jsonLd = {
 
       <h2 id="postman-alternatives-at-a-glance">Postman alternatives at a glance</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:7">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Postman alternatives comparison">
         <table>
           <thead>
             <tr>
@@ -267,7 +269,9 @@ const jsonLd = {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p class="text-sm text-zinc-600 dark:text-zinc-400">Licences come from each project's GitHub repository. Prices come from the official pricing pages linked in the sources. All were checked on 2026-10-15.</p>
 
@@ -370,7 +374,8 @@ Accept: application/json`}</code></pre>
 
       <p>Newman still runs <strong>exported Collection v2.1</strong> files, so it works as a stopgap while you migrate. It <strong>can't run Collection v3</strong> (Postman v12 Native Git YAML). For v3, Postman's docs point you to <code>postman collection run</code>, which supports only the <code>cli</code> reporter for YAML collections.</p>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:5">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="CI runners comparison">
         <table>
           <thead>
             <tr>
@@ -419,7 +424,9 @@ Accept: application/json`}</code></pre>
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>A minimal GitHub Actions job for Bruno:</p>
 
@@ -471,7 +478,8 @@ Accept: application/json`}</code></pre>
 
       <h2 id="which-should-you-choose">Which Postman alternative should you choose?</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:2">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Tool selection guide">
         <table>
           <thead>
             <tr>
@@ -514,7 +522,9 @@ Accept: application/json`}</code></pre>
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>Not sure yet? Try the <a href="/picker/">tool picker</a> or browse more <a href="/comparisons/">comparisons</a> in our <a href="/api-development/">API development hub</a>.</p>
 
@@ -561,6 +571,7 @@ Accept: application/json`}</code></pre>
       </ul>
 
       <p class="text-sm text-zinc-600 dark:text-zinc-400">Vendor comparison pages (postman.com/alternatives, usebruno.com/compare, Apidog's blog) were treated as vendor claims and not used as sources. <em>Last updated 2026-10-15.</em></p>
+      </div>
 
       <NewsletterSignup variant="article" />
 
@@ -578,124 +589,4 @@ Accept: application/json`}</code></pre>
   </div>
 </Layout>
 
-<style>
-  .prose {
-    line-height: 1.75;
-    min-width: 0;
-  }
-  
-  .prose .overflow-x-auto {
-    min-width: 0;
-  }
-  
-  .prose ul {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  
-  .prose li {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  
-  .prose h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    color: var(--text);
-  }
-  
-  .prose h2 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    color: var(--text);
-  }
-  
-  .prose h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    color: var(--text);
-  }
-  
-  .prose p {
-    margin-bottom: 1.25rem;
-  }
-  
-  .prose ul, .prose ol {
-    margin-bottom: 1.25rem;
-    padding-left: 1.5rem;
-  }
-  
-  .prose li {
-    margin-bottom: 0.5rem;
-  }
-  
-  .prose strong {
-    font-weight: 600;
-    color: var(--text);
-  }
-  
-  .prose code {
-    background: var(--bg-secondary);
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    font-size: 0.875em;
-    font-family: 'Monaco', 'Courier New', monospace;
-  }
-  
-  .prose pre {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-  }
-  
-  .prose pre code {
-    background: transparent;
-    padding: 0;
-    border-radius: 0;
-  }
-  
-  .prose table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-  }
-  
-  .prose a {
-    color: var(--accent);
-    text-decoration: underline;
-  }
-  
-  .prose a:hover {
-    opacity: 0.8;
-  }
-  
-  .lead {
-    font-size: 1.25rem;
-    color: var(--text-secondary);
-  }
-  
-  .button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--accent);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    text-decoration: none;
-  }
-  
-  .button:hover {
-    opacity: 0.9;
-  }
-</style>
 </Layout>

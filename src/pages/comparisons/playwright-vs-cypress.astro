@@ -97,7 +97,7 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <div class="container mx-auto max-w-4xl px-5">
-    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+    <article class="comparison">
       <nav class="text-sm text-zinc-500 mb-6">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
         /
@@ -106,6 +106,7 @@ const jsonLd = {
         <span class="text-zinc-900 dark:text-white">Playwright vs Cypress</span>
       </nav>
 
+      <div class="dx-prose">
       <h1>Playwright vs Cypress: An Honest Comparison for 2026</h1>
 
       <div class="not-prose my-8 rounded-lg border border-indigo-200 bg-indigo-50/60 p-6 dark:border-indigo-500/30 dark:bg-indigo-500/5">
@@ -121,7 +122,8 @@ const jsonLd = {
 
       <h2 id="at-a-glance">At a glance</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Playwright vs Cypress feature comparison">
         <table>
           <thead>
             <tr>
@@ -198,7 +200,9 @@ const jsonLd = {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>Download counts include transitive installs, such as tools that depend on <code>playwright</code>. They show how widely each package is installed, not how many teams pick it for E2E testing.</p>
 
@@ -244,7 +248,8 @@ test('mocks a GET request', async ({ page }) => {
 
       <h3 id="page-route-vs-cy-intercept"><code>page.route()</code> vs <code>cy.intercept()</code></h3>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Network mocking API comparison">
         <table>
           <thead>
             <tr>
@@ -311,7 +316,9 @@ test('mocks a GET request', async ({ page }) => {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>A failure-then-recovery test shows the APIs side by side.</p>
 
@@ -403,7 +410,8 @@ steps:
 
       <p><strong>Cypress:</strong> <code>cypress run</code> is free and open source, but <strong>parallelizing across machines requires recording to Cypress Cloud</strong> (<code>cypress run --record --parallel</code>). Cypress Cloud plans (checked 2026-10-15):</p>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Cypress Cloud pricing">
         <table>
           <thead>
             <tr>
@@ -435,7 +443,9 @@ steps:
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>Once an organization hits its test-result limit, Cypress's FAQ says recorded runs still execute, but <strong>parallelization is disabled</strong> and new results are hidden from the dashboard until you upgrade or the usage cycle resets. The pricing page lists extra on-demand results at $6 per 1,000. A suite of 300 tests run 20 times a month is 6,000 results, which is well beyond the free tier. Do the maths for your own suite before you commit.</p>
 
@@ -467,7 +477,8 @@ steps:
 
       <h2 id="migrating">Migrating from Cypress to Playwright (mapping table)</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:2">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Cypress to Playwright migration reference">
         <table>
           <thead>
             <tr>
@@ -542,7 +553,9 @@ steps:
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>The mental shift is from chained, implicitly queued commands to explicit <code>await</code>. Migrate a spec at a time. Both tools can run in the same CI pipeline during the switch.</p>
 
@@ -606,6 +619,7 @@ steps:
         <li>npm downloads: https://api.npmjs.org/downloads/point/last-week/@playwright/test (also <code>playwright</code>, <code>cypress</code>)</li>
         <li>Our runs: Playwright 1.64.1 (Chromium), msw 3.0.3, @msw/playwright 0.7.0, Node 22.23.3, Linux, 2026-10-15 (17/17 tests passed)</li>
       </ul>
+      </div>
 
       <NewsletterSignup variant="article" />
 
@@ -615,114 +629,3 @@ steps:
     </article>
   </div>
 </Layout>
-
-<style>
-  .prose {
-    line-height: 1.75;
-    min-width: 0;
-  }
-  
-  .prose .overflow-x-auto {
-    min-width: 0;
-  }
-  
-  .prose ul {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  
-  .prose li {
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
-  
-  .prose h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  
-  .prose h2 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-  }
-  
-  .prose h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .prose p {
-    margin-bottom: 1.25rem;
-  }
-  
-  .prose ul, .prose ol {
-    margin-bottom: 1.25rem;
-    padding-left: 1.5rem;
-  }
-  
-  .prose li {
-    margin-bottom: 0.5rem;
-  }
-  
-  .prose strong {
-    font-weight: 600;
-  }
-  
-  .prose code {
-    background: var(--bg-secondary);
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    font-size: 0.875em;
-    font-family: 'Monaco', 'Courier New', monospace;
-  }
-  
-  .prose pre {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-  }
-  
-  .prose pre code {
-    background: transparent;
-    padding: 0;
-  }
-  
-  .prose table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-  }
-  
-  .prose a {
-    color: var(--accent);
-    text-decoration: underline;
-  }
-  
-  .prose a:hover {
-    opacity: 0.8;
-  }
-  
-  .button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--accent);
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    text-decoration: none;
-  }
-  
-  .button:hover {
-    opacity: 0.9;
-  }
-</style>

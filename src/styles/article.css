@@ -1,0 +1,323 @@
+/* ==========================================================================
+   devxtools.dev — article body typography ("dx-prose")
+   Paste into src/styles/article.css and import it from global.css
+   (after the existing @layer components block), then put class="dx-prose"
+   on a <div> that wraps ONLY <slot /> in ArticleLayout.astro.
+   Requires: @custom-variant dark (&:where(.dark, .dark *)) — already in global.css.
+   No @tailwindcss/typography needed.
+   ========================================================================== */
+@layer components {
+  .dx-prose {
+    /* ---- tokens: light ---- */
+    --dx-text: #27272a;            /* zinc-800  body          14.9:1 on white */
+    --dx-heading: #18181b;         /* zinc-900                                */
+    --dx-muted: #52525b;           /* zinc-600  captions etc.  7.7:1          */
+    --dx-subtle: #71717a;          /* zinc-500  markers, meta  4.8:1          */
+    --dx-border: #e4e4e7;          /* zinc-200                                */
+    --dx-border-strong: #d4d4d8;   /* zinc-300                                */
+    --dx-surface: #ffffff;
+    --dx-surface-2: #fafafa;       /* zinc-50   code, zebra                   */
+    --dx-surface-3: #f4f4f5;       /* zinc-100  thead, inline code            */
+    --dx-accent: #4f46e5;          /* indigo-600 links 6.3:1                  */
+    --dx-accent-soft: #eef2ff;     /* indigo-50                               */
+    --dx-accent-line: #c7d2fe;     /* indigo-200                              */
+    --dx-shadow: rgb(9 9 11 / 0.10);
+
+    /* ---- type scale (mobile first) ---- */
+    --dx-fs: 1rem;                 /* 16px */
+    --dx-lh: 1.7;
+    --dx-measure: 54ch;            /* Inter 1ch≈0.65em → ≈68–72 chars/line; tables/code/figures use full width */
+    --dx-flow: 1.25em;             /* default gap between blocks */
+    --dx-h2: 1.5rem;               /* 24px */
+    --dx-h3: 1.1875rem;            /* 19px */
+    --dx-code-fs: 0.8125rem;       /* 13px */
+
+    font-size: var(--dx-fs);
+    line-height: var(--dx-lh);
+    color: var(--dx-text);
+    font-feature-settings: "cv11", "ss01";   /* Inter: single-storey a, open digits */
+    min-width: 0;
+  }
+  @media (min-width: 1024px) {
+    .dx-prose {
+      --dx-fs: 1.0625rem;          /* 17px */
+      --dx-h2: 1.75rem;            /* 28px */
+      --dx-h3: 1.25rem;            /* 20px */
+      --dx-code-fs: 0.875rem;      /* 14px */
+    }
+  }
+  .dark .dx-prose {
+    --dx-text: #d4d4d8;            /* zinc-300 on zinc-950  13.5:1 */
+    --dx-heading: #fafafa;
+    --dx-muted: #a1a1aa;           /* zinc-400  7.8:1 */
+    --dx-subtle: #a1a1aa;
+    --dx-border: #27272a;          /* zinc-800 */
+    --dx-border-strong: #3f3f46;   /* zinc-700 */
+    --dx-surface: #09090b;         /* zinc-950 (page bg) */
+    --dx-surface-2: #18181b;       /* zinc-900 */
+    --dx-surface-3: #27272a;       /* zinc-800 */
+    --dx-accent: #818cf8;          /* indigo-400  6.7:1 on zinc-950 */
+    --dx-accent-soft: rgb(99 102 241 / 0.10);
+    --dx-accent-line: rgb(129 140 248 / 0.35);
+    --dx-shadow: rgb(0 0 0 / 0.45);
+  }
+
+  /* ---- vertical rhythm: reset defaults, then apply spacing ---- */
+  .dx-prose > * { margin-block: 0; }
+  .dx-prose :where(:first-child) { margin-top: 0; }
+  
+  /* Heading spacing that works regardless of wrapper elements */
+  .dx-prose :where(h2) { margin-top: 2.75rem; }
+  .dx-prose :where(h3) { margin-top: 2rem; }
+  .dx-prose :where(h4) { margin-top: 1.5rem; }
+  
+  /* Paragraph spacing */
+  .dx-prose :where(p + p) { margin-top: 1.25em; }
+  .dx-prose :where(p) { margin-top: var(--dx-flow); }  /* First or after non-p */
+  
+  /* Other block elements */
+  .dx-prose :where(ul, ol, pre, blockquote, figure, .dx-table, hr) { margin-top: var(--dx-flow); }
+  .dx-prose :where(section) { margin-top: 2.75rem; }  /* section gets h2-level spacing */
+  .dx-prose > :where(section:first-child) { margin-top: 0; }
+
+  /* text-y blocks keep the measure; wide blocks span the column */
+  .dx-prose > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
+
+  /* ---- headings ---- */
+  .dx-prose :is(h2, h3, h4) {
+    color: var(--dx-heading);
+    text-wrap: balance;
+    scroll-margin-top: 5rem;       /* sticky header */
+  }
+  .dx-prose h2 {
+    font-size: var(--dx-h2);
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  @media (min-width: 1024px) { 
+    .dx-prose :where(h2) { margin-top: 3.5rem; }  /* 56px desktop */
+  }
+  /* a section already carries the h2 gap; its leading h2 must not add a second one */
+  .dx-prose :where(section) > :where(h2:first-child) { margin-top: 0; }
+  .dx-prose h3 {
+    font-size: var(--dx-h3);
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .dx-prose h4 { font-size: 1em; font-weight: 600; }
+  .dx-prose > :is(h2, h3, h4) + * { margin-top: 0.75rem; }  /* heading binds to its content */
+  .dx-prose h2 code, .dx-prose h3 code { font-size: 0.85em; }
+
+  /* ---- paragraphs, emphasis, links ---- */
+  .dx-prose p { text-wrap: pretty; }
+  .dx-prose strong { font-weight: 600; color: var(--dx-heading); }
+  .dx-prose a {
+    color: var(--dx-accent);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--dx-accent-line);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 3px;
+  }
+  .dx-prose a:hover { text-decoration-color: currentColor; }
+  .dx-prose a:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; border-radius: 2px; }
+
+  /* ---- lists ---- */
+  .dx-prose :is(ul, ol) { padding-left: 1.5em; }
+  .dx-prose ul { list-style: disc; }
+  .dx-prose ol { list-style: decimal; }
+  .dx-prose li { padding-left: 0.25em; }
+  .dx-prose li + li { margin-top: 0.5em; }
+  .dx-prose li::marker { color: var(--dx-subtle); }
+  .dx-prose ol > li::marker { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dx-prose li > :is(ul, ol) { margin-top: 0.5em; }
+  .dx-prose ul ul { list-style: circle; }
+  .dx-prose li > p { margin: 0; }
+  .dx-prose li > p + :is(p, pre) { margin-top: 0.5em; }
+  .dx-prose li > pre { margin-block: 0.75em; }
+  /* list item that starts with a bold lead-in ("Jest tests. …") */
+  .dx-prose li > strong:first-child { color: var(--dx-heading); }
+
+  /* ---- blockquote + callouts ---- */
+  .dx-prose blockquote {
+    border-left: 3px solid var(--dx-border-strong);
+    padding: 0.125em 0 0.125em 1.125em;
+    color: var(--dx-muted);
+  }
+  .dx-prose blockquote > * + * { margin-top: 0.75em; }
+  .dx-callout {
+    --c-bg: var(--dx-surface-2);
+    --c-line: var(--dx-border-strong);
+    --c-icon: var(--dx-subtle);
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--dx-border);
+    border-left: 3px solid var(--c-line);
+    border-radius: 0.625rem;
+    background: var(--c-bg);
+    font-size: 0.9375em;
+    line-height: 1.6;
+    max-width: var(--dx-measure);
+  }
+  .dx-callout > svg { width: 1.25rem; height: 1.25rem; margin-top: 0.15em; color: var(--c-icon); }
+  .dx-callout > div > * + * { margin-top: 0.5em; }
+  .dx-callout--note { --c-bg: var(--dx-accent-soft); --c-line: var(--dx-accent); --c-icon: var(--dx-accent); border-color: var(--dx-accent-line); border-left-color: var(--dx-accent); }
+  .dx-callout--warn { --c-bg: #fffbeb; --c-line: #d97706; --c-icon: #b45309; border-color: #fde68a; border-left-color: #d97706; }
+  .dark .dx-callout--warn { --c-bg: rgb(245 158 11 / 0.08); --c-icon: #fbbf24; border-color: rgb(245 158 11 / 0.30); border-left-color: #f59e0b; }
+
+  /* ---- inline code ---- */
+  .dx-prose :not(pre) > code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.86em;
+    padding: 0.1em 0.35em;
+    border: 1px solid var(--dx-border);
+    border-radius: 0.3rem;
+    background: var(--dx-surface-3);
+    color: var(--dx-heading) !important;   /* beats the global `.prose code { color: inherit !important }` */
+    overflow-wrap: anywhere;               /* long package names wrap instead of overflowing */
+    word-break: normal;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* ---- code blocks (Shiki dual theme keeps token colours) ---- */
+  .dx-prose pre,
+  .dx-prose pre.astro-code {
+    font-size: var(--dx-code-fs);
+    line-height: 1.65;
+    padding: 1rem 1.125rem !important;
+    border: 1px solid var(--dx-border);
+    border-radius: 0.75rem;
+    background-color: var(--dx-surface-2) !important;
+    overflow-x: auto;
+    tab-size: 2;
+    -webkit-text-size-adjust: 100%;
+  }
+  .dark .dx-prose pre.astro-code { background-color: var(--dx-surface-2) !important; }
+  .dark .dx-prose .astro-code span { background-color: transparent !important; }
+  .dx-prose pre:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
+
+  /* ---- figures (images, screenshots, diagrams) ---- */
+  .dx-prose :where(figure) + * { margin-top: 2rem; }
+  .dx-figure__frame {
+    border: 1px solid var(--dx-border);
+    border-radius: 0.75rem;
+    background: var(--dx-surface);
+    overflow: hidden;
+  }
+  .dx-figure__frame > img { display: block; width: 100%; height: auto; }
+  .dx-prose figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--dx-muted);
+    max-width: var(--dx-measure);
+  }
+  .dx-prose figcaption strong { color: var(--dx-text); }
+
+  /* ---- hr ---- */
+  .dx-prose hr { border: 0; border-top: 1px solid var(--dx-border); margin-block: 3rem; }
+
+  /* ===================== TABLES ===================== */
+  .dx-table {
+    position: relative;
+    border: 1px solid var(--dx-border);
+    border-radius: 0.75rem;
+    background: var(--dx-surface);
+    overflow: hidden;                      /* clips corners only; scrolling happens inside */
+  }
+  .dx-table__scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dx-border-strong) transparent;
+  }
+  .dx-table:has(.dx-table__scroll:focus-visible) { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
+  .dx-table__scroll:focus { outline: none; }
+  .dx-table table {
+    width: 100%;
+    min-width: calc(var(--cols, 3) * 8.5rem);   /* 2 cols fit a phone; 4–5 cols scroll */
+    border-collapse: separate;                  /* needed for sticky cells + borders */
+    border-spacing: 0;
+    font-size: 0.9375em;                        /* 15px / 16px */
+    line-height: 1.5;
+    border: 0; border-radius: 0; background: transparent; overflow: visible; margin: 0; /* undo global table rules */
+  }
+  .dx-table :is(th, td) {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    min-width: 0;                               /* undo global th,td{min-width:140px} */
+    border-bottom: 1px solid var(--dx-border);
+    background: inherit;
+  }
+  .dx-table thead th {
+    background: var(--dx-surface-3);
+    color: var(--dx-heading);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--dx-border-strong);
+  }
+  .dx-table tbody tr { background: var(--dx-surface); }
+  .dx-table tbody tr:nth-child(even) { background: var(--dx-surface-2); }  /* zebra */
+  .dx-table tbody tr:last-child > * { border-bottom: 0; }
+  .dx-table tbody th { font-weight: 600; color: var(--dx-heading); }
+  .dx-table tbody tr:hover { background: var(--dx-accent-soft); }
+  .dx-table td code, .dx-table th code { font-size: 0.82em; padding: 0.05em 0.3em; }
+
+  /* sticky first column, only when the table actually scrolls (set by script) */
+  .dx-table[data-overflow] :is(thead th, tbody th):first-child {
+    position: sticky; left: 0; z-index: 1;
+    min-width: 8.5rem; max-width: 11rem;
+    border-right: 1px solid var(--dx-border);
+  }
+  .dx-table[data-overflow] thead th:first-child { background: var(--dx-surface-3); }
+  .dx-table[data-scrolled] :is(thead th, tbody th):first-child { box-shadow: 8px 0 10px -8px var(--dx-shadow); }
+
+  /* right-edge fade: visible while more columns are hidden */
+  .dx-table::after {
+    content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 2.5rem;
+    pointer-events: none; opacity: 0; transition: opacity .15s;
+    background: linear-gradient(to right, transparent, var(--dx-surface) 85%);
+  }
+  .dx-table[data-overflow="end"]::after,
+  .dx-table[data-overflow="both"]::after { opacity: 1; }
+  .dx-table__hint {
+    display: none;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--dx-subtle);
+  }
+  .dx-table[data-overflow] + .dx-table__hint { display: flex; align-items: center; gap: .375rem; }
+  @media (prefers-reduced-motion: reduce) { .dx-table::after { transition: none; } }
+
+  /* ===================== MERMAID (build-time SVG) ===================== */
+  .dx-diagram .dx-figure__frame {
+    display: block;                        /* frame is an <a> to the full-size SVG */
+    padding: 1.25rem;
+    background: var(--dx-surface-2);
+    overflow-x: auto;                      /* wide diagrams scroll on phones */
+    overscroll-behavior-x: contain;
+  }
+  .dx-diagram .dx-figure__frame:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
+  .dx-diagram img {
+    display: block;
+    margin-inline: auto;
+    max-width: 100%;
+    height: auto;
+  }
+  /* each diagram is emitted twice; show the one that matches the theme */
+  .dx-diagram .mmd-dark { display: none; }
+  .dark .dx-diagram .mmd-light { display: none; }
+  .dark .dx-diagram .mmd-dark { display: block; }
+}
+
+@layer components {
+  .dx-prose > .dx-table + .dx-table__hint { margin-top: 0.5rem; }
+}
