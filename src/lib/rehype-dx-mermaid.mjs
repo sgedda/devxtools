@@ -1,92 +1,46 @@
-// rehype-dx-mermaid.mjs — swaps ```mermaid fences for pre-rendered light + dark SVGs.
-// No mermaid JS ships to the browser. SVGs are rendered by `npm run diagrams`
-// (scripts/render-diagrams.mjs, Playwright + mermaid, run locally/CI) and committed to
-// src/diagrams/rendered/, because Cloudflare Pages builds skip the Playwright install.
-//
-// astro.config.mjs:
-//   markdown: {
-//     syntaxHighlight: { type: 'shiki', excludeLangs: ['mermaid'] },
-//     rehypePlugins: [rehypeDxMermaid, rehypeDxTables],
-//   }
-// Authoring (.md):
-//   ```mermaid caption="Figure 1. Pick the mock by where the code runs." alt="Flowchart. …"
-//   flowchart TD
-//     …
-//   ```
-// rehype-dx-mermaid.mjs — swaps mermaid code blocks for pre-rendered SVGs
+// rehype-dx-mermaid.mjs — post-process mermaid code blocks in HTML
 import { visit } from 'unist-util-visit';
-import { fromHtml } from 'hast-util-from-html';
 import { createHash } from 'node:crypto';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const DIR = resolve('src/diagrams/rendered');
-export const diagramHash = (src) => createHash('sha1').update(src.trim()).digest('hex').slice(0, 12);
-const text = (n) => n.type === 'text' ? n.value : (n.children || []).map(text).join('');
+const diagramHash = (src) => createHash('sha1').update(src.trim()).digest('hex').slice(0, 12);
 
 export default function rehypeDxMermaid() {
+  let figureCount = 0;
+  
   return (tree, file) => {
     visit(tree, 'element', (node, index, parent) => {
-      if (node.tagName !== 'pre' || !parent || index == null) return;
+      // Find pre > code.language-mermaid
+      if (node.tagName !== 'pre' || !node.children || node.children.length === 0) return;
       
-      // Check if this pre has data-language="mermaid"
-      const dataLang = node.properties?.dataLanguage || node.properties?.['data-language'];
-      if (dataLang !== 'mermaid') return;
-
-      const code = node.children.find((c) => c.tagName === 'code');
-      if (!code) return;
-
-      let srcWithMeta = text(code);
+      const codeNode = node.children[0];
+      if (!codeNode || codeNode.tagName !== 'code') return;
       
-      // Extract meta from the comment we prepended in remark
-      let meta = '';
-      let src = srcWithMeta;
-      const metaMatch = srcWithMeta.match(/^%%\s*DXMETA:\s*(.+)\n/);
-      if (metaMatch) {
-        meta = metaMatch[1];
-        // Remove the meta comment to get the original source for hashing
-        src = srcWithMeta.replace(/^%%\s*DXMETA:.+\n/, '');
-      }
+      const classes = codeNode.properties?.className || [];
+      if (!classes.includes('language-mermaid')) return;
       
-      const altMatch = meta.match(/alt="([^"]*)"/);
-      const captionMatch = meta.match(/caption="([^"]*)"/);
+      // Extract mermaid source from text content
+      const textNode = codeNode.children?.find(n => n.type === 'text');
+      if (!textNode || !textNode.value) return;
       
+      const src = textNode.value;
       const hash = diagramHash(src);
       
-      // Try to find the diagram files
-      const svgs = ['light', 'dark'].map((mode) => {
-        const p = `${DIR}/${hash}-${mode}.svg`;
-        if (!existsSync(p)) {
-          console.warn(`[rehype-dx-mermaid] Diagram ${hash} not found. Run: npm run diagrams`);
-          return null;
-        }
-        const root = fromHtml(readFileSync(p, 'utf8'), { fragment: true, space: 'svg' });
-        const svg = root.children.find((c) => c.tagName === 'svg');
-        if (!svg) return null;
-        
-        const w = Math.round(Number(String(svg.properties.viewBox).split(/\s+/)[2]));
-        delete svg.properties.width; delete svg.properties.height; delete svg.properties.style;
-        for (const k of Object.keys(svg.properties)) if (/roledescription/i.test(k)) delete svg.properties[k];
-        Object.assign(svg.properties, {
-          className: [`mmd-${mode}`], style: `--w:${w}px`, role: 'img',
-          ariaLabel: altMatch ? altMatch[1] : 'Diagram',
-          focusable: 'false', dataNarrow: w <= 420 ? '' : undefined,
-        });
-        return svg;
-      }).filter(Boolean);
-
-      if (svgs.length === 0) return;
-
-      const figure = {
-        type: 'element', tagName: 'figure', properties: { className: ['dx-diagram'] },
-        children: [
-          { type: 'element', tagName: 'div',
-            properties: { className: ['dx-figure__frame'], role: 'group', tabIndex: 0, ariaLabel: 'Diagram, scrolls horizontally' },
-            children: svgs },
-          ...(captionMatch ? [{ type: 'element', tagName: 'figcaption', properties: {}, children: [{ type: 'text', value: captionMatch[1] }] }] : []),
-        ],
+      // For now, just replace with a marker to test
+      figureCount++;
+      
+      const replacement = {
+        type: 'element',
+        tagName: 'div',
+        properties: { className: [`REHYPE-MERMAID-${figureCount}`] },
+        children: [{ type: 'text', value: `Diagram ${figureCount}` }],
       };
-      parent.children.splice(index, 1, figure);
+      
+      if (parent && index != null) {
+        parent.children[index] = replacement;
+      }
     });
   };
 }

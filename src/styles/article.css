@@ -62,9 +62,22 @@
     --dx-shadow: rgb(0 0 0 / 0.45);
   }
 
-  /* ---- vertical rhythm: one rule, then exceptions ---- */
+  /* ---- vertical rhythm: reset defaults, then apply spacing ---- */
   .dx-prose > * { margin-block: 0; }
-  .dx-prose > * + * { margin-top: var(--dx-flow); }
+  .dx-prose :where(:first-child) { margin-top: 0; }
+  
+  /* Heading spacing that works regardless of wrapper elements */
+  .dx-prose :where(h2) { margin-top: 2.75rem; }
+  .dx-prose :where(h3) { margin-top: 2rem; }
+  .dx-prose :where(h4) { margin-top: 1.5rem; }
+  
+  /* Paragraph spacing */
+  .dx-prose :where(p + p) { margin-top: 1.25em; }
+  .dx-prose :where(p) { margin-top: var(--dx-flow); }  /* First or after non-p */
+  
+  /* Other block elements */
+  .dx-prose :where(ul, ol, pre, blockquote, figure, .dx-table, hr) { margin-top: var(--dx-flow); }
+  .dx-prose :where(section) { margin-top: 2.75rem; }  /* section gets h2-level spacing */
 
   /* text-y blocks keep the measure; wide blocks span the column */
   .dx-prose > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
@@ -81,25 +94,16 @@
     font-weight: 700;
     letter-spacing: -0.015em;
   }
-  .dx-prose > * + h2 { margin-top: 2.75rem; }          /* 44px */
-  .dx-prose > * + section { margin-top: 2.75rem; }    /* sections get h2-level spacing */
-  .dx-prose table + h2 { margin-top: 2.75rem; }       /* h2 after markdown tables */
-  .dx-prose .dx-table + h2 { margin-top: 2.75rem; }   /* h2 after wrapped tables */
   @media (min-width: 1024px) { 
-    .dx-prose > * + h2 { margin-top: 3.5rem; }
-    .dx-prose > * + section { margin-top: 3.5rem; }
-    .dx-prose table + h2 { margin-top: 3.5rem; }
-    .dx-prose .dx-table + h2 { margin-top: 3.5rem; }
-  } /* 56px */
+    .dx-prose :where(h2) { margin-top: 3.5rem; }  /* 56px desktop */
+  }
   .dx-prose h3 {
     font-size: var(--dx-h3);
     line-height: 1.35;
     font-weight: 600;
     letter-spacing: -0.01em;
   }
-  .dx-prose > * + h3 { margin-top: 2rem; }
   .dx-prose h4 { font-size: 1em; font-weight: 600; }
-  .dx-prose > * + h4 { margin-top: 1.5rem; }
   .dx-prose > :is(h2, h3, h4) + * { margin-top: 0.75rem; }  /* heading binds to its content */
   .dx-prose h2 code, .dx-prose h3 code { font-size: 0.85em; }
 
@@ -193,13 +197,9 @@
   .dark .dx-prose pre.astro-code { background-color: var(--dx-surface-2) !important; }
   .dark .dx-prose .astro-code span { background-color: transparent !important; }
   .dx-prose pre:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
-  .dx-prose > pre { margin-top: 1.5rem; }
-  .dx-prose > pre + pre { margin-top: 1rem; }
-  .dx-prose > pre + * { margin-top: 1.5rem; }
 
   /* ---- figures (images, screenshots, diagrams) ---- */
-  .dx-prose figure { margin-top: 2rem; }
-  .dx-prose figure + * { margin-top: 2rem; }
+  .dx-prose :where(figure) + * { margin-top: 2rem; }
   .dx-figure__frame {
     border: 1px solid var(--dx-border);
     border-radius: 0.75rem;
@@ -222,13 +222,11 @@
   /* ===================== TABLES ===================== */
   .dx-table {
     position: relative;
-    margin-top: 1.75rem;
     border: 1px solid var(--dx-border);
     border-radius: 0.75rem;
     background: var(--dx-surface);
     overflow: hidden;                      /* clips corners only; scrolling happens inside */
   }
-  .dx-prose > .dx-table + * { margin-top: 1.5rem; }
   .dx-table__scroll {
     overflow-x: auto;
     overscroll-behavior-x: contain;

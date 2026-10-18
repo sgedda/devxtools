@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import remarkDxMermaid from './src/lib/remark-dx-mermaid.mjs';
+import rehypeDxMermaid from './src/lib/rehype-dx-mermaid.mjs';
 import rehypeDxTables from './src/lib/rehype-dx-tables.mjs';
 
 // https://astro.build/config
@@ -18,7 +19,7 @@ export default defineConfig({
       excludeLangs: ['mermaid'],
     },
     remarkPlugins: [remarkDxMermaid],
-    rehypePlugins: [rehypeDxTables],
+    rehypePlugins: [rehypeDxMermaid, rehypeDxTables],
   },
   integrations: [
     mdx(),
