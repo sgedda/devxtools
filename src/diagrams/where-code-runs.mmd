@@ -1,3 +1,4 @@
+%% alt: Flowchart. Where does the code run? Jest and RNTL in Node: use MSW's msw/node. The running app: if adding mock code to the app is OK, use an in-app interceptor (msw 2 msw/native, Mirage JS or record/replay); if not, point the base URL at a mock server (Prism, Mockoon, WireMock). E2E with Detox or Maestro: a launch argument picks a scenario for either option.
 flowchart TD
   Q{"Where does the<br/>code run?"}:::accent
   Q -->|"Jest + RNTL (Node)"| J("MSW in Node<br/>msw/node · setupServer")

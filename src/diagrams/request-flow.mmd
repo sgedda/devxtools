@@ -1,5 +1,6 @@
+%% alt: Flowchart. The screen calls fetch. A guard checks __DEV__ and the EXPO_PUBLIC_API_MOCKING flag. If off (release build) the request goes to the real API. If on with in-app mocking, an interceptor patches fetch and a handler returns JSON without a network call. If on with a base URL, the request goes to a mock server on port 4010.
 flowchart TD
-  F("Screen calls<br/>fetch('/users/1')") --> G{"__DEV__ and<br/>API_MOCKING<br/>enabled?"}:::accent
+  F("Screen calls<br/>fetch('/users/1')") --> G{"__DEV__ and<br/>EXPO_PUBLIC_API_MOCKING<br/>enabled?"}:::accent
   G -->|"No · release build"| R[("Real API<br/>api.example.com")]
   G -->|"Yes · in-app"| I("Interceptor patches fetch<br/>msw/native handlers"):::accent
   I --> H("Handler returns JSON<br/>no network call")
