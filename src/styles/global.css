@@ -184,14 +184,8 @@
     background-color: var(--shiki-dark-bg) !important;
   }
 
-  /* Also apply for prefers-color-scheme when no explicit class */
-  @media (prefers-color-scheme: dark) {
-    html:not(.light) .astro-code,
-    html:not(.light) .astro-code span {
-      color: var(--shiki-dark) !important;
-      background-color: var(--shiki-dark-bg) !important;
-    }
-  }
+  /* No prefers-color-scheme rule here: the theme script in Layout.astro already adds .dark
+     for system dark mode, and a media rule also fires when the user picked light. */
 
   /* Prevent Tailwind prose/typography from overriding code token colors */
   .prose code,
