@@ -27,7 +27,8 @@ for (const [name, src] of sources) {
       [conf, code, `mmd-${name}-${mode}`]);
     const root = svg.match(/^<svg[^>]*>/)[0];
     const clean = root.replace(/\s(width|height)="[^"]*"/g, '').replace(/max-width:[^;"]*;?/g, '');
-    writeFileSync(`${OUT}/${name}-${mode}.svg`, svg.replace(root, clean));
+    // <img>-loaded SVG must be well-formed XML: mermaid emits HTML <br> in labels
+    writeFileSync(`${OUT}/${name}-${mode}.svg`, svg.replace(root, clean).replace(/<br\s*>/g, '<br/>'));
   }
   console.log('rendered', name);
 }
