@@ -1,0 +1,37 @@
+---
+// Static "Vote for your stack" card linking to a stack poll.
+interface Props {
+  href?: string;
+  question?: string;
+  blurb?: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  href = '/polls/rn-api-mocking/',
+  question = 'How do you mock APIs in React Native?',
+  blurb = 'Tell us which tool you use. One vote per network, no sign-up. Results show after you vote.',
+  id,
+  class: className = '',
+} = Astro.props;
+---
+
+<aside
+  id={id}
+  class:list={[
+    'poll-card not-prose rounded-xl border border-indigo-200 bg-indigo-50 p-6 dark:border-indigo-900/50 dark:bg-indigo-950/40',
+    className,
+  ]}
+  data-poll-card
+>
+  <p class="text-xs font-semibold uppercase tracking-wide text-indigo-600 dark:text-indigo-400">Vote for your stack</p>
+  <p class="mt-2 text-lg font-semibold text-zinc-900 dark:text-white">{question}</p>
+  <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{blurb}</p>
+  <a
+    href={href}
+    class="mt-4 inline-flex items-center gap-1 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+  >
+    Vote now →
+  </a>
+</aside>

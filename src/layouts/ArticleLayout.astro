@@ -3,6 +3,7 @@ import Layout from './Layout.astro';
 import NewsletterSignup from '../components/NewsletterSignup.astro';
 import ReportError from '../components/ReportError.astro';
 import StackPickerWidget from '../components/StackPickerWidget.astro';
+import PollCard from '../components/PollCard.astro';
 
 interface Props {
   frontmatter: {
@@ -25,6 +26,18 @@ interface Props {
 }
 
 const { frontmatter, headings } = Astro.props;
+
+// Pages about React Native / API mocking end with the RN API-mocking poll card
+const POLL_CARD_PATHS = new Set([
+  '/guides/mock-api-react-native/',
+  '/guides/mock-api-calls-jest/',
+  '/comparisons/pollyjs-alternatives/',
+  '/blog/why-i-built-mockifyer/',
+]);
+const pagePath = (() => {
+  try { return new URL(frontmatter.canonical).pathname; } catch { return ''; }
+})();
+const showPollCard = POLL_CARD_PATHS.has(pagePath);
 
 // Map section to need for picker widget
 function getSectionNeed(section?: string): string | undefined {
@@ -161,6 +174,12 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
       )}
 
       <slot />
+
+      {showPollCard && (
+        <div class="not-prose my-12">
+          <PollCard />
+        </div>
+      )}
 
       <div class="not-prose my-12">
         <StackPickerWidget need={pickerNeed} />
