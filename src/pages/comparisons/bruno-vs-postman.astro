@@ -82,7 +82,7 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <div class="container mx-auto max-w-4xl px-5">
-    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+    <article class="comparison">
       <nav class="text-sm text-zinc-500 mb-6">
         <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
         /
@@ -91,6 +91,7 @@ const jsonLd = {
         <span class="text-zinc-900 dark:text-white">Bruno vs Postman</span>
       </nav>
 
+      <div class="dx-prose">
       <h1>Bruno vs Postman: Which API Client Should Your Team Use?</h1>
       <p class="text-lg text-zinc-600 dark:text-zinc-400">Files in your repo vs a cloud platform: what actually changes for your team</p>
 
@@ -107,7 +108,8 @@ const jsonLd = {
 
       <h2 id="at-a-glance">Bruno vs Postman at a glance</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Bruno vs Postman comparison table">
         <table>
           <thead>
             <tr>
@@ -179,7 +181,9 @@ const jsonLd = {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <h2 id="storage">Where your collections live (the core difference)</h2>
 
@@ -324,7 +328,8 @@ tests {
 
       <h2 id="pricing">Pricing in 2026</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Pricing table">
         <table>
           <thead>
             <tr>
@@ -356,7 +361,9 @@ tests {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p class="text-sm text-zinc-600 dark:text-zinc-400"><em>Prices checked 2026-10-15.</em> For a 10-person team on annual billing, list prices are <strong>$720/year</strong> on Bruno Pro vs <strong>$2,280/year</strong> on Postman Team. With SSO, it's <strong>$1,320</strong> (Bruno Ultimate) vs <strong>$3,000</strong> (Postman Team plus Simple Security). Bruno's pricing page says Ultimate "can save teams more than 70%". That's a vendor claim. Our figures are list prices only and ignore usage-based extras such as Postman AI credits and monitor overages.</p>
 
@@ -432,6 +439,7 @@ tests {
 
       <div class="mt-12">
         <StackPickerWidget need="debug" />
+      </div>
       </div>
 
       <NewsletterSignup variant="article" />
