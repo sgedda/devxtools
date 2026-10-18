@@ -82,6 +82,7 @@
 
   /* text-y blocks keep the measure; wide blocks span the column */
   .dx-prose > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
+  .dx-prose > section > :is(p, ul, ol, h2, h3, h4, blockquote, dl) { max-width: var(--dx-measure); }
 
   /* ---- headings ---- */
   .dx-prose :is(h2, h3, h4) {
@@ -200,7 +201,7 @@
   .dx-prose pre:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
 
   /* ---- figures (images, screenshots, diagrams) ---- */
-  .dx-prose :where(figure) + * { margin-top: 2rem; }
+  .dx-prose :where(figure) + :where(:not(h2, h3)) { margin-top: 2rem; }  /* headings keep their own (larger) gap */
   .dx-figure__frame {
     border: 1px solid var(--dx-border);
     border-radius: 0.75rem;
@@ -304,13 +305,16 @@
     overscroll-behavior-x: contain;
   }
   .dx-diagram .dx-figure__frame:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: 2px; }
-  .dx-diagram img {
+  .dx-diagram img,
+  .dx-diagram svg {
     display: block;
     margin-inline: auto;
     max-width: 100%;
     height: auto;
   }
   /* each diagram is emitted twice; show the one that matches the theme */
+  /* inline SVG labels are HTML <p>s in foreignObject: keep prose rules off them */
+  .dx-prose .dx-diagram svg p { margin: 0; max-width: none; line-height: inherit; font-size: inherit; }
   .dx-diagram .mmd-dark { display: none; }
   .dark .dx-diagram .mmd-light { display: none; }
   .dark .dx-diagram .mmd-dark { display: block; }
