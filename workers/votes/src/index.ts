@@ -13,6 +13,38 @@ interface RateLimit {
   limit(options: { key: string }): Promise<{ success: boolean }>;
 }
 
+// In-memory burst protection (defense-in-depth)
+// Cloudflare rate limiting is per-location and eventually consistent,
+// so short bursts can exceed limits. This catches rapid-fire votes.
+const voteAttempts = new Map<string, number[]>();
+const MAX_VOTE_ATTEMPTS_PER_MINUTE = 5;
+
+function checkBurstProtection(voterHash: string): boolean {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60000;
+  
+  const attempts = voteAttempts.get(voterHash) || [];
+  const recentAttempts = attempts.filter(t => t > oneMinuteAgo);
+  
+  if (recentAttempts.length >= MAX_VOTE_ATTEMPTS_PER_MINUTE) {
+    return false;
+  }
+  
+  recentAttempts.push(now);
+  voteAttempts.set(voterHash, recentAttempts);
+  
+  // Cleanup old entries periodically to prevent memory bloat
+  if (voteAttempts.size > 10000) {
+    for (const [key, times] of voteAttempts.entries()) {
+      if (times.every(t => t < oneMinuteAgo)) {
+        voteAttempts.delete(key);
+      }
+    }
+  }
+  
+  return true;
+}
+
 interface Poll {
   id: number;
   slug: string;
@@ -200,6 +232,11 @@ async function vote(env: Env, request: Request): Promise<Response> {
   }
 
   const voterHash = await hashVoter(ip, pollSlug, env.VOTE_SALT);
+
+  // Defense-in-depth: in-memory burst protection per voter_hash
+  if (!checkBurstProtection(voterHash)) {
+    return jsonResponse({ error: 'Rate limit exceeded', code: 'RATE_LIMITED' }, 429);
+  }
 
   const existingVote = await env.DB.prepare('SELECT 1 FROM votes WHERE poll_id = ? AND voter_hash = ?')
     .bind(poll.id, voterHash)

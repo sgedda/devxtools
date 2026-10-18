@@ -137,6 +137,7 @@ Tests run with Vitest + `@cloudflare/vitest-plugin` for in-memory D1.
 - **Retention**: Vote hashes are automatically anonymized after 90 days via scheduled cron job (runs daily at 02:00 UTC). The cron replaces each expired hash with a unique `EXPIRED_` prefix, preserving vote counts; after expiry the same network can vote again.
 - **No cookies**: Deduplication is per IP address only
 - **Rate limiting**: 10 requests/minute per IP, fail-closed for POST requests (configured but not currently enforced; fix pending)
+- **Burst protection**: up to 5 vote attempts per minute per voter hash, tracked in memory per Worker isolate (best effort)
 
 ## Permissions
 

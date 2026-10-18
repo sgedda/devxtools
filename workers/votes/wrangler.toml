@@ -14,12 +14,14 @@ binding = "DB"
 database_name = "devxtools-votes"
 database_id = "" # Will be populated after first database creation
 
-# Rate limiting: 10 requests per minute per IP
-[[unsafe.bindings]]
+# Rate limiting: 10 requests per minute per IP (per Cloudflare location)
+[[ratelimits]]
 name = "RATE_LIMITER"
-type = "ratelimit"
 namespace_id = "1002"
-simple = { limit = 10, period = 60 }
+
+[ratelimits.simple]
+limit = 10
+period = 60
 
 # Scheduled cleanup: delete vote hashes older than 90 days
 # Runs daily at 02:00 UTC
