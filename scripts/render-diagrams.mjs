@@ -42,7 +42,7 @@ for (const { name, alt, src } of sources) {
     const w = Math.round(Number(root.match(/viewBox="[^"]*?\s([\d.]+)\s[\d.]+"/)[1]));
     const bare = root.replace(/\s(width|height|style)="[^"]*"/g, '');
     writeFileSync(`${OUT}/${name}-${mode}.svg`, svg.replace(root, bare.replace('<svg', `<svg width="${w}"`)));
-    const inl = bare.replace('<svg', `<svg class="mmd-${mode}" width="100%" style="max-width:${w}px" role="img" aria-label="${esc(alt)}"`)
+    const inl = bare.replace('<svg', `<svg class="mmd-${mode}" width="${w}" style="width:${w}px" role="img" aria-label="${esc(alt)}"`)
       .replace(/\s(role|aria-roledescription)="graphics-document document"/, '');
     parts.push(svg.replace(root, inl));
   }
