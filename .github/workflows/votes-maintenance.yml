@@ -1,0 +1,133 @@
+name: Votes Maintenance
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'cleanup = delete the 2 Editor test votes (2026-10-16 20:51-20:52); e2e = live vote/409/429 test, then delete its own row'
+        required: true
+        type: choice
+        options:
+          - cleanup
+          - e2e
+
+permissions:
+  contents: read
+
+concurrency:
+  group: votes-maintenance
+  cancel-in-progress: false
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: 2da5448d9c00373519c97d8368d08ae3
+      POLL_SLUG: rn-api-mocking
+      API: https://devxtools.dev/api/polls/rn-api-mocking
+    defaults:
+      run:
+        working-directory: workers/votes
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: 'workers/votes/package-lock.json'
+
+      - name: Install worker dependencies
+        run: npm ci
+
+      - name: Resolve D1 database id
+        run: |
+          set -euo pipefail
+          if [ -z "${CLOUDFLARE_API_TOKEN}" ]; then echo "CLOUDFLARE_WORKERS_TOKEN is not set"; exit 1; fi
+          DB_ID=$(npx wrangler d1 list --json | jq -r '.[] | select(.name=="devxtools-votes") | .uuid' | head -n 1)
+          if [ -z "$DB_ID" ] || [ "$DB_ID" = "null" ]; then echo "devxtools-votes not found"; exit 1; fi
+          sed -i "s/database_id = \"[^\"]*\"/database_id = \"$DB_ID\"/" wrangler.toml
+          echo "Resolved devxtools-votes"
+
+      - name: Write SQL helper
+        run: |
+          cat > /tmp/d1.sh <<'SH'
+          #!/usr/bin/env bash
+          # Usage: d1.sh "<SQL>"  -> prints the results array of the first statement as JSON
+          set -euo pipefail
+          npx wrangler d1 execute devxtools-votes --remote --json --command "$1" | jq -c '.[0].results'
+          SH
+          chmod +x /tmp/d1.sh
+
+      # ---------- cleanup: Editor's two test votes ----------
+      - name: Delete Editor test votes
+        if: inputs.mode == 'cleanup'
+        run: |
+          set -euo pipefail
+          WHERE="poll_id = (SELECT id FROM polls WHERE slug = '${POLL_SLUG}') AND created_at >= '2026-10-16 20:51:00' AND created_at < '2026-10-16 20:53:00'"
+          echo "Total votes before: $(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes" | jq '.[0].n')"
+          echo "Matching rows (option and time only):"
+          /tmp/d1.sh "SELECT rowid, option_id, created_at FROM votes WHERE ${WHERE} ORDER BY created_at"
+          N=$(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes WHERE ${WHERE}" | jq '.[0].n')
+          echo "Rows found: ${N}"
+          if [ "${N}" != "2" ]; then
+            echo "Expected exactly 2 rows; found ${N}. Aborting without deleting."
+            exit 1
+          fi
+          /tmp/d1.sh "DELETE FROM votes WHERE ${WHERE}" > /dev/null
+          echo "Rows remaining in window: $(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes WHERE ${WHERE}" | jq '.[0].n')"
+          echo "Total votes after: $(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes" | jq '.[0].n')"
+
+      # ---------- e2e: one vote, a duplicate (409), a burst until 429 ----------
+      - name: Live end-to-end vote test
+        if: inputs.mode == 'e2e'
+        run: |
+          set -euo pipefail
+          POLL_WHERE="poll_id = (SELECT id FROM polls WHERE slug = '${POLL_SLUG}')"
+          START=$(date -u '+%Y-%m-%d %H:%M:%S')
+          echo "Start (UTC, D1 created_at format): ${START}"
+          echo "Poll votes before: $(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes WHERE ${POLL_WHERE}" | jq '.[0].n')"
+          sleep 1
+
+          post() {
+            curl -s -o /tmp/body.json -w '%{http_code}' -X POST "${API}/vote" \
+              -H 'Content-Type: application/json' -H 'Origin: https://devxtools.dev' \
+              --data '{"option":"other"}'
+          }
+
+          GET_STATUS=$(curl -s -o /dev/null -w '%{http_code}' "${API}")
+          echo "GET poll: ${GET_STATUS}"
+
+          FIRST=$(post); echo "Vote 1: ${FIRST} $(jq -c '{success, code, error}' /tmp/body.json 2>/dev/null || true)"
+          SECOND=$(post); echo "Vote 2 (duplicate): ${SECOND} $(jq -c '{code, error}' /tmp/body.json 2>/dev/null || true)"
+
+          GOT429=no
+          for i in $(seq 1 30); do
+            S=$(post)
+            echo "Burst ${i}: ${S}"
+            if [ "${S}" = "429" ]; then GOT429=yes; break; fi
+          done
+
+          echo "Rows created by this test (created_at >= start):"
+          ROWS=$(/tmp/d1.sh "SELECT rowid, option_id, created_at FROM votes WHERE ${POLL_WHERE} AND created_at >= '${START}'")
+          echo "${ROWS}"
+          N=$(echo "${ROWS}" | jq 'length')
+          echo "Test rows found: ${N}"
+          if [ "${N}" = "1" ]; then
+            RID=$(echo "${ROWS}" | jq '.[0].rowid')
+            /tmp/d1.sh "DELETE FROM votes WHERE rowid = ${RID} AND ${POLL_WHERE} AND created_at >= '${START}'" > /dev/null
+            echo "Deleted test row."
+          else
+            echo "Expected exactly 1 test row; found ${N}. Not deleting automatically."
+          fi
+          echo "Test rows remaining: $(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes WHERE ${POLL_WHERE} AND created_at >= '${START}'" | jq '.[0].n')"
+          echo "Poll votes after: $(/tmp/d1.sh "SELECT COUNT(*) AS n FROM votes WHERE ${POLL_WHERE}" | jq '.[0].n')"
+
+          echo "Summary: first=${FIRST} duplicate=${SECOND} got429=${GOT429} test_rows=${N}"
+          FAIL=0
+          [ "${FIRST}" = "200" ] || { echo "::error::First vote expected 200, got ${FIRST}"; FAIL=1; }
+          [ "${SECOND}" = "409" ] || { echo "::error::Duplicate vote expected 409, got ${SECOND}"; FAIL=1; }
+          [ "${GOT429}" = "yes" ] || { echo "::error::No 429 within 30 burst POSTs"; FAIL=1; }
+          [ "${N}" = "1" ] || { echo "::error::Expected exactly 1 test row, found ${N}"; FAIL=1; }
+          exit ${FAIL}

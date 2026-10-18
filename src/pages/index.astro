@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ToolLogo from '../components/ToolLogo.astro';
+import PollCard from '../components/PollCard.astro';
 import StackPickerWidget from '../components/StackPickerWidget.astro';
 import { getAllTools } from '../lib/tools';
 import { CATEGORY_LABELS } from '../lib/schema';
@@ -151,6 +152,10 @@ const guides = [
   <main class="mx-auto max-w-[1200px] px-5">
     <section class="pt-20">
       <StackPickerWidget />
+    </section>
+
+    <section class="pt-10">
+      <PollCard id="home-poll-card" />
     </section>
     
     <section class="pt-20">
