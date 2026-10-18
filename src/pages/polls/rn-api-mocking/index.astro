@@ -26,7 +26,7 @@ import Poll from '../../../components/Poll.astro';
         <strong>Privacy:</strong> We store a salted SHA-256 hash of your IP plus the poll ID, your option and the time. That's pseudonymous, not anonymous. Deduplication is per IP: one vote per network per poll. Hashes are deleted after 90 days. A network can vote again after 90 days.
       </p>
       <p>
-        The voting API runs on Cloudflare Workers with a D1 database. Results are shown only after you vote. VPNs and network changes allow extra votes, and a shared IP gets only one vote. Results are informal.
+        The voting API runs on Cloudflare Workers with a D1 database. Votes are rate-limited per IP. Results are shown only after you vote. VPNs and network changes allow extra votes, and a shared IP gets only one vote. Results are informal.
       </p>
       <p class="text-xs">
         <em>Disclosure:</em> The maintainer of this site (Sebastian) is the author of Mockifyer, one of the options in this poll.
