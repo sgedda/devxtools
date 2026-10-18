@@ -1,4 +1,4 @@
-// remark-dx-mermaid.mjs — preserves mermaid meta for later rehype processing
+// remark-dx-mermaid.mjs — preserves mermaid meta by prepending it as a comment
 import { visit } from 'unist-util-visit';
 
 export default function remarkDxMermaid() {
@@ -6,11 +6,10 @@ export default function remarkDxMermaid() {
     visit(tree, 'code', (node) => {
       if (node.lang !== 'mermaid') return;
       
-      // Store the meta in node.data.hProperties so it survives to rehype
+      // Prepend the meta as a comment in the mermaid code so it survives to rehype
+      // The hash will be computed from the original source (without the comment) in rehype
       if (node.meta) {
-        node.data = node.data || {};
-        node.data.hProperties = node.data.hProperties || {};
-        node.data.hProperties.dataMermaidMeta = node.meta;
+        node.value = `%% DXMETA: ${node.meta}\n${node.value}`;
       }
     });
   };

@@ -36,12 +36,18 @@ export default function rehypeDxMermaid() {
       const code = node.children.find((c) => c.tagName === 'code');
       if (!code) return;
 
-      const src = text(code);
+      let srcWithMeta = text(code);
       
-      // Get the meta that was preserved by the remark plugin
-      // Check code.data.meta first (from remark), then fallback to checking properties
-      const meta = code.data?.meta || node.properties?.dataMermaidMeta || node.properties?.['data-mermaid-meta'] || 
-                   code.properties?.dataMermaidMeta || code.properties?.['data-mermaid-meta'] || '';
+      // Extract meta from the comment we prepended in remark
+      let meta = '';
+      let src = srcWithMeta;
+      const metaMatch = srcWithMeta.match(/^%%\s*DXMETA:\s*(.+)\n/);
+      if (metaMatch) {
+        meta = metaMatch[1];
+        // Remove the meta comment to get the original source for hashing
+        src = srcWithMeta.replace(/^%%\s*DXMETA:.+\n/, '');
+      }
+      
       const altMatch = meta.match(/alt="([^"]*)"/);
       const captionMatch = meta.match(/caption="([^"]*)"/);
       
