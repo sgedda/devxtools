@@ -83,9 +83,13 @@
   }
   .dx-prose > * + h2 { margin-top: 2.75rem; }          /* 44px */
   .dx-prose > * + section { margin-top: 2.75rem; }    /* sections get h2-level spacing */
+  .dx-prose table + h2 { margin-top: 2.75rem; }       /* h2 after markdown tables */
+  .dx-prose .dx-table + h2 { margin-top: 2.75rem; }   /* h2 after wrapped tables */
   @media (min-width: 1024px) { 
     .dx-prose > * + h2 { margin-top: 3.5rem; }
     .dx-prose > * + section { margin-top: 3.5rem; }
+    .dx-prose table + h2 { margin-top: 3.5rem; }
+    .dx-prose .dx-table + h2 { margin-top: 3.5rem; }
   } /* 56px */
   .dx-prose h3 {
     font-size: var(--dx-h3);

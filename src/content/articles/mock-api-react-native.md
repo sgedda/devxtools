@@ -269,7 +269,7 @@ await device.launchApp({ newInstance: true, launchArgs: { mockScenario: 'empty-c
       mockScenario: "empty-cart"
 ```
 
-```mermaid caption="Figure 4. The test picks the scenario at launch; the app never knows it's under test." alt="Sequence diagram. 1: Detox or Maestro launches the app with mockScenario 'empty-cart'. 2: At start-up the app reads the launch argument. 3: The mock layer switches to the empty-cart handlers. 4: The cart screen fetches /cart. 5: The mock layer returns 200 with an empty items list. 6: The test asserts 'Your cart is empty'."
+```mermaid caption="Figure 3. The test picks the scenario at launch; the app never knows it's under test." alt="Sequence diagram. 1: Detox or Maestro launches the app with mockScenario 'empty-cart'. 2: At start-up the app reads the launch argument. 3: The mock layer switches to the empty-cart handlers. 4: The cart screen fetches /cart. 5: The mock layer returns 200 with an empty items list. 6: The test asserts 'Your cart is empty'."
 sequenceDiagram
   autonumber
   participant T as Detox / Maestro
