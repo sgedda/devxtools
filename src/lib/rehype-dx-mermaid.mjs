@@ -38,8 +38,10 @@ export default function rehypeDxMermaid() {
 
       const src = text(code);
       
-      // Get the meta that was preserved by the remark plugin
-      const meta = code.properties?.dataMermaidMeta || code.properties?.['data-mermaid-meta'] || '';
+      // Get the meta that was preserved by the remark plugin - check both pre and code
+      const metaPre = node.properties?.dataMermaidMeta || node.properties?.['data-mermaid-meta'] || '';
+      const metaCode = code.properties?.dataMermaidMeta || code.properties?.['data-mermaid-meta'] || '';
+      const meta = metaPre || metaCode;
       const altMatch = meta.match(/alt="([^"]*)"/);
       const captionMatch = meta.match(/caption="([^"]*)"/);
       

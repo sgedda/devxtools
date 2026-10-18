@@ -122,7 +122,8 @@ const jsonLd = {
 
       <h2 id="at-a-glance">At a glance</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Playwright vs Cypress feature comparison">
         <table>
           <thead>
             <tr>
@@ -199,7 +200,9 @@ const jsonLd = {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>Download counts include transitive installs, such as tools that depend on <code>playwright</code>. They show how widely each package is installed, not how many teams pick it for E2E testing.</p>
 
@@ -245,7 +248,8 @@ test('mocks a GET request', async ({ page }) => {
 
       <h3 id="page-route-vs-cy-intercept"><code>page.route()</code> vs <code>cy.intercept()</code></h3>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Network mocking API comparison">
         <table>
           <thead>
             <tr>
@@ -312,7 +316,9 @@ test('mocks a GET request', async ({ page }) => {
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>A failure-then-recovery test shows the APIs side by side.</p>
 
@@ -404,7 +410,8 @@ steps:
 
       <p><strong>Cypress:</strong> <code>cypress run</code> is free and open source, but <strong>parallelizing across machines requires recording to Cypress Cloud</strong> (<code>cypress run --record --parallel</code>). Cypress Cloud plans (checked 2026-10-15):</p>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:3">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Cypress Cloud pricing">
         <table>
           <thead>
             <tr>
@@ -436,7 +443,9 @@ steps:
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>Once an organization hits its test-result limit, Cypress's FAQ says recorded runs still execute, but <strong>parallelization is disabled</strong> and new results are hidden from the dashboard until you upgrade or the usage cycle resets. The pricing page lists extra on-demand results at $6 per 1,000. A suite of 300 tests run 20 times a month is 6,000 results, which is well beyond the free tier. Do the maths for your own suite before you commit.</p>
 
@@ -468,7 +477,8 @@ steps:
 
       <h2 id="migrating">Migrating from Cypress to Playwright (mapping table)</h2>
 
-      <div class="overflow-x-auto">
+      <div class="dx-table" style="--cols:2">
+        <div class="dx-table__scroll" role="region" tabindex="0" aria-label="Cypress to Playwright migration reference">
         <table>
           <thead>
             <tr>
@@ -543,7 +553,9 @@ steps:
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
+      <p class="dx-table__hint" aria-hidden="true">Swipe the table left to see all columns.</p>
 
       <p>The mental shift is from chained, implicitly queued commands to explicit <code>await</code>. Migrate a spec at a time. Both tools can run in the same CI pipeline during the switch.</p>
 
