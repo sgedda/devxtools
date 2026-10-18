@@ -300,6 +300,15 @@ const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
     </footer>
 
     <script is:inline>
+      // Wide diagrams scroll inside their frame on phones: start centred on the top node.
+      const dxCenterDiagrams = () => document.querySelectorAll('.dx-diagram .dx-figure__frame').forEach((f) => {
+        if (f.scrollWidth > f.clientWidth) f.scrollLeft = (f.scrollWidth - f.clientWidth) / 2;
+      });
+      dxCenterDiagrams();
+      addEventListener('load', dxCenterDiagrams);
+      addEventListener('resize', dxCenterDiagrams);
+    </script>
+    <script is:inline>
       // Theme toggle
       document.getElementById('theme-toggle')?.addEventListener('click', () => {
         const isDark = document.documentElement.classList.toggle('dark');
