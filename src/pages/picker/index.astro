@@ -240,13 +240,6 @@ const toolsJson = JSON.stringify(tools);
         <div id="result-count" class="text-sm text-zinc-600 dark:text-zinc-400" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
         <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Ranked by fit, then GitHub stars. No sponsored placement.</p>
         
-        <!-- Stack poll hook (React Native + mocking) -->
-        <div id="picker-poll-hook" class="hidden mt-6">
-          <PollCard
-            question="Using React Native? Vote for your API mocking stack"
-            blurb="How do you mock APIs in React Native? One vote per network, no sign-up. See what others use after you vote."
-          />
-        </div>
 
         <!-- Per-need picks (when needs are selected) -->
         <div id="per-need-picks" class="hidden mt-6 space-y-8"></div>
@@ -261,6 +254,14 @@ const toolsJson = JSON.stringify(tools);
         <div id="also-works-section" class="hidden">
           <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mt-8 mb-4">Also works</h2>
           <div id="also-works-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+
+        <!-- Stack poll hook (React Native + mocking) -->
+        <div id="picker-poll-hook" class="hidden mt-6">
+          <PollCard
+            question="Using React Native? Vote for your API mocking stack"
+            blurb="How do you mock APIs in React Native? One vote per network (stored as a pseudonymous IP hash for 90 days), no sign-up. See what others use after you vote. Informal poll; results aren't a survey."
+          />
         </div>
         
         <!-- Empty state -->

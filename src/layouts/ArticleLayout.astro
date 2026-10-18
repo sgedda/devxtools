@@ -30,9 +30,7 @@ const { frontmatter, headings } = Astro.props;
 // Pages about React Native / API mocking end with the RN API-mocking poll card
 const POLL_CARD_PATHS = new Set([
   '/guides/mock-api-react-native/',
-  '/guides/mock-api-calls-jest/',
   '/comparisons/pollyjs-alternatives/',
-  '/blog/why-i-built-mockifyer/',
 ]);
 const pagePath = (() => {
   try { return new URL(frontmatter.canonical).pathname; } catch { return ''; }

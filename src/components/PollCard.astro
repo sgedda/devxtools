@@ -11,7 +11,7 @@ interface Props {
 const {
   href = '/polls/rn-api-mocking/',
   question = 'How do you mock APIs in React Native?',
-  blurb = 'Tell us which tool you use. One vote per network, no sign-up. Results show after you vote.',
+  blurb = 'Tell us which tool you use. One vote per network (stored as a pseudonymous IP hash for 90 days), no sign-up. Results show after you vote. Informal poll; results aren\'t a survey.',
   id,
   class: className = '',
 } = Astro.props;
