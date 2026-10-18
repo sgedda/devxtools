@@ -1,6 +1,0 @@
-flowchart TD
-  F("Screen calls<br/>fetch('/users/1')") --> G{"__DEV__ and<br/>API_MOCKING<br/>enabled?"}:::accent
-  G -->|"No · release build"| R[("Real API<br/>api.example.com")]
-  G -->|"Yes · in-app"| I("Interceptor patches fetch<br/>msw/native handlers"):::accent
-  I --> H("Handler returns JSON<br/>no network call")
-  G -->|"Yes · base URL"| M[("Mock server :4010<br/>Prism · Mockoon · WireMock")]
