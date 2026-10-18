@@ -1,0 +1,68 @@
+{
+  "common": {
+    "theme": "base",
+    "fontFamily": "Inter, ui-sans-serif, system-ui, sans-serif",
+    "flowchart": { "htmlLabels": false, "curve": "basis", "padding": 14, "nodeSpacing": 36, "rankSpacing": 44, "useMaxWidth": false },
+    "sequence": { "useMaxWidth": false, "mirrorActors": false, "actorMargin": 40, "boxMargin": 8, "messageFontWeight": 400 },
+    "themeCSS": ".node rect, .node polygon, .node path { stroke-width: 1.25px; } .node rect { rx: 10px; ry: 10px; } rect.actor { rx: 10px; ry: 10px; stroke-width: 1.25px; } .edgeLabel, .edgeLabel rect { rx: 6px; ry: 6px; } .messageText { font-size: 13px !important; } .edgeLabel text, .edgeLabel span { font-size: 12.5px; }"
+  },
+  "light": {
+    "themeVariables": {
+      "fontSize": "14px",
+      "background": "transparent",
+      "primaryColor": "#fafafa",
+      "primaryBorderColor": "#d4d4d8",
+      "primaryTextColor": "#18181b",
+      "secondaryColor": "#f4f4f5",
+      "tertiaryColor": "#ffffff",
+      "mainBkg": "#fafafa",
+      "nodeBorder": "#d4d4d8",
+      "lineColor": "#71717a",
+      "textColor": "#3f3f46",
+      "edgeLabelBackground": "#ffffff",
+      "clusterBkg": "#fafafa",
+      "clusterBorder": "#e4e4e7",
+      "actorBkg": "#eef2ff",
+      "actorBorder": "#4f46e5",
+      "actorTextColor": "#18181b",
+      "actorLineColor": "#d4d4d8",
+      "signalColor": "#52525b",
+      "signalTextColor": "#18181b",
+      "sequenceNumberColor": "#ffffff",
+      "noteBkgColor": "#f4f4f5",
+      "noteBorderColor": "#d4d4d8",
+      "noteTextColor": "#3f3f46"
+    },
+    "accentClassDef": "classDef accent fill:#eef2ff,stroke:#4f46e5,stroke-width:1.5px,color:#1e1b4b"
+  },
+  "dark": {
+    "themeVariables": {
+      "darkMode": true,
+      "fontSize": "14px",
+      "background": "transparent",
+      "primaryColor": "#18181b",
+      "primaryBorderColor": "#3f3f46",
+      "primaryTextColor": "#fafafa",
+      "secondaryColor": "#27272a",
+      "tertiaryColor": "#09090b",
+      "mainBkg": "#18181b",
+      "nodeBorder": "#3f3f46",
+      "lineColor": "#a1a1aa",
+      "textColor": "#d4d4d8",
+      "edgeLabelBackground": "#09090b",
+      "clusterBkg": "#18181b",
+      "clusterBorder": "#27272a",
+      "actorBkg": "#1e1b4b",
+      "actorBorder": "#818cf8",
+      "actorTextColor": "#fafafa",
+      "actorLineColor": "#3f3f46",
+      "signalColor": "#a1a1aa",
+      "signalTextColor": "#fafafa",
+      "sequenceNumberColor": "#09090b",
+      "noteBkgColor": "#27272a",
+      "noteBorderColor": "#3f3f46",
+      "noteTextColor": "#d4d4d8"
+    },
+    "accentClassDef": "classDef accent fill:#1e1b4b,stroke:#818cf8,stroke-width:1.5px,color:#eef2ff"
+  }
+}

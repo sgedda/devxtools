@@ -1,0 +1,12 @@
+sequenceDiagram
+  autonumber
+  participant T as Detox / Maestro
+  participant A as App start-up
+  participant M as Mock layer
+  participant S as Cart screen
+  T->>A: launchApp(mockScenario: "empty-cart")
+  A->>M: read launch arg
+  M->>M: use emptyCart handlers
+  S->>M: fetch("/cart")
+  M-->>S: 200 { items: [] }
+  T->>S: expect "Your cart is empty"

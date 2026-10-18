@@ -428,72 +428,29 @@ const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
         }
       });
 
-      // Wrap tables and add accessibility features
-      document.addEventListener('DOMContentLoaded', () => {
-        const article = document.querySelector('article');
-        if (!article) return;
-
-        const tables = article.querySelectorAll('table');
-        tables.forEach((table) => {
-          // Skip if already wrapped
-          if (table.parentElement?.classList.contains('table-wrapper') || 
-              table.parentElement?.classList.contains('overflow-x-auto') ||
-              table.parentElement?.classList.contains('comparison-table-wrapper')) {
-            return;
-          }
-
-          // Wrap table in overflow container for prose tables
-          if (article.classList.contains('prose')) {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'table-wrapper';
-            table.parentNode?.insertBefore(wrapper, table);
-            wrapper.appendChild(table);
-          }
-
-          // Add sr-only caption if missing
-          if (!table.querySelector('caption')) {
-            // Find preceding heading for caption text
-            let captionText = '';
-            let sibling = (table.parentElement?.classList.contains('table-wrapper') ? 
-              table.parentElement.previousElementSibling : 
-              table.previousElementSibling);
-            
-            while (sibling && !captionText) {
-              if (/^H[1-6]$/.test(sibling.tagName)) {
-                captionText = sibling.textContent || '';
-                break;
-              }
-              sibling = sibling.previousElementSibling;
-            }
-            
-            if (captionText) {
-              const caption = document.createElement('caption');
-              caption.className = 'sr-only';
-              caption.textContent = captionText;
-              table.insertBefore(caption, table.firstChild);
-            }
-          }
-
-          // Convert first column td to th with scope="row" in tbody
-          const tbody = table.querySelector('tbody');
-          if (tbody) {
-            const rows = tbody.querySelectorAll('tr');
-            rows.forEach((row) => {
-              const firstCell = row.querySelector('td:first-child');
-              if (firstCell) {
-                const th = document.createElement('th');
-                th.setAttribute('scope', 'row');
-                th.innerHTML = firstCell.innerHTML;
-                // Copy classes if any
-                if (firstCell.className) {
-                  th.className = firstCell.className;
-                }
-                firstCell.parentNode?.replaceChild(th, firstCell);
-              }
-            });
-          }
+      // Table and diagram overflow state
+      (() => {
+        const update = (box, sc) => {
+          const max = sc.scrollWidth - sc.clientWidth;
+          if (max <= 1) { box.removeAttribute('data-overflow'); box.removeAttribute('data-scrolled'); sc.removeAttribute('tabindex'); return; }
+          sc.setAttribute('tabindex', '0');
+          const x = Math.abs(sc.scrollLeft);
+          box.dataset.overflow = x < 2 ? 'end' : x >= max - 2 ? 'start' : 'both';
+          box.toggleAttribute('data-scrolled', x > 2);
+        };
+        // diagram frames: tab stop only when they actually scroll
+        document.querySelectorAll('.dx-diagram .dx-figure__frame').forEach(f => {
+          const run = () => f.scrollWidth > f.clientWidth + 1 ? f.setAttribute('tabindex','0') : f.removeAttribute('tabindex');
+          new ResizeObserver(run).observe(f); run();
         });
-      });
+        document.querySelectorAll('.dx-table').forEach(box => {
+          const sc = box.querySelector('.dx-table__scroll');
+          const run = () => update(box, sc);
+          sc.addEventListener('scroll', run, { passive: true });
+          new ResizeObserver(run).observe(sc);
+          run();
+        });
+      })();
     </script>
   </body>
 </html>

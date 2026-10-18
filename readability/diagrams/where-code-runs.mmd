@@ -1,0 +1,9 @@
+flowchart TD
+  Q{"Where does the<br/>code run?"}:::accent
+  Q -->|"Jest + RNTL (Node)"| J("MSW in Node<br/>msw/node · setupServer")
+  Q -->|"Running app"| A{"OK to add<br/>mock code to the app?"}
+  Q -->|"E2E: Detox / Maestro"| E("Launch argument<br/>picks a scenario")
+  A -->|"Yes"| I("In-app interceptor<br/>msw 2 msw/native · Mirage JS<br/>· record/replay")
+  A -->|"No"| S("Mock server via base URL<br/>Prism · Mockoon · WireMock")
+  E --> I
+  E --> S

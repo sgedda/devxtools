@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
+import rehypeDxTables from './rehype-dx-tables.mjs';
+import rehypeDxMermaid from './rehype-dx-mermaid.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -13,7 +15,9 @@ export default defineConfig({
         light: 'github-light',
         dark: 'github-dark',
       },
+      excludeLangs: ['mermaid'],
     },
+    rehypePlugins: [rehypeDxMermaid, rehypeDxTables],
   },
   integrations: [
     mdx(),

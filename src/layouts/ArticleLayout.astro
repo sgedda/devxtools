@@ -137,7 +137,7 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
   jsonLd={jsonLd}
 >
   <div class="container mx-auto max-w-4xl px-5">
-    <article class="prose prose-zinc dark:prose-invert max-w-none py-10">
+    <article class="max-w-none py-10">
       <nav class="text-sm text-zinc-500 mb-6">
         {frontmatter.breadcrumbs.map((crumb, index) => (
           <>
@@ -151,27 +151,32 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
         ))}
       </nav>
 
-      {frontmatter.affiliation && (
-        <blockquote class="border-l-4 border-blue-500 pl-4 my-6 bg-blue-50 dark:bg-blue-950/30 p-4">
-          <p class="text-sm" set:html={frontmatter.affiliation.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')} />
-        </blockquote>
-      )}
-
-      <h1>{displayTitle}</h1>
+      <h1 class="text-[2rem] leading-[1.15] font-extrabold tracking-[-0.025em] mb-6 max-w-[22ch] lg:text-[2.5rem]">{displayTitle}</h1>
 
       {frontmatter.byline && (
         <p class="text-lg text-zinc-600 dark:text-zinc-400 italic mt-2 mb-6">{frontmatter.byline}</p>
       )}
 
-      {frontmatter.tested_with && (
-        <blockquote class="border-l-4 border-zinc-300 dark:border-zinc-600 pl-4 my-6">
-          <p class="text-sm">
-            <strong>Tested with</strong> {frontmatter.tested_with}
-          </p>
-        </blockquote>
-      )}
+      <div class="dx-prose">
+        {frontmatter.affiliation && (
+          <div class="dx-callout dx-callout--note mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+            <div set:html={frontmatter.affiliation.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')} />
+          </div>
+        )}
 
-      <slot />
+        {frontmatter.tested_with && (
+          <blockquote class="mb-6">
+            <p>
+              <strong>Tested with</strong> {frontmatter.tested_with}
+            </p>
+          </blockquote>
+        )}
+      </div>
+
+      <div class="dx-prose">
+        <slot />
+      </div>
 
       {showPollCard && (
         <div class="not-prose my-12">

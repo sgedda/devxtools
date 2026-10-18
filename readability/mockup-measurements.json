@@ -1,0 +1,54 @@
+{
+ "375-light": {
+  "fs": "16px",
+  "lh": "27.2px",
+  "pWidth": 335,
+  "avgCharsPerLine": 33,
+  "h2": "24px",
+  "table1": {
+   "scrollW": 680,
+   "clientW": 333,
+   "overflow": "end"
+  },
+  "docOverflow": false
+ },
+ "375-dark": {
+  "fs": "16px",
+  "lh": "27.2px",
+  "pWidth": 335,
+  "avgCharsPerLine": 33,
+  "h2": "24px",
+  "table1": {
+   "scrollW": 680,
+   "clientW": 333,
+   "overflow": "end"
+  },
+  "docOverflow": false
+ },
+ "1280-light": {
+  "fs": "17px",
+  "lh": "28.9px",
+  "pWidth": 594,
+  "avgCharsPerLine": 50,
+  "h2": "28px",
+  "table1": {
+   "scrollW": 854,
+   "clientW": 854,
+   "overflow": null
+  },
+  "docOverflow": false
+ },
+ "1280-dark": {
+  "fs": "17px",
+  "lh": "28.9px",
+  "pWidth": 594,
+  "avgCharsPerLine": 50,
+  "h2": "28px",
+  "table1": {
+   "scrollW": 854,
+   "clientW": 854,
+   "overflow": null
+  },
+  "docOverflow": false
+ }
+}
