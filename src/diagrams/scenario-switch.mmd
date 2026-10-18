@@ -1,12 +1,8 @@
-sequenceDiagram
-  autonumber
-  participant T as Detox / Maestro
-  participant A as App start-up
-  participant M as Mock layer
-  participant S as Cart screen
-  T->>A: launchApp(mockScenario: "empty-cart")
-  A->>M: read launch arg
-  M->>M: use emptyCart handlers
-  S->>M: fetch("/cart")
-  M-->>S: 200 { items: [] }
-  T->>S: expect "Your cart is empty"
+%% alt: Step-by-step diagram. 1: Detox or Maestro launches the app with mockScenario 'empty-cart'. 2: At start-up the app reads the launch argument. 3: The mock layer switches to the empty-cart handlers. 4: The cart screen fetches /cart. 5: The mock layer returns 200 with an empty items list. 6: The test asserts 'Your cart is empty'.
+flowchart TD
+  T("1 · Detox / Maestro<br/>launches the app with<br/>mockScenario: empty-cart")
+  T --> A("2 · App start-up reads<br/>the launch argument")
+  A --> M("3 · Mock layer switches<br/>to emptyCart handlers"):::accent
+  M --> S("4 · Cart screen<br/>fetches /cart")
+  S --> R("5 · Mock layer returns<br/>200 { items: [] }")
+  R --> E("6 · Test asserts<br/>“Your cart is empty”")
