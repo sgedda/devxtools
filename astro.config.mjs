@@ -25,8 +25,6 @@ export default defineConfig({
         if (page.includes('/test-code-highlighting/')) return false;
         // Exclude stub guide pages
         if (page.includes('/guides/msw-vs-nock-vs-polly/')) return false;
-        // Exclude polls (shipping unannounced)
-        if (page.includes('/polls/')) return false;
         return true;
       }
     })

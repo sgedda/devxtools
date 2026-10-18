@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Icon from '../../components/Icon.astro';
 import ToolLogo from '../../components/ToolLogo.astro';
+import PollCard from '../../components/PollCard.astro';
 import { getAllTools } from '../../lib/tools';
 import { CATEGORY_LABELS } from '../../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass } from '../../lib/ui-helpers';
@@ -239,6 +240,7 @@ const toolsJson = JSON.stringify(tools);
         <div id="result-count" class="text-sm text-zinc-600 dark:text-zinc-400" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
         <p class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">Ranked by fit, then GitHub stars. No sponsored placement.</p>
         
+
         <!-- Per-need picks (when needs are selected) -->
         <div id="per-need-picks" class="hidden mt-6 space-y-8"></div>
         
@@ -252,6 +254,14 @@ const toolsJson = JSON.stringify(tools);
         <div id="also-works-section" class="hidden">
           <h2 class="text-lg font-semibold text-zinc-900 dark:text-white mt-8 mb-4">Also works</h2>
           <div id="also-works-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+
+        <!-- Stack poll hook (React Native + mocking) -->
+        <div id="picker-poll-hook" class="hidden mt-6">
+          <PollCard
+            question="Using React Native? Vote for your API mocking stack"
+            blurb="How do you mock APIs in React Native? One vote per network (stored as a pseudonymous IP hash for 90 days), no sign-up. See what others use after you vote. Informal poll; results aren't a survey."
+          />
         </div>
         
         <!-- Empty state -->
@@ -443,6 +453,11 @@ const toolsJson = JSON.stringify(tools);
     
     function updateResults() {
       updateURL();
+
+      // Stack poll hook: React Native with no need picked, or with mocking / record-replay
+      const showPollHook = state.platform === 'rn' &&
+        (state.need.length === 0 || state.need.includes('mock') || state.need.includes('record'));
+      document.getElementById('picker-poll-hook').classList.toggle('hidden', !showPollHook);
       
       const hasFilters = state.platform || state.need.length || state.lang || state.spec.length || state.oss;
       
