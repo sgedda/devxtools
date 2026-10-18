@@ -9,7 +9,7 @@ interface Article {
 
 function loadArticles(): Article[] {
   const articlesDir = join(process.cwd(), 'src', 'content', 'articles');
-  const articleFiles = readdirSync(articlesDir).filter(f => f.endsWith('.md'));
+  const articleFiles = readdirSync(articlesDir).filter(f => /\.mdx?$/.test(f));
   const articles: Article[] = [];
 
   for (const file of articleFiles) {
