@@ -1,0 +1,306 @@
+---
+title: "MSW vs Nock (2026): Differences, Code & When to Use Each"
+description: "Compare MSW and Nock with code: browser + Node vs Node-only, native fetch, Jest/Vitest setup, MSW 3 changes, and when to use each, or both."
+slug: "/comparisons/msw-vs-nock/"
+canonical: "https://devxtools.dev/comparisons/msw-vs-nock/"
+h1: "MSW vs Nock: Differences, Code and When to Use Each"
+subtitle: "Which JavaScript API mocking library fits your tests?"
+primary_keyword: "msw vs nock"
+breadcrumbs: [{ name: "Home", url: "/" }, { name: "Comparisons", url: "/comparisons/" }, { name: "MSW vs Nock", url: "/comparisons/msw-vs-nock/" }]
+schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
+author: "DevX Tools"
+datePublished: "2026-10-14"
+dateModified: "2026-10-19"
+tested_with: "msw 3.0.3, nock 15.0.1, Vitest 5.0.5, axios 1.20.0 on Node 22.23.3; Jest 30.5.2 on Node 24.22.0; 2026-10-15"
+tools: ["msw", "nock", "pollyjs", "wiremock", "mockoon", "miragejs"]
+replaces: "src/pages/comparisons/msw-vs-nock.astro (keep URL, title, datePublished; update dateModified, description, add FAQPage)"
+---
+*Which JavaScript API mocking library fits your tests?*
+
+**MSW vs Nock comes down to where your mocks need to run.** MSW gives you one set of network-level handlers for Node tests, the browser and Storybook. Nock is a Node-only library built around strict, one-shot expectations that an exact outbound request was made.
+
+> **Tested with** msw 3.0.3, nock 15.0.1 and Vitest 5.0.5 on Node 22.23.3, plus Jest 30.5.2 on Node 24.22.0 (2026-10-15). All snippets below come from test files that passed. devxtools.dev is independent and has no relationship with either project.
+
+## TL;DR verdict
+
+Use **MSW** when you want one set of network-level mocks that work in Node tests, the browser and Storybook, including GraphQL and WebSocket. Use **Nock** when you only test Node code and want strict, one-shot expectations that assert an exact outbound request was made.
+
+Both libraries now sit on the same interception engine, `@mswjs/interceptors`: Nock 15 depends on it directly. In Node, the difference is the API style, not whether `fetch` gets intercepted.
+
+## At a glance
+
+| | MSW | Nock |
+|---|---|---|
+| Runs in | Node, browser (React Native: see below) | Node only |
+| Interception | Service Worker in the browser; request interceptors in Node | Request interceptors in Node (`@mswjs/interceptors` since v15) |
+| Native `fetch` / undici | Yes | Yes (since v14, January 2025) |
+| axios, got, `http.request` | Yes | Yes |
+| GraphQL | `graphql` handlers from `msw/graphql` (needs the `graphql` package) | Manual HTTP body matching |
+| WebSocket | `ws` handlers | No |
+| Request assertions | Not built in; use life-cycle events plus spies | Built in: scopes, `isDone()`, `done()` |
+| Unmatched requests | `onUnhandledFrame: 'error' \| 'warn' \| 'bypass'` (v3) | `disableNetConnect()`; unmatched requests get a 501 response in v15 |
+| Recording real traffic | No built-in recorder | `nock.back` |
+| Module format | ESM-only (v3), Node ≥22.12 | ESM-only (v15), Node ≥20.12.1 (`require(esm)` on Node 22.12+) |
+| TypeScript | Written in TS | Written in TS (v15) |
+| Licence | MIT | MIT |
+| npm downloads (2026-10-06 to 10-12) | ~23.0M/week | ~6.3M/week |
+| GitHub stars (2026-10-15) | 18,291 | 13,128 |
+| First released | 2018 | 2011 |
+
+## How each one intercepts requests
+
+**MSW** describes the network as a list of request handlers. In the **browser**, `setupWorker()` registers a real Service Worker (`mockServiceWorker.js`) that answers matching requests, so DevTools shows them like normal traffic. In **Node**, `setupServer()` from `msw/node` uses the `@mswjs/interceptors` library to patch `http`/`https`, `XMLHttpRequest` and the global `fetch`. No worker is involved in Node.
+
+**Nock** creates *interceptors* attached to a *scope* (a host). Each interceptor is consumed after it matches once, unless you call `.persist()` or `.times(n)`. Older Nock versions overrode Node's `http.request` and didn't see native `fetch`. **Nock 14 added native `fetch` support (January 2025)**, and **Nock 15 (released October 6, 2026)** now depends on `@mswjs/interceptors`, the same engine MSW uses in Node.
+
+## Side-by-side code
+
+The function under test uses native `fetch`, and a second one uses axios:
+
+```js
+// src/api.js
+export const BASE = 'https://api.example.com';
+export async function getUser(id) {
+  const res = await fetch(`${BASE}/users/${id}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+export async function createUser(name) {
+  const res = await fetch(`${BASE}/users`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ name }),
+  });
+  return { status: res.status, body: await res.json() };
+}
+```
+
+### Setup (Vitest)
+
+**MSW:**
+
+```js
+import { beforeAll, afterEach, afterAll } from 'vitest';
+import { http, HttpResponse, delay } from 'msw';
+import { setupServer } from 'msw/node';
+
+const server = setupServer(
+  http.get(`${BASE}/users/:id`, ({ params }) =>
+    HttpResponse.json({ id: Number(params.id), name: 'Ada' })),
+);
+beforeAll(() => server.listen({ onUnhandledFrame: 'error' }));
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+```
+
+**Nock:**
+
+```js
+import { beforeAll, afterEach, afterAll } from 'vitest';
+import nock from 'nock';
+
+beforeAll(() => nock.disableNetConnect());
+afterEach(() => nock.cleanAll());
+afterAll(() => nock.enableNetConnect());
+```
+
+In **Jest** the code is the same, without the `vitest` import. Both libraries are now ESM-only. MSW 3 itself needs Node ≥22.12. In CommonJS/ts-jest projects, Jest can only `require()` an ESM module on Node 24.9+ (per Jest's docs); in our runs that also needed `NODE_OPTIONS=--experimental-vm-modules`, and the same suite failed on Node 22 with "Must use import to load ES Module". Alternatives: Jest's native ESM mode, or Vitest.
+
+### GET
+
+```js
+// MSW: the handler above already covers it
+expect(await getUser(1)).toEqual({ id: 1, name: 'Ada' });
+
+// Nock
+const scope = nock(BASE).get('/users/1').reply(200, { id: 1, name: 'Ada' });
+expect(await getUser(1)).toEqual({ id: 1, name: 'Ada' });
+expect(scope.isDone()).toBe(true);
+```
+
+### POST with body matching
+
+```js
+// MSW: match in code
+server.use(
+  http.post(`${BASE}/users`, async ({ request }) => {
+    const body = await request.json();
+    if (!body.name) return HttpResponse.json({ error: 'name required' }, { status: 400 });
+    return HttpResponse.json({ id: 3, ...body }, { status: 201 });
+  }),
+);
+
+// Nock: declare the expected body
+nock(BASE).post('/users', { name: 'Linus' }).reply(201, { id: 3, name: 'Linus' });
+```
+
+### Errors and network failures
+
+```js
+// MSW
+server.use(http.get(`${BASE}/users/:id`, () => new HttpResponse(null, { status: 500 })));
+server.use(http.get(`${BASE}/users/:id`, () => HttpResponse.error())); // fetch rejects
+
+// Nock
+nock(BASE).get('/users/1').reply(500);
+nock(BASE).get('/users/1').replyWithError('ECONNRESET');
+```
+
+### Delay
+
+```js
+// MSW
+server.use(http.get(`${BASE}/users/:id`, async () => {
+  await delay(200);
+  return HttpResponse.json({ id: 1, name: 'Slow' });
+}));
+
+// Nock 15: a single delay(), applied at the end of the response
+nock(BASE).get('/users/1').delay(200).reply(200, { id: 1, name: 'Slow' });
+```
+
+MSW 3 no longer patches `setTimeout` to get around fake timers. If you use `vi.useFakeTimers()` or `jest.useFakeTimers()`, advance the timers to let a delayed response resolve.
+
+<RunIt project="msw-vitest" file="api.test.js" title="Try MSW + Vitest Live" />
+
+_Run this MSW test example in your browser with StackBlitz (a third-party service)._
+
+## Asserting that a request was made
+
+This is where the two differ most.
+
+**Nock** is built for it. Every interceptor that isn't consumed is a pending expectation:
+
+```js
+const scope = nock(BASE).get('/users/9').reply(200, {});
+// ...code under test runs...
+scope.done(); // throws if GET /users/9 never happened
+```
+
+**MSW** deliberately has no `scope.done()`. Its docs recommend asserting on what the user or caller sees instead. When you really need to check the outbound request, listen to life-cycle events:
+
+```js
+const onRequest = vi.fn();
+server.events.on('request:start', ({ request }) => onRequest(request.method, request.url));
+await getUser(7);
+expect(onRequest).toHaveBeenCalledWith('GET', `${BASE}/users/7`);
+server.events.removeAllListeners();
+```
+
+Pair that with `onUnhandledFrame: 'error'`, the MSW 3 name for the old `onUnhandledRequest` option, so any request you didn't mock fails the test.
+
+In **Nock 15**, a request to a mocked host that matches no interceptor gets a **501 response** with code `ERR_NOCK_NO_MATCH`, instead of throwing. We confirmed this. If your code swallows non-2xx responses, assert on the 501 or use `scope.done()`.
+
+## Recording real traffic
+
+**Nock** has `nock.back`, which records real responses into a JSON fixture once and replays them afterwards:
+
+```js
+nock.back.fixtures = new URL('./__nock-fixtures__', import.meta.url).pathname;
+nock.back.setMode(process.env.NOCK_BACK_MODE ?? 'record'); // 'lockdown' in CI
+const { nockDone } = await nock.back('users.json');
+const res = await fetch('http://localhost:4599/users/1');
+nockDone();
+```
+
+We recorded against a local server, changed the server's response, and replayed in `lockdown` mode. The test still got the recorded body.
+
+**MSW** has no recorder. Common workarounds are writing handlers from HAR files or OpenAPI examples, or using [Polly.JS](/tools/pollyjs/), which records and replays in both Node and the browser. Note that Polly's repository was last pushed in May 2025 (GitHub, checked 2026-10-15).
+
+## Using the same mocks in the browser, Storybook and React Native
+
+This is MSW's main advantage. The same `handlers.ts` can back:
+
+- Node tests (`setupServer`)
+- The browser during development (`setupWorker`)
+- Storybook (via an MSW addon)
+- Playwright E2E tests (`@msw/playwright`)
+
+Nock can't do any of this. It only patches Node.
+
+**React Native caveat (2026-10-19).** MSW 3 removed `msw/native` "in favor of `@msw/react-native`". That package isn't published on npm yet: the registry returns 404. Its README also reports unresolved fetch-body issues on iOS. For React Native today, that means staying on msw 2.x with `msw/native`, or using another approach. See our [React Native mocking guide](/guides/mock-api-react-native/), which covers a tool built by this site's maintainer and is labelled as such.
+
+## Migrating from Nock to MSW
+
+| Nock | MSW 3 |
+|---|---|
+| `nock(host).get('/users/1').reply(200, body)` | `` http.get(`${host}/users/1`, () => HttpResponse.json(body)) `` |
+| `.post(path, expectedBody)` | `http.post(url, async ({ request }) => { const body = await request.json(); … })` |
+| `.query({ page: 1 })` | `new URL(request.url).searchParams.get('page')` |
+| `.matchHeader('auth', 'x')` | `request.headers.get('auth')` |
+| `.reply(500)` | `new HttpResponse(null, { status: 500 })` |
+| `.replyWithError('ECONNRESET')` | `HttpResponse.error()` |
+| `.delay(200)` | `await delay(200)` |
+| `.times(2)` / `.persist()` | Handlers persist by default; pass `{ once: true }` as the third argument for a one-shot handler (tested) |
+| `nock.disableNetConnect()` | `server.listen({ onUnhandledFrame: 'error' })` |
+| `nock.cleanAll()` | `server.resetHandlers()` |
+| `scope.done()` | Life-cycle events plus a spy (see above) |
+| `nock.back` | No equivalent; keep Nock for those tests, or use Polly.JS |
+
+Migrate test file by test file. The two can coexist in one test suite, but don't enable both in the **same** test file. They hook the same layer, and which one answers first is not something to rely on.
+
+## Which should you choose?
+
+**Choose MSW if:**
+- You test a frontend (React, Vue, Svelte, Angular) and want the same mocks in unit tests, the dev server, Storybook and E2E.
+- You use GraphQL or WebSockets.
+- You prefer handlers that describe an API over expectations that describe calls.
+
+**Choose Nock if:**
+- You only test Node code (backend services, SDKs, CLIs).
+- You want each test to declare exactly which outbound calls must happen, and fail if they don't.
+- You want built-in record and replay (`nock.back`).
+
+**Consider something else if:**
+- The mock must be shared across processes or languages. An out-of-process server such as [WireMock](/tools/wiremock/) or [Mockoon](/tools/mockoon/) fits better.
+- You want a full in-browser fake backend with a data layer. Look at [Mirage JS](/tools/miragejs/).
+
+Weighing a third option as well? See [MSW vs Nock vs Polly.js: choosing a mocking library](/comparisons/msw-vs-nock-vs-polly/).
+
+## What about record/replay?
+
+Nock records with `nock.back`; MSW has no recorder. [Polly.JS](/tools/pollyjs/) records and replays in both Node and the browser, but its core hasn't had a release since July 2023. If that's what you need, see how to [record and replay real HTTP traffic (Polly.js alternatives)](/comparisons/pollyjs-alternatives/).
+
+## FAQ
+
+### What changed in MSW 3?
+MSW 3 (released 2026-09-28) is ESM-only and needs Node ≥22.12. `onUnhandledRequest` was renamed `onUnhandledFrame`, GraphQL handlers move to `msw/graphql` (and need the `graphql` package), `msw/native` was removed in favour of `@msw/react-native` (unpublished on npm as of 2026-10-19), and MSW no longer patches `setTimeout` for fake timers.
+
+### Is MSW better than Nock?
+Not universally. MSW is better when mocks must work outside Node (browser, Storybook, E2E) or for GraphQL and WebSocket. Nock is better for strict, Node-only expectations and built-in recording.
+
+### Does Nock work with native fetch?
+Yes. Nock added native `fetch` support in v14 (January 2025), and v15 intercepts through `@mswjs/interceptors`. We tested Nock 15.0.1 with native `fetch` and axios on Node 22.
+
+### Can I use MSW and Nock together?
+In the same project, yes. In the same test file, avoid it: both intercept the same layer.
+
+### How do I assert a request was called with MSW?
+Subscribe to `server.events.on('request:start', …)` with a spy and assert on it, and set `onUnhandledFrame: 'error'` so unexpected requests fail.
+
+### Does MSW work with Vitest?
+Yes. We ran MSW 3.0.3 with Vitest 5.0.5 on Node 22 with no extra configuration.
+
+### How do I migrate from Nock to MSW?
+Move each `nock(host).get().reply()` into an `http.get()` handler returning `HttpResponse.json()`. Replace `disableNetConnect` with `onUnhandledFrame: 'error'`, and replace `scope.done()` with life-cycle-event spies. See the mapping table above.
+
+## Related
+
+[MSW](/tools/msw/) · [Nock](/tools/nock/) · [Polly.JS](/tools/pollyjs/) · [WireMock](/tools/wiremock/) · [Mockoon](/tools/mockoon/) · [Mirage JS](/tools/miragejs/) · [MSW vs Nock vs Polly](/comparisons/msw-vs-nock-vs-polly/) · [Mocking & test data tools](/mocking-test-data/) · [All comparisons](/comparisons/)
+
+---
+
+## Sources (checked 2026-10-19; tests run 2026-10-15)
+
+- MSW v3.0.0 release notes (ESM-only, Node 22+, `onUnhandledFrame`, `msw/graphql`, `msw/native` removal, fake timers): https://github.com/mswjs/msw/releases/tag/v3.0.0
+- MSW docs: https://mswjs.io/docs/ · comparison page: https://mswjs.io/docs/comparison
+- Nock v14.0.0 release (native fetch support, 2025-01-24): https://github.com/nock/nock/releases/tag/v14.0.0
+- Nock v15.0.1 release (2026-10-06) and v15 migration guide (501 on no match, `delay`, ESM-only): https://github.com/nock/nock/releases/tag/v15.0.1 · https://github.com/nock/nock/blob/main/migration_guides/migrating_to_15.md
+Latest: nock 15.0.2 (2026-10-16): https://registry.npmjs.org/nock
+- Nock README (`isDone`, `persist`, `disableNetConnect`, `nock.back`): https://github.com/nock/nock
+- `@mswjs/interceptors` as a Nock dependency: nock@15.0.1 package.json
+- `@msw/react-native`: https://github.com/mswjs/react-native (npm registry 404 on 2026-10-19)
+- Polly.JS repo (last push 2025-05-31): https://github.com/Netflix/pollyjs
+- npm downloads: https://api.npmjs.org/downloads/point/last-week/msw and /nock
+- GitHub stars, licences and creation dates: GitHub API, 2026-10-15
+- Our runs: msw 3.0.3, nock 15.0.1, Vitest 5.0.5, axios 1.20.0, Node 22.23.3 (all 16 MSW and Nock tests passed); Jest 30.5.2 + ts-jest 29.4.15, Node 24.22.0 with `--experimental-vm-modules`
