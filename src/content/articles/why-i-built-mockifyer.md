@@ -129,7 +129,7 @@ That only covers dates your own code reads. Dates inside recorded responses are 
 
 ## React Native plus a backend
 
-This is the setup I built it for. More detail is in the [React Native mocking guide](/guides/react-native-mocking-mockifyer/), but here's the shape of it.
+This is the setup I built it for. More detail is in the [React Native mocking guide](/guides/mock-api-react-native/), but here's the shape of it.
 
 In the app, `@sgedda/mockifyer-fetch` patches `global.fetch`. When you use the dashboard with a shared store, there's a preset for that:
 

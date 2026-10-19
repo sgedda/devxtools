@@ -275,7 +275,7 @@ setupMockifyer({
   - Surprising defaults: no recording without `record_all`, and recordings kept using the live API until `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false` was set.
   - The MCP server isn't on npm.
 
-See [Mockifyer](/tools/mockifyer/) and the [React Native mocking guide](/guides/react-native-mocking-mockifyer/).
+See [Mockifyer](/tools/mockifyer/) and the [React Native mocking guide](/guides/mock-api-react-native/).
 
 ### Legacy VCR ports to avoid
 
@@ -359,7 +359,7 @@ No. Capture the traffic elsewhere and load it into handlers. `@mswjs/source`'s `
 An MIT-licensed record/replay library for `fetch` and axios in Node and React Native. Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
 
 ### How do I record API responses in React Native?
-Patch `fetch` in dev builds (Mockifyer does this via Metro) or use a proxy like Talkback. See our [React Native guide](/guides/react-native-mocking-mockifyer/). Disclosure: Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
+Patch `fetch` in dev builds (Mockifyer does this via Metro) or use a proxy like Talkback. See our [React Native guide](/guides/mock-api-react-native/). Disclosure: Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
 
 ## Related
 

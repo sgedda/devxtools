@@ -1,77 +1,64 @@
 import puppeteer from 'puppeteer-core';
 import { mkdirSync, existsSync, readFileSync, readdirSync } from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
 import matter from 'gray-matter';
+import { articleOgCardPath, ASTRO_ARTICLE_PAGES } from '../src/lib/article-og';
 
-const OG_GUIDES_DIR = join(process.cwd(), 'public', 'og-guides');
-const OG_COMPARISONS_DIR = join(process.cwd(), 'public', 'og-comparisons');
+// Usage: npm run og:articles [-- --missing]   (--missing: only cards that don't exist yet)
 
 interface Article {
-  slug: string;
+  url: string;
   title: string;
   tagline: string;
 }
 
-function loadArticles(): { guides: Article[], comparisons: Article[] } {
+function loadArticles(): Article[] {
   const articlesDir = join(process.cwd(), 'src', 'content', 'articles');
-  const articleFiles = readdirSync(articlesDir).filter(f => /\.mdx?$/.test(f));
-  const guides: Article[] = [];
-  const comparisons: Article[] = [];
-
-  for (const file of articleFiles) {
-    const filePath = join(articlesDir, file);
-    const content = readFileSync(filePath, 'utf-8');
-    const { data } = matter(content);
-    
-    const slugPath = data.slug as string;
-    const slug = slugPath.split('/').filter(Boolean).pop() || '';
-    
-    const article: Article = {
-      slug,
-      title: data.h1 || data.title,
-      tagline: data.description,
-    };
-    
-    if (slugPath.includes('/guides/')) {
-      guides.push(article);
-    } else if (slugPath.includes('/comparisons/')) {
-      comparisons.push(article);
-    }
+  const articles: Article[] = readdirSync(articlesDir)
+    .filter(f => /\.mdx?$/.test(f))
+    .map(file => {
+      const { data } = matter(readFileSync(join(articlesDir, file), 'utf-8'));
+      // Long H1s wrap to 3 lines and crowd the card; use the shorter SEO title then.
+      const h1 = data.h1 && data.h1.length <= 60 ? data.h1 : undefined;
+      return { url: data.slug as string, title: h1 || data.title, tagline: data.description };
+    });
+  for (const url of ASTRO_ARTICLE_PAGES) {
+    const src = readFileSync(join(process.cwd(), 'src/pages', `${url.replace(/^\/|\/$/g, '')}.astro`), 'utf-8');
+    const title = src.match(/<h1[^>]*>([^<]+)<\/h1>/)?.[1] || src.match(/\btitle="([^"]+)"/)?.[1];
+    const tagline = src.match(/\bdescription="([^"]+)"/)?.[1];
+    if (title && tagline) articles.push({ url, title, tagline });
+    else console.warn(`! Could not read title/description from ${url}`);
   }
-
-  return { guides, comparisons };
+  return articles.filter(a => articleOgCardPath(a.url));
 }
 
-async function generateArticleOGCard(article: any, type: 'guide' | 'comparison', browser: any) {
+const KICKERS: Record<string, [string, string]> = {
+  guides: ['Guide', 'Tutorial & best practices'],
+  comparisons: ['Comparison', 'Side-by-side analysis'],
+  testing: ['Testing', 'Hands-on roundup'],
+  observability: ['Observability', 'Hands-on roundup'],
+  'api-development': ['API Development', 'Hands-on roundup'],
+  blog: ['Blog', 'From the maintainer'],
+};
+
+async function generateArticleOGCard(article: Article, browser: any) {
+  const card = articleOgCardPath(article.url)!;
+  const section = article.url.split('/').filter(Boolean)[0];
+  const [kicker, meta] = KICKERS[section] || ['Article', 'In-depth article'];
   const page = await browser.newPage();
   await page.setViewport({ width: 1200, height: 630 });
-  
-  const kicker = type === 'guide' ? 'Guide' : 'Comparison';
-  const meta = type === 'guide' ? 'Tutorial & best practices' : 'Side-by-side analysis';
-  
-  const params = new URLSearchParams({
-    kicker,
-    title: article.title,
-    tagline: article.tagline,
-    meta,
-  });
-  
+  const params = new URLSearchParams({ kicker, title: article.title, tagline: article.tagline, meta });
   const templatePath = join(process.cwd(), 'public', 'og', 'og-template.html');
-  const url = `file://${templatePath}?${params.toString()}`;
-  
   try {
-    await page.goto(url, { waitUntil: 'networkidle0', timeout: 10000 });
+    await page.goto(`file://${templatePath}?${params.toString()}`, { waitUntil: 'networkidle0', timeout: 10000 });
     await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const outputDir = type === 'guide' ? OG_GUIDES_DIR : OG_COMPARISONS_DIR;
-    const outputPath = join(outputDir, `${article.slug}.png`);
+    const outputPath = join(process.cwd(), 'public', card);
+    mkdirSync(dirname(outputPath), { recursive: true });
     await page.screenshot({ path: outputPath, type: 'png' });
-    
-    console.log(`✓ Generated ${type}/${article.slug}.png`);
+    console.log(`✓ Generated ${card}`);
   } catch (error) {
-    console.error(`✗ Failed to generate ${type}/${article.slug}.png:`, error);
+    console.error(`✗ Failed to generate ${card}:`, error);
   }
-  
   await page.close();
 }
 
@@ -81,32 +68,15 @@ async function generateAllArticleOGCards() {
     console.error('ERROR: og-template.html not found. This script requires PR #13 (brand assets) to be merged first.');
     process.exit(1);
   }
-
-  if (!existsSync(OG_GUIDES_DIR)) {
-    mkdirSync(OG_GUIDES_DIR, { recursive: true });
-  }
-  
-  if (!existsSync(OG_COMPARISONS_DIR)) {
-    mkdirSync(OG_COMPARISONS_DIR, { recursive: true });
-  }
-  
-  const { guides, comparisons } = loadArticles();
-  console.log(`Generating OG cards for ${guides.length} guides and ${comparisons.length} comparisons...`);
-  
+  const onlyMissing = process.argv.includes('--missing');
+  const articles = loadArticles().filter(a => !onlyMissing || !existsSync(join(process.cwd(), 'public', articleOgCardPath(a.url)!)));
+  console.log(`Generating OG cards for ${articles.length} articles...`);
   const browser = await puppeteer.launch({
     executablePath: '/usr/local/bin/google-chrome',
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     headless: true,
   });
-  
-  for (const guide of guides) {
-    await generateArticleOGCard(guide, 'guide', browser);
-  }
-  
-  for (const comparison of comparisons) {
-    await generateArticleOGCard(comparison, 'comparison', browser);
-  }
-  
+  for (const article of articles) await generateArticleOGCard(article, browser);
   await browser.close();
   console.log('Done!');
 }
