@@ -184,7 +184,7 @@ curl -X POST -H 'content-type: application/json' \
 
 `--errors` (default `false`) also turns *response* schema violations into HTTP errors when Prism is used as a proxy. Leave it off for a pure mock; turn it on in CI against a real upstream.
 
-For comparison, Mockoon CLI 9.9.0 imported the same `users.yaml` and returned **200** for `?limit=500` and **201** for the invalid POST. Mockoon doesn't do request-schema validation out of the box; Prism does. That difference alone is a reason to keep Prism when the OpenAPI document is the contract.
+For comparison, Mockoon CLI 9.9.0 imported the same `users.yaml` and returned **200** for `?limit=500` and **201** for the invalid POST. Mockoon doesn't do request-schema validation out of the box; Prism does. That difference alone is a reason to keep Prism when the OpenAPI document is the contract. Once the real API exists, you can also [fuzz your real API against the same OpenAPI spec with Schemathesis](/tools/schemathesis/).
 
 ## Running Prism in Docker and CI
 

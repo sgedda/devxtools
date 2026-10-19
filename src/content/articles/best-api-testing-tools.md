@@ -201,7 +201,7 @@ For Java and Kotlin teams, **REST Assured** (Apache-2.0, 6.1.0 on Maven Central)
 
 ### Schemathesis
 
-Schemathesis (MIT, Python, 4.31.1) reads your OpenAPI spec and generates hundreds of requests, checking that responses match the documented status codes and schemas. It found three real issues in our "finished" fixture API in under 4 seconds (471 generated test cases):
+[Schemathesis](/tools/schemathesis/) (MIT, Python; we tested 4.31.1, and 4.32.0 was released on 2026-10-18) does property-based OpenAPI fuzzing. It reads your OpenAPI spec and generates hundreds of requests, checking that responses match the documented status codes and schemas. It found three real issues in our "finished" fixture API in under 4 seconds (471 generated test cases):
 
 ```text
 GET /users      Undocumented HTTP status code — Received: 400, Documented: 200
