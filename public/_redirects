@@ -4,6 +4,7 @@
 
 # Redirect duplicate MSW vs Nock vs Polly guide to the comparison page
 /guides/msw-vs-nock-vs-polly/ /comparisons/msw-vs-nock-vs-polly/ 301
+/guides/msw-vs-nock-vs-polly /comparisons/msw-vs-nock-vs-polly/ 301
 
 # Redirects for renamed/replaced pages (PR #24)
 /guides/realistic-test-data-faker-factories/ /guides/faker-js-test-data-factories/ 301

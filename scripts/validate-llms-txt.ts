@@ -20,7 +20,7 @@ const llmsContent = readFileSync(llmsPath, 'utf-8');
 const redirectsContent = existsSync(redirectsPath) ? readFileSync(redirectsPath, 'utf-8') : '';
 const sitemapContent = readFileSync(sitemapPath, 'utf-8');
 
-const urlRegex = /https:\/\/devxtools\.dev(\/[^\s]*)/g;
+const urlRegex = /https:\/\/devxtools\.dev(\/[^\s)]*)/g; // bare URLs or markdown links
 const llmsUrls: string[] = [];
 let match;
 
