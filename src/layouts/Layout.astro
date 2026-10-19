@@ -1,4 +1,5 @@
 ---
+import { existingArticleOgCard } from '../lib/article-og';
 import Icon from '../components/Icon.astro';
 import { getAllTools } from '../lib/tools';
 import '../styles/global.css';
@@ -12,7 +13,9 @@ interface Props {
   jsonLd?: any;
 }
 
-const { title, description, canonicalURL, ogImage = '/og-image.png', noindex = false, jsonLd } = Astro.props;
+const { title, description, canonicalURL, noindex = false, jsonLd } = Astro.props;
+// Article pages use their own card (guides/comparisons); everything else falls back to the default.
+const ogImage = Astro.props.ogImage ?? existingArticleOgCard(canonicalURL || Astro.url.pathname) ?? '/og-image.png';
 // Brand suffix only when it fits: SERPs cut titles at ~60 characters.
 const siteTitle = (title.includes('DevXTools') || title.includes('DevX Tools') || title.length + 12 > 60) ? title : `${title} | DevXTools`;
 const allTools = getAllTools();
