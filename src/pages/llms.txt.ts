@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { readdirSync } from 'fs';
+import { readdirSync, readFileSync } from 'fs';
+import { getAllTools } from '../lib/tools';
+import { SECTION_LABELS } from '../lib/schema';
 import { join } from 'path';
 
 interface PageInfo {
@@ -29,16 +31,27 @@ const staticPages: PageInfo[] = [
   { url: '/observability/', title: 'Observability & Logging', description: 'Browse observability & logging tools for modern development workflows' },
 ];
 
-const astroComparisons: PageInfo[] = [
-  { url: '/comparisons/msw-vs-nock/', title: 'MSW vs Nock', description: 'The two most popular HTTP mocking libraries for JavaScript compared head-to-head' },
-  { url: '/comparisons/msw-vs-nock-vs-polly/', title: 'MSW vs Nock vs Polly.js', description: 'Three-way comparison including Polly.js for record/replay workflows' },
-  { url: '/comparisons/bruno-vs-postman/', title: 'Bruno vs Postman', description: 'Compare accounts, CI runners, reports, mock servers, security and pricing in 2026' },
-  { url: '/comparisons/playwright-vs-cypress/', title: 'Playwright vs Cypress', description: 'Architecture, network mocking, MSW, CI cost, debugging, and component tests' },
+// Hand-written .astro article pages: title/description are read from the page's own
+// <Layout title=… description=…> props so llms.txt stays in sync with the live meta.
+const astroArticlePages = [
+  '/comparisons/bruno-vs-postman/',
+  '/comparisons/playwright-vs-cypress/',
+  '/guides/mock-api-playwright/',
+  '/api-development/postman-alternatives/',
 ];
 
-const astroGuides: PageInfo[] = [
-  { url: '/guides/mock-api-playwright/', title: 'Mocking APIs in Playwright', description: 'Intercept, mock, and test API calls in Playwright tests with page.route and MSW' },
-];
+function astroPageInfo(url: string): PageInfo | undefined {
+  try {
+    const src = readFileSync(join(process.cwd(), 'src/pages', `${url.replace(/^\/|\/$/g, '')}.astro`), 'utf-8');
+    const title = src.match(/\btitle="([^"]+)"/)?.[1];
+    const description = src.match(/\bdescription="([^"]+)"/)?.[1];
+    return title && description ? { url, title, description } : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+const firstSentence = (text: string) => (text.match(/^.*?[.!?](\s|$)/)?.[0] ?? text).trim();
 
 export const GET: APIRoute = async () => {
   const articles = await getCollection('articles');
@@ -46,8 +59,10 @@ export const GET: APIRoute = async () => {
   const pageMap = new Map<string, PageInfo>();
   
   staticPages.forEach(page => pageMap.set(page.url, page));
-  astroComparisons.forEach(page => pageMap.set(page.url, page));
-  astroGuides.forEach(page => pageMap.set(page.url, page));
+  astroArticlePages.forEach(url => {
+    const info = astroPageInfo(url);
+    if (info) pageMap.set(url, info);
+  });
   
   articles.forEach(article => {
     pageMap.set(article.data.slug, {
@@ -77,15 +92,13 @@ export const GET: APIRoute = async () => {
     .filter(url => url.startsWith('/blog/') && url !== '/blog/')
     .sort();
 
-  let content = `# DevX Tools - llms.txt\n\n`;
-  content += `> A comprehensive catalog of API development, testing, and mocking tools\n\n`;
+  let content = `# DevX Tools\n\n`;
+  content += `> A neutral catalog of API development, testing, mocking and observability tools, with hands-on comparisons and guides.\n\n`;
 
   const sections: Array<{ heading: string; urls: string[] }> = [
     { heading: 'Home', urls: ['/'] },
     { heading: 'Hubs', urls: ['/mocking-test-data/', '/api-development/', '/testing/', '/observability/'] },
     { heading: 'Catalog & Pickers', urls: ['/catalog/', '/picker/', '/demos/', '/api-development/postman-alternatives/'] },
-    { heading: 'Polls', urls: ['/polls/', '/polls/rn-api-mocking/'] },
-    { heading: 'About & Submit', urls: ['/about/', '/submit/', '/changelog/'] },
     { heading: 'Comparisons', urls: ['/comparisons/', ...comparisonUrls] },
     { heading: 'Guides', urls: ['/guides/', ...guideUrls] },
     { heading: 'Blog', urls: ['/blog/', ...blogUrls] },
@@ -93,19 +106,31 @@ export const GET: APIRoute = async () => {
     { heading: 'Observability', urls: observabilityUrls },
   ];
 
+  const link = (info: PageInfo) => `- [${info.title}](https://devxtools.dev${info.url}): ${info.description}\n`;
+
   sections.forEach(({ heading, urls }) => {
-    if (urls.length === 0) return;
-    
-    content += `## ${heading}\n\n`;
-    
-    urls.forEach(url => {
-      const info = pageMap.get(url);
-      if (info) {
-        content += `- **${info.title}**: ${info.description}\n`;
-        content += `  https://devxtools.dev${url}\n\n`;
-      }
-    });
+    const infos = urls.map(url => pageMap.get(url)).filter((i): i is PageInfo => !!i);
+    if (infos.length === 0) return;
+    content += `## ${heading}\n\n` + infos.map(link).join('') + '\n';
   });
+
+  // Tool pages, one line each, grouped by their primary section.
+  const tools = getAllTools();
+  const bySection = new Map<string, typeof tools>();
+  tools.forEach(tool => {
+    const section = tool.sections[0];
+    bySection.set(section, [...(bySection.get(section) ?? []), tool]);
+  });
+  content += `## Tools\n\n`;
+  for (const [section, list] of bySection) {
+    content += `### ${SECTION_LABELS[section as keyof typeof SECTION_LABELS] ?? section}\n\n`;
+    content += list.map(t => link({ url: `/tools/${t.slug}/`, title: t.name, description: firstSentence(t.description) })).join('') + '\n';
+  }
+
+  // Low-priority pages (llmstxt.org: links under "Optional" can be skipped for shorter context).
+  const optional = ['/polls/', '/polls/rn-api-mocking/', '/about/', '/submit/', '/changelog/']
+    .map(url => pageMap.get(url)).filter((i): i is PageInfo => !!i);
+  content += `## Optional\n\n` + optional.map(link).join('');
 
   return new Response(content, {
     status: 200,

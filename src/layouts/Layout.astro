@@ -13,7 +13,8 @@ interface Props {
 }
 
 const { title, description, canonicalURL, ogImage = '/og-image.png', noindex = false, jsonLd } = Astro.props;
-const siteTitle = (title === 'DevXTools' || title.includes('DevXTools')) ? title : `${title} | DevXTools`;
+// Brand suffix only when it fits: SERPs cut titles at ~60 characters.
+const siteTitle = (title.includes('DevXTools') || title.includes('DevX Tools') || title.length + 12 > 60) ? title : `${title} | DevXTools`;
 const allTools = getAllTools();
 
 const normalizedCanonical = canonicalURL || `https://devxtools.dev${Astro.url.pathname}${Astro.url.pathname.endsWith('/') ? '' : '/'}`;
