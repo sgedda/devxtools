@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getRecentReleases, getReleases, renderSummaryHtml } from '../lib/releases';
+import { getRecentReleases, getReleases, getReleaseHistory, releaseLinkLabel, renderSummaryHtml } from '../lib/releases';
 import { getToolBySlug } from '../lib/tools';
 
 const recentReleases = getRecentReleases(15);
@@ -27,36 +27,53 @@ const TZ = 'Europe/Stockholm';
               <time datetime={lastUpdated}>Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: TZ })}</time>
             )}
           </div>
-          <div class="changelog-content">
-            <p>Latest stable releases from catalog tools:</p>
-            <ul class="releases-list">
+          <div class="dx-prose rr">
+            <p class="rr-intro">Latest stable releases from catalog tools:</p>
+            <ul class="rr-list">
               {recentReleases.map(({ slug, release }) => {
                 const tool = getToolBySlug(slug);
                 if (!tool) return null;
-                
-                const releaseDate = new Date(release.releaseDate);
-                const formattedDate = releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: TZ });
+                const fmt = (iso: string) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: TZ });
                 const showSummary = release.status === 'reviewed' && !!release.summary;
-                
+                const showBadge = release.breaking && !(showSummary && /^breaking\b/i.test(release.summary ?? ''));
+                const earlier = getReleaseHistory(slug, 5);
                 return (
-                  <li>
-                    <a href={`/tools/${slug}/`} class="release-link">
-                      <strong>{release.label ?? tool.name}</strong> <span class="version">{release.version}</span>
-                    </a>
-                    <span class="release-meta">
-                      · {formattedDate} · 
-                      <a href={release.releaseUrl} target="_blank" rel="noopener noreferrer" class="release-notes-link">
-                        {release.releaseUrl.startsWith('https://www.npmjs.com/') ? 'npm' : release.releaseUrl.startsWith('https://pypi.org/') ? 'PyPI' : 'Release notes'} ↗
-                      </a>
-                    </span>
-                    {release.breaking && !showSummary && (
-                      <span class="release-breaking">Breaking</span>
-                    )}
+                  <li class="rr-item">
+                    <div class="rr-head">
+                      <a href={`/tools/${slug}/`} class="rr-name">{release.label ?? tool.name}</a>
+                      <span class="rr-version">{release.version}</span>
+                      {showBadge && <span class="rr-breaking">Breaking</span>}
+                      <span class="rr-meta">
+                        <time datetime={release.releaseDate}>{fmt(release.releaseDate)}</time>
+                        <span class="rr-dot" aria-hidden="true">·</span>
+                        <a href={release.releaseUrl} target="_blank" rel="noopener noreferrer">{releaseLinkLabel(release.releaseUrl)} ↗</a>
+                      </span>
+                    </div>
                     {showSummary && (
-                      <p class="release-summary">
-                        {release.breaking && !/^breaking\b/i.test(release.summary ?? '') && <span class="release-breaking">Breaking</span>}
-                        <Fragment set:html={renderSummaryHtml(release.summary!)} />
-                      </p>
+                      <p class="rr-summary"><Fragment set:html={renderSummaryHtml(release.summary!)} /></p>
+                    )}
+                    {earlier.length > 0 && (
+                      <details class="rr-earlier">
+                        <summary>Earlier releases ({earlier.length})</summary>
+                        <ul>
+                          {earlier.map(h => (
+                            <li>
+                              <div class="rr-head">
+                                <span class="rr-version">{h.version}</span>
+                                {h.breaking && <span class="rr-breaking">Breaking</span>}
+                                <span class="rr-meta">
+                                  <time datetime={h.releaseDate}>{fmt(h.releaseDate)}</time>
+                                  <span class="rr-dot" aria-hidden="true">·</span>
+                                  <a href={h.releaseUrl} target="_blank" rel="noopener noreferrer">{releaseLinkLabel(h.releaseUrl)} ↗</a>
+                                </span>
+                              </div>
+                              {h.status === 'reviewed' && h.summary && (
+                                <p class="rr-summary"><Fragment set:html={renderSummaryHtml(h.summary)} /></p>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
                     )}
                   </li>
                 );
@@ -168,53 +185,6 @@ const TZ = 'Europe/Stockholm';
     color: var(--text-secondary);
   }
   
-  .releases-list {
-    list-style: none;
-    margin-left: 0;
-  }
-  
-  .releases-list li {
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    background: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-  
-  .release-link {
-    color: var(--text-primary);
-    text-decoration: none;
-    font-size: 1rem;
-  }
-  
-  .release-link:hover {
-    color: var(--accent);
-  }
-  
-  .version {
-    font-family: 'Courier New', monospace;
-    background: var(--bg-secondary);
-    padding: 0.125rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: var(--accent);
-  }
-  
-  .release-meta {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-left: 0.5rem;
-  }
-  
-  .release-notes-link {
-    color: var(--accent);
-    text-decoration: none;
-  }
-  
-  .release-notes-link:hover {
-    text-decoration: underline;
-  }
-  
   @media (max-width: 768px) {
     .changelog-header {
       flex-direction: column;
@@ -222,24 +192,99 @@ const TZ = 'Europe/Stockholm';
       gap: 0.5rem;
     }
   }
-  .release-summary {
-    margin: 0.25rem 0 0;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: var(--text-secondary);
+  /* Recent Releases: flat list inside the section card (no nested boxes) */
+  .rr { max-width: none; }
+  .rr > .rr-list, .rr > .rr-intro { max-width: none; }
+  .rr .rr-intro {
+    margin: 0 0 1.5rem;
+    color: var(--dx-muted);
+    font-size: 0.95rem;
+    max-width: none;
   }
-  .release-breaking {
-    display: inline-block;
-    margin-right: 0.4rem;
-    padding: 0 0.4rem;
-    border-radius: 0.25rem;
+  .rr .rr-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--dx-border);
+  }
+  .rr .rr-item {
+    margin: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--dx-border);
+    color: var(--dx-text);
+  }
+  .rr .rr-item::marker { content: none; }
+  .rr .rr-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.625rem;
+  }
+  .rr .rr-name {
+    font-weight: 600;
+    color: var(--dx-heading);
+    text-decoration: none;
+  }
+  .rr .rr-name:hover { color: var(--dx-accent); }
+  .rr .rr-version {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.0625rem 0.5rem;
+    border: 1px solid var(--dx-border);
+    border-radius: 999px;
+    background: var(--dx-surface-2);
+    color: var(--dx-muted);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.5;
+  }
+  .rr .rr-breaking {
+    display: inline-flex;
+    padding: 0.0625rem 0.5rem;
+    border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
+    line-height: 1.5;
     background: #fee2e2;
     color: #991b1b;
   }
-  :global(.dark) .release-breaking {
-    background: #7f1d1d;
-    color: #fee2e2;
+  :global(.dark) .rr .rr-breaking { background: rgb(127 29 29 / 0.6); color: #fecaca; }
+  .rr .rr-meta {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--dx-subtle);
+    font-size: 0.875rem;
+    white-space: nowrap;
+  }
+  .rr .rr-meta a { color: var(--dx-accent); text-decoration: none; }
+  .rr .rr-meta a:hover { text-decoration: underline; }
+  .rr .rr-summary {
+    margin: 0.5rem 0 0;
+    max-width: 68ch;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--dx-muted);
+  }
+  .rr .rr-earlier { margin-top: 0.625rem; font-size: 0.875rem; }
+  .rr .rr-earlier > summary {
+    cursor: pointer;
+    color: var(--dx-subtle);
+    width: fit-content;
+  }
+  .rr .rr-earlier > summary:hover { color: var(--dx-accent); }
+  .rr .rr-earlier ul {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0 0 0 0.875rem;
+    border-left: 2px solid var(--dx-border);
+  }
+  .rr .rr-earlier li { margin: 0; padding: 0.375rem 0; }
+  .rr .rr-earlier li::marker { content: none; }
+  .rr .rr-earlier .rr-summary { font-size: 0.875rem; margin-top: 0.25rem; }
+  @media (max-width: 480px) {
+    .rr .rr-meta { margin-left: 0; flex-basis: 100%; }
+    .changelog-entry { padding: 1.25rem; }
   }
 </style>

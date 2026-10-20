@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { parse } from 'yaml';
 import { ToolSchema } from '../src/lib/schema';
@@ -6,6 +6,7 @@ import { ToolSchema } from '../src/lib/schema';
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const TOOLS_DIR = join(process.cwd(), 'src/data/tools');
 const RELEASES_FILE = join(process.cwd(), 'src/data/releases.json');
+const HISTORY_DIR = join(process.cwd(), 'src/data/release-history');
 
 interface ReleaseInfo {
   version: string;
@@ -419,6 +420,52 @@ export function mergeRelease(fetched: ReleaseInfo, existing?: ReleaseInfo): Rele
   return { ...base, status: 'draft' };
 }
 
+/**
+ * Append a superseded current entry to a tool's history (newest first). Never drops entries:
+ * if the version is already in history, the stored entry is kept, and only missing editorial
+ * fields (e.g. a reviewed summary) are filled in from the superseded entry.
+ */
+export function appendHistory(history: ReleaseInfo[], previous: ReleaseInfo): ReleaseInfo[] {
+  const idx = history.findIndex(h => h.version === previous.version);
+  if (idx >= 0) {
+    const merged = [...history];
+    const existing = merged[idx];
+    merged[idx] = { ...previous, ...existing };
+    if (previous.status === 'reviewed' && existing.status !== 'reviewed' && previous.summary) {
+      merged[idx] = { ...merged[idx], summary: previous.summary, status: 'reviewed', ...(previous.breaking !== undefined ? { breaking: previous.breaking } : {}) };
+    }
+    return merged;
+  }
+  return [{ ...previous }, ...history].sort(
+    (a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime(),
+  );
+}
+
+/** Compute the next current entry and history for one tool. Pure; used by main() and tests. */
+export function syncTool(
+  fetched: ReleaseInfo,
+  existing: ReleaseInfo | undefined,
+  history: ReleaseInfo[],
+): { current: ReleaseInfo; history: ReleaseInfo[] } {
+  const current = mergeRelease(fetched, existing);
+  if (existing && existing.version !== fetched.version) {
+    return { current, history: appendHistory(history, existing) };
+  }
+  return { current, history };
+}
+
+function readHistory(slug: string): ReleaseInfo[] {
+  const file = join(HISTORY_DIR, `${slug}.json`);
+  if (!existsSync(file)) return [];
+  return JSON.parse(readFileSync(file, 'utf-8'));
+}
+
+function writeHistory(slug: string, history: ReleaseInfo[]) {
+  if (history.length === 0) return;
+  mkdirSync(HISTORY_DIR, { recursive: true });
+  writeFileSync(join(HISTORY_DIR, `${slug}.json`), JSON.stringify(history, null, 2) + '\n');
+}
+
 async function main() {
   console.log('Fetching latest releases for catalog tools...\n');
   
@@ -464,7 +511,10 @@ async function main() {
     
     if (release) {
       const existingRelease = existingData.tools[tool.slug];
-      newData.tools[tool.slug] = mergeRelease(release, existingRelease);
+      const history = readHistory(tool.slug);
+      const next = syncTool(release, existingRelease, history);
+      newData.tools[tool.slug] = next.current;
+      if (next.history !== history) writeHistory(tool.slug, next.history);
 
       if (existingRelease?.version === release.version) {
         unchangedCount++;

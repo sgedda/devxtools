@@ -1,0 +1,10 @@
+[
+  {
+    "version": "2.41.6",
+    "releaseDate": "2026-10-10T14:51:12Z",
+    "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v2.41.6",
+    "source": "github",
+    "summary": "Fixes mTLS client certificates not being sent reliably with Axios, and uses user-setting certificates when the workspace has none.",
+    "status": "reviewed"
+  }
+]

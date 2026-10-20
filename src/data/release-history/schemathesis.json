@@ -1,0 +1,17 @@
+[
+  {
+    "version": "4.32.0",
+    "releaseDate": "2026-10-18T12:18:51Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.0",
+    "source": "github",
+    "summary": "Stateful tests fill captured IDs into nested and `$ref` request bodies and infer links from response URLs. Adds stable failure codes, `st explain` and `--report pytest`.",
+    "status": "reviewed"
+  },
+  {
+    "version": "4.31.1",
+    "releaseDate": "2026-10-14T23:49:24Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.31.1",
+    "source": "github",
+    "status": "draft"
+  }
+]

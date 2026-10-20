@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
 export interface ReleaseInfo {
@@ -66,4 +66,23 @@ export function renderSummaryHtml(summary: string): string {
   return escapeHtml(summary)
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+}
+
+/** Earlier releases for a tool (newest first), from src/data/release-history/<slug>.json. */
+export function getReleaseHistory(slug: string, limit?: number): ReleaseInfo[] {
+  const file = join(process.cwd(), 'src/data/release-history', `${slug}.json`);
+  if (!existsSync(file)) return [];
+  try {
+    const history: ReleaseInfo[] = JSON.parse(readFileSync(file, 'utf-8'));
+    return limit === undefined ? history : history.slice(0, limit);
+  } catch (error) {
+    console.warn(`Failed to load release history for ${slug}:`, error);
+    return [];
+  }
+}
+
+export function releaseLinkLabel(url: string): string {
+  if (url.startsWith('https://www.npmjs.com/')) return 'npm';
+  if (url.startsWith('https://pypi.org/')) return 'PyPI';
+  return 'Release notes';
 }

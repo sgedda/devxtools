@@ -1,0 +1,18 @@
+[
+  {
+    "version": "2.65.0",
+    "releaseDate": "2026-10-19T12:06:12.129Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.65.0",
+    "source": "npm",
+    "summary": "`generate-spec` gains `--openapi-version` to choose 3.1 or 3.2 (default). Fixes `recheck --fix` reporting.",
+    "status": "reviewed"
+  },
+  {
+    "version": "2.64.0",
+    "releaseDate": "2026-10-15T07:20:07.640Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.64.0",
+    "source": "npm",
+    "summary": "Generated TypeScript clients get an `onSettled` middleware hook, and `generate-client` gains a `client.telemetry` option.",
+    "status": "reviewed"
+  }
+]

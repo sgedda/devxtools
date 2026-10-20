@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
 interface ReleaseInfo {
@@ -61,6 +61,23 @@ function main() {
     }
     if (release.breaking !== undefined && typeof release.breaking !== 'boolean') {
       summaryErrors.push(`${slug}: breaking must be a boolean`);
+    }
+  }
+  // History files: same field rules, valid semver, no duplicate versions.
+  const historyDir = join(process.cwd(), 'src/data/release-history');
+  if (existsSync(historyDir)) {
+    for (const file of readdirSync(historyDir).filter(f => f.endsWith('.json'))) {
+      const slug = file.replace(/\.json$/, '');
+      const entries: any[] = JSON.parse(readFileSync(join(historyDir, file), 'utf-8'));
+      const seen = new Set<string>();
+      for (const e of entries) {
+        if (!isPlainSemver(e.version)) summaryErrors.push(`history/${slug}: "${e.version}" is not plain semver`);
+        if (seen.has(e.version)) summaryErrors.push(`history/${slug}: duplicate version ${e.version}`);
+        seen.add(e.version);
+        if (e.status === 'reviewed' && !e.summary) summaryErrors.push(`history/${slug}@${e.version}: 'reviewed' requires a summary`);
+        if (e.summary && e.summary.length > 200) summaryErrors.push(`history/${slug}@${e.version}: summary over 200 chars`);
+        if (releases.tools[slug]?.version === e.version) summaryErrors.push(`history/${slug}: ${e.version} is also the current entry`);
+      }
     }
   }
   if (summaryErrors.length > 0) {
