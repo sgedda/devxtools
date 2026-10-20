@@ -6,6 +6,13 @@ export interface ReleaseInfo {
   releaseDate: string;
   releaseUrl: string;
   source: 'github' | 'npm' | 'pypi';
+  /** Display name override, e.g. "Sentry self-hosted" when the tracked release is a sub-product. */
+  label?: string;
+  /** Editor-written summary; only rendered when status is 'reviewed'. */
+  summary?: string;
+  breaking?: boolean;
+  /** 'draft' = not reviewed (the sync script always writes draft for new versions). */
+  status?: 'draft' | 'reviewed';
 }
 
 export interface ReleasesData {
@@ -48,4 +55,15 @@ export function getRecentReleases(limit: number = 10): Array<{ slug: string; rel
     });
   
   return entries.slice(0, limit);
+}
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** Render the small inline-markdown subset used in summaries (`code`, **bold**) to safe HTML. */
+export function renderSummaryHtml(summary: string): string {
+  return escapeHtml(summary)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
 }

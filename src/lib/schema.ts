@@ -62,6 +62,9 @@ export const ToolSchema = z.object({
     z.string(), // catalog slug
     z.object({ name: z.string(), url: z.string().url() }), // external alternative
   ])).optional(), // Neutral list of alternatives shown with a non-active status
+  releaseRepo: z.string().url().optional(), // GitHub repo whose releases are tracked instead of npm/PyPI/repo
+  releaseLabel: z.string().optional(), // Label for the tracked release, e.g. "Sentry self-hosted"
+  changelogUrl: z.string().url().optional(), // Release-notes URL template: {version}, {versionDashed}
 }).refine(
   (data) => data.languageAgnostic ? true : data.languages.length > 0,
   { message: 'languages array must have at least one item unless languageAgnostic is true' }

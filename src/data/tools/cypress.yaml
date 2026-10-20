@@ -24,3 +24,4 @@ npmPackage: cypress
 weeklyDownloads: 5949802
 lastChecked: 2026-10-15
 isOpenSource: true
+changelogUrl: https://docs.cypress.io/app/references/changelog#{versionDashed}

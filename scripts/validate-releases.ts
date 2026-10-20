@@ -48,6 +48,27 @@ function main() {
     }
   }
   
+  const summaryErrors: string[] = [];
+  for (const [slug, release] of Object.entries(releases.tools) as Array<[string, any]>) {
+    if (release.status !== undefined && release.status !== 'draft' && release.status !== 'reviewed') {
+      summaryErrors.push(`${slug}: status must be 'draft' or 'reviewed' (got ${JSON.stringify(release.status)})`);
+    }
+    if (release.status === 'reviewed' && !release.summary) {
+      summaryErrors.push(`${slug}: status 'reviewed' requires a summary`);
+    }
+    if (release.summary && release.summary.length > 200) {
+      summaryErrors.push(`${slug}: summary is ${release.summary.length} chars (max 200)`);
+    }
+    if (release.breaking !== undefined && typeof release.breaking !== 'boolean') {
+      summaryErrors.push(`${slug}: breaking must be a boolean`);
+    }
+  }
+  if (summaryErrors.length > 0) {
+    console.error('\n❌ Validation failed: release summary fields\n');
+    summaryErrors.forEach(e => console.error(`  ${e}`));
+    process.exit(1);
+  }
+
   if (invalidVersions.length > 0) {
     console.error('\n❌ Validation failed: releases.json contains invalid versions\n');
     console.error('All versions must be plain semver (X.Y.Z or X.Y) without prefixes or suffixes.\n');

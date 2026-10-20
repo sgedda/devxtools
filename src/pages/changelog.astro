@@ -1,9 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getRecentReleases } from '../lib/releases';
+import { getRecentReleases, getReleases, renderSummaryHtml } from '../lib/releases';
 import { getToolBySlug } from '../lib/tools';
 
 const recentReleases = getRecentReleases(15);
+const { lastUpdated } = getReleases();
+const TZ = 'Europe/Stockholm';
 ---
 
 <Layout 
@@ -21,7 +23,9 @@ const recentReleases = getRecentReleases(15);
         <article class="changelog-entry">
           <div class="changelog-header">
             <h2>Recent Releases</h2>
-            <time>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</time>
+            {lastUpdated && (
+              <time datetime={lastUpdated}>Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: TZ })}</time>
+            )}
           </div>
           <div class="changelog-content">
             <p>Latest stable releases from catalog tools:</p>
@@ -31,12 +35,13 @@ const recentReleases = getRecentReleases(15);
                 if (!tool) return null;
                 
                 const releaseDate = new Date(release.releaseDate);
-                const formattedDate = releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const formattedDate = releaseDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: TZ });
+                const showSummary = release.status === 'reviewed' && !!release.summary;
                 
                 return (
                   <li>
                     <a href={`/tools/${slug}/`} class="release-link">
-                      <strong>{tool.name}</strong> <span class="version">{release.version}</span>
+                      <strong>{release.label ?? tool.name}</strong> <span class="version">{release.version}</span>
                     </a>
                     <span class="release-meta">
                       · {formattedDate} · 
@@ -44,6 +49,15 @@ const recentReleases = getRecentReleases(15);
                         Release notes ↗
                       </a>
                     </span>
+                    {release.breaking && !showSummary && (
+                      <span class="release-breaking">Breaking</span>
+                    )}
+                    {showSummary && (
+                      <p class="release-summary">
+                        {release.breaking && <span class="release-breaking">Breaking</span>}
+                        <Fragment set:html={renderSummaryHtml(release.summary!)} />
+                      </p>
+                    )}
                   </li>
                 );
               })}
@@ -207,5 +221,25 @@ const recentReleases = getRecentReleases(15);
       align-items: flex-start;
       gap: 0.5rem;
     }
+  }
+  .release-summary {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+  .release-breaking {
+    display: inline-block;
+    margin-right: 0.4rem;
+    padding: 0 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #fee2e2;
+    color: #991b1b;
+  }
+  :global(.dark) .release-breaking {
+    background: #7f1d1d;
+    color: #fee2e2;
   }
 </style>
