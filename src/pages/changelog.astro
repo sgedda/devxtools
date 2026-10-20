@@ -54,7 +54,7 @@ const TZ = 'Europe/Stockholm';
                     )}
                     {showSummary && (
                       <p class="release-summary">
-                        {release.breaking && <span class="release-breaking">Breaking</span>}
+                        {release.breaking && !/^breaking\b/i.test(release.summary ?? '') && <span class="release-breaking">Breaking</span>}
                         <Fragment set:html={renderSummaryHtml(release.summary!)} />
                       </p>
                     )}
