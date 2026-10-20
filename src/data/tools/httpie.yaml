@@ -16,10 +16,9 @@ categories:
 bestFor: Human-friendly CLI for making HTTP requests with intuitive syntax and beautiful output
 description: Command-line HTTP client with an intuitive syntax, JSON support, syntax highlighting, and sessions. Designed for testing and debugging APIs from the terminal.
 whenToUse: When you prefer working in the terminal and want a more user-friendly alternative to curl with better formatting and session support.
-githubStars: 34300
+githubStars: 38658
 lastActivity: 2026-09-28T10:15:47Z
-npmPackage: httpie
 pypiPackage: httpie
 weeklyDownloads: 14879
-lastChecked: 2026-10-14
+lastChecked: 2026-10-20
 isOpenSource: true

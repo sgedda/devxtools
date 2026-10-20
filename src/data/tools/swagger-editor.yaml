@@ -18,7 +18,7 @@ specSupport:
 bestFor: Browser-based OpenAPI editor with live validation and documentation preview
 description: The original OpenAPI editor from SmartBear. Edit OpenAPI specs with live validation, syntax highlighting, and instant documentation preview. Can be self-hosted.
 whenToUse: When you need a simple, reliable OpenAPI editor with instant feedback, or want to quickly prototype API specs in the browser.
-githubStars: 9300
+githubStars: 9473
 lastActivity: 2026-08-15T11:43:29Z
 lastChecked: 2026-10-14
 isOpenSource: true

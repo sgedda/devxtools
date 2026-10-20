@@ -21,7 +21,7 @@ categories:
 bestFor: OpenTelemetry-native observability with unified metrics, traces, and logs
 description: Open-source observability platform built natively on OpenTelemetry standards. Combines APM, distributed tracing, log management, and infrastructure monitoring in one tool. Offers both self-hosted and cloud options.
 whenToUse: When you want OpenTelemetry-native observability, need unified metrics, traces, and logs without vendor lock-in, prefer open-source alternatives to commercial platforms, or want full control with self-hosting.
-githubStars: 32363
+githubStars: 32395
 lastActivity: 2026-10-15T19:58:59Z
 lastChecked: 2026-10-16
 isOpenSource: false

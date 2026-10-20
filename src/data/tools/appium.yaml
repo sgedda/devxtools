@@ -27,7 +27,7 @@ categories:
 bestFor: Cross-platform mobile and desktop automation using WebDriver protocol with any language
 description: Open source automation framework based on WebDriver protocol for testing mobile, desktop, and web applications. Supports native, hybrid, and mobile web apps across iOS, Android, Windows, and Mac.
 whenToUse: When you need cross-platform mobile testing in your preferred programming language or want to leverage existing WebDriver/Selenium knowledge.
-githubStars: 22076
+githubStars: 22107
 lastActivity: 2026-09-24T18:26:00Z
 npmPackage: appium
 weeklyDownloads: 1385295

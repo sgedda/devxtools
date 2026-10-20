@@ -15,7 +15,7 @@ categories:
 bestFor: Flexible multi-transport logging library with rich formatting and extensibility
 description: Universal logging library for Node.js with support for multiple transports (file, console, HTTP, databases), custom formats, log levels, and extensible through plugins. Features querying and streaming logs.
 whenToUse: When you need flexible logging to multiple destinations, want customizable log formats and levels, or need log querying and streaming capabilities.
-githubStars: 22500
+githubStars: 24527
 lastActivity: 2026-08-15T16:29:38Z
 npmPackage: winston
 weeklyDownloads: 21947850

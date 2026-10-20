@@ -18,7 +18,7 @@ specSupport:
 bestFor: Seamlessly mocking APIs in tests and development with client-side interception
 description: Mock Service Worker intercepts requests at the network level using Service Workers in browsers and native Node.js modules. No server setup required, works in any framework.
 whenToUse: When you want to mock APIs at the network level without changing your application code. Perfect for both browser and Node.js environments.
-githubStars: 18286
+githubStars: 18299
 lastActivity: 2026-10-10T01:37:25Z
 npmPackage: msw
 weeklyDownloads: 22997466

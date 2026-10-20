@@ -18,7 +18,7 @@ specSupport:
 bestFor: Offline-first, Git-friendly API client that stores collections as plain text files
 description: Fast, Git-friendly API client with collections stored as plain text files directly in your repository. Offline-first with no cloud sync required. Supports environments, scripts, and GraphQL.
 whenToUse: When you want API collections versioned in Git alongside your code, or need an offline-first alternative to Postman without vendor lock-in.
-githubStars: 47640
+githubStars: 47756
 lastActivity: 2026-10-13T09:14:32Z
 lastChecked: 2026-10-15
 isOpenSource: true

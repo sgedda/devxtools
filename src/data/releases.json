@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-16T06:29:51.784Z",
+  "lastUpdated": "2026-10-20T08:10:47.366Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -20,10 +20,10 @@
       "source": "github"
     },
     "chance": {
-      "version": "2.2.6",
-      "releaseDate": "2019-08-31T23:33:07Z",
-      "releaseUrl": "https://github.com/chancejs/chancejs/releases/tag/v2.2.6",
-      "source": "github"
+      "version": "1.1.13",
+      "releaseDate": "2025-05-18T21:03:07.856Z",
+      "releaseUrl": "https://www.npmjs.com/package/chance/v/1.1.13",
+      "source": "npm"
     },
     "cypress": {
       "version": "16.2.0",
@@ -44,10 +44,10 @@
       "source": "github"
     },
     "fern": {
-      "version": "5.23.3",
-      "releaseDate": "2026-05-12T18:47:03Z",
-      "releaseUrl": "https://github.com/fern-api/fern/releases/tag/5.23.3",
-      "source": "github"
+      "version": "5.168.1",
+      "releaseDate": "2026-10-19T22:42:06.497Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.168.1",
+      "source": "npm"
     },
     "fishery": {
       "version": "2.4.0",
@@ -164,9 +164,9 @@
       "source": "npm"
     },
     "nock": {
-      "version": "15.0.1",
-      "releaseDate": "2026-10-06T20:54:56.856Z",
-      "releaseUrl": "https://www.npmjs.com/package/nock/v/15.0.1",
+      "version": "15.0.4",
+      "releaseDate": "2026-10-19T21:24:39.007Z",
+      "releaseUrl": "https://www.npmjs.com/package/nock/v/15.0.4",
       "source": "npm"
     },
     "openapi-generator": {
@@ -176,15 +176,15 @@
       "source": "github"
     },
     "openobserve": {
-      "version": "1.1.0",
-      "releaseDate": "2026-10-14T12:47:10Z",
-      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.0",
+      "version": "1.1.2",
+      "releaseDate": "2026-10-20T05:26:56Z",
+      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.2",
       "source": "github"
     },
     "opentelemetry": {
-      "version": "1.9.1",
-      "releaseDate": "2026-03-25T15:53:54.092Z",
-      "releaseUrl": "https://www.npmjs.com/package/@opentelemetry/api/v/1.9.1",
+      "version": "2.12.0",
+      "releaseDate": "2026-10-06T13:39:11.160Z",
+      "releaseUrl": "https://www.npmjs.com/package/@opentelemetry/sdk-trace-node/v/2.12.0",
       "source": "npm"
     },
     "pact": {
@@ -230,15 +230,27 @@
       "source": "github"
     },
     "redocly": {
-      "version": "2.64.0",
-      "releaseDate": "2026-10-15T07:20:07.640Z",
-      "releaseUrl": "https://www.npmjs.com/package/@redocly/cli/v/2.64.0",
+      "version": "2.65.1",
+      "releaseDate": "2026-10-20T07:41:52.669Z",
+      "releaseUrl": "https://www.npmjs.com/package/@redocly/cli/v/2.65.1",
+      "source": "npm"
+    },
+    "rozenite": {
+      "version": "2.5.0",
+      "releaseDate": "2026-10-12T18:42:00.692Z",
+      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.5.0",
+      "source": "npm"
+    },
+    "scalar": {
+      "version": "1.75.0",
+      "releaseDate": "2026-10-16T14:32:11.408Z",
+      "releaseUrl": "https://www.npmjs.com/package/@scalar/api-reference/v/1.75.0",
       "source": "npm"
     },
     "schemathesis": {
-      "version": "4.32.0",
-      "releaseDate": "2026-10-18T12:18:51Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.0",
+      "version": "4.32.1",
+      "releaseDate": "2026-10-19T08:57:46Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.1",
       "source": "github"
     },
     "sentry": {
@@ -272,9 +284,9 @@
       "source": "github"
     },
     "thunder-client": {
-      "version": "2.41.6",
-      "releaseDate": "2026-10-10T14:51:12Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v2.41.6",
+      "version": "3.0.0",
+      "releaseDate": "2026-10-17T16:04:48Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
       "source": "github"
     },
     "winston": {

@@ -18,7 +18,7 @@ specSupport:
 bestFor: Local-first, privacy-focused API client built with Tauri for offline-first development
 description: Fast, privacy-first desktop API client for REST, GraphQL, SSE, WebSocket, and gRPC. Built by the creator of Insomnia, stores all data locally with no cloud sync required. Supports Git-based collaboration and extensive plugin system.
 whenToUse: When you want a modern, privacy-first API client that keeps all data local, need offline-first development, or want Git-based team collaboration without cloud dependencies.
-githubStars: 19321
+githubStars: 19338
 lastActivity: 2026-10-15T14:14:25Z
 lastChecked: 2026-10-15
 isOpenSource: true

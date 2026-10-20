@@ -16,7 +16,7 @@ categories:
 bestFor: Time-series metrics collection and monitoring with powerful querying and alerting
 description: Open-source monitoring system and time-series database designed for reliability and scalability. Features a dimensional data model, PromQL query language, service discovery, and precise alerting. Widely used for Kubernetes monitoring (CNCF graduated).
 whenToUse: When you need metrics-based monitoring with powerful queries and alerting, want Kubernetes-native observability, need a pull-based metrics collection model, or are building cloud-native applications.
-githubStars: 66579
+githubStars: 66665
 lastActivity: 2026-10-15T19:27:31Z
 lastChecked: 2026-10-16
 isOpenSource: true

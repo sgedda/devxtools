@@ -24,7 +24,7 @@ categories:
 bestFor: Simple YAML-based mobile UI testing for iOS and Android with fast, reliable execution
 description: Mobile UI testing framework that uses declarative YAML flows for testing iOS and Android apps. Built for simplicity and speed, with flake-resistant tests that work consistently across simulators and real devices.
 whenToUse: When you need straightforward, maintainable mobile UI tests without complex setup or learning curve. Ideal for React Native and Flutter apps.
-githubStars: 16057
+githubStars: 16136
 lastActivity: 2026-09-29T13:36:34Z
 lastChecked: 2026-10-14
 isOpenSource: true

@@ -1,0 +1,24 @@
+name: Cloudflare Forge
+slug: cloudflare-forge
+website: https://github.com/cloudflare/forge
+repo: https://github.com/cloudflare/forge
+license: Apache-2.0
+languages:
+  - TypeScript
+runtimes:
+  - CLI
+sections:
+  - api-development
+categories:
+  - sdk-generator
+  - openapi-tooling
+specSupport:
+  - OpenAPI
+bestFor: Self-hosted, pluggable generation of SDKs, CLIs, and docs from OpenAPI in CI
+description: Open source, schema-first code generation pipeline from Cloudflare. Resolves OpenAPI 3.x specifications, applies JSONPath-based overlays, and uses chainable plugins to generate typed SDKs, CLIs, runtime helpers, and documentation; custom generators can add other outputs, such as MCP servers. Announced in September 2026 and still early; its first production output is Cloudflare's cf CLI.
+whenToUse: When you want to run SDK, CLI, and docs generation yourself in CI instead of relying on a hosted generator, need preview builds of generated outputs on every API change, or want to write custom generation targets.
+githubStars: 1139
+lastActivity: 2026-10-19T14:25:37Z
+lastChecked: 2026-10-20
+isOpenSource: true
+languageAgnostic: true

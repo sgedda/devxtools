@@ -56,12 +56,24 @@ export const ToolSchema = z.object({
   affiliation: z.string().optional(), // Disclosure for affiliated tools
   isOpenSource: z.boolean(),
   languageAgnostic: z.boolean().optional(), // True when languages=[] and tool is truly any-language
+  status: z.enum(['active', 'maintenance', 'deprecated', 'discontinued']).optional(), // Omitted = active
+  statusNote: z.string().optional(), // Sourced explanation shown on the tool page
+  alternatives: z.array(z.union([
+    z.string(), // catalog slug
+    z.object({ name: z.string(), url: z.string().url() }), // external alternative
+  ])).optional(), // Neutral list of alternatives shown with a non-active status
 }).refine(
   (data) => data.languageAgnostic ? true : data.languages.length > 0,
   { message: 'languages array must have at least one item unless languageAgnostic is true' }
 );
 
 export type Tool = z.infer<typeof ToolSchema>;
+
+export const STATUS_LABELS: Record<'maintenance' | 'deprecated' | 'discontinued', string> = {
+  maintenance: 'Low maintenance',
+  deprecated: 'Deprecated',
+  discontinued: 'Discontinued',
+};
 
 export const SECTION_LABELS: Record<ToolSection, string> = {
   'mocking-test-data': 'Mocking & Test Data',

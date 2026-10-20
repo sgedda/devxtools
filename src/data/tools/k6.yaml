@@ -16,7 +16,7 @@ categories:
 bestFor: Developer-centric load testing with JavaScript scripting and Grafana integration
 description: Modern load testing tool built by Grafana Labs. Write tests in JavaScript, run from CLI or CI/CD, and get detailed performance metrics. Supports HTTP, WebSockets, gRPC, and browser testing.
 whenToUse: When you need scriptable load tests that integrate with Grafana, want to test APIs and microservices, or need load testing in CI/CD pipelines.
-githubStars: 28400
+githubStars: 31987
 lastActivity: 2026-10-12T15:42:37Z
 lastChecked: 2026-10-14
 isOpenSource: true

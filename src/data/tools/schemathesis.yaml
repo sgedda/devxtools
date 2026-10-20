@@ -18,7 +18,7 @@ specSupport:
 bestFor: Property-based testing that automatically generates test cases from OpenAPI and GraphQL schemas
 description: Automated API testing tool built on Hypothesis that generates many test cases from schemas. Finds edge cases, schema violations, and validation bugs without manual test scripting. Adapts to server responses and supports stateful workflows.
 whenToUse: When you want automated schema-based API testing, need to find edge cases and validation bugs, want test generation with little hand-written code, or need to validate OpenAPI/GraphQL contract compliance.
-githubStars: 3669
+githubStars: 3681
 lastActivity: 2026-10-16T00:08:27Z
 lastChecked: 2026-10-16
 isOpenSource: true

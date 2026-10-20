@@ -1,0 +1,27 @@
+name: Scalar
+slug: scalar
+website: https://scalar.com
+repo: https://github.com/scalar/scalar
+license: MIT
+languages:
+  - TypeScript
+runtimes:
+  - Web
+  - CLI
+sections:
+  - api-development
+categories:
+  - api-client
+  - openapi-tooling
+specSupport:
+  - OpenAPI
+  - AsyncAPI
+bestFor: Interactive API reference docs and a REST API client from OpenAPI documents
+description: Open source API platform that combines a REST API client with interactive API reference documentation generated from OpenAPI/Swagger documents. The API reference can be embedded in many web frameworks, and a CLI validates, lints, bundles, mocks, and previews OpenAPI and AsyncAPI descriptions.
+whenToUse: When you want modern, interactive API reference docs generated from an OpenAPI document, need an API client that works directly from your spec, or want to embed API docs in an existing web app.
+githubStars: 16291
+npmPackage: "@scalar/api-reference"
+lastActivity: 2026-10-20T05:20:04Z
+lastChecked: 2026-10-20
+isOpenSource: true
+languageAgnostic: true

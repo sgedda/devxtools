@@ -1,6 +1,6 @@
 name: Stainless
 slug: stainless
-website: https://www.stainlessapi.com
+website: https://www.stainless.com
 license: Proprietary
 languages:
   - N/A
@@ -15,6 +15,12 @@ specSupport:
 bestFor: Automated SDK generation and maintenance with type-safe, idiomatic code
 description: Managed platform for generating and maintaining production-ready SDKs. Creates type-safe, idiomatic SDKs with comprehensive documentation and automatic updates from your API changes.
 whenToUse: When you want managed SDK generation with automatic updates, need consistently high-quality SDKs across languages, or want to reduce SDK maintenance overhead.
-lastChecked: 2026-10-14
+lastChecked: 2026-10-20
+status: discontinued
+statusNote: Stainless was acquired by Anthropic in May 2026 and is winding down its hosted products, including the SDK generator. New signups, projects, and SDKs are no longer available; existing customers keep full rights to the SDKs they have already generated.
+alternatives:
+  - fern
+  - speakeasy
+  - openapi-generator
 isOpenSource: false
 languageAgnostic: true
