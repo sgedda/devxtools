@@ -18,6 +18,9 @@ whenToUse: When you want managed SDK generation with automatic updates, need con
 lastChecked: 2026-10-20
 status: discontinued
 statusNote: Stainless was acquired by Anthropic in May 2026 and is winding down its hosted products, including the SDK generator. New signups, projects, and SDKs are no longer available; existing customers keep full rights to the SDKs they have already generated.
-replacedBy: cloudflare-forge
+alternatives:
+  - fern
+  - speakeasy
+  - openapi-generator
 isOpenSource: false
 languageAgnostic: true

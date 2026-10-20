@@ -58,7 +58,10 @@ export const ToolSchema = z.object({
   languageAgnostic: z.boolean().optional(), // True when languages=[] and tool is truly any-language
   status: z.enum(['active', 'maintenance', 'deprecated', 'discontinued']).optional(), // Omitted = active
   statusNote: z.string().optional(), // Sourced explanation shown on the tool page
-  replacedBy: z.string().optional(), // Slug of a recommended alternative in the catalog
+  alternatives: z.array(z.union([
+    z.string(), // catalog slug
+    z.object({ name: z.string(), url: z.string().url() }), // external alternative
+  ])).optional(), // Neutral list of alternatives shown with a non-active status
 }).refine(
   (data) => data.languageAgnostic ? true : data.languages.length > 0,
   { message: 'languages array must have at least one item unless languageAgnostic is true' }

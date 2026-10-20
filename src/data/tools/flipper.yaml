@@ -27,5 +27,8 @@ lastActivity: 2026-09-18T14:52:29Z
 lastChecked: 2026-10-20
 isOpenSource: true
 status: deprecated
-statusNote: The facebook/flipper GitHub repository has been archived and is read-only. For React Native debugging, Rozenite adds plugin panels to React Native DevTools.
-replacedBy: rozenite
+statusNote: The facebook/flipper GitHub repository has been archived and is read-only.
+alternatives:
+  - rozenite
+  - name: React Native DevTools
+    url: https://reactnative.dev/docs/react-native-devtools

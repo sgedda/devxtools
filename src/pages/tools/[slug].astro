@@ -26,7 +26,13 @@ const allTools = getAllTools();
 const release = getToolRelease(slug!);
 const contentLinks = getToolContentLinks(slug!);
 const statusLabel = tool.status && tool.status !== 'active' ? STATUS_LABELS[tool.status] : undefined;
-const replacement = tool.replacedBy ? allTools.find(t => t.slug === tool.replacedBy) : undefined;
+const alternatives = (tool.alternatives ?? []).map(alt => {
+  if (typeof alt === 'string') {
+    const t = allTools.find(x => x.slug === alt);
+    return t ? { name: t.name, href: `/tools/${t.slug}/`, external: false } : null;
+  }
+  return { name: alt.name, href: alt.url, external: true };
+}).filter((a): a is { name: string; href: string; external: boolean } => a !== null);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -147,10 +153,20 @@ const relatedTools = allTools
         <aside class="rounded-lg border-2 border-zinc-300 bg-zinc-50 p-4 dark:border-zinc-600 dark:bg-zinc-800/40" data-tool-status={tool.status}>
           <p class="text-sm text-zinc-800 dark:text-zinc-200">
             <strong class="font-semibold">{statusLabel}:</strong> {tool.statusNote}
-            {replacement && (
-              <> Consider <a href={`/tools/${replacement.slug}/`} class="font-medium text-indigo-700 underline dark:text-indigo-300">{replacement.name}</a> instead.</>
-            )}
           </p>
+          {alternatives.length > 0 && (
+            <p class="mt-2 text-sm text-zinc-800 dark:text-zinc-200" data-tool-alternatives>
+              <strong class="font-semibold">Alternatives:</strong>{' '}
+              {alternatives.map((alt, i) => (
+                <>
+                  {i > 0 && ', '}
+                  <a href={alt.href} {...(alt.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} class="font-medium text-indigo-700 underline dark:text-indigo-300">{alt.name}</a>
+                </>
+              ))}
+              {' · '}
+              <a href={`/catalog/?category=${tool.categories[0]}`} class="font-medium text-indigo-700 underline dark:text-indigo-300">All {CATEGORY_LABELS[tool.categories[0]]} tools</a>
+            </p>
+          )}
         </aside>
       )}
       {tool.affiliation && (
