@@ -12,14 +12,14 @@ interface PageInfo {
 }
 
 const staticPages: PageInfo[] = [
-  { url: '/', title: 'DevX Tools', description: 'Find the right API development, testing, and mocking tools for your workflow' },
+  { url: '/', title: 'DevXTools', description: 'Find the right API development, testing, and mocking tools for your workflow' },
   { url: '/catalog/', title: 'Tool Catalog', description: 'Explore all tools for API development, testing, mocking, and test data generation' },
-  { url: '/about/', title: 'About DevX Tools', description: 'Learn about our mission to help developers find the right API development and testing tools' },
+  { url: '/about/', title: 'About DevXTools', description: 'Learn about our mission to help developers find the right API development and testing tools' },
   { url: '/submit/', title: 'Submit a Tool', description: 'Add your API development, testing, or mocking tool to our catalog' },
   { url: '/picker/', title: 'Tool Picker', description: 'Answer a few questions to find the perfect tool for your use case' },
   { url: '/polls/', title: 'Stack Polls', description: 'Vote for your stack and see what tools the community is using' },
   { url: '/polls/rn-api-mocking/', title: 'Poll: How do you mock APIs in React Native?', description: 'Vote for your preferred API mocking tool for React Native development' },
-  { url: '/changelog/', title: 'Changelog', description: 'Recent additions and updates to the DevX Tools catalog' },
+  { url: '/changelog/', title: 'Changelog', description: 'Recent additions and updates to the DevXTools catalog' },
   { url: '/comparisons/', title: 'Tool Comparisons', description: 'Head-to-head comparisons of popular API development and testing tools' },
   { url: '/guides/', title: 'Guides', description: 'In-depth guides for API development, testing, and mocking' },
   { url: '/demos/', title: 'Live Demos', description: 'Run interactive demos of API mocking and testing tools directly in your browser via StackBlitz' },
@@ -92,7 +92,7 @@ export const GET: APIRoute = async () => {
     .filter(url => url.startsWith('/blog/') && url !== '/blog/')
     .sort();
 
-  let content = `# DevX Tools\n\n`;
+  let content = `# DevXTools\n\n`;
   content += `> A neutral catalog of API development, testing, mocking and observability tools, with hands-on comparisons and guides.\n\n`;
 
   const sections: Array<{ heading: string; urls: string[] }> = [
