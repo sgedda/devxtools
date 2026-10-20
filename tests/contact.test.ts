@@ -118,9 +118,11 @@ describe('POST /api/contact', () => {
     expect((await post(base, { RESEND_API_KEY: 'k', NEWSLETTER_KV: kv })).status).toBe(429);
   });
 
-  it('requires a Turnstile token only when TURNSTILE_SECRET is set', async () => {
+  it('requires a Turnstile token only when both TURNSTILE_SECRET and PUBLIC_TURNSTILE_SITE_KEY are set', async () => {
     global.fetch = vi.fn(async () => new Response('{}', { status: 200 })) as any;
-    expect((await post(base, { RESEND_API_KEY: 'k', TURNSTILE_SECRET: 's' })).status).toBe(400);
+    expect((await post(base, { RESEND_API_KEY: 'k', TURNSTILE_SECRET: 's', PUBLIC_TURNSTILE_SITE_KEY: 'p' })).status).toBe(400);
+    expect((await post(base, { RESEND_API_KEY: 'k', TURNSTILE_SECRET: 's' })).status).toBe(200);
+    expect((await post(base, { RESEND_API_KEY: 'k', PUBLIC_TURNSTILE_SITE_KEY: 'p' })).status).toBe(200);
   });
 
   it('returns 503 when Resend is not configured', async () => {

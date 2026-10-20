@@ -58,13 +58,13 @@ const inputClass = 'mt-1.5 block w-full rounded-lg border border-zinc-300 bg-whi
 
         <div>
           <label for="message" class="block text-sm font-medium text-zinc-900 dark:text-white">Message <span class="text-red-500">*</span></label>
-          <textarea name="message" id="message" required rows="7" minlength={CONTACT_LIMITS.messageMin} maxlength={CONTACT_LIMITS.messageMax} class={inputClass}></textarea>
-          <p class="mt-1.5 text-xs text-zinc-500">For a correction, include the page or tool and a link to the official source.</p>
+          <textarea name="message" id="message" aria-describedby="message-hint" required rows="7" minlength={CONTACT_LIMITS.messageMin} maxlength={CONTACT_LIMITS.messageMax} class={inputClass}></textarea>
+          <p id="message-hint" class="mt-1.5 text-xs text-zinc-500">For a correction, include the page or tool and a link to the official source.</p>
         </div>
 
         {turnstileSiteKey && <div id="turnstile-container"></div>}
 
-        <div id="error-message" role="alert" class="hidden rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-200"></div>
+        <div id="error-message" role="alert" tabindex="-1" class="hidden rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-200"></div>
         <div id="success-message" role="status" class="hidden rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200"></div>
 
         <button type="submit" id="contact-submit" class="w-full rounded-lg bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
@@ -78,7 +78,7 @@ const inputClass = 'mt-1.5 block w-full rounded-lg border border-zinc-300 bg-whi
         <Icon name="info" size={20} class="mt-0.5 flex-shrink-0 text-indigo-600 dark:text-indigo-400" />
         <div class="text-sm text-zinc-700 dark:text-zinc-300">
           <p class="mb-2 font-medium">Privacy</p>
-          <p>Your message is emailed once to the editor (sent through Resend), with your address set as the reply-to so we can answer you. We don't store the message on our site, don't add you to any list, and don't send automatic replies. To limit spam we keep a short-lived counter per IP address, which expires after an hour{turnstileSiteKey ? ', and use Cloudflare Turnstile to check that you are human' : ''}.</p>
+          <p>Your name, email, topic and message are emailed once to the editor, Sebastian Gedda, through our email provider Resend, with your address set as the reply-to so we can answer you. The email stays in the editor's inbox until he deletes it, and Resend keeps a copy for a limited time under its own retention policy. We don't save the message anywhere else, don't add you to any list, and don't send automatic replies. To limit spam we store your IP address next to a message counter in Cloudflare KV, and it is deleted automatically after an hour{turnstileSiteKey ? '. Cloudflare Turnstile checks that you are human, and your IP address is sent to Cloudflare for that check' : ''}.</p>
         </div>
       </div>
     </div>
@@ -123,10 +123,12 @@ const inputClass = 'mt-1.5 block w-full rounded-lg border border-zinc-300 bg-whi
         } else {
           errorBox.textContent = body.error || 'Something went wrong. Please try again.';
           errorBox.classList.remove('hidden');
+          errorBox.focus();
         }
       } catch {
         errorBox.textContent = 'Network error. Please check your connection and try again.';
         errorBox.classList.remove('hidden');
+        errorBox.focus();
       } finally {
         button.disabled = false;
         button.textContent = 'Send message';

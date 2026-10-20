@@ -8,6 +8,7 @@ interface Env {
   CONTACT_TO_EMAIL?: string;
   CONTACT_FROM_EMAIL?: string;
   TURNSTILE_SECRET?: string;
+  PUBLIC_TURNSTILE_SITE_KEY?: string;
 }
 
 const DEFAULT_TO = 'sebastian.gedda@gmail.com';
@@ -42,8 +43,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
 
-    // Turnstile: enforced only when TURNSTILE_SECRET is configured.
-    if (env.TURNSTILE_SECRET) {
+    // Turnstile is enforced only when BOTH TURNSTILE_SECRET and PUBLIC_TURNSTILE_SITE_KEY are set.
+    // With only the secret, the page renders no widget, so requiring a token would block every message.
+    if (env.TURNSTILE_SECRET && env.PUBLIC_TURNSTILE_SITE_KEY) {
       if (typeof turnstileToken !== 'string' || !turnstileToken) {
         return json({ error: 'Please complete the verification.' }, 400);
       }
