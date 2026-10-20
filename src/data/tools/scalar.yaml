@@ -15,6 +15,7 @@ categories:
   - openapi-tooling
 specSupport:
   - OpenAPI
+  - AsyncAPI
 bestFor: Interactive API reference docs and a REST API client from OpenAPI documents
 description: Open source API platform that combines a REST API client with interactive API reference documentation generated from OpenAPI/Swagger documents. The API reference can be embedded in many web frameworks, and a CLI validates, lints, bundles, mocks, and previews OpenAPI and AsyncAPI descriptions.
 whenToUse: When you want modern, interactive API reference docs generated from an OpenAPI document, need an API client that works directly from your spec, or want to embed API docs in an existing web app.

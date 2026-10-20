@@ -66,6 +66,11 @@ export function matchesTool(
   let score = 0;
   let isLanguageAgnostic = false;
   
+  // Filter out discontinued or deprecated tools
+  if (tool.status === 'discontinued' || tool.status === 'deprecated') {
+    return null;
+  }
+  
   // Platform matching
   if (state.platform) {
     const platformMatches: Record<string, boolean> = {
