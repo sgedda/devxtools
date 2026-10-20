@@ -447,9 +447,13 @@ export function syncTool(
   existing: ReleaseInfo | undefined,
   history: ReleaseInfo[],
 ): { current: ReleaseInfo; history: ReleaseInfo[] } {
-  const current = mergeRelease(fetched, existing);
+  const historyIdx = history.findIndex(h => h.version === fetched.version);
+  const fromHistory = historyIdx >= 0 ? history[historyIdx] : undefined;
+  const matchingEntry = existing?.version === fetched.version ? existing : fromHistory;
+  const current = mergeRelease(fetched, matchingEntry);
   if (existing && existing.version !== fetched.version) {
-    return { current, history: appendHistory(history, existing) };
+    const newHistory = historyIdx >= 0 ? history.filter((_, i) => i !== historyIdx) : history;
+    return { current, history: appendHistory(newHistory, existing) };
   }
   return { current, history };
 }

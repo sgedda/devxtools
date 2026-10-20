@@ -261,4 +261,22 @@ describe('release history: sync appends instead of overwriting', async () => {
     expect(appendHistory([draftCopy], reviewed)[0].status).toBe('reviewed');
     expect(appendHistory([draftCopy], reviewed)[0].summary).toBe('Reviewed text');
   });
+
+  it('restores a version from history when rolling back, keeping its reviewed status', () => {
+    const v100 = {
+      version: '1.0.0', releaseDate: '2026-10-01T00:00:00Z', releaseUrl: 'https://gh/r/v1.0.0',
+      source: 'npm' as const, summary: 'Reviewed v1.0.0', status: 'reviewed' as const,
+    };
+    const v110 = { version: '1.1.0', releaseDate: '2026-10-10T00:00:00Z', releaseUrl: 'https://gh/r/v1.1.0', source: 'npm' as const, status: 'draft' as const };
+    const fetched100 = { version: '1.0.0', releaseDate: '2026-10-15T00:00:00Z', releaseUrl: 'https://gh/r/v1.0.0', source: 'npm' as const };
+    
+    const { current, history } = syncTool(fetched100, v110, [v100]);
+    
+    expect(current.version).toBe('1.0.0');
+    expect(current.status).toBe('reviewed');
+    expect(current.summary).toBe('Reviewed v1.0.0');
+    expect(history).toHaveLength(1);
+    expect(history[0].version).toBe('1.1.0');
+    expect(history.find(h => h.version === '1.0.0')).toBeUndefined();
+  });
 });
