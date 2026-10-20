@@ -17,7 +17,31 @@ const { title, description, canonicalURL, noindex = false, jsonLd } = Astro.prop
 // Article pages use their own card (guides/comparisons); everything else falls back to the default.
 const ogImage = Astro.props.ogImage ?? existingArticleOgCard(canonicalURL || Astro.url.pathname) ?? '/og-image.png';
 // Brand suffix only when it fits: SERPs cut titles at ~60 characters.
-const siteTitle = (title.includes('DevXTools') || title.includes('DevX Tools') || title.length + 12 > 60) ? title : `${title} | DevXTools`;
+const SITE = 'https://devxtools.dev/';
+// Sitewide brand entities (one @graph on every page). Page JSON-LD stays in its own script.
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE}#website`,
+      name: 'DevXTools',
+      alternateName: ['DevX Tools', 'devxtools.dev'],
+      url: SITE,
+      description: 'A curated guide to API development, mocking, testing, and test data generation tools for developers.',
+      publisher: { '@id': `${SITE}#organization` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE}#organization`,
+      name: 'DevXTools',
+      url: SITE,
+      logo: { '@type': 'ImageObject', url: `${SITE}favicon-512.png`, width: 512, height: 512 },
+      sameAs: ['https://github.com/sgedda/devxtools'],
+    },
+  ],
+};
+const siteTitle = (title.includes('DevXTools') || title.includes('DevXTools') || title.length + 12 > 60) ? title : `${title} | DevXTools`;
 const allTools = getAllTools();
 
 const normalizedCanonical = canonicalURL || `https://devxtools.dev${Astro.url.pathname}${Astro.url.pathname.endsWith('/') ? '' : '/'}`;
@@ -57,6 +81,7 @@ const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
     <meta name="description" content={description} />
     
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DevXTools" />
     <meta property="og:url" content={normalizedCanonical} />
     <meta property="og:title" content={siteTitle} />
     <meta property="og:description" content={description} />
@@ -68,8 +93,9 @@ const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
     
-    <link rel="alternate" type="application/rss+xml" title="DevX Tools" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="DevXTools" href="/rss.xml" />
     
+    <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
     {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
     
     <script is:inline define:vars={{ allTools }}>
@@ -298,7 +324,7 @@ const cfBeaconToken = import.meta.env.PUBLIC_CF_BEACON_TOKEN;
       </div>
       <div class="border-t border-zinc-200 dark:border-zinc-800">
         <div class="mx-auto max-w-[1200px] px-5 py-5 text-sm text-zinc-600 dark:text-zinc-400">
-          © 2026 DevX Tools · Last data check 2026-10-14
+          © 2026 DevXTools · Last data check 2026-10-14
         </div>
       </div>
     </footer>

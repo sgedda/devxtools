@@ -13,7 +13,7 @@ export async function GET(context: APIContext) {
   }));
 
   return rss({
-    title: 'DevX Tools',
+    title: 'DevXTools',
     description: "The developer's guide to API mocking, testing, and test data generation tools",
     site: context.site?.toString() || 'https://devxtools.dev',
     items,
