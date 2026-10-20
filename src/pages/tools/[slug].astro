@@ -4,7 +4,7 @@ import Icon from '../../components/Icon.astro';
 import ToolLogo from '../../components/ToolLogo.astro';
 import { getAllTools, getToolBySlug } from '../../lib/tools';
 import { getToolContentLinks } from '../../lib/content-links';
-import { CATEGORY_LABELS } from '../../lib/schema';
+import { CATEGORY_LABELS, STATUS_LABELS } from '../../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass } from '../../lib/ui-helpers';
 import { getToolRelease } from '../../lib/releases';
 
@@ -25,6 +25,8 @@ if (!tool) {
 const allTools = getAllTools();
 const release = getToolRelease(slug!);
 const contentLinks = getToolContentLinks(slug!);
+const statusLabel = tool.status && tool.status !== 'active' ? STATUS_LABELS[tool.status] : undefined;
+const replacement = tool.replacedBy ? allTools.find(t => t.slug === tool.replacedBy) : undefined;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -141,6 +143,16 @@ const relatedTools = allTools
 
   <main class="mx-auto max-w-[1200px] px-5 py-12 grid gap-10 lg:grid-cols-[1fr_320px]">
     <article class="min-w-0 space-y-10">
+      {statusLabel && (
+        <aside class="rounded-lg border-2 border-zinc-300 bg-zinc-50 p-4 dark:border-zinc-600 dark:bg-zinc-800/40" data-tool-status={tool.status}>
+          <p class="text-sm text-zinc-800 dark:text-zinc-200">
+            <strong class="font-semibold">{statusLabel}:</strong> {tool.statusNote}
+            {replacement && (
+              <> Consider <a href={`/tools/${replacement.slug}/`} class="font-medium text-indigo-700 underline dark:text-indigo-300">{replacement.name}</a> instead.</>
+            )}
+          </p>
+        </aside>
+      )}
       {tool.affiliation && (
         <aside class="rounded-lg border-2 border-amber-300 bg-amber-50 p-4 dark:border-amber-700/50 dark:bg-amber-900/10">
           <p class="text-sm text-amber-900 dark:text-amber-200">

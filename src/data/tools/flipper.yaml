@@ -22,7 +22,10 @@ platforms:
 bestFor: Extensible mobile debugging platform with network inspector and plugin system
 description: Platform for debugging iOS, Android, and React Native apps built by Meta. Features network inspection, layout inspection, logs viewer, crash reporter, and extensible plugin architecture.
 whenToUse: When you need comprehensive mobile debugging with network inspection, want to use or build custom debugging plugins, or need layout inspection alongside network logs.
-githubStars: 13300
+githubStars: 13447
 lastActivity: 2026-09-18T14:52:29Z
-lastChecked: 2026-10-14
+lastChecked: 2026-10-20
 isOpenSource: true
+status: deprecated
+statusNote: The facebook/flipper GitHub repository has been archived and is read-only. For React Native debugging, Rozenite adds plugin panels to React Native DevTools.
+replacedBy: rozenite

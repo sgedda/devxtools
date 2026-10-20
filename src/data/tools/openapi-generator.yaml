@@ -24,7 +24,7 @@ specSupport:
 bestFor: Open-source SDK generation for 50+ languages from OpenAPI specifications
 description: Community-driven tool that generates client SDKs, server stubs, and API documentation from OpenAPI specs. Supports over 50 programming languages and frameworks.
 whenToUse: When you need to generate SDKs for multiple languages from OpenAPI specs, want community-maintained generators, or need customizable templates.
-githubStars: 23800
+githubStars: 26812
 lastActivity: 2026-10-13T22:17:48Z
 lastChecked: 2026-10-14
 isOpenSource: true

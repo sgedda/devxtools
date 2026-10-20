@@ -1,0 +1,25 @@
+name: Rozenite
+slug: rozenite
+website: https://rozenite.dev
+repo: https://github.com/callstackincubator/rozenite
+license: MIT
+languages:
+  - TypeScript
+runtimes:
+  - React Native
+sections:
+  - observability
+categories:
+  - network-debugging
+platforms:
+  - React Native
+  - iOS
+  - Android
+bestFor: Plug-and-play debugging panels inside React Native DevTools
+description: Plugin framework from Callstack that adds panels to React Native DevTools. Works with Expo and bare React Native across Metro and Re.Pack, has a plugin directory and a CLI for building custom plugins, and disables plugins in production builds. React Native Web and Lynx support is experimental.
+whenToUse: When you debug React Native apps with React Native DevTools and want extra panels such as network or state inspection without a separate desktop app, or want to build custom DevTools plugins.
+githubStars: 665
+npmPackage: rozenite
+lastActivity: 2026-10-20T08:08:40Z
+lastChecked: 2026-10-20
+isOpenSource: true

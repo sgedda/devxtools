@@ -19,7 +19,7 @@ specSupport:
 bestFor: Developer-focused API client with GraphQL support and OpenAPI design tools
 description: Open source API client with powerful environment management, GraphQL support, and design-first workflow. Built by Kong, integrates well with Kong Gateway.
 whenToUse: When you need strong GraphQL support, Kong Gateway integration, or prefer an open-source API client with a clean interface.
-githubStars: 38900
+githubStars: 40063
 lastActivity: 2026-10-12T18:45:21Z
 lastChecked: 2026-10-14
 isOpenSource: true

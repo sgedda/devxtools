@@ -18,7 +18,7 @@ specSupport:
 bestFor: Flexible mock server with record/replay and OpenAPI support for JVM ecosystems
 description: Standalone mock server with request matching, response templating, and record/replay. Can be run as a library, standalone process, or Docker container.
 whenToUse: When you need a powerful standalone mock server for JVM-based projects or want to record and replay real API interactions.
-githubStars: 7399
+githubStars: 7404
 lastActivity: 2025-11-14T14:39:57Z
 lastChecked: 2026-10-14
 isOpenSource: true

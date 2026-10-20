@@ -18,7 +18,7 @@ specSupport:
 bestFor: Modern load testing with YAML-based scenarios and built-in WebSocket support
 description: Cloud-native load testing toolkit for APIs, microservices, and async messaging systems. YAML-based test scenarios with support for HTTP, WebSocket, Socket.io, and more.
 whenToUse: When you prefer YAML-based test definitions, need WebSocket or Socket.io load testing, or want distributed cloud-based load generation.
-githubStars: 8200
+githubStars: 9097
 lastActivity: 2026-10-11T09:28:14Z
 npmPackage: artillery
 weeklyDownloads: 163420

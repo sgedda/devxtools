@@ -16,7 +16,9 @@ categories:
   - mock-server
 bestFor: Building complete frontend applications without a backend using an in-memory database
 description: An API mocking library that lets you build, test and share a complete working JavaScript application without having to rely on any backend services.
-lastChecked: 2026-10-14
+lastChecked: 2026-10-20
 isOpenSource: true
 platforms:
   - Web
+status: maintenance
+statusNote: No stable release since v0.1.48 (October 2023), and the last commit to the default branch was in May 2025.

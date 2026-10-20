@@ -15,5 +15,6 @@ categories:
   - test-data-generation
 bestFor: Minimalist random generator for strings, numbers, and complex data structures
 description: Random generator helper for JavaScript. Can generate random numbers, characters, strings, names, addresses, and more with a simple API.
-lastChecked: 2026-10-14
+lastChecked: 2026-10-20
+npmPackage: chance
 isOpenSource: true

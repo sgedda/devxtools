@@ -20,7 +20,7 @@ specSupport:
 bestFor: Lightweight, browser-based API client with real-time collaboration and self-hosting options
 description: Open-source API development ecosystem with web, desktop, and CLI clients. Features include real-time collaboration, GraphQL and WebSocket support, and self-hosting.
 whenToUse: When you want a lightweight browser-based API client, need real-time collaboration, or want to self-host your API testing platform.
-githubStars: 73200
+githubStars: 80660
 lastActivity: 2026-10-13T14:28:19Z
 lastChecked: 2026-10-14
 isOpenSource: true

@@ -28,7 +28,7 @@ platforms:
 bestFor: Real-time error tracking and performance monitoring with rich context and release tracking
 description: Application monitoring platform that tracks errors, performance issues, and user context across web, mobile, and backend applications. Features include distributed tracing, release tracking, issue grouping, and integrations with 100+ tools.
 whenToUse: When you need comprehensive error tracking with stack traces, breadcrumbs, and user context, or want to monitor application performance and trace distributed transactions.
-githubStars: 40200
+githubStars: 45610
 lastActivity: 2026-10-13T18:24:56Z
 lastChecked: 2026-10-14
 isOpenSource: false

@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import ToolLogo from '../components/ToolLogo.astro';
 import { getAllTools, getUniqueLanguages } from '../lib/tools';
-import { CATEGORY_LABELS, SECTION_LABELS, type ToolCategory, type ToolSection } from '../lib/schema';
+import { CATEGORY_LABELS, SECTION_LABELS, type ToolCategory, type ToolSection, STATUS_LABELS } from '../lib/schema';
 import { formatTimeAgo, getLicenseBadgeClass, SECTION_ICONS } from '../lib/ui-helpers';
 
 const tools = getAllTools();
@@ -210,6 +210,11 @@ const specs = Array.from(allSpecs).sort();
                       {tool.license && (
                         <span class={`inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-medium ${getLicenseBadgeClass(tool.license)}`}>
                           {tool.license}
+                        </span>
+                      )}
+                      {tool.status && tool.status !== 'active' && (
+                        <span class="ml-1 inline-flex items-center rounded-md bg-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-800 dark:bg-zinc-700 dark:text-zinc-100" data-tool-status={tool.status}>
+                          {STATUS_LABELS[tool.status]}
                         </span>
                       )}
                     </div>

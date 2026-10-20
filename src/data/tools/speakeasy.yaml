@@ -2,7 +2,7 @@ name: Speakeasy
 slug: speakeasy
 website: https://www.speakeasy.com
 repo: https://github.com/speakeasy-api/speakeasy
-license: Elastic-2.0
+license: AGPL-3.0 (generator); Elastic-2.0 (CLI)
 languages:
   - Go
 runtimes:
@@ -14,9 +14,9 @@ categories:
 specSupport:
   - OpenAPI
 bestFor: Enterprise-grade SDK generation with idiomatic code and automatic publishing
-description: Modern SDK generator focused on producing idiomatic, production-ready SDKs with excellent developer experience. Supports TypeScript, Python, Go, Java, and more with automatic publishing.
+description: Modern SDK generator focused on producing idiomatic, production-ready SDKs with excellent developer experience. Supports TypeScript, Python, Go, Java, and more with automatic publishing. Since September 2026 the generator itself is open source under AGPL-3.0 (speakeasy-api/openapi-generation), with commercial licensing still available; the CLI repository remains under the Elastic License 2.0.
 whenToUse: When you need high-quality, idiomatic SDKs with excellent documentation, want automated SDK publishing workflows, or need enterprise support.
-githubStars: 1800
+githubStars: 454
 lastActivity: 2026-10-12T19:33:14Z
-lastChecked: 2026-10-14
-isOpenSource: false
+lastChecked: 2026-10-20
+isOpenSource: true
