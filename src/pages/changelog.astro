@@ -46,7 +46,7 @@ const TZ = 'Europe/Stockholm';
                     <span class="release-meta">
                       · {formattedDate} · 
                       <a href={release.releaseUrl} target="_blank" rel="noopener noreferrer" class="release-notes-link">
-                        Release notes ↗
+                        {release.releaseUrl.startsWith('https://www.npmjs.com/') ? 'npm' : release.releaseUrl.startsWith('https://pypi.org/') ? 'PyPI' : 'Release notes'} ↗
                       </a>
                     </span>
                     {release.breaking && !showSummary && (

@@ -311,9 +311,9 @@
       "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.0",
       "source": "github",
       "label": "Sentry self-hosted",
-      "status": "draft",
+      "status": "reviewed",
       "breaking": true,
-      "summary": "Breaking for self-hosted: upgrades Postgres 14 to 18 with a new storage format, so snapshot before upgrading. Images move to distroless."
+      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default."
     },
     "signoz": {
       "version": "0.146.0",
