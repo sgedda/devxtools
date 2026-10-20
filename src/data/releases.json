@@ -1,311 +1,381 @@
 {
-  "lastUpdated": "2026-10-20T08:10:47.366Z",
+  "lastUpdated": "2026-10-20T08:18:31.198Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
       "releaseDate": "2026-09-24T18:29:49.177Z",
-      "releaseUrl": "https://www.npmjs.com/package/appium/v/3.8.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%403.8.0",
+      "source": "npm",
+      "status": "draft"
     },
     "artillery": {
       "version": "2.0.34",
       "releaseDate": "2026-08-14T12:18:47.356Z",
       "releaseUrl": "https://www.npmjs.com/package/artillery/v/2.0.34",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "bruno": {
       "version": "4.2.1",
       "releaseDate": "2026-09-30T13:52:52Z",
       "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.2.1",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "chance": {
       "version": "1.1.13",
       "releaseDate": "2025-05-18T21:03:07.856Z",
       "releaseUrl": "https://www.npmjs.com/package/chance/v/1.1.13",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "cypress": {
       "version": "16.2.0",
-      "releaseDate": "2026-10-14T15:45:39.102Z",
-      "releaseUrl": "https://www.npmjs.com/package/cypress/v/16.2.0",
-      "source": "npm"
+      "releaseDate": "2026-10-13T12:00:00Z",
+      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-0",
+      "source": "npm",
+      "status": "reviewed",
+      "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits."
     },
     "detox": {
       "version": "20.51.4",
       "releaseDate": "2026-06-16T12:39:27.677Z",
       "releaseUrl": "https://www.npmjs.com/package/detox/v/20.51.4",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "faker": {
       "version": "10.6.0",
       "releaseDate": "2026-08-14T16:53:55Z",
       "releaseUrl": "https://github.com/faker-js/faker/releases/tag/v10.6.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "fern": {
       "version": "5.168.1",
       "releaseDate": "2026-10-19T22:42:06.497Z",
       "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.168.1",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
       "releaseDate": "2025-12-08T21:18:40Z",
       "releaseUrl": "https://github.com/thoughtbot/fishery/releases/tag/v2.4.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "flipper": {
       "version": "0.273.0",
       "releaseDate": "2024-11-21T15:13:10Z",
       "releaseUrl": "https://github.com/facebook/flipper/releases/tag/v0.273.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "gatling": {
       "version": "3.16.0",
       "releaseDate": "2026-09-29T12:21:15Z",
       "releaseUrl": "https://github.com/gatling/gatling/releases/tag/v3.16.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "grafana-loki": {
       "version": "3.7.8",
       "releaseDate": "2026-09-17T15:51:10Z",
       "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.8",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "hoppscotch": {
       "version": "2026.9.0",
       "releaseDate": "2026-09-30T11:50:32Z",
       "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.9.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "hoverfly": {
       "version": "1.12.15",
       "releaseDate": "2026-09-21T21:14:58Z",
       "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.15",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "httpie": {
       "version": "3.2.4",
       "releaseDate": "2024-11-01T17:31:22",
-      "releaseUrl": "https://pypi.org/project/httpie/3.2.4/",
-      "source": "pypi"
+      "releaseUrl": "https://github.com/httpie/cli/releases/tag/3.2.4",
+      "source": "pypi",
+      "status": "draft"
     },
     "insomnia": {
       "version": "13.3.1",
       "releaseDate": "2026-10-09T07:35:39Z",
       "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "Patch release. The notes contain only a compare link to 13.3.0, with no list of changes."
     },
     "jmeter": {
       "version": "5.6.3",
       "releaseDate": "2024-01-09T08:29:40Z",
       "releaseUrl": "https://github.com/apache/jmeter/releases/tag/rel/v5.6.3",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "json-server": {
       "version": "0.17.4",
       "releaseDate": "2023-09-29T13:36:58.964Z",
-      "releaseUrl": "https://www.npmjs.com/package/json-server/v/0.17.4",
-      "source": "npm"
+      "releaseUrl": "https://github.com/typicode/json-server/releases/tag/v0.17.4",
+      "source": "npm",
+      "status": "draft"
     },
     "k6": {
       "version": "2.3.0",
       "releaseDate": "2026-09-21T15:17:03Z",
       "releaseUrl": "https://github.com/grafana/k6/releases/tag/v2.3.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "locust": {
       "version": "2.46.7",
       "releaseDate": "2026-10-04T20:51:35",
-      "releaseUrl": "https://pypi.org/project/locust/2.46.7/",
-      "source": "pypi"
+      "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.46.7",
+      "source": "pypi",
+      "status": "draft"
     },
     "maestro": {
       "version": "2.11.0",
       "releaseDate": "2026-09-29T13:36:34Z",
       "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.11.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "microcks": {
       "version": "1.15.0",
       "releaseDate": "2026-08-05T07:48:13Z",
       "releaseUrl": "https://github.com/microcks/microcks/releases/tag/1.15.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "miragejs": {
       "version": "0.1.48",
       "releaseDate": "2023-10-30T11:27:30Z",
       "releaseUrl": "https://github.com/miragejs/miragejs/releases/tag/v0.1.48",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "mockifyer": {
       "version": "1.10.181",
       "releaseDate": "2026-09-30T09:26:41.146Z",
       "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.181",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "mockoon": {
       "version": "9.9.0",
       "releaseDate": "2026-09-16T13:23:55.427Z",
-      "releaseUrl": "https://www.npmjs.com/package/@mockoon/cli/v/9.9.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/mockoon/mockoon/releases/tag/v9.9.0",
+      "source": "npm",
+      "status": "draft"
     },
     "mountebank": {
       "version": "2.9.4",
       "releaseDate": "2026-04-15T16:22:19Z",
       "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.9.4",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "msw": {
       "version": "3.0.3",
       "releaseDate": "2026-10-10T01:38:37.376Z",
-      "releaseUrl": "https://www.npmjs.com/package/msw/v/3.0.3",
-      "source": "npm"
+      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.3",
+      "source": "npm",
+      "status": "reviewed",
+      "summary": "Bug fixes: reset handlers are now disposed, and network context is exposed on `enable` in network sources."
     },
     "nock": {
       "version": "15.0.4",
       "releaseDate": "2026-10-19T21:24:39.007Z",
-      "releaseUrl": "https://www.npmjs.com/package/nock/v/15.0.4",
-      "source": "npm"
+      "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.4",
+      "source": "npm",
+      "status": "reviewed",
+      "summary": "`replyContentLength` now counts bytes instead of characters (15.0.3), and empty request bodies are no longer decompressed (15.0.2)."
     },
     "openapi-generator": {
       "version": "7.26.0",
       "releaseDate": "2026-10-06T09:33:32Z",
       "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client."
     },
     "openobserve": {
       "version": "1.1.2",
       "releaseDate": "2026-10-20T05:26:56Z",
       "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.2",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)"
     },
     "opentelemetry": {
       "version": "2.12.0",
       "releaseDate": "2026-10-06T13:39:11.160Z",
-      "releaseUrl": "https://www.npmjs.com/package/@opentelemetry/sdk-trace-node/v/2.12.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/open-telemetry/opentelemetry-js/releases/tag/v2.12.0",
+      "source": "npm",
+      "status": "draft"
     },
     "pact": {
       "version": "17.1.4",
       "releaseDate": "2026-09-07T07:08:51Z",
       "releaseUrl": "https://github.com/pact-foundation/pact-js/releases/tag/v17.1.4",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "pino": {
       "version": "10.4.0",
       "releaseDate": "2026-10-02T18:18:54.863Z",
-      "releaseUrl": "https://www.npmjs.com/package/pino/v/10.4.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/pinojs/pino/releases/tag/v10.4.0",
+      "source": "npm",
+      "status": "draft"
     },
     "playwright": {
       "version": "1.64.1",
       "releaseDate": "2026-10-14T11:54:49.998Z",
-      "releaseUrl": "https://www.npmjs.com/package/playwright/v/1.64.1",
-      "source": "npm"
+      "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.64.1",
+      "source": "npm",
+      "status": "reviewed",
+      "summary": "Patch fixing Chromium 155+ aborting preflighted cross-origin redirects whenever any route is registered, plus an Electron first-window bug."
     },
     "pollyjs": {
       "version": "6.0.6",
       "releaseDate": "2023-07-20T16:37:35.308Z",
       "releaseUrl": "https://www.npmjs.com/package/@pollyjs/core/v/6.0.6",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "prism": {
       "version": "5.16.0",
       "releaseDate": "2026-07-17T08:02:36.635Z",
-      "releaseUrl": "https://www.npmjs.com/package/@stoplight/prism-cli/v/5.16.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/stoplightio/prism/releases/tag/v5.16.0",
+      "source": "npm",
+      "status": "draft"
     },
     "prometheus": {
       "version": "3.15.0",
       "releaseDate": "2026-09-25T08:56:22Z",
       "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.0",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "reactotron": {
       "version": "5.3.1",
       "releaseDate": "2026-08-13T22:52:37Z",
       "releaseUrl": "https://github.com/infinitered/reactotron/releases/tag/reactotron-react-native%405.3.1",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "redocly": {
       "version": "2.65.1",
       "releaseDate": "2026-10-20T07:41:52.669Z",
-      "releaseUrl": "https://www.npmjs.com/package/@redocly/cli/v/2.65.1",
-      "source": "npm"
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.65.1",
+      "source": "npm",
+      "status": "reviewed",
+      "summary": "`no-schema-type-mismatch` now flags `properties` on any non-object type and `items` on any non-array type. **This can fail specs that passed before**, because the rule is an error in `recommended`.",
+      "breaking": true
     },
     "rozenite": {
       "version": "2.5.0",
       "releaseDate": "2026-10-12T18:42:00.692Z",
-      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.5.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.5.0",
+      "source": "npm",
+      "status": "draft"
     },
     "scalar": {
       "version": "1.75.0",
       "releaseDate": "2026-10-16T14:32:11.408Z",
       "releaseUrl": "https://www.npmjs.com/package/@scalar/api-reference/v/1.75.0",
-      "source": "npm"
+      "source": "npm",
+      "status": "draft"
     },
     "schemathesis": {
       "version": "4.32.1",
       "releaseDate": "2026-10-19T08:57:46Z",
       "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.1",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "Performance patch: stateful testing up to ~20% faster on link-heavy APIs. Fixes a `RecursionError` with self-referencing `additionalProperties`."
     },
     "sentry": {
       "version": "26.10.0",
-      "releaseDate": "2026-10-16T00:55:43Z",
-      "releaseUrl": "https://github.com/getsentry/sentry/releases/tag/26.10.0",
-      "source": "github"
+      "releaseDate": "2026-10-16T01:17:30Z",
+      "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.0",
+      "source": "github",
+      "label": "Sentry self-hosted",
+      "status": "reviewed",
+      "breaking": true,
+      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default."
     },
     "signoz": {
       "version": "0.146.0",
       "releaseDate": "2026-10-14T06:42:10Z",
       "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.146.0",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "Adds AI queries and heatmaps in dashboards, variables in panel titles, and more onboarding data sources. Trace attributes can now be promoted and indexed."
     },
     "speakeasy": {
       "version": "1.802.0",
       "releaseDate": "2026-10-11T15:17:50Z",
       "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.802.0",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "CLI adds custom pattern error messages and redacts sensitive bodies in diagnostics. Go and Terraform SDKs mask sensitive values in HTTP logs."
     },
     "spectral": {
       "version": "6.17.0",
       "releaseDate": "2026-10-01T12:40:18.254Z",
-      "releaseUrl": "https://www.npmjs.com/package/@stoplight/spectral-cli/v/6.17.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/stoplightio/spectral/releases/tag/v6.17.0",
+      "source": "npm",
+      "status": "draft"
     },
     "swagger-editor": {
       "version": "5.9.1",
       "releaseDate": "2026-10-15T13:53:21Z",
       "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.9.1",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "Dependency update only: bumps swagger-ui and the ApiDOM packages. No user-facing changes listed."
     },
     "thunder-client": {
       "version": "3.0.0",
       "releaseDate": "2026-10-17T16:04:48Z",
       "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "**A free account is now required** to use the Free Plan. The Free Plan expands to JetBrains IDEs, WebSocket/SSE/gRPC and OAuth 2.0, capped at 3 collections of 30 requests.",
+      "breaking": true
     },
     "winston": {
       "version": "3.19.0",
       "releaseDate": "2025-12-07T07:37:16.009Z",
-      "releaseUrl": "https://www.npmjs.com/package/winston/v/3.19.0",
-      "source": "npm"
+      "releaseUrl": "https://github.com/winstonjs/winston/releases/tag/v3.19.0",
+      "source": "npm",
+      "status": "draft"
     },
     "wiremock": {
       "version": "3.13.2",
       "releaseDate": "2025-11-14T14:39:57Z",
       "releaseUrl": "https://github.com/wiremock/wiremock/releases/tag/3.13.2",
-      "source": "github"
+      "source": "github",
+      "status": "draft"
     },
     "yaak": {
       "version": "2026.9.0",
       "releaseDate": "2026-10-10T17:17:54Z",
       "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.0",
-      "source": "github"
+      "source": "github",
+      "status": "reviewed",
+      "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags."
     }
   }
 }

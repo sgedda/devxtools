@@ -189,3 +189,76 @@ describe('releases.json validation', () => {
     }
   });
 });
+
+describe('release summary lifecycle', async () => {
+  const { mergeRelease, expandChangelogUrl, candidateReleaseTags } = await import('./fetch-releases');
+  const base = { releaseDate: '2026-10-01T00:00:00Z', releaseUrl: 'https://x', source: 'npm' as const };
+
+  it('keeps reviewed summary and stored date when the version is unchanged', () => {
+    const existing = { ...base, version: '1.0.0', summary: 'S', breaking: true, status: 'reviewed' as const, releaseDate: '2026-09-30T12:00:00Z' };
+    const merged = mergeRelease({ ...base, version: '1.0.0' }, existing);
+    expect(merged.summary).toBe('S');
+    expect(merged.breaking).toBe(true);
+    expect(merged.status).toBe('reviewed');
+    expect(merged.releaseDate).toBe('2026-09-30T12:00:00Z');
+  });
+
+  it('clears the summary and resets to draft when the version changes', () => {
+    const existing = { ...base, version: '1.0.0', summary: 'S', breaking: true, status: 'reviewed' as const };
+    const merged = mergeRelease({ ...base, version: '1.0.1' }, existing);
+    expect(merged.summary).toBeUndefined();
+    expect(merged.breaking).toBeUndefined();
+    expect(merged.status).toBe('draft');
+  });
+
+  it('never marks a fetched (auto-generated) entry as reviewed', () => {
+    const merged = mergeRelease({ ...base, version: '2.0.0', summary: 'auto', status: 'reviewed' });
+    expect(merged.status).toBe('draft');
+    expect(merged.summary).toBeUndefined();
+  });
+
+  it('expands changelog URL templates and candidate tags', () => {
+    expect(expandChangelogUrl('https://d/changelog#{versionDashed}', '16.2.0')).toBe('https://d/changelog#16-2-0');
+    expect(candidateReleaseTags('2.65.1', '@redocly/cli')).toEqual(['v2.65.1', '2.65.1', '@redocly/cli@2.65.1']);
+  });
+});
+
+describe('release history: sync appends instead of overwriting', async () => {
+  const { syncTool, appendHistory } = await import('./fetch-releases');
+  const reviewed = {
+    version: '1.0.0', releaseDate: '2026-10-01T00:00:00Z', releaseUrl: 'https://gh/r/v1.0.0',
+    source: 'npm' as const, summary: 'Reviewed text', breaking: true, status: 'reviewed' as const,
+  };
+
+  it('moves the current entry into history (with its reviewed summary) when a new version lands', () => {
+    const fetched = { version: '1.1.0', releaseDate: '2026-10-10T00:00:00Z', releaseUrl: 'https://gh/r/v1.1.0', source: 'npm' as const };
+    const { current, history } = syncTool(fetched, reviewed, []);
+    expect(current.version).toBe('1.1.0');
+    expect(current.status).toBe('draft');
+    expect(current.summary).toBeUndefined();
+    expect(history).toHaveLength(1);
+    expect(history[0]).toEqual(reviewed);
+  });
+
+  it('keeps all earlier history entries, newest first', () => {
+    const older = { ...reviewed, version: '0.9.0', releaseDate: '2026-09-01T00:00:00Z' };
+    const fetched = { version: '1.1.0', releaseDate: '2026-10-10T00:00:00Z', releaseUrl: 'x', source: 'npm' as const };
+    const { history } = syncTool(fetched, reviewed, [older]);
+    expect(history.map(h => h.version)).toEqual(['1.0.0', '0.9.0']);
+  });
+
+  it('does not touch history when the version is unchanged', () => {
+    const prior = [{ ...reviewed, version: '0.9.0' }];
+    const { current, history } = syncTool({ ...reviewed, summary: undefined, status: undefined, breaking: undefined }, reviewed, prior);
+    expect(history).toBe(prior);
+    expect(current.summary).toBe('Reviewed text');
+    expect(current.status).toBe('reviewed');
+  });
+
+  it('never duplicates a version and never downgrades a reviewed history entry', () => {
+    const draftCopy = { ...reviewed, summary: undefined, status: 'draft' as const };
+    expect(appendHistory([reviewed], draftCopy)).toEqual([reviewed]);
+    expect(appendHistory([draftCopy], reviewed)[0].status).toBe('reviewed');
+    expect(appendHistory([draftCopy], reviewed)[0].summary).toBe('Reviewed text');
+  });
+});

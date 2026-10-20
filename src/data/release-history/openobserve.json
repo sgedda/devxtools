@@ -1,0 +1,10 @@
+[
+  {
+    "version": "1.1.0",
+    "releaseDate": "2026-10-14T12:47:10Z",
+    "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.0",
+    "source": "github",
+    "summary": "PromQL results now match Prometheus (subqueries, `@`, vector matching). Also adds Service Graph v4, trace triage views (critical path, latency heatmap) and public status pages.",
+    "status": "reviewed"
+  }
+]
