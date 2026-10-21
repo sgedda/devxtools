@@ -1,0 +1,15 @@
+%% alt: Flowchart. The Expo app calls gateway-api, which calls graphql-api and lore-api. graphql-api calls auth, trips, wander and lore. lore-api calls cms, wander and trips. cms-api reads Umbraco, wander-api calls public APIs. The app also connects to the Mockifyer dashboard.
+flowchart TD
+  APP("Expo app"):::accent --> GW("gateway-api :4200"):::accent
+  APP -.->|"RN SDK"| DASH("Mockifyer dashboard :3002")
+  GW --> GQL("graphql-api :4206")
+  GW --> LORE("lore-api :4205")
+  GQL --> AUTH("auth-api :4201")
+  GQL --> TRIPS("trips-api :4202")
+  GQL --> WANDER("wander-api :4203")
+  GQL --> LORE
+  LORE --> CMS("cms-api :4204")
+  LORE --> WANDER
+  LORE --> TRIPS
+  CMS --> UMB[("Umbraco :4400")]
+  WANDER --> PUB[("Public APIs")]

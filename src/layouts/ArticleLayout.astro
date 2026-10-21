@@ -195,3 +195,32 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
     </article>
   </div>
 </Layout>
+
+<script>
+  // Demo videos (figure.dx-figure--video): no autoplay attribute in the markup. Play only while
+  // in view, never under prefers-reduced-motion, and keep a user's Pause until they press Play.
+  const PAUSE = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>';
+  const PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2l10 6-10 6z"/></svg>';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  for (const fig of document.querySelectorAll<HTMLElement>('.dx-figure--video')) {
+    const video = fig.querySelector('video');
+    const btn = fig.querySelector<HTMLButtonElement>('.dx-video__toggle');
+    if (!video || !btn) continue;
+    let userPaused = reduce.matches, inView = false;
+    const render = () => {
+      const playing = !video.paused;
+      btn.innerHTML = playing ? PAUSE : PLAY;
+      btn.setAttribute('aria-label', playing ? 'Pause animation' : 'Play animation');
+    };
+    const sync = () => {
+      if (inView && !userPaused) video.play().catch(() => {}); else video.pause();
+    };
+    video.addEventListener('play', render);
+    video.addEventListener('pause', render);
+    btn.addEventListener('click', () => { userPaused = !video.paused; if (!userPaused) inView = true; sync(); });
+    reduce.addEventListener('change', () => { if (reduce.matches) { userPaused = true; sync(); } });
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; sync(); }, { threshold: 0.25 }).observe(video);
+    btn.hidden = false;
+    render();
+  }
+</script>
