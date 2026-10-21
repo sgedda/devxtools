@@ -6,7 +6,7 @@ canonical: "https://devxtools.dev/guides/wanderweird-mockifyer-demo/"
 h1: "WanderWeird: Tracing a Multi-Service Expo App with Mockifyer"
 primary_keyword: "mockifyer demo"
 breadcrumbs: [{ name: "Home", url: "/" }, { name: "Guides", url: "/guides/" }, { name: "WanderWeird Mockifyer demo", url: "/guides/wanderweird-mockifyer-demo/" }]
-schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
+schema: ["TechArticle", "BreadcrumbList"]
 author: "Sebastian Gedda"
 byline: "By Sebastian Gedda, creator and maintainer of Mockifyer"
 datePublished: "2026-10-21"
@@ -102,7 +102,7 @@ npm run cms:up      # Docker
 
 Backoffice is at `http://127.0.0.1:4400/umbraco`; use the demo credentials in the example's README.
 
-GraphQL playground: http://127.0.0.1:4206/graphql (the app reaches it through `POST http://127.0.0.1:4200/graphql`).
+GraphQL playground: `http://127.0.0.1:4206/graphql` (the app reaches it through `POST http://127.0.0.1:4200/graphql`).
 
 ## Walkthroughs
 
