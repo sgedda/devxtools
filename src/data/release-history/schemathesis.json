@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.32.1",
+    "releaseDate": "2026-10-19T08:57:46Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.1",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Performance patch: stateful testing up to ~20% faster on link-heavy APIs. Fixes a `RecursionError` with self-referencing `additionalProperties`."
+  },
+  {
     "version": "4.32.0",
     "releaseDate": "2026-10-18T12:18:51Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.0",

@@ -1,5 +1,14 @@
 [
   {
+    "version": "2.65.1",
+    "releaseDate": "2026-10-20T07:41:52.669Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.65.1",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "`no-schema-type-mismatch` now flags `properties` on any non-object type and `items` on any non-array type. **This can fail specs that passed before**, because the rule is an error in `recommended`.",
+    "breaking": true
+  },
+  {
     "version": "2.65.0",
     "releaseDate": "2026-10-19T12:06:12.129Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.65.0",

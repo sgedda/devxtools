@@ -173,6 +173,8 @@ const sdk = new NodeSDK({
 sdk.start();
 ```
 
+> **SDK 0.300 note (2026-10-21):** these examples were tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20 with OpenTelemetry JS 3.0) removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options and requires Node.js 22.15 or later. On 0.300, pass an array instead: `metricReaders: [new PrometheusExporter({ port: 9464 })]` (and `metricReaders: [new PeriodicExportingMetricReader({ … })]` for push). We checked that this form serves `/metrics` with sdk-node 0.300.0 on Node 22.23.3.
+
 **Direct to Prometheus:** start Prometheus with the OTLP receiver and set `OTLP_METRICS_URL=http://localhost:9090/api/v1/otlp/v1/metrics`:
 
 ```bash

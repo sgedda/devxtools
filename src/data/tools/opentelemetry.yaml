@@ -23,7 +23,7 @@ description: Open standard and collection of APIs, SDKs, and tools for generatin
 whenToUse: When you want vendor-neutral instrumentation, need to switch observability backends without code changes, or want standardized distributed tracing across polyglot microservices.
 githubStars: 3495
 lastActivity: 2026-10-12T14:37:29Z
-npmPackage: "@opentelemetry/sdk-trace-node"
+npmPackage: "@opentelemetry/sdk-trace"
 weeklyDownloads: 18947650
 lastChecked: 2026-10-20
 isOpenSource: true

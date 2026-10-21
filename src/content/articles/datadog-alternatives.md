@@ -234,6 +234,8 @@ export OTEL_NODE_RESOURCE_DETECTORS=env,host,os            # skips cloud metadat
 node --require @opentelemetry/auto-instrumentations-node/register app.js
 ```
 
+> **SDK 0.300 note (2026-10-21):** this was tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20) requires Node.js 22.15 or later and removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options in favour of the plural `metricReaders`, `spanProcessors` and `logRecordProcessors`. We haven't re-run this page on 0.300 yet.
+
 We ran this against a local Collector (0.162.0): spans from an Express 5 app arrived without code changes. Without the `OTEL_NODE_RESOURCE_DETECTORS` line, Node printed a harmless `MetadataLookupWarning` from the GCP detector on our non-cloud machine.
 
 Things that don't move automatically: Datadog dashboards, monitors and SLOs (rebuild them, ideally as code), DogStatsD custom metrics (replace them with OTel metrics or a Collector `statsd` receiver), and Datadog-specific tags (map them to OTel resource attributes such as `service.name`, `deployment.environment.name` and `service.version`).
