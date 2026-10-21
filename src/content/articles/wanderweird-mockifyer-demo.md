@@ -167,7 +167,7 @@ You can also manage scenarios in the dashboard under **Settings**. It lists the 
 
 <figure class="dx-figure dx-figure--shot dx-figure--video">
   <div class="dx-figure__frame">
-    <video muted loop playsinline preload="none" width="1000" height="648" poster="/assets/wanderweird/stage4-scenarios-settings-poster.webp" aria-label="Dashboard Settings: scenario list, Create New Scenario and Import / export" aria-describedby="fig2-cap">
+    <video muted loop playsinline preload="none" width="1000" height="574" poster="/assets/wanderweird/stage4-scenarios-settings-poster.webp" aria-label="Dashboard Settings: scenario list, Create New Scenario and Import / export" aria-describedby="fig2-cap">
       <source src="/assets/wanderweird/stage4-scenarios-settings.webm" type="video/webm">
       <source src="/assets/wanderweird/stage4-scenarios-settings.mp4" type="video/mp4">
     </video>
@@ -188,7 +188,7 @@ This is only available in `__DEV__` builds. Go to **Account → "Mockifyer dev m
 Creating scenarios and setting dates need the dashboard running.
 
 <figure class="dx-figure dx-figure--shot dx-figure--narrow">
-  <div class="dx-figure__frame"><a href="/assets/wanderweird/devmenu.png" title="Open full-size image"><picture><source srcset="/assets/wanderweird/devmenu.avif" type="image/avif"><source srcset="/assets/wanderweird/devmenu.webp" type="image/webp"><img src="/assets/wanderweird/devmenu.png" width="290" height="587" loading="lazy" decoding="async" alt="Mockifyer dev menu in the WanderWeird iOS app: toggles for Mockifyer enabled (on), Record mode (on) and Record response bodies (off), with the active scenario Testing_Scenario."></picture></a></div>
+  <div class="dx-figure__frame"><a href="/assets/wanderweird/devmenu.png" title="Open full-size image"><picture><source srcset="/assets/wanderweird/devmenu.avif" type="image/avif"><source srcset="/assets/wanderweird/devmenu.webp" type="image/webp"><img src="/assets/wanderweird/devmenu.png" width="290" height="587" style="max-width:290px" loading="lazy" decoding="async" alt="Mockifyer dev menu in the WanderWeird iOS app: toggles for Mockifyer enabled (on), Record mode (on) and Record response bodies (off), with the active scenario Testing_Scenario."></picture></a></div>
   <figcaption><strong>Figure 3.</strong> The in-app dev menu, opened from Account → "Mockifyer dev menu".</figcaption>
 </figure>
 
@@ -240,7 +240,7 @@ Mocking is half the story. Mockifyer can also show you **how one tap in the app 
 
 <figure class="dx-figure dx-figure--shot dx-figure--video">
   <div class="dx-figure__frame">
-    <video muted loop playsinline preload="none" width="1000" height="648" poster="/assets/wanderweird/stage1-login-atlas-poster.webp" aria-label="Signing in on the iPhone simulator while Atlas adds login and TravelerDashboard rows" aria-describedby="fig5-cap">
+    <video muted loop playsinline preload="none" width="1000" height="574" poster="/assets/wanderweird/stage1-login-atlas-poster.webp" aria-label="Signing in on the iPhone simulator while Atlas adds login and TravelerDashboard rows" aria-describedby="fig5-cap">
       <source src="/assets/wanderweird/stage1-login-atlas.webm" type="video/webm">
       <source src="/assets/wanderweird/stage1-login-atlas.mp4" type="video/mp4">
     </video>
