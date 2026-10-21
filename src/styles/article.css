@@ -220,6 +220,31 @@
   }
   .dx-prose figcaption strong { color: var(--dx-text); }
 
+  /* screenshots: <picture> linked to full size; dark mode gets a 1px inner ring so near-black UI keeps an edge */
+  .dx-figure__frame > a { display: block; }
+  .dx-figure__frame picture img,
+  .dx-figure__frame > video { display: block; width: 100%; height: auto; }
+  .dx-figure--shot .dx-figure__frame { position: relative; }
+  .dark .dx-figure--shot .dx-figure__frame::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / .06);
+  }
+  .dx-figure__frame > a:focus-visible { outline: 2px solid var(--dx-accent); outline-offset: -2px; }
+  /* narrow figure (phone screenshot) */
+  .dx-figure--narrow { max-width: 320px; margin-inline: auto; }
+  .dx-figure--narrow .dx-figure__frame { background: var(--dx-surface-2); padding: 12px; }
+  .dx-figure--narrow .dx-figure__frame img { border-radius: 0.375rem; }
+  /* looping demo videos: visible Pause/Play control (WCAG 2.2.2) */
+  .dx-video__toggle {
+    position: absolute; right: 0.5rem; bottom: 0.5rem; z-index: 1;
+    width: 44px; height: 44px; display: grid; place-items: center;
+    border: 0; border-radius: 9999px; cursor: pointer;
+    background: rgb(24 24 27 / .8); color: #fff;
+  }
+  .dx-video__toggle[hidden] { display: none; }
+  .dx-video__toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .dx-video__toggle svg { width: 18px; height: 18px; fill: currentColor; }
+
   /* ---- hr ---- */
   .dx-prose hr { border: 0; border-top: 1px solid var(--dx-border); margin-block: 3rem; }
 

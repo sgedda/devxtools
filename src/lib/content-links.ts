@@ -34,6 +34,11 @@ const guides: Array<{ title: string; url: string; tools: string[] }> = [
     tools: ["mockifyer"]
   },
   {
+    title: "WanderWeird: Tracing a Multi-Service Expo App with Mockifyer",
+    url: "/guides/wanderweird-mockifyer-demo/",
+    tools: ["mockifyer"]
+  },
+  {
     title: "Realistic Test Data with Faker and Factories",
     url: "/guides/faker-js-test-data-factories/",
     tools: ["faker", "fishery"]
