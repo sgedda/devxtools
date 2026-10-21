@@ -133,7 +133,7 @@ import { resourceFromAttributes } from '@opentelemetry/resources';
 
 const sdk = new NodeSDK({
   resource: resourceFromAttributes({ 'service.name': 'users-api' }),
-  metricReader: new PrometheusExporter({ port: 9464 }),
+  metricReaders: [new PrometheusExporter({ port: 9464 })],
   instrumentations: [getNodeAutoInstrumentations()],
 });
 sdk.start();
@@ -164,14 +164,18 @@ import { resourceFromAttributes } from '@opentelemetry/resources';
 
 const sdk = new NodeSDK({
   resource: resourceFromAttributes({ 'service.name': 'users-api' }),
-  metricReader: new PeriodicExportingMetricReader({
-    exporter: new OTLPMetricExporter({ url: process.env.OTLP_METRICS_URL }),
-    exportIntervalMillis: 5000,
-  }),
+  metricReaders: [
+    new PeriodicExportingMetricReader({
+      exporter: new OTLPMetricExporter({ url: process.env.OTLP_METRICS_URL }),
+      exportIntervalMillis: 5000,
+    }),
+  ],
   instrumentations: [getNodeAutoInstrumentations()],
 });
 sdk.start();
 ```
+
+> **SDK 0.300 note (2026-10-21):** these examples were tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20 with OpenTelemetry JS 3.0) removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options and requires Node.js 22.15 or later. The examples above use the array form (`metricReaders: […]`), which works on both versions; the old singular key is silently ignored on 0.300, so you get no metrics rather than an error. The Prometheus exporter now listens on localhost (on some systems IPv6 `::1` only) by default and, when constructed directly, no longer reads its host/port environment variables, so add `host: '0.0.0.0'` if Prometheus scrapes from another container or host. We checked that this form serves `/metrics` on localhost with sdk-node 0.300.0 on Node 22.23.3.
 
 **Direct to Prometheus:** start Prometheus with the OTLP receiver and set `OTLP_METRICS_URL=http://localhost:9090/api/v1/otlp/v1/metrics`:
 

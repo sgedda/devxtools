@@ -276,6 +276,8 @@ const sdk = new NodeSDK({
 sdk.start();
 ```
 
+> **SDK 0.300 note (2026-10-21):** this was tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20) requires Node.js 22.15 or later and removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options in favour of the plural `metricReaders`, `spanProcessors` and `logRecordProcessors`. We haven't re-run this page on 0.300 yet.
+
 Inside a span, the output looked like this:
 
 ```json
