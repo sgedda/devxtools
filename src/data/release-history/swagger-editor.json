@@ -1,0 +1,10 @@
+[
+  {
+    "version": "5.9.1",
+    "releaseDate": "2026-10-15T13:53:21Z",
+    "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.9.1",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Dependency update only: bumps swagger-ui and the ApiDOM packages. No user-facing changes listed."
+  }
+]

@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.66.0",
+    "releaseDate": "2026-10-20T14:25:52.321Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.66.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "Adds a `skills` command that installs Redocly CLI agent skills for AI coding agents."
+  },
+  {
     "version": "2.65.1",
     "releaseDate": "2026-10-20T07:41:52.669Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.65.1",

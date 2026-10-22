@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.803.0",
+    "releaseDate": "2026-10-20T09:54:36Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.0",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "CLI adds multi-field stream metadata and earlier `--jq` validation. Go SDKs add `EventStream.RawValue`; TypeScript gains MCP servers on SDK v2."
+  },
+  {
     "version": "1.802.0",
     "releaseDate": "2026-10-11T15:17:50Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.802.0",

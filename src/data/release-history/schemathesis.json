@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.32.2",
+    "releaseDate": "2026-10-20T14:47:52Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.2",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Performance patch: ~10% faster coverage phase on deeply nested bodies and ~5% faster stateful phase. Fixes several `st fuzz`, stateful and coverage-phase bugs."
+  },
+  {
     "version": "4.32.1",
     "releaseDate": "2026-10-19T08:57:46Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.1",
