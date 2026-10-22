@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-21T06:05:59.833Z",
+  "lastUpdated": "2026-10-22T11:33:25.341Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -34,8 +34,8 @@
       "releaseDate": "2026-10-14T16:27:58Z",
       "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits."
+      "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits.",
+      "status": "reviewed"
     },
     "detox": {
       "version": "20.51.4",
@@ -52,9 +52,9 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.170.3",
-      "releaseDate": "2026-10-20T22:18:49.041Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.170.3",
+      "version": "5.170.5",
+      "releaseDate": "2026-10-21T23:41:33.770Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.170.5",
       "source": "npm",
       "status": "draft"
     },
@@ -84,8 +84,8 @@
       "releaseDate": "2026-10-20T22:53:57Z",
       "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.9",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes."
+      "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes.",
+      "status": "reviewed"
     },
     "hoppscotch": {
       "version": "2026.9.0",
@@ -95,9 +95,9 @@
       "status": "draft"
     },
     "hoverfly": {
-      "version": "1.12.15",
-      "releaseDate": "2026-09-21T21:14:58Z",
-      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.15",
+      "version": "1.12.16",
+      "releaseDate": "2026-10-21T20:13:09Z",
+      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.16",
       "source": "github",
       "status": "draft"
     },
@@ -113,8 +113,8 @@
       "releaseDate": "2026-10-09T07:35:39Z",
       "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Patch release. The notes contain only a compare link to 13.3.0, with no list of changes."
+      "summary": "Patch release. The notes contain only a compare link to 13.3.0, with no list of changes.",
+      "status": "reviewed"
     },
     "jmeter": {
       "version": "5.6.3",
@@ -138,9 +138,9 @@
       "status": "draft"
     },
     "locust": {
-      "version": "2.46.7",
-      "releaseDate": "2026-10-04T20:51:35",
-      "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.46.7",
+      "version": "2.47.0",
+      "releaseDate": "2026-10-21T20:30:45",
+      "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.47.0",
       "source": "pypi",
       "status": "draft"
     },
@@ -191,41 +191,41 @@
       "releaseDate": "2026-10-10T01:38:37.376Z",
       "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.3",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Bug fixes: reset handlers are now disposed, and network context is exposed on `enable` in network sources."
+      "summary": "Bug fixes: reset handlers are now disposed, and network context is exposed on `enable` in network sources.",
+      "status": "reviewed"
     },
     "nock": {
       "version": "15.0.5",
       "releaseDate": "2026-10-20T18:14:57.721Z",
       "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.5",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Types-only fix: the `Definition` type now matches runtime, adding `rawHeaders` and dropping `headers`. TypeScript code reading `Definition.headers` will no longer compile."
+      "summary": "Types-only fix: the `Definition` type now matches runtime, adding `rawHeaders` and dropping `headers`. TypeScript code reading `Definition.headers` will no longer compile.",
+      "status": "reviewed"
     },
     "openapi-generator": {
       "version": "7.26.0",
       "releaseDate": "2026-10-06T09:33:32Z",
       "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client."
+      "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client.",
+      "status": "reviewed"
     },
     "openobserve": {
       "version": "1.1.2",
       "releaseDate": "2026-10-20T05:26:56Z",
       "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.2",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)"
+      "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)",
+      "status": "reviewed"
     },
     "opentelemetry": {
       "version": "3.0.0",
       "releaseDate": "2026-10-20T18:27:15.327Z",
       "releaseUrl": "https://github.com/open-telemetry/opentelemetry-js/releases/tag/v3.0.0",
       "source": "npm",
-      "status": "reviewed",
       "summary": "Major release (with experimental 0.300.0): needs Node.js >=22.15. `sdk-trace-node` is replaced by `sdk-trace`, deep imports no longer resolve, and NodeSDK drops `metricReader`/`spanProcessor`.",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "pact": {
       "version": "17.1.4",
@@ -246,8 +246,8 @@
       "releaseDate": "2026-10-14T11:54:49.998Z",
       "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.64.1",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Patch fixing Chromium 155+ aborting preflighted cross-origin redirects whenever any route is registered, plus an Electron first-window bug."
+      "summary": "Patch fixing Chromium 155+ aborting preflighted cross-origin redirects whenever any route is registered, plus an Electron first-window bug.",
+      "status": "reviewed"
     },
     "pollyjs": {
       "version": "6.0.6",
@@ -264,9 +264,9 @@
       "status": "draft"
     },
     "prometheus": {
-      "version": "3.15.0",
-      "releaseDate": "2026-09-25T08:56:22Z",
-      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.0",
+      "version": "3.15.1",
+      "releaseDate": "2026-10-21T16:15:57Z",
+      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
       "source": "github",
       "status": "draft"
     },
@@ -278,12 +278,11 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.66.0",
-      "releaseDate": "2026-10-20T14:25:52.321Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.66.0",
+      "version": "2.68.0",
+      "releaseDate": "2026-10-22T11:25:19.620Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.68.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Adds a `skills` command that installs Redocly CLI agent skills for AI coding agents."
+      "status": "draft"
     },
     "rozenite": {
       "version": "2.5.0",
@@ -295,18 +294,17 @@
     "scalar": {
       "version": "1.75.1",
       "releaseDate": "2026-10-20T15:24:17.655Z",
-      "releaseUrl": "https://www.npmjs.com/package/@scalar/api-reference/v/1.75.1",
+      "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Patch: long operation paths wrap instead of truncating, AsyncAPI layout aligns with OpenAPI, and tag operation links become keyboard-reachable and meet WCAG target size."
+      "summary": "Patch: long operation paths wrap instead of truncating, AsyncAPI layout aligns with OpenAPI, and tag operation links become keyboard-reachable and meet WCAG target size.",
+      "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.32.2",
-      "releaseDate": "2026-10-20T14:47:52Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.2",
+      "version": "4.32.3",
+      "releaseDate": "2026-10-21T16:40:52Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.3",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Performance patch: ~10% faster coverage phase on deeply nested bodies and ~5% faster stateful phase. Fixes several `st fuzz`, stateful and coverage-phase bugs."
+      "status": "draft"
     },
     "sentry": {
       "version": "26.10.0",
@@ -314,25 +312,23 @@
       "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.0",
       "source": "github",
       "label": "Sentry self-hosted",
-      "status": "reviewed",
+      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default.",
       "breaking": true,
-      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default."
+      "status": "reviewed"
     },
     "signoz": {
-      "version": "0.146.0",
-      "releaseDate": "2026-10-14T06:42:10Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.146.0",
+      "version": "0.147.0",
+      "releaseDate": "2026-10-22T06:42:23Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.147.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Adds AI queries and heatmaps in dashboards, variables in panel titles, and more onboarding data sources. Trace attributes can now be promoted and indexed."
+      "status": "draft"
     },
     "speakeasy": {
-      "version": "1.803.0",
-      "releaseDate": "2026-10-20T09:54:36Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.0",
+      "version": "1.803.1",
+      "releaseDate": "2026-10-21T15:17:51Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "CLI adds multi-field stream metadata and earlier `--jq` validation. Go SDKs add `EventStream.RawValue`; TypeScript gains MCP servers on SDK v2."
+      "status": "draft"
     },
     "spectral": {
       "version": "6.17.0",
@@ -342,21 +338,20 @@
       "status": "draft"
     },
     "swagger-editor": {
-      "version": "5.9.1",
-      "releaseDate": "2026-10-15T13:53:21Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.9.1",
+      "version": "5.10.0",
+      "releaseDate": "2026-10-21T15:27:31Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Dependency update only: bumps swagger-ui and the ApiDOM packages. No user-facing changes listed."
+      "status": "draft"
     },
     "thunder-client": {
       "version": "3.0.0",
       "releaseDate": "2026-10-17T16:04:48Z",
       "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
       "source": "github",
-      "status": "reviewed",
       "summary": "**A free account is now required** to use the Free Plan. The Free Plan expands to JetBrains IDEs, WebSocket/SSE/gRPC and OAuth 2.0, capped at 3 collections of 30 requests.",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "winston": {
       "version": "3.19.0",
@@ -377,8 +372,8 @@
       "releaseDate": "2026-10-10T17:17:54Z",
       "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags."
+      "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags.",
+      "status": "reviewed"
     }
   }
 }
