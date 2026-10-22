@@ -143,7 +143,7 @@
       "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.47.0",
       "source": "pypi",
       "status": "reviewed",
-      "summary": "Breaking: the web UI's `/stop` and `/stats/reset` endpoints are now POST-only (a CSRF fix), so scripts that call them with GET must change. Also creates missing output directories for `--html`/`--csv`/`--json-file`/`--logfile` and fixes several FastHttpUser, OTEL and worker bugs.",
+      "summary": "Breaking: the web UI's `/stop` and `/stats/reset` endpoints are now POST-only (a CSRF fix), so GET callers must change. Also creates missing output dirs and fixes FastHttpUser, OTEL and worker bugs.",
       "breaking": true
     },
     "maestro": {
@@ -271,7 +271,7 @@
       "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
       "source": "github",
       "status": "reviewed",
-      "summary": "Security patch: built with Go 1.27.3 (fixes in net/http, crypto/tls and html/template) and bumps golang.org/x/net for HTTP/2 vulnerabilities. Container images now distrust two root CAs after the eMudhra intermediate key compromise."
+      "summary": "Security patch: built with Go 1.27.3 (net/http, crypto/tls, html/template fixes) and bumps golang.org/x/net for HTTP/2 CVEs. Images now distrust two root CAs after the eMudhra key compromise."
     },
     "reactotron": {
       "version": "5.3.1",
