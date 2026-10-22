@@ -142,7 +142,9 @@
       "releaseDate": "2026-10-21T20:30:45",
       "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.47.0",
       "source": "pypi",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Breaking: the web UI's `/stop` and `/stats/reset` endpoints are now POST-only (a CSRF fix), so scripts that call them with GET must change. Also creates missing output directories for `--html`/`--csv`/`--json-file`/`--logfile` and fixes several FastHttpUser, OTEL and worker bugs.",
+      "breaking": true
     },
     "maestro": {
       "version": "2.11.0",
@@ -268,7 +270,8 @@
       "releaseDate": "2026-10-21T16:15:57Z",
       "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Security patch: built with Go 1.27.3 (fixes in net/http, crypto/tls and html/template) and bumps golang.org/x/net for HTTP/2 vulnerabilities. Container images now distrust two root CAs after the eMudhra intermediate key compromise."
     },
     "reactotron": {
       "version": "5.3.1",
