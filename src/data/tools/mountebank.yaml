@@ -1,6 +1,6 @@
 name: Mountebank
 slug: mountebank
-website: https://www.mbtest.org
+website: https://www.mbtest.dev
 repo: https://github.com/mountebank-testing/mountebank
 license: MIT
 languages:
