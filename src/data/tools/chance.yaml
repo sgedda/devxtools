@@ -16,5 +16,8 @@ categories:
 bestFor: Minimalist random generator for strings, numbers, and complex data structures
 description: Random generator helper for JavaScript. Can generate random numbers, characters, strings, names, addresses, and more with a simple API.
 lastChecked: 2026-10-20
+lastActivity: 2025-05-18T21:02:32Z
 npmPackage: chance
 isOpenSource: true
+status: maintenance
+statusNote: No npm release since chance 1.1.13 (May 2025), and the last commit to the default branch was in May 2025.

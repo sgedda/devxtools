@@ -372,7 +372,7 @@ Patch `fetch` in dev builds (Mockifyer does this via Metro) or use a proxy like 
 ## Sources (checked 2026-10-15)
 
 - npm registry (versions, release dates, licences, engines): https://registry.npmjs.org/@pollyjs/core, /nock, /msw, /talkback, /proxay, /test-proxy-recorder, /@sgedda/mockifyer-core (Mockifyer: see disclosure), /@mswjs/source, /@playwright/test, /@mockoon/cli
-- npm downloads, 2026-10-06 to 2026-10-12: https://api.npmjs.org/downloads/point/2026-10-06:2026-10-12/{package}
+- npm downloads, 2026-10-06 to 2026-10-12: `https://api.npmjs.org/downloads/point/2026-10-06:2026-10-12/{package}`
 - Polly.JS repo, commits and docs (modes, `matchRequestsBy`, `beforePersist`): https://github.com/Netflix/pollyjs · https://netflix.github.io/pollyjs/
 - Nock README (Nock Back modes, `afterRecord`) and v15.0.1 release: https://github.com/nock/nock · https://github.com/nock/nock/releases/tag/v15.0.1
 - MSW v3.0.0 release notes: https://github.com/mswjs/msw/releases/tag/v3.0.0 · `@mswjs/source`: https://github.com/mswjs/source
