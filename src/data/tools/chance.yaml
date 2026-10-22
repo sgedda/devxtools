@@ -18,3 +18,5 @@ description: Random generator helper for JavaScript. Can generate random numbers
 lastChecked: 2026-10-20
 npmPackage: chance
 isOpenSource: true
+status: maintenance
+statusNote: No npm release since chance 1.1.13 (May 2025), and the last commit to the default branch was in May 2025.
