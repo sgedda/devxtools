@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-21T06:05:59.833Z",
+  "lastUpdated": "2026-10-22T06:04:36.494Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -52,9 +52,9 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.170.3",
-      "releaseDate": "2026-10-20T22:18:49.041Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.170.3",
+      "version": "5.170.5",
+      "releaseDate": "2026-10-21T23:41:33.770Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.170.5",
       "source": "npm",
       "status": "draft"
     },
@@ -95,9 +95,9 @@
       "status": "draft"
     },
     "hoverfly": {
-      "version": "1.12.15",
-      "releaseDate": "2026-09-21T21:14:58Z",
-      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.15",
+      "version": "1.12.16",
+      "releaseDate": "2026-10-21T20:13:09Z",
+      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.16",
       "source": "github",
       "status": "draft"
     },
@@ -138,11 +138,13 @@
       "status": "draft"
     },
     "locust": {
-      "version": "2.46.7",
-      "releaseDate": "2026-10-04T20:51:35",
-      "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.46.7",
+      "version": "2.47.0",
+      "releaseDate": "2026-10-21T20:30:45",
+      "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.47.0",
       "source": "pypi",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Breaking: the web UI's `/stop` and `/stats/reset` endpoints are now POST-only (a CSRF fix), so GET callers must change. Also creates missing output dirs and fixes FastHttpUser, OTEL and worker bugs.",
+      "breaking": true
     },
     "maestro": {
       "version": "2.11.0",
@@ -264,11 +266,12 @@
       "status": "draft"
     },
     "prometheus": {
-      "version": "3.15.0",
-      "releaseDate": "2026-09-25T08:56:22Z",
-      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.0",
+      "version": "3.15.1",
+      "releaseDate": "2026-10-21T16:15:57Z",
+      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Security patch: built with Go 1.27.3 (net/http, crypto/tls, html/template fixes) and bumps golang.org/x/net for HTTP/2 CVEs. Images now distrust two root CAs after the eMudhra key compromise."
     },
     "reactotron": {
       "version": "5.3.1",
@@ -278,12 +281,11 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.66.0",
-      "releaseDate": "2026-10-20T14:25:52.321Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.66.0",
+      "version": "2.67.1",
+      "releaseDate": "2026-10-21T14:18:08.770Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.67.1",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Adds a `skills` command that installs Redocly CLI agent skills for AI coding agents."
+      "status": "draft"
     },
     "rozenite": {
       "version": "2.5.0",
@@ -301,12 +303,11 @@
       "summary": "Patch: long operation paths wrap instead of truncating, AsyncAPI layout aligns with OpenAPI, and tag operation links become keyboard-reachable and meet WCAG target size."
     },
     "schemathesis": {
-      "version": "4.32.2",
-      "releaseDate": "2026-10-20T14:47:52Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.2",
+      "version": "4.32.3",
+      "releaseDate": "2026-10-21T16:40:52Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.3",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Performance patch: ~10% faster coverage phase on deeply nested bodies and ~5% faster stateful phase. Fixes several `st fuzz`, stateful and coverage-phase bugs."
+      "status": "draft"
     },
     "sentry": {
       "version": "26.10.0",
@@ -327,12 +328,11 @@
       "summary": "Adds AI queries and heatmaps in dashboards, variables in panel titles, and more onboarding data sources. Trace attributes can now be promoted and indexed."
     },
     "speakeasy": {
-      "version": "1.803.0",
-      "releaseDate": "2026-10-20T09:54:36Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.0",
+      "version": "1.803.1",
+      "releaseDate": "2026-10-21T15:17:51Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "CLI adds multi-field stream metadata and earlier `--jq` validation. Go SDKs add `EventStream.RawValue`; TypeScript gains MCP servers on SDK v2."
+      "status": "draft"
     },
     "spectral": {
       "version": "6.17.0",
@@ -342,12 +342,11 @@
       "status": "draft"
     },
     "swagger-editor": {
-      "version": "5.9.1",
-      "releaseDate": "2026-10-15T13:53:21Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.9.1",
+      "version": "5.10.0",
+      "releaseDate": "2026-10-21T15:27:31Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Dependency update only: bumps swagger-ui and the ApiDOM packages. No user-facing changes listed."
+      "status": "draft"
     },
     "thunder-client": {
       "version": "3.0.0",
