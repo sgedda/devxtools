@@ -1,5 +1,12 @@
 [
   {
+    "version": "4.32.3",
+    "releaseDate": "2026-10-21T16:40:52Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.3",
+    "source": "github",
+    "status": "draft"
+  },
+  {
     "version": "4.32.2",
     "releaseDate": "2026-10-20T14:47:52Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.2",

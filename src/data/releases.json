@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-22T06:04:36.494Z",
+  "lastUpdated": "2026-10-23T06:11:44.219Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -16,11 +16,12 @@
       "status": "draft"
     },
     "bruno": {
-      "version": "4.2.1",
-      "releaseDate": "2026-09-30T13:52:52Z",
-      "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.2.1",
+      "version": "4.3.0",
+      "releaseDate": "2026-10-22T12:11:41Z",
+      "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.3.0",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Bruno 4.3.0 changes response time to measure total time instead of TTFB and turns header import off by default."
     },
     "chance": {
       "version": "1.1.13",
@@ -52,11 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.170.5",
-      "releaseDate": "2026-10-21T23:41:33.770Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.170.5",
+      "version": "5.171.2",
+      "releaseDate": "2026-10-22T22:59:26.868Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.171.2",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Fern CLI 5.171.2 warns when a docs custom domain still points to Vercel; this becomes an error from 1 Dec 2026."
     },
     "fishery": {
       "version": "2.4.0",
@@ -281,11 +283,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.67.1",
-      "releaseDate": "2026-10-21T14:18:08.770Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.67.1",
+      "version": "2.69.0",
+      "releaseDate": "2026-10-22T12:49:09.045Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.69.0",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Redocly CLI 2.69.0 deprecates preview --product and makes lint fail on misused Arazzo action parameters."
     },
     "rozenite": {
       "version": "2.5.0",
@@ -303,11 +306,12 @@
       "summary": "Patch: long operation paths wrap instead of truncating, AsyncAPI layout aligns with OpenAPI, and tag operation links become keyboard-reachable and meet WCAG target size."
     },
     "schemathesis": {
-      "version": "4.32.3",
-      "releaseDate": "2026-10-21T16:40:52Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.3",
+      "version": "4.32.4",
+      "releaseDate": "2026-10-22T17:51:08Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.4",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Schemathesis 4.32.4 fixes bugs, including a minor fix that stops header and token values leaking into WSGI error output."
     },
     "sentry": {
       "version": "26.10.0",
@@ -320,12 +324,12 @@
       "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default."
     },
     "signoz": {
-      "version": "0.146.0",
-      "releaseDate": "2026-10-14T06:42:10Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.146.0",
+      "version": "0.147.0",
+      "releaseDate": "2026-10-22T06:42:23Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.147.0",
       "source": "github",
       "status": "reviewed",
-      "summary": "Adds AI queries and heatmaps in dashboards, variables in panel titles, and more onboarding data sources. Trace attributes can now be promoted and indexed."
+      "summary": "SigNoz 0.147.0 removes the vulnerable v1 alert-history API endpoints and adds a Telegram alert channel and saved views."
     },
     "speakeasy": {
       "version": "1.803.1",
