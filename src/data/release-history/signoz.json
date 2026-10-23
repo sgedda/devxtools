@@ -1,0 +1,10 @@
+[
+  {
+    "version": "0.146.0",
+    "releaseDate": "2026-10-14T06:42:10Z",
+    "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.146.0",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Adds AI queries and heatmaps in dashboards, variables in panel titles, and more onboarding data sources. Trace attributes can now be promoted and indexed."
+  }
+]
