@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-23T06:11:44.219Z",
+  "lastUpdated": "2026-10-25T11:06:58.555Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -20,8 +20,8 @@
       "releaseDate": "2026-10-22T12:11:41Z",
       "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.3.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Bruno 4.3.0 changes response time to measure total time instead of TTFB and turns header import off by default."
+      "summary": "Bruno 4.3.0 changes response time to measure total time instead of TTFB and turns header import off by default.",
+      "status": "reviewed"
     },
     "chance": {
       "version": "1.1.13",
@@ -35,8 +35,8 @@
       "releaseDate": "2026-10-14T16:27:58Z",
       "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits."
+      "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits.",
+      "status": "reviewed"
     },
     "detox": {
       "version": "20.51.4",
@@ -53,12 +53,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.171.2",
-      "releaseDate": "2026-10-22T22:59:26.868Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.171.2",
+      "version": "5.172.0",
+      "releaseDate": "2026-10-23T19:27:31.105Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.172.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Fern CLI 5.171.2 warns when a docs custom domain still points to Vercel; this becomes an error from 1 Dec 2026."
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -86,8 +85,8 @@
       "releaseDate": "2026-10-20T22:53:57Z",
       "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.9",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes."
+      "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes.",
+      "status": "reviewed"
     },
     "hoppscotch": {
       "version": "2026.9.0",
@@ -115,8 +114,8 @@
       "releaseDate": "2026-10-09T07:35:39Z",
       "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Patch release. The notes contain only a compare link to 13.3.0, with no list of changes."
+      "summary": "Patch release. The notes contain only a compare link to 13.3.0, with no list of changes.",
+      "status": "reviewed"
     },
     "jmeter": {
       "version": "5.6.3",
@@ -144,9 +143,9 @@
       "releaseDate": "2026-10-21T20:30:45",
       "releaseUrl": "https://github.com/locustio/locust/releases/tag/2.47.0",
       "source": "pypi",
-      "status": "reviewed",
       "summary": "Breaking: the web UI's `/stop` and `/stats/reset` endpoints are now POST-only (a CSRF fix), so GET callers must change. Also creates missing output dirs and fixes FastHttpUser, OTEL and worker bugs.",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "maestro": {
       "version": "2.11.0",
@@ -195,41 +194,41 @@
       "releaseDate": "2026-10-10T01:38:37.376Z",
       "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.3",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Bug fixes: reset handlers are now disposed, and network context is exposed on `enable` in network sources."
+      "summary": "Bug fixes: reset handlers are now disposed, and network context is exposed on `enable` in network sources.",
+      "status": "reviewed"
     },
     "nock": {
       "version": "15.0.5",
       "releaseDate": "2026-10-20T18:14:57.721Z",
       "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.5",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Types-only fix: the `Definition` type now matches runtime, adding `rawHeaders` and dropping `headers`. TypeScript code reading `Definition.headers` will no longer compile."
+      "summary": "Types-only fix: the `Definition` type now matches runtime, adding `rawHeaders` and dropping `headers`. TypeScript code reading `Definition.headers` will no longer compile.",
+      "status": "reviewed"
     },
     "openapi-generator": {
       "version": "7.26.0",
       "releaseDate": "2026-10-06T09:33:32Z",
       "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client."
+      "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client.",
+      "status": "reviewed"
     },
     "openobserve": {
       "version": "1.1.2",
       "releaseDate": "2026-10-20T05:26:56Z",
       "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.2",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)"
+      "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)",
+      "status": "reviewed"
     },
     "opentelemetry": {
       "version": "3.0.0",
       "releaseDate": "2026-10-20T18:27:15.327Z",
       "releaseUrl": "https://github.com/open-telemetry/opentelemetry-js/releases/tag/v3.0.0",
       "source": "npm",
-      "status": "reviewed",
       "summary": "Major release (with experimental 0.300.0): needs Node.js >=22.15. `sdk-trace-node` is replaced by `sdk-trace`, deep imports no longer resolve, and NodeSDK drops `metricReader`/`spanProcessor`.",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "pact": {
       "version": "17.1.4",
@@ -250,8 +249,8 @@
       "releaseDate": "2026-10-14T11:54:49.998Z",
       "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.64.1",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Patch fixing Chromium 155+ aborting preflighted cross-origin redirects whenever any route is registered, plus an Electron first-window bug."
+      "summary": "Patch fixing Chromium 155+ aborting preflighted cross-origin redirects whenever any route is registered, plus an Electron first-window bug.",
+      "status": "reviewed"
     },
     "pollyjs": {
       "version": "6.0.6",
@@ -272,8 +271,8 @@
       "releaseDate": "2026-10-21T16:15:57Z",
       "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Security patch: built with Go 1.27.3 (net/http, crypto/tls, html/template fixes) and bumps golang.org/x/net for HTTP/2 CVEs. Images now distrust two root CAs after the eMudhra key compromise."
+      "summary": "Security patch: built with Go 1.27.3 (net/http, crypto/tls, html/template fixes) and bumps golang.org/x/net for HTTP/2 CVEs. Images now distrust two root CAs after the eMudhra key compromise.",
+      "status": "reviewed"
     },
     "reactotron": {
       "version": "5.3.1",
@@ -283,12 +282,11 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.69.0",
-      "releaseDate": "2026-10-22T12:49:09.045Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.69.0",
+      "version": "2.71.0",
+      "releaseDate": "2026-10-23T14:41:18.228Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Redocly CLI 2.69.0 deprecates preview --product and makes lint fail on misused Arazzo action parameters."
+      "status": "draft"
     },
     "rozenite": {
       "version": "2.5.0",
@@ -298,20 +296,19 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.75.1",
-      "releaseDate": "2026-10-20T15:24:17.655Z",
-      "releaseUrl": "https://www.npmjs.com/package/@scalar/api-reference/v/1.75.1",
+      "version": "1.76.0",
+      "releaseDate": "2026-10-23T10:22:20.699Z",
+      "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Patch: long operation paths wrap instead of truncating, AsyncAPI layout aligns with OpenAPI, and tag operation links become keyboard-reachable and meet WCAG target size."
+      "status": "draft"
     },
     "schemathesis": {
       "version": "4.32.4",
       "releaseDate": "2026-10-22T17:51:08Z",
       "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.4",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Schemathesis 4.32.4 fixes bugs, including a minor fix that stops header and token values leaking into WSGI error output."
+      "summary": "Schemathesis 4.32.4 fixes bugs, including a minor fix that stops header and token values leaking into WSGI error output.",
+      "status": "reviewed"
     },
     "sentry": {
       "version": "26.10.0",
@@ -319,22 +316,22 @@
       "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.0",
       "source": "github",
       "label": "Sentry self-hosted",
-      "status": "reviewed",
+      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default.",
       "breaking": true,
-      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default."
+      "status": "reviewed"
     },
     "signoz": {
       "version": "0.147.0",
       "releaseDate": "2026-10-22T06:42:23Z",
       "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.147.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "SigNoz 0.147.0 removes the vulnerable v1 alert-history API endpoints and adds a Telegram alert channel and saved views."
+      "summary": "SigNoz 0.147.0 removes the vulnerable v1 alert-history API endpoints and adds a Telegram alert channel and saved views.",
+      "status": "reviewed"
     },
     "speakeasy": {
-      "version": "1.803.1",
-      "releaseDate": "2026-10-21T15:17:51Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.1",
+      "version": "1.803.2",
+      "releaseDate": "2026-10-23T13:48:20Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.2",
       "source": "github",
       "status": "draft"
     },
@@ -357,9 +354,9 @@
       "releaseDate": "2026-10-17T16:04:48Z",
       "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
       "source": "github",
-      "status": "reviewed",
       "summary": "**A free account is now required** to use the Free Plan. The Free Plan expands to JetBrains IDEs, WebSocket/SSE/gRPC and OAuth 2.0, capped at 3 collections of 30 requests.",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "winston": {
       "version": "3.19.0",
@@ -380,8 +377,8 @@
       "releaseDate": "2026-10-10T17:17:54Z",
       "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags."
+      "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags.",
+      "status": "reviewed"
     }
   }
 }
