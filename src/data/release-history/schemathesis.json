@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.32.4",
+    "releaseDate": "2026-10-22T17:51:08Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.4",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Schemathesis 4.32.4 fixes bugs, including a minor fix that stops header and token values leaking into WSGI error output."
+  },
+  {
     "version": "4.32.3",
     "releaseDate": "2026-10-21T16:40:52Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.3",
