@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.171.2",
+    "releaseDate": "2026-10-22T22:59:26.868Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.171.2",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "Fern CLI 5.171.2 warns when a docs custom domain still points to Vercel; this becomes an error from 1 Dec 2026."
+  },
+  {
     "version": "5.170.5",
     "releaseDate": "2026-10-21T23:41:33.770Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.170.5",

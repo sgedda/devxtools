@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.803.1",
+    "releaseDate": "2026-10-21T15:17:51Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.1",
+    "source": "github",
+    "status": "draft"
+  },
+  {
     "version": "1.803.0",
     "releaseDate": "2026-10-20T09:54:36Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.0",

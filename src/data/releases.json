@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-23T06:11:44.219Z",
+  "lastUpdated": "2026-10-26T07:11:31.521Z",
   "tools": {
     "appium": {
       "version": "3.8.0",
@@ -53,12 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.171.2",
-      "releaseDate": "2026-10-22T22:59:26.868Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.171.2",
+      "version": "5.172.0",
+      "releaseDate": "2026-10-23T19:27:31.105Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.172.0",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Fern CLI 5.171.2 warns when a docs custom domain still points to Vercel; this becomes an error from 1 Dec 2026."
+      "summary": "Fern CLI 5.172.0 adds `fern org token list`, `create` and `revoke` for organization API keys. Keys minted by `fern token` now appear in the list and can be revoked."
     },
     "fishery": {
       "version": "2.4.0",
@@ -283,12 +283,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.69.0",
-      "releaseDate": "2026-10-22T12:49:09.045Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.69.0",
+      "version": "2.71.0",
+      "releaseDate": "2026-10-23T14:41:18.228Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.0",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Redocly CLI 2.69.0 deprecates preview --product and makes lint fail on misused Arazzo action parameters."
+      "summary": "Adds early-access `project pr` commands. 2.70.0 was breaking: `build-docs` moved to Redoc 3, dropped `--theme.openapi` and `--disableGoogleFont`, and built pages send Redoc telemetry by default."
     },
     "rozenite": {
       "version": "2.5.0",
@@ -298,20 +298,20 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.75.1",
-      "releaseDate": "2026-10-20T15:24:17.655Z",
-      "releaseUrl": "https://www.npmjs.com/package/@scalar/api-reference/v/1.75.1",
+      "version": "1.76.0",
+      "releaseDate": "2026-10-23T10:22:20.699Z",
+      "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Patch: long operation paths wrap instead of truncating, AsyncAPI layout aligns with OpenAPI, and tag operation links become keyboard-reachable and meet WCAG target size."
+      "summary": "Adds a `urlRouting: false` option and AsyncAPI display improvements, including payload examples and Copy as Markdown. Removes the duplicate standalone OAuth scope list from operation details."
     },
     "schemathesis": {
-      "version": "4.32.4",
-      "releaseDate": "2026-10-22T17:51:08Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.4",
+      "version": "4.32.5",
+      "releaseDate": "2026-10-25T23:00:49Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.5",
       "source": "github",
       "status": "reviewed",
-      "summary": "Schemathesis 4.32.4 fixes bugs, including a minor fix that stops header and token values leaking into WSGI error output."
+      "summary": "Adds built-in PNG, JPEG, GIF and WebP bodies for `image/*` media types and fixes many bugs, including `st run` requests hanging when `--request-timeout` is not set."
     },
     "sentry": {
       "version": "26.10.0",
@@ -332,11 +332,12 @@
       "summary": "SigNoz 0.147.0 removes the vulnerable v1 alert-history API endpoints and adds a Telegram alert channel and saved views."
     },
     "speakeasy": {
-      "version": "1.803.1",
-      "releaseDate": "2026-10-21T15:17:51Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.1",
+      "version": "1.803.2",
+      "releaseDate": "2026-10-23T13:48:20Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.2",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Security-relevant patch: requires Go 1.26.10 for the eMudhra CA revocation and bumps jackson-databind, httpx2, express, vitest and x/net past open advisories."
     },
     "spectral": {
       "version": "6.17.0",

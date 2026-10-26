@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.69.0",
+    "releaseDate": "2026-10-22T12:49:09.045Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.69.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "Redocly CLI 2.69.0 deprecates preview --product and makes lint fail on misused Arazzo action parameters."
+  },
+  {
     "version": "2.67.1",
     "releaseDate": "2026-10-21T14:18:08.770Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.67.1",
