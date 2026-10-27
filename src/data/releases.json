@@ -157,7 +157,7 @@
       "source": "github",
       "breaking": true,
       "status": "reviewed",
-      "summary": "Breaking: scroll `speed` outside 0–100 now fails instead of falling back to the default. Adds iOS simulator support on Xcode 27 and `maestro cloud --priority`."
+      "summary": "Breaking: scroll `speed` outside 0–100 now fails instead of falling back to the default. Starts iOS simulators on Xcode 27 and adds `maestro cloud --priority`."
     },
     "microcks": {
       "version": "1.15.0",
@@ -179,7 +179,7 @@
       "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.190",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Patch roll-up: security hardening (PR #474), recorded mock filenames kept within NAME_MAX, and case-insensitive Redis mock lookup."
+      "summary": "Core patch roll-up: keeps recorded mock filenames within NAME_MAX, reclaims corrupt fixture-pool locks, persists allowlist repairs and stamps clientId on Atlas trace replay."
     },
     "mockoon": {
       "version": "9.9.0",
@@ -293,7 +293,7 @@
       "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.1",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Fixes `writeOnly` properties in response types, broken mock data and strict type-check failures in generated code. 2.70.0 was breaking: `build-docs` moved to Redoc 3."
+      "summary": "Fixes `writeOnly` properties in response types, mock data that broke the API description and strict type-check failures in generated code. 2.70.0 was breaking: `build-docs` moved to Redoc 3."
     },
     "rozenite": {
       "version": "2.5.0",
