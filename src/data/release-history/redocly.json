@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.71.0",
+    "releaseDate": "2026-10-23T14:41:18.228Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "Adds early-access `project pr` commands. 2.70.0 was breaking: `build-docs` moved to Redoc 3, dropped `--theme.openapi` and `--disableGoogleFont`, and built pages send Redoc telemetry by default."
+  },
+  {
     "version": "2.69.0",
     "releaseDate": "2026-10-22T12:49:09.045Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.69.0",

@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.172.0",
+    "releaseDate": "2026-10-23T19:27:31.105Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.172.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "Fern CLI 5.172.0 adds `fern org token list`, `create` and `revoke` for organization API keys. Keys minted by `fern token` now appear in the list and can be revoked."
+  },
+  {
     "version": "5.171.2",
     "releaseDate": "2026-10-22T22:59:26.868Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.171.2",

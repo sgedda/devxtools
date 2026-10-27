@@ -1,12 +1,13 @@
 {
-  "lastUpdated": "2026-10-26T07:11:31.521Z",
+  "lastUpdated": "2026-10-27T07:03:31.729Z",
   "tools": {
     "appium": {
-      "version": "3.8.0",
-      "releaseDate": "2026-09-24T18:29:49.177Z",
-      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%403.8.0",
+      "version": "3.9.0",
+      "releaseDate": "2026-10-27T06:53:31.110Z",
+      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%403.9.0",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "`appium install` falls back to the latest compatible extension version. Fixes include blocking zip extraction through symlink chains and several BiDi issues."
     },
     "artillery": {
       "version": "2.0.34",
@@ -53,12 +54,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.172.0",
-      "releaseDate": "2026-10-23T19:27:31.105Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.172.0",
+      "version": "5.175.0",
+      "releaseDate": "2026-10-27T01:31:55.762Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.175.0",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Fern CLI 5.172.0 adds `fern org token list`, `create` and `revoke` for organization API keys. Keys minted by `fern token` now appear in the list and can be revoked."
+      "summary": "5.173–5.175 add opt-in SDK snippets in generated docs, `auto-merge` for generated SDK pull requests, and fixes for C/C++ library docs."
     },
     "fishery": {
       "version": "2.4.0",
@@ -68,11 +69,12 @@
       "status": "draft"
     },
     "flipper": {
-      "version": "0.273.0",
-      "releaseDate": "2024-11-21T15:13:10Z",
-      "releaseUrl": "https://github.com/facebook/flipper/releases/tag/v0.273.0",
+      "version": "0.273.1",
+      "releaseDate": "2026-10-26T18:18:07Z",
+      "releaseUrl": "https://github.com/facebook/flipper/releases/tag/v0.273.1",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Security fix: hardens the local Flipper server against unauthorized browser and WebSocket connections. The GitHub repository remains archived."
     },
     "gatling": {
       "version": "3.16.0",
@@ -149,11 +151,13 @@
       "breaking": true
     },
     "maestro": {
-      "version": "2.11.0",
-      "releaseDate": "2026-09-29T13:36:34Z",
-      "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.11.0",
+      "version": "2.12.0",
+      "releaseDate": "2026-10-26T11:52:10Z",
+      "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.12.0",
       "source": "github",
-      "status": "draft"
+      "breaking": true,
+      "status": "reviewed",
+      "summary": "Breaking: scroll `speed` outside 0–100 now fails instead of falling back to the default. Adds iOS simulator support on Xcode 27 and `maestro cloud --priority`."
     },
     "microcks": {
       "version": "1.15.0",
@@ -170,11 +174,12 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.187",
-      "releaseDate": "2026-10-20T12:30:15.186Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.187",
+      "version": "1.10.190",
+      "releaseDate": "2026-10-26T10:17:52.843Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.190",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Patch roll-up: security hardening (PR #474), recorded mock filenames kept within NAME_MAX, and case-insensitive Redis mock lookup."
     },
     "mockoon": {
       "version": "9.9.0",
@@ -283,12 +288,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.71.0",
-      "releaseDate": "2026-10-23T14:41:18.228Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.0",
+      "version": "2.71.1",
+      "releaseDate": "2026-10-26T14:35:39.494Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.1",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Adds early-access `project pr` commands. 2.70.0 was breaking: `build-docs` moved to Redoc 3, dropped `--theme.openapi` and `--disableGoogleFont`, and built pages send Redoc telemetry by default."
+      "summary": "Fixes `writeOnly` properties in response types, broken mock data and strict type-check failures in generated code. 2.70.0 was breaking: `build-docs` moved to Redoc 3."
     },
     "rozenite": {
       "version": "2.5.0",
