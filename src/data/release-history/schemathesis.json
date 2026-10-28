@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.32.5",
+    "releaseDate": "2026-10-25T23:00:49Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.5",
+    "source": "github",
+    "summary": "Adds built-in PNG, JPEG, GIF and WebP bodies for `image/*` media types and fixes many bugs, including `st run` requests hanging when `--request-timeout` is not set.",
+    "status": "reviewed"
+  },
+  {
     "version": "4.32.4",
     "releaseDate": "2026-10-22T17:51:08Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.4",

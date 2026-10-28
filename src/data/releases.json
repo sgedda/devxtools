@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-27T12:32:06.141Z",
+  "lastUpdated": "2026-10-28T07:12:01.990Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,11 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.175.0",
-      "releaseDate": "2026-10-27T01:31:55.762Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.175.0",
+      "version": "5.180.1",
+      "releaseDate": "2026-10-27T22:05:56.508Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.180.1",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "5.176–5.180.1 add `fern generate --guest`, `fern claim`, `fern whoami`, `fern docs dev` timeouts and JSON events, and make prompts fail fast when not in a TTY or in CI."
     },
     "fishery": {
       "version": "2.4.0",
@@ -304,12 +305,12 @@
       "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.32.5",
-      "releaseDate": "2026-10-25T23:00:49Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.5",
+      "version": "4.32.7",
+      "releaseDate": "2026-10-27T23:07:07Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.7",
       "source": "github",
-      "summary": "Adds built-in PNG, JPEG, GIF and WebP bodies for `image/*` media types and fixes many bugs, including `st run` requests hanging when `--request-timeout` is not set.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "4.32.6 speeds up the coverage phase and makes it send 65,537-char strings, `2**63` numbers and blank numeric params, which can surface new failures. 4.32.7 fixes pytest 9.2 compatibility."
     },
     "sentry": {
       "version": "26.10.0",
@@ -322,20 +323,20 @@
       "status": "reviewed"
     },
     "signoz": {
-      "version": "0.147.0",
-      "releaseDate": "2026-10-22T06:42:23Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.147.0",
+      "version": "0.148.0",
+      "releaseDate": "2026-10-28T06:44:35Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.0",
       "source": "github",
-      "summary": "SigNoz 0.147.0 removes the vulnerable v1 alert-history API endpoints and adds a Telegram alert channel and saved views.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Moves anomaly alerts to the new alert experience, adds saved views and quick filters improvements, and fixes bugs including an explorer crash on unsupported queries in the URL."
     },
     "speakeasy": {
-      "version": "1.803.2",
-      "releaseDate": "2026-10-23T13:48:20Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.2",
+      "version": "1.804.0",
+      "releaseDate": "2026-10-27T12:50:13Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.804.0",
       "source": "github",
-      "summary": "Security-relevant patch: requires Go 1.26.10 for the eMudhra CA revocation and bumps jackson-databind, httpx2, express, vitest and x/net past open advisories.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Adds CLI config clearing and implied flags, improves security and output in the CLI and Python, and reports SDK diffs."
     },
     "spectral": {
       "version": "6.17.0",
@@ -352,13 +353,12 @@
       "status": "draft"
     },
     "thunder-client": {
-      "version": "3.0.0",
-      "releaseDate": "2026-10-17T16:04:48Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
+      "version": "3.1.0",
+      "releaseDate": "2026-10-27T18:48:07Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.1.0",
       "source": "github",
-      "summary": "**A free account is now required** to use the Free Plan. The Free Plan expands to JetBrains IDEs, WebSocket/SSE/gRPC and OAuth 2.0, capped at 3 collections of 30 requests.",
-      "breaking": true,
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Rebuilt MCP server with a full tool set, now on the Free plan. The CLI and CI/CD integration also move to the Free plan, and the Free limit rises from 30 to 50 requests per collection."
     },
     "winston": {
       "version": "3.19.0",
