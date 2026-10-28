@@ -17,7 +17,7 @@ specSupport:
   - OpenAPI
   - GraphQL
 bestFor: Lightweight REST API testing directly within VS Code and JetBrains IDEs without context switching
-description: Lightweight API client extension for VS Code, VS Code-based editors (such as Cursor and VSCodium), and JetBrains IDEs, with local-first storage, scriptless testing, and Git sync. Features GUI-based request building, environment variables, and CLI for CI/CD integration. Since v3.0.0 (October 2026), the free plan requires a Thunder Client account and is limited to 3 collections with up to 30 requests each.
+description: Lightweight API client extension for VS Code, VS Code-based editors (such as Cursor and VSCodium), and JetBrains IDEs, with local-first storage, scriptless testing, and Git sync. Features GUI-based request building, environment variables, and CLI for CI/CD integration. Since v3.0.0 (October 2026), the free plan requires a Thunder Client account and is limited to 3 collections; since v3.1.0 it allows up to 50 requests per collection and includes the CLI and CI/CD.
 whenToUse: When you want to test APIs without leaving your code editor, prefer a lightweight alternative to standalone tools, or need Git-friendly API collections alongside your source code.
 githubStars: 3721
 lastActivity: 2026-10-10T14:51:11Z
