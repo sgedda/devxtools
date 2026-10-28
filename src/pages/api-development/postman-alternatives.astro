@@ -12,7 +12,7 @@ const jsonLd = {
       "description": "Postman alternatives for 2026: Bruno, Hoppscotch, Insomnia, HTTPie, Yaak and more, compared by Git storage, CI runners, mock servers, protocols and price.",
       "url": "https://devxtools.dev/api-development/postman-alternatives/",
       "datePublished": "2026-10-15",
-      "dateModified": "2026-10-15",
+      "dateModified": "2026-10-28",
       "author": {
         "@type": "Organization",
         "name": "DevXTools"
@@ -71,7 +71,7 @@ const jsonLd = {
           "name": "What is the best Postman alternative for Mac / VS Code?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "All the desktop tools here run on macOS. If you want to stay in VS Code, use Thunder Client (its free plan needs a free account and is limited to 3 collections of up to 30 requests each; paid plans add CLI and CI/CD and Git Sync) or the free REST Client extension with .http files."
+            "text": "All the desktop tools here run on macOS. If you want to stay in VS Code, use Thunder Client (its free plan needs a free account and is limited to 3 collections of up to 50 requests each; it includes the CLI and CI/CD, while Git Sync needs a paid plan) or the free REST Client extension with .http files."
           }
         },
         {
@@ -157,7 +157,7 @@ const jsonLd = {
         <li><strong>Licence and price,</strong> from official pages, dated.</li>
       </ol>
 
-      <p>Feature lists come from each vendor's pricing page or docs as of 2026-10-15. "Not listed" means we didn't find the feature on an official page. It doesn't prove the feature is missing.</p>
+      <p>Feature lists come from each vendor's pricing page or docs as of 2026-10-15 (Thunder Client rechecked on 2026-10-28 after v3.1.0). "Not listed" means we didn't find the feature on an official page. It doesn't prove the feature is missing.</p>
 
       <h2 id="postman-alternatives-at-a-glance">Postman alternatives at a glance</h2>
 
@@ -241,9 +241,9 @@ const jsonLd = {
               <td><strong>Thunder Client</strong></td>
               <td>Proprietary</td>
               <td>Local (Git Sync on paid plans)</td>
-              <td>Yes</td>
-              <td>WebSocket, SSE, gRPC on paid plans</td>
-              <td>Paid plans</td>
+              <td>No (free account required)</td>
+              <td>WebSocket, SSE, gRPC</td>
+              <td>Yes (free plan)</td>
               <td>Not listed</td>
               <td>Starter $3, Business $7, Enterprise $16 /user/mo</td>
             </tr>
@@ -347,7 +347,7 @@ const jsonLd = {
       <p><strong>Best for:</strong> staying in your editor.</p>
 
       <ul>
-        <li><strong>Thunder Client</strong> is an extension for VS Code (and VS Code-based editors) and JetBrains IDEs. Collection data is stored locally on your machine. Since v3.0.0 (17 Oct 2026), the free plan requires a free Thunder Client account and is limited to 3 collections of up to 30 requests each; it includes WebSocket/SSE/gRPC and OAuth 2.0. Git Sync and CLI and CI/CD are on paid plans. <strong>Pricing (2026-10-26):</strong> Free, Starter $3, Business $7 and Enterprise $16 per user/month.</li>
+        <li><strong>Thunder Client</strong> is an extension for VS Code (and VS Code-based editors) and JetBrains IDEs. Collection data is stored locally on your machine. Since v3.0.0 (17 Oct 2026), the free plan requires a free Thunder Client account and is limited to 3 collections; it includes WebSocket/SSE/gRPC and OAuth 2.0. Since v3.1.0 (27 Oct 2026), the free plan also includes the CLI, CI/CD integration and the MCP server, and allows up to 50 requests per collection. Git Sync is on paid plans. <strong>Pricing (2026-10-28):</strong> Free, Starter $3, Business $7 and Enterprise $16 per user/month.</li>
         <li><strong>REST Client</strong> (by Huachao Mao, MIT) takes another approach. You write requests in <code>.http</code> or <code>.rest</code> files and send them from the editor:
           <pre><code class="language-http">{`@baseUrl = http://localhost:4173
 
@@ -540,7 +540,7 @@ Accept: application/json`}</code></pre>
       <p>Yes. The open-source edition is MIT-licensed, and MIT allows commercial use. The paid Pro and Ultimate tiers add features such as Git push and branching in the built-in UI, private Git providers, more workspaces, SSO/SCIM and support. You don't need them to use Bruno at work.</p>
 
       <h3>What is the best Postman alternative for Mac / VS Code?</h3>
-      <p>All the desktop tools here run on macOS. If you want to stay in VS Code, use Thunder Client (its free plan needs a free account and is limited to 3 collections of up to 30 requests each; paid plans add CLI and CI/CD and Git Sync) or the free REST Client extension with <code>.http</code> files.</p>
+      <p>All the desktop tools here run on macOS. If you want to stay in VS Code, use Thunder Client (its free plan needs a free account and is limited to 3 collections of up to 50 requests each; it includes the CLI and CI/CD, while Git Sync needs a paid plan) or the free REST Client extension with <code>.http</code> files.</p>
 
       <h3>Can I import my Postman collections into Bruno or Insomnia?</h3>
       <p>Yes. Both document importing exported Postman collections. Environments are exported and imported separately, and scripts using the <code>pm.*</code> API may need manual fixes.</p>
