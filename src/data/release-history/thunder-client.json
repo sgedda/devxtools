@@ -1,5 +1,14 @@
 [
   {
+    "version": "3.0.0",
+    "releaseDate": "2026-10-17T16:04:48Z",
+    "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
+    "source": "github",
+    "summary": "**A free account is now required** to use the Free Plan. The Free Plan expands to JetBrains IDEs, WebSocket/SSE/gRPC and OAuth 2.0, capped at 3 collections of 30 requests.",
+    "breaking": true,
+    "status": "reviewed"
+  },
+  {
     "version": "2.41.6",
     "releaseDate": "2026-10-10T14:51:12Z",
     "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v2.41.6",

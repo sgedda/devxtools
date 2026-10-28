@@ -1,5 +1,13 @@
 [
   {
+    "version": "0.147.0",
+    "releaseDate": "2026-10-22T06:42:23Z",
+    "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.147.0",
+    "source": "github",
+    "summary": "SigNoz 0.147.0 removes the vulnerable v1 alert-history API endpoints and adds a Telegram alert channel and saved views.",
+    "status": "reviewed"
+  },
+  {
     "version": "0.146.0",
     "releaseDate": "2026-10-14T06:42:10Z",
     "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.146.0",
