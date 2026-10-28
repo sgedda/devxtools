@@ -1,0 +1,139 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { CONTACT_TOPICS, CONTACT_LIMITS } from '../../functions/lib/contact-utils';
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const inputClass = 'mt-1.5 block w-full rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-zinc-900 placeholder-zinc-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white';
+---
+
+<Layout
+  title="Contact"
+  description="Contact DevXTools: questions, tool corrections, listing claims, sponsorship and press."
+>
+  <div class="border-b border-zinc-200 bg-gradient-to-b from-indigo-50/60 to-transparent dark:border-zinc-800 dark:from-indigo-500/5">
+    <div class="mx-auto max-w-[800px] px-5 py-10">
+      <nav class="flex items-center gap-1.5 text-sm text-zinc-500">
+        <a href="/" class="hover:text-zinc-900 dark:hover:text-white">Home</a>
+        <Icon name="chevron-right" size={14} />
+        <span class="text-zinc-900 dark:text-white">Contact</span>
+      </nav>
+      <div class="mt-6">
+        <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 dark:text-white">Contact</h1>
+        <p class="mt-4 text-[16px] leading-relaxed text-zinc-600 dark:text-zinc-400">
+          Questions, corrections, listing claims, sponsorship or press: send a message and it goes straight to the editor. To suggest a new tool, use the <a href="/submit/" class="text-indigo-600 underline hover:text-indigo-700 dark:text-indigo-400">submit form</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <main class="mx-auto max-w-[800px] px-5 py-12">
+    <div class="rounded-xl border border-zinc-200 bg-white p-6 sm:p-8 dark:border-zinc-800 dark:bg-zinc-900">
+      <form id="contact-form" class="space-y-6" novalidate>
+        <input type="hidden" name="startTime" id="startTime" value="" />
+        <div class="hidden" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input type="text" name="website" id="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <label for="name" class="block text-sm font-medium text-zinc-900 dark:text-white">Name <span class="text-red-500">*</span></label>
+            <input type="text" name="name" id="name" required maxlength={CONTACT_LIMITS.name} autocomplete="name" class={inputClass} />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-zinc-900 dark:text-white">Email <span class="text-red-500">*</span></label>
+            <input type="email" name="email" id="email" required maxlength={CONTACT_LIMITS.email} autocomplete="email" class={inputClass} />
+          </div>
+        </div>
+
+        <div>
+          <label for="topic" class="block text-sm font-medium text-zinc-900 dark:text-white">Topic <span class="text-red-500">*</span></label>
+          <select name="topic" id="topic" required class={inputClass}>
+            {Object.entries(CONTACT_TOPICS).map(([value, label]) => (
+              <option value={value}>{label}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label for="message" class="block text-sm font-medium text-zinc-900 dark:text-white">Message <span class="text-red-500">*</span></label>
+          <textarea name="message" id="message" aria-describedby="message-hint" required rows="7" minlength={CONTACT_LIMITS.messageMin} maxlength={CONTACT_LIMITS.messageMax} class={inputClass}></textarea>
+          <p id="message-hint" class="mt-1.5 text-xs text-zinc-500">For a correction, include the page or tool and a link to the official source.</p>
+        </div>
+
+        {turnstileSiteKey && <div id="turnstile-container"></div>}
+
+        <div id="error-message" role="alert" tabindex="-1" class="hidden rounded-lg bg-red-50 p-4 text-sm text-red-800 dark:bg-red-900/20 dark:text-red-200"></div>
+        <div id="success-message" role="status" class="hidden rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-200"></div>
+
+        <button type="submit" id="contact-submit" class="w-full rounded-lg bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
+          Send message
+        </button>
+      </form>
+    </div>
+
+    <div class="mt-8 rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900/50" id="privacy">
+      <div class="flex items-start gap-3">
+        <Icon name="info" size={20} class="mt-0.5 flex-shrink-0 text-indigo-600 dark:text-indigo-400" />
+        <div class="text-sm text-zinc-700 dark:text-zinc-300">
+          <p class="mb-2 font-medium">Privacy</p>
+          <p>Your name, email, topic and message are emailed once to the editor, Sebastian Gedda, through our email provider Resend, with your address set as the reply-to so we can answer you. The email stays in the editor's inbox until he deletes it, and Resend keeps a copy for a limited time under its own retention policy. We don't save the message anywhere else, don't add you to any list, and don't send automatic replies. To limit spam we store your IP address next to a message counter in Cloudflare KV, and it is deleted automatically after an hour{turnstileSiteKey ? '. Cloudflare Turnstile checks that you are human, and your IP address is sent to Cloudflare for that check' : ''}.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {turnstileSiteKey && <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+  <script define:vars={{ turnstileSiteKey, topics: Object.keys(CONTACT_TOPICS) }}>
+    const form = document.getElementById('contact-form');
+    const button = document.getElementById('contact-submit');
+    const errorBox = document.getElementById('error-message');
+    const successBox = document.getElementById('success-message');
+    const startField = document.getElementById('startTime');
+    startField.value = Date.now().toString();
+
+    const preset = new URLSearchParams(location.search).get('topic');
+    if (preset && topics.includes(preset)) document.getElementById('topic').value = preset;
+
+    let turnstileToken = null;
+    if (turnstileSiteKey) {
+      const render = () => window.turnstile?.render('#turnstile-container', { sitekey: turnstileSiteKey, callback: (t) => { turnstileToken = t; } });
+      window.turnstile ? render() : window.addEventListener('load', render);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.classList.add('hidden');
+      successBox.classList.add('hidden');
+      if (!form.reportValidity()) return;
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      try {
+        const data = new FormData(form);
+        if (turnstileToken) data.append('turnstileToken', turnstileToken);
+        const res = await fetch('/api/contact', { method: 'POST', body: data });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok) {
+          successBox.textContent = body.message;
+          successBox.classList.remove('hidden');
+          form.reset();
+          startField.value = Date.now().toString();
+        } else {
+          errorBox.textContent = body.error || 'Something went wrong. Please try again.';
+          errorBox.classList.remove('hidden');
+          errorBox.focus();
+        }
+      } catch {
+        errorBox.textContent = 'Network error. Please check your connection and try again.';
+        errorBox.classList.remove('hidden');
+        errorBox.focus();
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Send message';
+        if (turnstileSiteKey) { window.turnstile?.reset(); turnstileToken = null; }
+      }
+    });
+  </script>
+</Layout>

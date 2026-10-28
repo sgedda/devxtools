@@ -19,6 +19,7 @@ const staticPages: PageInfo[] = [
   { url: '/picker/', title: 'Tool Picker', description: 'Answer a few questions to find the perfect tool for your use case' },
   { url: '/polls/', title: 'Stack Polls', description: 'Vote for your stack and see what tools the community is using' },
   { url: '/polls/rn-api-mocking/', title: 'Poll: How do you mock APIs in React Native?', description: 'Vote for your preferred API mocking tool for React Native development' },
+  { url: '/contact/', title: 'Contact', description: 'Contact the editor: questions, tool corrections, listing claims, sponsorship and press' },
   { url: '/changelog/', title: 'Changelog', description: 'Recent additions and updates to the DevXTools catalog' },
   { url: '/comparisons/', title: 'Tool Comparisons', description: 'Head-to-head comparisons of popular API development and testing tools' },
   { url: '/guides/', title: 'Guides', description: 'In-depth guides for API development, testing, and mocking' },
@@ -128,7 +129,7 @@ export const GET: APIRoute = async () => {
   }
 
   // Low-priority pages (llmstxt.org: links under "Optional" can be skipped for shorter context).
-  const optional = ['/polls/', '/polls/rn-api-mocking/', '/about/', '/submit/', '/changelog/']
+  const optional = ['/polls/', '/polls/rn-api-mocking/', '/about/', '/submit/', '/contact/', '/changelog/']
     .map(url => pageMap.get(url)).filter((i): i is PageInfo => !!i);
   content += `## Optional\n\n` + optional.map(link).join('');
 
