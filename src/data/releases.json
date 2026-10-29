@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-28T07:12:01.990Z",
+  "lastUpdated": "2026-10-29T07:09:18.207Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -31,12 +31,12 @@
       "status": "draft"
     },
     "cypress": {
-      "version": "16.2.0",
-      "releaseDate": "2026-10-14T16:27:58Z",
-      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-0",
+      "version": "16.2.1",
+      "releaseDate": "2026-10-28T14:20:32.633Z",
+      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-1",
       "source": "npm",
-      "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Tests with `testIsolation` start faster after tests that load no pages. Fixes `cy.contains()` inside `cy.document().within()` and decoding of `x-gzip` responses, plus a 16.0.0 cross-origin hang."
     },
     "detox": {
       "version": "20.51.4",
@@ -53,12 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.180.1",
-      "releaseDate": "2026-10-27T22:05:56.508Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.180.1",
+      "version": "5.183.2",
+      "releaseDate": "2026-10-28T22:32:42.263Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.183.2",
       "source": "npm",
       "status": "reviewed",
-      "summary": "5.176–5.180.1 add `fern generate --guest`, `fern claim`, `fern whoami`, `fern docs dev` timeouts and JSON events, and make prompts fail fast when not in a TTY or in CI."
+      "summary": "5.180.2–5.183.2 let `fern generate --docs --guest` publish without `--preview`, migrate proto specs in `fern sdk migrate`, pass OpenRPC `paramStructure` to docs and fix large-docs crashes."
     },
     "fishery": {
       "version": "2.4.0",
@@ -283,11 +283,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.71.2",
-      "releaseDate": "2026-10-27T11:04:14.060Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.2",
+      "version": "2.72.0",
+      "releaseDate": "2026-10-28T12:57:58.015Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.72.0",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Adds an experimental `diff` command rating changes by semver impact (`--fail-on`), a `java` generator for `generate-client`, and a first-run notice (`REDOCLY_SUPPRESS_NOTIFICATIONS=true` hides it)."
     },
     "rozenite": {
       "version": "2.5.0",
@@ -297,12 +298,12 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.76.0",
-      "releaseDate": "2026-10-23T10:22:20.699Z",
+      "version": "1.76.2",
+      "releaseDate": "2026-10-28T17:50:58.558Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "Adds a `urlRouting: false` option and AsyncAPI display improvements, including payload examples and Copy as Markdown. Removes the duplicate standalone OAuth scope list from operation details.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Renders schemas in custom AsyncAPI binding fields instead of raw JSON, and gives the localhost playground a developer toolbar with a side panel. Hosted references are unchanged."
     },
     "schemathesis": {
       "version": "4.32.7",
@@ -313,14 +314,13 @@
       "summary": "4.32.6 speeds up the coverage phase and makes it send 65,537-char strings, `2**63` numbers and blank numeric params, which can surface new failures. 4.32.7 fixes pytest 9.2 compatibility."
     },
     "sentry": {
-      "version": "26.10.0",
-      "releaseDate": "2026-10-16T01:17:30Z",
-      "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.0",
+      "version": "26.10.1",
+      "releaseDate": "2026-10-29T00:46:59Z",
+      "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.1",
       "source": "github",
       "label": "Sentry self-hosted",
-      "summary": "Breaking: upgrades Postgres 14 to 18 with a new storage format, so snapshot first. Containers now run as non-root; the distroless image is opt-in, not default.",
-      "breaking": true,
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Security patch for the eMudhra intermediate CA compromise, plus `SENTRY_BUCKET_PROFILES` and uptime checker config fixes. `vroom` now uses Distroless; ClickHouse is still unpatched upstream."
     },
     "signoz": {
       "version": "0.148.0",
