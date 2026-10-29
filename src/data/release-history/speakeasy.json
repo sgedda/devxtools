@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.804.0",
+    "releaseDate": "2026-10-27T12:50:13Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.804.0",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Adds CLI config clearing and implied flags, improves security and output in the CLI and Python, and reports SDK diffs."
+  },
+  {
     "version": "1.803.2",
     "releaseDate": "2026-10-23T13:48:20Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.803.2",
