@@ -1,0 +1,10 @@
+[
+  {
+    "version": "16.2.0",
+    "releaseDate": "2026-10-14T16:27:58Z",
+    "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-0",
+    "source": "npm",
+    "summary": "Adds a built-in `cy.getByRole()` query by ARIA role and accessible name. Fixes regressions in mTLS client certificates, cookies after `cy.request()`, and `cy.go()` page-load waits.",
+    "status": "reviewed"
+  }
+]
