@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.76.0",
+    "releaseDate": "2026-10-23T10:22:20.699Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "summary": "Adds a `urlRouting: false` option and AsyncAPI display improvements, including payload examples and Copy as Markdown. Removes the duplicate standalone OAuth scope list from operation details.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.75.1",
     "releaseDate": "2026-10-20T15:24:17.655Z",
     "releaseUrl": "https://www.npmjs.com/package/@scalar/api-reference/v/1.75.1",
