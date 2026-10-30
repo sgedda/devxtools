@@ -328,7 +328,7 @@
       "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.1",
       "source": "github",
       "status": "reviewed",
-      "summary": "Shows alert routing policies and planned downtime as tables with a configuration sidebar, adds route-policy FGA and one-click Hono, Caddy, PM2 and GCP datasources, and fixes bugs."
+      "summary": "Shows alert routing policies and planned downtime as tables with a configuration sidebar, adds fine-grained access for route policies and one-click Hono, Caddy, PM2 and GCP datasources and fixes bugs."
     },
     "speakeasy": {
       "version": "1.805.0",
