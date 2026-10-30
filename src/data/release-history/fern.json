@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.183.2",
+    "releaseDate": "2026-10-28T22:32:42.263Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.183.2",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "5.180.2–5.183.2 let `fern generate --docs --guest` publish without `--preview`, migrate proto specs in `fern sdk migrate`, pass OpenRPC `paramStructure` to docs and fix large-docs crashes."
+  },
+  {
     "version": "5.180.1",
     "releaseDate": "2026-10-27T22:05:56.508Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.180.1",

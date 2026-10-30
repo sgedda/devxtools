@@ -1,5 +1,13 @@
 [
   {
+    "version": "0.148.0",
+    "releaseDate": "2026-10-28T06:44:35Z",
+    "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.0",
+    "source": "github",
+    "summary": "Moves anomaly alerts to the new alert experience, adds saved views and quick filters improvements, and fixes bugs including an explorer crash on unsupported queries in the URL.",
+    "status": "reviewed"
+  },
+  {
     "version": "0.147.0",
     "releaseDate": "2026-10-22T06:42:23Z",
     "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.147.0",
