@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-29T07:09:18.207Z",
+  "lastUpdated": "2026-10-30T07:06:05.423Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,12 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.183.2",
-      "releaseDate": "2026-10-28T22:32:42.263Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.183.2",
+      "version": "5.186.0",
+      "releaseDate": "2026-10-29T21:13:36.813Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.186.0",
       "source": "npm",
       "status": "reviewed",
-      "summary": "5.180.2–5.183.2 let `fern generate --docs --guest` publish without `--preview`, migrate proto specs in `fern sdk migrate`, pass OpenRPC `paramStructure` to docs and fix large-docs crashes."
+      "summary": "5.184.0–5.186.0 add `x-fern-explorer` support in OpenRPC specs, a `config.banner.file` option for the generated CLI's startup banner, and hosted MCP server output in `sdk-config.yml`."
     },
     "fishery": {
       "version": "2.4.0",
@@ -298,12 +298,12 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.76.2",
-      "releaseDate": "2026-10-28T17:50:58.558Z",
+      "version": "1.76.3",
+      "releaseDate": "2026-10-30T00:32:51.111Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "reviewed",
-      "summary": "Renders schemas in custom AsyncAPI binding fields instead of raw JSON, and gives the localhost playground a developer toolbar with a side panel. Hosted references are unchanged."
+      "summary": "Patch: downloaded documents are now named after the document title when no slug is configured."
     },
     "schemathesis": {
       "version": "4.32.7",
@@ -323,12 +323,12 @@
       "summary": "Security patch for the eMudhra intermediate CA compromise, plus `SENTRY_BUCKET_PROFILES` and uptime checker config fixes. `vroom` now uses Distroless; ClickHouse is still unpatched upstream."
     },
     "signoz": {
-      "version": "0.148.0",
-      "releaseDate": "2026-10-28T06:44:35Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.0",
+      "version": "0.148.1",
+      "releaseDate": "2026-10-29T17:25:59Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.1",
       "source": "github",
-      "summary": "Moves anomaly alerts to the new alert experience, adds saved views and quick filters improvements, and fixes bugs including an explorer crash on unsupported queries in the URL.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Shows alert routing policies and planned downtime as tables with a configuration sidebar, adds fine-grained access for route policies and one-click Hono, Caddy, PM2 and GCP datasources and fixes bugs."
     },
     "speakeasy": {
       "version": "1.805.0",

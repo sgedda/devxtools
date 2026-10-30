@@ -235,7 +235,7 @@ Out-of-process mock servers that can learn from real traffic. Not run by us.
 - **Storage format:** WireMock JSON mappings; a Mockoon environment file.
 - **Matching:** WireMock matchers (JSON bodies use `equalToJson`); Mockoon route rules.
 - **Re-record workflow:** WireMock: record again; Mockoon: delete the route first.
-- **Maintenance:** WireMock 3.13.2 (2025-11-14), with 4.0 betas through 2026-10-07; Mockoon 9.9.0 (2026-09-16).
+- **Maintenance:** WireMock 3.13.2 (2025-11-14), with 4.0 betas through 2026-10-21; Mockoon 9.9.0 (2026-09-16).
 - **Best for:** shared mock servers: a GUI (Mockoon), or stateful scenarios (WireMock).
 - **Limits:** heavier than in-process libraries; Mockoon doesn't update recorded routes.
 
