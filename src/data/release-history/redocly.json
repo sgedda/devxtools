@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.72.0",
+    "releaseDate": "2026-10-28T12:57:58.015Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.72.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "Adds an experimental `diff` command rating changes by semver impact (`--fail-on`), a `java` generator for `generate-client`, and a first-run notice (`REDOCLY_SUPPRESS_NOTIFICATIONS=true` hides it)."
+  },
+  {
     "version": "2.71.2",
     "releaseDate": "2026-10-27T11:04:14.060Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.71.2",
