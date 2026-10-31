@@ -57,7 +57,8 @@
       "releaseDate": "2026-10-30T22:05:15.895Z",
       "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.190.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "5.184.0–5.186.0 add `x-fern-explorer` support in OpenRPC specs, a `config.banner.file` option for the generated CLI's startup banner, and hosted MCP server output in `sdk-config.yml`.",
+      "status": "reviewed"
     },
     "fishery": {
       "version": "2.4.0",
@@ -299,7 +300,8 @@
       "releaseDate": "2026-10-30T19:21:03.847Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "draft"
+      "summary": "Patch: downloaded documents are now named after the document title when no slug is configured.",
+      "status": "reviewed"
     },
     "schemathesis": {
       "version": "4.32.7",
