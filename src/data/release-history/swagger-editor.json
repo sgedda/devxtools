@@ -1,5 +1,12 @@
 [
   {
+    "version": "5.10.0",
+    "releaseDate": "2026-10-21T15:27:31Z",
+    "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.0",
+    "source": "github",
+    "status": "draft"
+  },
+  {
     "version": "5.9.1",
     "releaseDate": "2026-10-15T13:53:21Z",
     "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.9.1",
