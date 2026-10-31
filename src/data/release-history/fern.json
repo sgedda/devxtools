@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.186.0",
+    "releaseDate": "2026-10-29T21:13:36.813Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.186.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "5.184.0–5.186.0 add `x-fern-explorer` support in OpenRPC specs, a `config.banner.file` option for the generated CLI's startup banner, and hosted MCP server output in `sdk-config.yml`."
+  },
+  {
     "version": "5.183.2",
     "releaseDate": "2026-10-28T22:32:42.263Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.183.2",

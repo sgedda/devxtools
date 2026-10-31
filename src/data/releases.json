@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-30T07:06:05.423Z",
+  "lastUpdated": "2026-10-31T12:01:36.873Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -35,8 +35,8 @@
       "releaseDate": "2026-10-28T14:20:32.633Z",
       "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-1",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Tests with `testIsolation` start faster after tests that load no pages. Fixes `cy.contains()` inside `cy.document().within()` and decoding of `x-gzip` responses, plus a 16.0.0 cross-origin hang."
+      "summary": "Tests with `testIsolation` start faster after tests that load no pages. Fixes `cy.contains()` inside `cy.document().within()` and decoding of `x-gzip` responses, plus a 16.0.0 cross-origin hang.",
+      "status": "reviewed"
     },
     "detox": {
       "version": "20.51.4",
@@ -53,12 +53,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.186.0",
-      "releaseDate": "2026-10-29T21:13:36.813Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.186.0",
+      "version": "5.190.0",
+      "releaseDate": "2026-10-30T22:05:15.895Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.190.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "5.184.0–5.186.0 add `x-fern-explorer` support in OpenRPC specs, a `config.banner.file` option for the generated CLI's startup banner, and hosted MCP server output in `sdk-config.yml`."
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -70,7 +69,7 @@
     "flipper": {
       "version": "0.273.1",
       "releaseDate": "2026-10-26T18:18:07Z",
-      "releaseUrl": "https://github.com/facebook/flipper/releases/tag/v0.273.1",
+      "releaseUrl": "https://github.com/meta/flipper/releases/tag/v0.273.1",
       "source": "github",
       "status": "draft"
     },
@@ -90,9 +89,9 @@
       "status": "reviewed"
     },
     "hoppscotch": {
-      "version": "2026.9.0",
-      "releaseDate": "2026-09-30T11:50:32Z",
-      "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.9.0",
+      "version": "2026.10.0",
+      "releaseDate": "2026-10-30T09:20:14Z",
+      "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.10.0",
       "source": "github",
       "status": "draft"
     },
@@ -111,12 +110,11 @@
       "status": "draft"
     },
     "insomnia": {
-      "version": "13.3.1",
-      "releaseDate": "2026-10-09T07:35:39Z",
-      "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
+      "version": "13.4.0",
+      "releaseDate": "2026-10-29T11:54:41Z",
+      "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.4.0",
       "source": "github",
-      "summary": "Patch release. The notes contain only a compare link to 13.3.0, with no list of changes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "jmeter": {
       "version": "5.6.3",
@@ -177,9 +175,9 @@
       "status": "draft"
     },
     "mockoon": {
-      "version": "9.9.0",
-      "releaseDate": "2026-09-16T13:23:55.427Z",
-      "releaseUrl": "https://github.com/mockoon/mockoon/releases/tag/v9.9.0",
+      "version": "9.10.0",
+      "releaseDate": "2026-10-29T13:20:20.079Z",
+      "releaseUrl": "https://github.com/mockoon/mockoon/releases/tag/v9.10.0",
       "source": "npm",
       "status": "draft"
     },
@@ -283,12 +281,11 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.72.0",
-      "releaseDate": "2026-10-28T12:57:58.015Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.72.0",
+      "version": "2.72.1",
+      "releaseDate": "2026-10-29T09:29:38.513Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.72.1",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Adds an experimental `diff` command rating changes by semver impact (`--fail-on`), a `java` generator for `generate-client`, and a first-run notice (`REDOCLY_SUPPRESS_NOTIFICATIONS=true` hides it)."
+      "status": "draft"
     },
     "rozenite": {
       "version": "2.5.0",
@@ -298,12 +295,11 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.76.3",
-      "releaseDate": "2026-10-30T00:32:51.111Z",
+      "version": "1.76.4",
+      "releaseDate": "2026-10-30T19:21:03.847Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Patch: downloaded documents are now named after the document title when no slug is configured."
+      "status": "draft"
     },
     "schemathesis": {
       "version": "4.32.7",
@@ -319,16 +315,16 @@
       "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.1",
       "source": "github",
       "label": "Sentry self-hosted",
-      "status": "reviewed",
-      "summary": "Security patch for the eMudhra intermediate CA compromise, plus `SENTRY_BUCKET_PROFILES` and uptime checker config fixes. `vroom` now uses Distroless; ClickHouse is still unpatched upstream."
+      "summary": "Security patch for the eMudhra intermediate CA compromise, plus `SENTRY_BUCKET_PROFILES` and uptime checker config fixes. `vroom` now uses Distroless; ClickHouse is still unpatched upstream.",
+      "status": "reviewed"
     },
     "signoz": {
       "version": "0.148.1",
       "releaseDate": "2026-10-29T17:25:59Z",
       "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Shows alert routing policies and planned downtime as tables with a configuration sidebar, adds fine-grained access for route policies and one-click Hono, Caddy, PM2 and GCP datasources and fixes bugs."
+      "summary": "Shows alert routing policies and planned downtime as tables with a configuration sidebar, adds fine-grained access for route policies and one-click Hono, Caddy, PM2 and GCP datasources and fixes bugs.",
+      "status": "reviewed"
     },
     "speakeasy": {
       "version": "1.805.0",
@@ -345,9 +341,9 @@
       "status": "draft"
     },
     "swagger-editor": {
-      "version": "5.10.0",
-      "releaseDate": "2026-10-21T15:27:31Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.0",
+      "version": "5.10.1",
+      "releaseDate": "2026-10-30T13:57:06Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.1",
       "source": "github",
       "status": "draft"
     },
