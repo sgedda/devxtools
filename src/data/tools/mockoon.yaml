@@ -17,12 +17,12 @@ categories:
 specSupport:
   - OpenAPI
 bestFor: Creating mock APIs with a desktop GUI and deploying them via CLI or Docker
-description: Desktop application and CLI for creating and running mock APIs locally. Features templating, proxy mode, CORS, HTTPS, and OpenAPI import/export.
+description: Desktop application and CLI for creating and running mock APIs locally. Features templating, proxy mode, CORS, HTTPS, and OpenAPI import/export. A paid, self-hosted Mockoon Pro adds team collaboration and remote mock deployments; the desktop app and CLI remain free and MIT-licensed.
 whenToUse: When you want to quickly create mock APIs without writing code, or need a visual interface to design and test API responses.
 githubStars: 8449
-lastActivity: 2026-09-16T08:00:31Z
+lastActivity: 2026-11-01T14:05:11Z
 npmPackage: "@mockoon/cli"
 weeklyDownloads: 47326
-lastChecked: 2026-10-14
+lastChecked: 2026-11-02
 isOpenSource: true
 languageAgnostic: true
