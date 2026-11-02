@@ -179,7 +179,8 @@
       "releaseDate": "2026-10-29T13:20:20.079Z",
       "releaseUrl": "https://github.com/mockoon/mockoon/releases/tag/v9.10.0",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Mockoon Pro, the self-hosted collaboration and deployment server, leaves beta and adds workspaces for multiple teams, mixed local and SSO sign-in, and role changes in the admin portal."
     },
     "mountebank": {
       "version": "2.9.4",
