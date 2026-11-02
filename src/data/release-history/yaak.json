@@ -1,0 +1,10 @@
+[
+  {
+    "version": "2026.9.0",
+    "releaseDate": "2026-10-10T17:17:54Z",
+    "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.0",
+    "source": "github",
+    "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags.",
+    "status": "reviewed"
+  }
+]

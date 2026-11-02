@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.12.16",
+    "releaseDate": "2026-10-21T20:13:09Z",
+    "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.16",
+    "source": "github",
+    "status": "draft"
+  },
+  {
     "version": "1.12.15",
     "releaseDate": "2026-09-21T21:14:58Z",
     "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.15",

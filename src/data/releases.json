@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-31T12:01:36.873Z",
+  "lastUpdated": "2026-11-02T07:07:45.151Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -96,11 +96,12 @@
       "status": "draft"
     },
     "hoverfly": {
-      "version": "1.12.16",
-      "releaseDate": "2026-10-21T20:13:09Z",
-      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.16",
+      "version": "1.12.17",
+      "releaseDate": "2026-11-01T23:41:34Z",
+      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.17",
       "source": "github",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3."
     },
     "httpie": {
       "version": "3.2.4",
@@ -205,12 +206,12 @@
       "status": "reviewed"
     },
     "openapi-generator": {
-      "version": "7.26.0",
-      "releaseDate": "2026-10-06T09:33:32Z",
-      "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
+      "version": "7.27.0",
+      "releaseDate": "2026-11-02T05:17:40Z",
+      "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.27.0",
       "source": "github",
-      "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Minor release with 170+ enhancements and bug fixes; the full list is in the 7.27.0 milestone's merged pull requests."
     },
     "openobserve": {
       "version": "1.1.2",
@@ -302,12 +303,12 @@
       "status": "draft"
     },
     "schemathesis": {
-      "version": "4.32.7",
-      "releaseDate": "2026-10-27T23:07:07Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.7",
+      "version": "4.33.0",
+      "releaseDate": "2026-11-01T17:14:53Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.0",
       "source": "github",
-      "summary": "4.32.6 speeds up the coverage phase and makes it send 65,537-char strings, `2**63` numbers and blank numeric params, which can surface new failures. 4.32.7 fixes pytest 9.2 compatibility.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Adds a coverage phase for GraphQL, unary gRPC fuzzing and more OpenAPI 3.2 support (XML `nodeType`, cookie style, `itemSchema`), plus many coverage-phase and data-generation fixes."
     },
     "sentry": {
       "version": "26.10.1",
@@ -370,12 +371,12 @@
       "status": "draft"
     },
     "yaak": {
-      "version": "2026.9.0",
-      "releaseDate": "2026-10-10T17:17:54Z",
-      "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.0",
+      "version": "2026.9.1",
+      "releaseDate": "2026-11-01T17:03:45Z",
+      "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.1",
       "source": "github",
-      "summary": "Adds import from Bruno, plus batch import of several files, folders or URLs into one workspace. Insomnia imports convert more template tags.",
-      "status": "reviewed"
+      "status": "reviewed",
+      "summary": "Security fix: updates the bundled Node.js runtime and the HTTP engine to patch the Brotli decoder vulnerability CVE-2026-111497."
     }
   }
 }
