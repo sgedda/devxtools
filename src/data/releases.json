@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-31T12:01:36.873Z",
+  "lastUpdated": "2026-11-03T07:09:07.005Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,11 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.190.0",
-      "releaseDate": "2026-10-30T22:05:15.895Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.190.0",
+      "version": "5.193.1",
+      "releaseDate": "2026-11-03T02:16:30.607Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.193.1",
       "source": "npm",
-      "status": "draft"
+      "status": "reviewed",
+      "summary": "5.191.0–5.193.1 fix `fern init --grpc`, point non-interactive runs at `--guest`, improve Python docstrings in docs, send SHA-256 input digests for provenance and resolve omitted SDK versions."
     },
     "fishery": {
       "version": "2.4.0",
