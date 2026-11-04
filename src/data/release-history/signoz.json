@@ -1,5 +1,13 @@
 [
   {
+    "version": "0.148.1",
+    "releaseDate": "2026-10-29T17:25:59Z",
+    "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.1",
+    "source": "github",
+    "summary": "Shows alert routing policies and planned downtime as tables with a configuration sidebar, adds fine-grained access for route policies and one-click Hono, Caddy, PM2 and GCP datasources and fixes bugs.",
+    "status": "reviewed"
+  },
+  {
     "version": "0.148.0",
     "releaseDate": "2026-10-28T06:44:35Z",
     "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.148.0",
