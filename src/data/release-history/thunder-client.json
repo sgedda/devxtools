@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.1.0",
+    "releaseDate": "2026-10-27T18:48:07Z",
+    "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.1.0",
+    "source": "github",
+    "summary": "Rebuilt MCP server with a full tool set, now on the Free plan. The CLI and CI/CD integration also move to the Free plan, and the Free limit rises from 30 to 50 requests per collection.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.0.0",
     "releaseDate": "2026-10-17T16:04:48Z",
     "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.0.0",
