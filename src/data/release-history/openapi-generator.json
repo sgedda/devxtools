@@ -1,0 +1,10 @@
+[
+  {
+    "version": "7.26.0",
+    "releaseDate": "2026-10-06T09:33:32Z",
+    "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
+    "source": "github",
+    "summary": "240+ fixes and enhancements across generators, including .NET 10 for aspnetcore, Symfony 8 for php-symfony and an HTTPX2 Python client.",
+    "status": "reviewed"
+  }
+]
