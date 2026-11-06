@@ -1,0 +1,23 @@
+name: Keploy
+slug: keploy
+website: https://keploy.io
+repo: https://github.com/keploy/keploy
+license: Apache-2.0
+languages:
+  - Go
+languageAgnostic: true
+runtimes:
+  - CLI
+  - Docker
+sections:
+  - testing
+  - mocking-test-data
+categories:
+  - e2e-testing
+  - record-replay
+bestFor: API regression testing with tests and dependency mocks generated from real application traffic
+description: Open-source API regression testing tool that records real application traffic using eBPF and replays it as tests, with mocks for dependencies such as databases, caches and external services. Replayed responses are compared against the recorded ones, so changes that break existing API behavior are caught before release. Tests run locally or in CI pipelines without code changes.
+whenToUse: When you need a regression suite for existing APIs that runs on every code change in CI, without hand-writing tests or mocks, especially for services that depend on databases and third-party APIs.
+lastChecked: 2026-11-06
+isOpenSource: true
+affiliation: Submitted by the Keploy team
