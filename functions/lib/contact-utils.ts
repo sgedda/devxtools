@@ -42,7 +42,7 @@ export function validateContact(input: unknown): { valid: boolean; error?: strin
   }
 
   const topic = typeof d.topic === 'string' ? d.topic : '';
-  if (!(topic in CONTACT_TOPICS)) return { valid: false, error: 'Please choose a topic' };
+  if (!Object.hasOwn(CONTACT_TOPICS, topic)) return { valid: false, error: 'Please choose a topic' };
 
   const message = typeof d.message === 'string' ? d.message.replace(/\r\n/g, '\n').trim() : '';
   if (message.length < CONTACT_LIMITS.messageMin) {

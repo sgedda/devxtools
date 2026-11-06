@@ -28,7 +28,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     const body = await parseRequestBody(request);
     if (!body) return json({ error: 'Invalid request body' }, 400);
-    const { website: honeypot, startTime, turnstileToken, ...fields } = body as Record<string, unknown>;
+    const { url_check: honeypot, startTime, turnstileToken, ...fields } = body as Record<string, unknown>;
 
     // Honeypot: pretend success, send nothing.
     if (checkHoneypot(honeypot)) return json({ message: OK_MESSAGE });
