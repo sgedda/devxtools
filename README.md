@@ -1,4 +1,4 @@
-# DevX Tools
+# DevXTools
 
 > A curated guide to API mocking, testing, and test data generation tools for developers.
 
@@ -6,7 +6,7 @@ Visit [devxtools.dev](https://devxtools.dev) to explore the catalog.
 
 ## About
 
-DevX Tools is a comprehensive, community-driven catalog of developer tools focused on:
+DevXTools is a comprehensive, community-driven catalog of developer tools focused on:
 
 - API mocking and HTTP interception
 - Mock servers and service virtualization
