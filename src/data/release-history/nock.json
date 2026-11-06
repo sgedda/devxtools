@@ -1,5 +1,13 @@
 [
   {
+    "version": "15.0.5",
+    "releaseDate": "2026-10-20T18:14:57.721Z",
+    "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.5",
+    "source": "npm",
+    "summary": "Types-only fix: the `Definition` type now matches runtime, adding `rawHeaders` and dropping `headers`. TypeScript code reading `Definition.headers` will no longer compile.",
+    "status": "reviewed"
+  },
+  {
     "version": "15.0.4",
     "releaseDate": "2026-10-19T21:24:39.007Z",
     "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.4",

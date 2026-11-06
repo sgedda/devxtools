@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-05T07:15:37.767Z",
+  "lastUpdated": "2026-11-06T07:32:26.717Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,12 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.195.0",
-      "releaseDate": "2026-11-04T19:54:24.209Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.195.0",
+      "version": "5.197.0",
+      "releaseDate": "2026-11-05T19:47:55.772Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.197.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "5.191.0–5.195.0 fix `fern init --grpc`, point non-interactive runs at `--guest`, send SHA-256 digests for SDK provenance, add `fern docs dev stop`, and improve C/C++ library docs."
+      "summary": "5.196.0–5.197.0 add `fern docs export` (html/md/pdf), print guest SDK build IDs and dashboard links, and quiet the guest end-of-run upgrade check.",
+      "status": "reviewed"
     },
     "fishery": {
       "version": "2.4.0",
@@ -193,19 +193,19 @@
       "status": "draft"
     },
     "msw": {
-      "version": "3.0.3",
-      "releaseDate": "2026-10-10T01:38:37.376Z",
-      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.3",
+      "version": "3.0.4",
+      "releaseDate": "2026-11-06T01:15:42.269Z",
+      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.4",
       "source": "npm",
-      "summary": "Bug fixes: reset handlers are now disposed, and network context is exposed on `enable` in network sources.",
+      "summary": "Bug fixes: prevent the worker from going idle, and treat `.ico` as a common asset.",
       "status": "reviewed"
     },
     "nock": {
-      "version": "15.0.5",
-      "releaseDate": "2026-10-20T18:14:57.721Z",
-      "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.5",
+      "version": "15.0.6",
+      "releaseDate": "2026-11-05T23:36:42.235Z",
+      "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.6",
       "source": "npm",
-      "summary": "Types-only fix: the `Definition` type now matches runtime, adding `rawHeaders` and dropping `headers`. TypeScript code reading `Definition.headers` will no longer compile.",
+      "summary": "Patch: supports `@mswjs/interceptors` 0.45 by streaming delayed bodies.",
       "status": "reviewed"
     },
     "openapi-generator": {
@@ -248,12 +248,13 @@
       "status": "draft"
     },
     "playwright": {
-      "version": "1.64.1",
-      "releaseDate": "2026-10-14T11:54:49.998Z",
-      "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.64.1",
+      "version": "1.65.0",
+      "releaseDate": "2026-11-05T18:28:14.786Z",
+      "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.65.0",
       "source": "npm",
-      "summary": "Patch fixing Chromium 155+ aborting preflighted cross-origin redirects whenever any route is registered, plus an Electron first-window bug.",
-      "status": "reviewed"
+      "summary": "Adds Bun test runner, `failures` reporter and exclusive locks. Breaking: `useDefineForClassFields` for class fields, not-inert waits, RFC 6265 cookies, proxy credentials no longer sent to websites.",
+      "status": "reviewed",
+      "breaking": true
     },
     "pollyjs": {
       "version": "6.0.6",
@@ -270,12 +271,13 @@
       "status": "draft"
     },
     "prometheus": {
-      "version": "3.15.1",
-      "releaseDate": "2026-10-21T16:15:57Z",
-      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.15.1",
+      "version": "3.16.0",
+      "releaseDate": "2026-11-05T16:06:52Z",
+      "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.16.0",
       "source": "github",
-      "summary": "Security patch: built with Go 1.27.3 (net/http, crypto/tls, html/template fixes) and bumps golang.org/x/net for HTTP/2 CVEs. Images now distrust two root CAs after the eMudhra key compromise.",
-      "status": "reviewed"
+      "summary": "PromQL cost limits, stable smoothed/anchored selectors, many TSDB/OTLP fixes. Changes: clamp search `batch_size` to 1000, HTTPS `--web.external-url` with TLS, reject non-unique exemplar labels.",
+      "status": "reviewed",
+      "breaking": true
     },
     "reactotron": {
       "version": "5.3.1",
@@ -285,13 +287,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.75.0",
-      "releaseDate": "2026-11-04T15:44:17.666Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.75.0",
+      "version": "2.76.0",
+      "releaseDate": "2026-11-05T15:40:10.433Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.76.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "2.73.0–2.75.0 add usage telemetry in Go/Python/PHP clients (renames UsageTelemetry* schemas), `platform`/`access.rbac.platform` (deprecates `reunite`), and PHP oneOf/anyOf fixes.",
-      "breaking": true
+      "summary": "Patch: fixes Digest auth in `respect` (`cnonce`, missing `opaque`, and `=`/`,` in WWW-Authenticate values).",
+      "status": "reviewed"
     },
     "rozenite": {
       "version": "2.5.0",
@@ -341,11 +342,12 @@
       "summary": "Fails commands on declared terminal failure states; writes artifact `--out` paths as given; Python open-union fixes; Go collapses flat response unions that share one schema."
     },
     "spectral": {
-      "version": "6.17.0",
-      "releaseDate": "2026-10-01T12:40:18.254Z",
-      "releaseUrl": "https://github.com/stoplightio/spectral/releases/tag/v6.17.0",
+      "version": "6.17.1",
+      "releaseDate": "2026-11-06T06:04:42.381Z",
+      "releaseUrl": "https://www.npmjs.com/package/@stoplight/spectral-cli/v/6.17.1",
       "source": "npm",
-      "status": "draft"
+      "summary": "Patch: lint files whose names contain glob characters.",
+      "status": "reviewed"
     },
     "swagger-editor": {
       "version": "5.10.1",
@@ -355,12 +357,12 @@
       "status": "draft"
     },
     "thunder-client": {
-      "version": "3.2.0",
-      "releaseDate": "2026-11-03T21:31:58Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.0",
+      "version": "3.2.2",
+      "releaseDate": "2026-11-06T06:20:52Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.2",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Raises the Free plan from 3 to 10 collections and from 30 to 50 collection runs per month."
+      "summary": "Improves SSE (Connected on open, split packets, drop reasons), adds MCP Streamable HTTP via the SSE request type, and removes the Free plan monthly import limit.",
+      "status": "reviewed"
     },
     "winston": {
       "version": "3.19.0",

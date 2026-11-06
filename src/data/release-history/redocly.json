@@ -1,5 +1,14 @@
 [
   {
+    "version": "2.75.0",
+    "releaseDate": "2026-11-04T15:44:17.666Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.75.0",
+    "source": "npm",
+    "status": "reviewed",
+    "summary": "2.73.0–2.75.0 add usage telemetry in Go/Python/PHP clients (renames UsageTelemetry* schemas), `platform`/`access.rbac.platform` (deprecates `reunite`), and PHP oneOf/anyOf fixes.",
+    "breaking": true
+  },
+  {
     "version": "2.72.1",
     "releaseDate": "2026-10-29T09:29:38.513Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.72.1",
