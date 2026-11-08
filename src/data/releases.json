@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-06T07:32:26.717Z",
+  "lastUpdated": "2026-11-08T13:06:43.621Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,12 +53,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.197.0",
-      "releaseDate": "2026-11-05T19:47:55.772Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.197.0",
+      "version": "5.200.0",
+      "releaseDate": "2026-11-06T20:40:31.495Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.200.0",
       "source": "npm",
-      "summary": "5.196.0–5.197.0 add `fern docs export` (html/md/pdf), print guest SDK build IDs and dashboard links, and quiet the guest end-of-run upgrade check.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -90,9 +89,9 @@
       "status": "reviewed"
     },
     "hoppscotch": {
-      "version": "2026.10.0",
-      "releaseDate": "2026-10-30T09:20:14Z",
-      "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.10.0",
+      "version": "2026.10.1",
+      "releaseDate": "2026-11-05T08:15:08Z",
+      "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.10.1",
       "source": "github",
       "status": "draft"
     },
@@ -101,8 +100,8 @@
       "releaseDate": "2026-11-01T23:41:34Z",
       "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.17",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3."
+      "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3.",
+      "status": "reviewed"
     },
     "httpie": {
       "version": "3.2.4",
@@ -153,8 +152,8 @@
       "releaseDate": "2026-11-02T08:05:48Z",
       "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.12.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Fixes `tapOn`/`openLink` sending a literal interpolated `appId` to the driver. Updates OkHttp to 4.12.1, which rejects eight compromised eMudhra intermediate CA certificates."
+      "summary": "Fixes `tapOn`/`openLink` sending a literal interpolated `appId` to the driver. Updates OkHttp to 4.12.1, which rejects eight compromised eMudhra intermediate CA certificates.",
+      "status": "reviewed"
     },
     "microcks": {
       "version": "1.15.0",
@@ -182,8 +181,8 @@
       "releaseDate": "2026-10-29T13:20:20.079Z",
       "releaseUrl": "https://github.com/mockoon/mockoon/releases/tag/v9.10.0",
       "source": "npm",
-      "status": "reviewed",
-      "summary": "Mockoon Pro, the self-hosted collaboration and deployment server, leaves beta and adds workspaces for multiple teams, mixed local and SSO sign-in, and role changes in the admin portal."
+      "summary": "Mockoon Pro, the self-hosted collaboration and deployment server, leaves beta and adds workspaces for multiple teams, mixed local and SSO sign-in, and role changes in the admin portal.",
+      "status": "reviewed"
     },
     "mountebank": {
       "version": "2.9.4",
@@ -213,8 +212,8 @@
       "releaseDate": "2026-11-02T05:17:40Z",
       "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.27.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Minor release with 170+ enhancements and bug fixes; the full list is in the 7.27.0 milestone's merged pull requests."
+      "summary": "Minor release with 170+ enhancements and bug fixes; the full list is in the 7.27.0 milestone's merged pull requests.",
+      "status": "reviewed"
     },
     "openobserve": {
       "version": "1.1.2",
@@ -225,13 +224,11 @@
       "status": "reviewed"
     },
     "opentelemetry": {
-      "version": "3.0.0",
-      "releaseDate": "2026-10-20T18:27:15.327Z",
-      "releaseUrl": "https://github.com/open-telemetry/opentelemetry-js/releases/tag/v3.0.0",
+      "version": "3.1.0",
+      "releaseDate": "2026-11-05T18:33:59.749Z",
+      "releaseUrl": "https://github.com/open-telemetry/opentelemetry-js/releases/tag/v3.1.0",
       "source": "npm",
-      "summary": "Major release (with experimental 0.300.0): needs Node.js >=22.15. `sdk-trace-node` is replaced by `sdk-trace`, deep imports no longer resolve, and NodeSDK drops `metricReader`/`spanProcessor`.",
-      "breaking": true,
-      "status": "reviewed"
+      "status": "draft"
     },
     "pact": {
       "version": "17.1.4",
@@ -253,8 +250,8 @@
       "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.65.0",
       "source": "npm",
       "summary": "Adds Bun test runner, `failures` reporter and exclusive locks. Breaking: `useDefineForClassFields` for class fields, not-inert waits, RFC 6265 cookies, proxy credentials no longer sent to websites.",
-      "status": "reviewed",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "pollyjs": {
       "version": "6.0.6",
@@ -276,8 +273,8 @@
       "releaseUrl": "https://github.com/prometheus/prometheus/releases/tag/v3.16.0",
       "source": "github",
       "summary": "PromQL cost limits, stable smoothed/anchored selectors, many TSDB/OTLP fixes. Changes: clamp search `batch_size` to 1000, HTTPS `--web.external-url` with TLS, reject non-unique exemplar labels.",
-      "status": "reviewed",
-      "breaking": true
+      "breaking": true,
+      "status": "reviewed"
     },
     "reactotron": {
       "version": "5.3.1",
@@ -302,8 +299,8 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.76.4",
-      "releaseDate": "2026-10-30T19:21:03.847Z",
+      "version": "1.77.0",
+      "releaseDate": "2026-11-05T11:25:48.196Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "draft"
@@ -313,8 +310,8 @@
       "releaseDate": "2026-11-04T15:29:16Z",
       "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Adds GraphQL coverage, unary gRPC fuzzing and more OpenAPI 3.2 support (XML `nodeType`, cookie style, `itemSchema`). 4.33.1 fixes gRPC, `st replay` and schema-loading bugs."
+      "summary": "Adds GraphQL coverage, unary gRPC fuzzing and more OpenAPI 3.2 support (XML `nodeType`, cookie style, `itemSchema`). 4.33.1 fixes gRPC, `st replay` and schema-loading bugs.",
+      "status": "reviewed"
     },
     "sentry": {
       "version": "26.10.1",
@@ -330,21 +327,21 @@
       "releaseDate": "2026-11-04T06:55:27Z",
       "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.149.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Starts dual-ingesting log bodies into native JSON (plan for more capacity). Adds rule-view and downtime-schedule FGA, AI observability stats, and bug fixes."
+      "summary": "Starts dual-ingesting log bodies into native JSON (plan for more capacity). Adds rule-view and downtime-schedule FGA, AI observability stats, and bug fixes.",
+      "status": "reviewed"
     },
     "speakeasy": {
       "version": "1.806.0",
       "releaseDate": "2026-11-03T12:01:19Z",
       "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.806.0",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Fails commands on declared terminal failure states; writes artifact `--out` paths as given; Python open-union fixes; Go collapses flat response unions that share one schema."
+      "summary": "Fails commands on declared terminal failure states; writes artifact `--out` paths as given; Python open-union fixes; Go collapses flat response unions that share one schema.",
+      "status": "reviewed"
     },
     "spectral": {
       "version": "6.17.1",
       "releaseDate": "2026-11-06T06:04:42.381Z",
-      "releaseUrl": "https://www.npmjs.com/package/@stoplight/spectral-cli/v/6.17.1",
+      "releaseUrl": "https://github.com/stoplightio/spectral/releases/tag/v6.17.1",
       "source": "npm",
       "summary": "Patch: lint files whose names contain glob characters.",
       "status": "reviewed"
@@ -383,8 +380,8 @@
       "releaseDate": "2026-11-01T17:03:45Z",
       "releaseUrl": "https://github.com/mountain-loop/yaak/releases/tag/v2026.9.1",
       "source": "github",
-      "status": "reviewed",
-      "summary": "Security fix: updates the bundled Node.js runtime and the HTTP engine to patch the Brotli decoder vulnerability CVE-2026-111497."
+      "summary": "Security fix: updates the bundled Node.js runtime and the HTTP engine to patch the Brotli decoder vulnerability CVE-2026-111497.",
+      "status": "reviewed"
     }
   }
 }
