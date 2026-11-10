@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.806.0",
+    "releaseDate": "2026-11-03T12:01:19Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.806.0",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Fails commands on declared terminal failure states; writes artifact `--out` paths as given; Python open-union fixes; Go collapses flat response unions that share one schema."
+  },
+  {
     "version": "1.805.0",
     "releaseDate": "2026-10-28T12:11:00Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.805.0",
