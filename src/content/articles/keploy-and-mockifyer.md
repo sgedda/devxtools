@@ -177,7 +177,7 @@ Not really. Keploy tests a backend service by recording its incoming requests an
 Keploy's docs don't cover React Native, and it doesn't patch `fetch` inside a mobile app. You can still use it on the backend your app calls. For in-app mocking, see our [React Native mocking guide](/guides/mock-api-react-native/).
 
 ### Is Keploy free?
-The core is open source (Apache-2.0). The hosted Playground plan is free, with monthly limits. Pro costs $19/user/month billed yearly ($24 billed monthly) plus usage. `keploy test` needs a Keploy account, but a free one is enough (per Keploy's docs).
+The core is open source (Apache-2.0). The hosted Playground plan is free, with monthly limits. Pro costs $19/user/month billed yearly ($24 billed monthly) plus usage. The open-source CLI (v3.6.229) recorded and replayed tests locally with no account. Keploy's docs say the keploy.io installer and CI/cloud features need a free account.
 
 ### Which databases can Keploy mock?
 Keploy's README lists Postgres, MySQL and MongoDB, plus Kafka and RabbitMQ for messaging. Its pricing table limits some of these by plan, and on native macOS or Windows only HTTP/HTTPS, MySQL and MongoDB replay reliably. Use Docker or Linux for the rest.
