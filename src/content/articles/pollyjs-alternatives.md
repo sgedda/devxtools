@@ -11,8 +11,8 @@ schema: ["TechArticle", "ItemList", "BreadcrumbList", "FAQPage"]
 itemList: ["https://devxtools.dev/tools/nock/", "https://devxtools.dev/tools/msw/", "https://devxtools.dev/tools/playwright/", "https://github.com/ijpiantanida/talkback", "https://github.com/airtasker/proxay", "https://github.com/asmyshlyaev177/test-proxy-recorder", "https://devxtools.dev/tools/wiremock/", "https://devxtools.dev/tools/mockoon/", "https://devxtools.dev/tools/mockifyer/"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "@pollyjs/core 6.0.6 (+ adapter-fetch 6.0.7), nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1 (Chromium), talkback 4.2.0, proxay 1.9.0, @sgedda/mockifyer-core 1.10.181 / -fetch 1.8.100 / -axios 1.10.32, axios 1.20.0 on Node 22.23.3; 2026-10-15"
+dateModified: "2026-11-10"
+tested_with: "@pollyjs/core 6.0.6 (+ adapter-fetch 6.0.7), nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1 (Chromium), talkback 4.2.0, proxay 1.9.0, @sgedda/mockifyer-core 1.10.181 / -fetch 1.8.100 / -axios 1.10.32, axios 1.20.0 on Node 22.23.3; 2026-10-15. Empty-body default / MOCKIFYER_RECORD_RESPONSES re-checked against core 1.10.187 (introduced then) and latest 1.10.190 / fetch 1.8.106, 2026-11-10."
 tools: ["pollyjs", "nock", "msw", "playwright", "wiremock", "mockoon", "mockifyer", "miragejs"]
 affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev."
 ---
@@ -21,7 +21,7 @@ affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also run
 
 > **Disclosure.** Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. It's one of the tools on this page, and it gets the same template, tests and limits list as every other tool, and it isn't ranked as "best". We have no affiliate links and no commercial ties to any other project here.
 
-> **Tested with** @pollyjs/core 6.0.6, nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs.
+> **Tested with** @pollyjs/core 6.0.6, nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. The empty-body default was re-checked on 2026-11-10 against core 1.10.187 and current latest 1.10.190; the original record/replay tests remain those of 2026-10-15 on 1.10.181.
 
 ## TL;DR
 
@@ -71,7 +71,7 @@ We compared interception, runtimes, clients, record modes, replay-only CI behavi
 | test-proxy-recorder | Proxy + HAR | Playwright, SSR | Server + browser | record, replay, transparent | `.mock.json`, HAR | Method, path, query hash | Edit files | replay | 1.4.1, 2026-10-13 | ~263 | MIT |
 | WireMock record | Mock server (Java) | Any language | Any HTTP | Record, snapshot | JSON mappings | WireMock matchers | Stateful scenarios | Stubs only | 3.13.2, 2025-11-14 | n/a (Java) | Apache-2.0 |
 | Mockoon record | Mock server | Any language | Any HTTP | Record (desktop app) | Environment JSON | Path + method | GUI | CLI, no proxy | 9.9.0, 2026-09-16 | ~47K (@mockoon/cli) | MIT |
-| Mockifyer* | In-process | Node, React Native | fetch, axios | `recordMode` on/off | JSON per request | Method + URL | Scenarios, dates | `failOnMissingMock` | core 1.10.181, 2026-09-30 | ~207 (core) | MIT |
+| Mockifyer* | In-process | Node, React Native | fetch, axios | `recordMode` on/off | JSON per request | Method + URL | Scenarios, dates | `failOnMissingMock` | core 1.10.190, 2026-10-26 (body default changed in 1.10.187) | ~207 (core) | MIT |
 
 \*Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
 
@@ -268,13 +268,13 @@ Since Mockifyer core 1.10.187, local recordings store response bodies only when 
 - **Storage format:** one JSON file per request in `mock-data/<scenario>/`; `authorization` was saved as `***`.
 - **Matching:** method + URL, with optional header and query rules.
 - **Re-record workflow:** record into a new scenario, then `git diff`. Scenarios, hand edits, `getCurrentDate()` and cross-service request IDs worked.
-- **Maintenance:** core 1.10.181, 2026-09-30.
+- **Maintenance:** core 1.10.190, 2026-10-26; local body-recording default changed in 1.10.187 (2026-10-20). Original record/replay tests were on 1.10.181, 2026-10-15.
 - **Best for:** React Native/Expo and multi-service apps.
 - **Limits:**
   - ~207 weekly downloads, 2 stars, essentially one maintainer.
   - Young (March 2025); `CHANGELOG.md` stops at 1.4.0.
   - `fetch` and axios only.
-  - Surprising defaults: no recording without `record_all`, and recordings kept using the live API until `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false` was set.
+  - Surprising defaults: no recording without `record_all`; recordings kept using the live API until `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false` was set; and since 1.10.187, local recordings store empty bodies (`responsePending`) unless `MOCKIFYER_RECORD_RESPONSES=true` or `recordResponses: true` is set.
   - The MCP server isn't on npm.
 
 See [Mockifyer](/tools/mockifyer/) and the [React Native mocking guide](/guides/mock-api-react-native/).

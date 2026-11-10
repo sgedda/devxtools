@@ -11,7 +11,7 @@ schema: ["TechArticle", "BreadcrumbList"]
 author: "Sebastian Gedda"
 byline: "By Sebastian Gedda, creator and maintainer of Mockifyer"
 datePublished: "2026-10-16"
-dateModified: "2026-10-16"
+dateModified: "2026-11-10"
 ---
 
 *By Sebastian Gedda. Written by the creator: I built and maintain [Mockifyer](https://github.com/sgedda/mockifyer), the open-source tool this post is about. devxtools.dev is my own independent guide site, so read this as a maker's account, not a neutral review. If you want the neutral-ish overview, there's a [Mockifyer tool page](/tools/mockifyer/).*
