@@ -19,6 +19,8 @@ interface Props {
     datePublished: string;
     dateModified: string;
     tested_with?: string;
+    repro_url?: string;
+    repro_label?: string;
     affiliation?: string;
     section?: string; // e.g., 'mocking-test-data', 'testing', 'api-development', 'observability'
   };
@@ -168,7 +170,12 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
         {frontmatter.tested_with && (
           <blockquote class="mb-6">
             <p>
-              <strong>Tested with</strong> {frontmatter.tested_with}
+              <strong>Tested with</strong> {frontmatter.tested_with}{frontmatter.repro_url && (
+                <>
+                  {' '}
+                  <a href={frontmatter.repro_url}>{frontmatter.repro_label ?? frontmatter.repro_url}</a>
+                </>
+              )}
             </p>
           </blockquote>
         )}

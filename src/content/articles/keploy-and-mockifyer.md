@@ -10,7 +10,9 @@ schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-11-10"
 dateModified: "2026-11-10"
-tested_with: "Mockifyer: fetch and axios record/replay on Node 24.22.1 against a local test API, @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x, 2026-11-10. Keploy: keploy record then keploy test, 24 recorded and 24/24 passed on a small Node HTTP app, Linux, native OSS CLI v3.6.229, no account, no Docker, 2026-11-10; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229. Repro: https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer"
+tested_with: "Mockifyer: fetch and axios record/replay on Node 24.22.1 against a local test API, @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x, 2026-11-10. Keploy: keploy record then keploy test, 24 recorded and 24/24 passed on a small Node HTTP app, Linux, native OSS CLI v3.6.229, no account, no Docker, 2026-11-10; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229."
+repro_url: "https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer"
+repro_label: "demos/keploy-mockifyer on GitHub"
 tools: ["keploy", "mockifyer"]
 affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. Keploy was added to the catalog at the Keploy team's request (PR #89); we have no commercial ties to Keploy."
 ---
