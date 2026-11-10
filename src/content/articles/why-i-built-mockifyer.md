@@ -11,7 +11,7 @@ schema: ["TechArticle", "BreadcrumbList"]
 author: "Sebastian Gedda"
 byline: "By Sebastian Gedda, creator and maintainer of Mockifyer"
 datePublished: "2026-10-16"
-dateModified: "2026-10-16"
+dateModified: "2026-11-10"
 ---
 
 *By Sebastian Gedda. Written by the creator: I built and maintain [Mockifyer](https://github.com/sgedda/mockifyer), the open-source tool this post is about. devxtools.dev is my own independent guide site, so read this as a maker's account, not a neutral review. If you want the neutral-ish overview, there's a [Mockifyer tool page](/tools/mockifyer/).*
@@ -100,7 +100,10 @@ For the quick test above I set these env vars to get the "record once, replay im
 MOCKIFYER_SCENARIO=default
 MOCKIFYER_DOMAIN_PATH_RULES_MODE=record_all
 MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false
+MOCKIFYER_RECORD_RESPONSES=true
 ```
+
+Since Mockifyer core 1.10.187, local recordings store response bodies only when `MOCKIFYER_RECORD_RESPONSES=true` (or `recordResponses: true`) is set.
 
 On a real team I'd keep the defaults and enable paths on purpose. I just don't want anyone to try the five-line version and wonder why nothing replays.
 

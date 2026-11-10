@@ -22,6 +22,8 @@ const articles = defineCollection({
     datePublished: z.string(),
     dateModified: z.string(),
     tested_with: z.string().optional(),
+    repro_url: z.string().optional(),
+    repro_label: z.string().optional(),
     tools: z.array(z.string()).optional(),
     affiliation: z.string().optional(),
     meta_description: z.string().optional(),

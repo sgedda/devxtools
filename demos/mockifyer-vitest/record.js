@@ -3,6 +3,7 @@ import { setupMockifyer } from '@sgedda/mockifyer-fetch';
 
 // Make recorded mocks immediately replayable (no alwaysUseRealApi flag)
 process.env.MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API = 'false';
+process.env.MOCKIFYER_RECORD_RESPONSES = 'true';
 
 setupMockifyer({
   mockDataPath: './mock-data',
