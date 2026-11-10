@@ -12,7 +12,7 @@ itemList: ["https://devxtools.dev/tools/nock/", "https://devxtools.dev/tools/msw
 author: "DevX Tools"
 datePublished: "2026-10-15"
 dateModified: "2026-11-10"
-tested_with: "@pollyjs/core 6.0.6 (+ adapter-fetch 6.0.7), nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1 (Chromium), talkback 4.2.0, proxay 1.9.0, @sgedda/mockifyer-core 1.10.181 / -fetch 1.8.100 / -axios 1.10.32, axios 1.20.0 on Node 22.23.3; 2026-10-15. Empty-body default / MOCKIFYER_RECORD_RESPONSES re-checked against core 1.10.187 (introduced then) and latest 1.10.190 / fetch 1.8.106, 2026-11-10."
+tested_with: "@pollyjs/core 6.0.6 (+ adapter-fetch 6.0.7), nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1 (Chromium), talkback 4.2.0, proxay 1.9.0, @sgedda/mockifyer-core 1.10.181 / -fetch 1.8.100 / -axios 1.10.32, axios 1.20.0 on Node 22.23.3; 2026-10-15. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104."
 tools: ["pollyjs", "nock", "msw", "playwright", "wiremock", "mockoon", "mockifyer", "miragejs"]
 affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev."
 ---
@@ -21,7 +21,7 @@ affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also run
 
 > **Disclosure.** Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. It's one of the tools on this page, and it gets the same template, tests and limits list as every other tool, and it isn't ranked as "best". We have no affiliate links and no commercial ties to any other project here.
 
-> **Tested with** @pollyjs/core 6.0.6, nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. The empty-body default was re-checked on 2026-11-10 against core 1.10.187 and current latest 1.10.190; the original record/replay tests remain those of 2026-10-15 on 1.10.181.
+> **Tested with** @pollyjs/core 6.0.6, nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104; the original record/replay tests remain those of 2026-10-15 on 1.10.181.
 
 ## TL;DR
 
