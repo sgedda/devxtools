@@ -92,7 +92,7 @@ Things to know before you start (all per Keploy's docs):
 
 - **macOS needs Apple Silicon** for the native CLI. Intel Macs use a Lima VM. On macOS and Windows, native mode understands HTTP/HTTPS, MySQL and MongoDB. PostgreSQL, Redis, Kafka and gRPC calls are "captured only as raw bytes and usually don't replay", so run those in Docker or on Linux/WSL. Linux needs kernel 5.10+.
 - **On macOS, start the app directly** (`node server.js`, a built Go binary), not through a launcher such as `npm start`.
-- **`keploy test` needs a Keploy account.** A free one is enough. In CI it signs in with a `KEPLOY_API_KEY` secret (per Keploy's GitHub CI docs).
+- **The open-source Linux CLI v3.6.229 ran `keploy record`/`keploy test` locally with no account.** In CI it signs in with a `KEPLOY_API_KEY` secret (per Keploy's GitHub CI docs).
 - **Pricing:** the open-source core is Apache-2.0 and self-hosted. The free **Playground** plan has 30 test-suite generations and 100 test runs a month. **Pro** is $19/user/month billed yearly or $24 billed monthly, plus usage. **Enterprise** is custom. The pricing comparison table lists Kubernetes recording from Pro (shared with Enterprise). The same page's Enterprise card and FAQ, though, present "Record traffic inside Kubernetes" / "record-replay in Kubernetes clusters" as an Enterprise feature. The page disagrees with itself, so we can't say which tier actually includes it; ask Keploy if this matters for you. Production traffic capture is consistently Enterprise only.
 
 ### Where Keploy wins
