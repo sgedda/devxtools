@@ -10,22 +10,22 @@ schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-11-10"
 dateModified: "2026-11-10"
-tested_with: "Mockifyer: @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x on Node 24.22.1 against a local test API, 2026-11-10. Keploy: record + test passed on Linux (native OSS CLI, no account, no Docker) against v3.6.229, 2026-11-10; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229."
+tested_with: "Mockifyer: fetch and axios record/replay on Node 24.22.1 against a local test API, @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x, 2026-11-10. Keploy: keploy record then keploy test, 24 recorded and 24/24 passed on a small Node HTTP app, Linux, native OSS CLI v3.6.229, no account, no Docker, 2026-11-10; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229. Repro: https://github.com/sgedda/devxtools/tree/fix-mockifyer-record-responses/demos/keploy-mockifyer"
 tools: ["keploy", "mockifyer"]
 affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. Keploy was added to the catalog at the Keploy team's request (PR #89); we have no commercial ties to Keploy."
 ---
 
-> We ran `keploy record` and `keploy test` on Linux with the open-source CLI v3.6.229 (tiny Node HTTP app, no account). Other Keploy facts come from its docs, README and pricing page. Mockifyer details were re-tested by us on 2026-11-10 unless marked "per docs".
+> We ran `keploy record` and then `keploy test` on Linux with the open-source CLI v3.6.229 against a small Node HTTP app: 24 test cases were recorded and 24/24 passed. No account and no Docker were used. Other Keploy facts come from its docs, README and pricing page. On 2026-11-10 we re-tested Mockifyer `fetch` and axios record/replay on Node 24.22.1 against a local test API (core 1.10.190, fetch 1.8.106, axios 1.10.35): calls were recorded, the live response body was changed, and replay served the recording. That replay needed `useGlobalFetch` or `useGlobalAxios`, `domainPathRulesMode: 'record_all'`, `MOCKIFYER_RECORD_RESPONSES=true` and `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false`. React Native, client lanes, the dashboard and multi-service tracing were not part of that run; those details are from Mockifyer's README and dashboard README, or from our October tests, and are marked "per docs" below. The apps and commands are in [`demos/keploy-mockifyer`](https://github.com/sgedda/devxtools/tree/fix-mockifyer-record-responses/demos/keploy-mockifyer).
 
 
-**Keploy and Mockifyer aren't really alternatives. They record traffic at different layers, and they overlap for a Node service's outbound HTTP.** [Keploy](/tools/keploy/) wraps your **backend service** and turns the requests it receives, plus the database, queue and API calls it makes, into regression tests with mocks. [Mockifyer](/tools/mockifyer/) is a JS/TS library for `fetch` and axios. It runs in **Node.js** — backends, tests, scripts and services that call other APIs — and in **React Native/Expo**, and it can log a request across several services. React Native and on-device work are a strength, not the only use. Both tools can record and replay outbound HTTP from a Node process. If you have a Node backend and a mobile app, you may want one of each.
+**Keploy and Mockifyer aren't really alternatives. They record traffic at different layers, and they overlap for a Node service's outbound HTTP.** [Keploy](/tools/keploy/) wraps your **backend service** and turns the requests it receives, plus the database, queue and API calls it makes, into regression tests with mocks. [Mockifyer](/tools/mockifyer/) is a JS/TS library for `fetch` and axios. It runs in **Node.js** — backends, tests, scripts and services that call other APIs — and in **React Native/Expo**, and it can log a request across several services (per the dashboard README). React Native and on-device work are a strength, not the only use. Both tools can record and replay outbound HTTP from a Node process. If you have a Node backend and a mobile app, you may want one of each.
 
 > **Checked** 2026-11-10 against Keploy's docs, README, pricing page and GitHub, and Mockifyer's README, React Native docs and npm packages.
 
 ## TL;DR
 
 - **Testing a backend API** (Go, Java, Node, Python and more) and its database and queue calls: use **Keploy**. It works at the network/eBPF layer with no SDK, also covers databases and queues, and generates API tests. It's mature (repo since January 2022, about 19.6k GitHub stars) and it has a documented CI flow.
-- **Recording `fetch` or axios in JavaScript:** use **Mockifyer**. It is an in-code library for Node.js (backends, tests, scripts, services calling other APIs) as well as React Native/Expo, with per-client lanes, a dashboard and multi-service logging. On-device React Native is a strength, not the only use. Keploy's docs don't cover React Native. Mockifyer is young and has sharp defaults, so read the caveats below first.
+- **Recording `fetch` or axios in JavaScript:** use **Mockifyer**. It is an in-code library for Node.js (backends, tests, scripts, services calling other APIs) as well as React Native/Expo, with per-client lanes, a dashboard and multi-service logging (lanes, dashboard and tracing per docs). On-device React Native is a strength, not the only use. Keploy's docs don't cover React Native. Mockifyer is young and has sharp defaults, so read the caveats below first.
 - **Both:** Keploy guards the backend's API behaviour — and its database and queue calls — in CI. Mockifyer mocks `fetch`/axios in the Node service and/or in the app, including offline React Native scenarios. They overlap only on a Node process's outbound HTTP.
 
 ## Where each one sits
@@ -54,8 +54,8 @@ affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also run
 | Mocked API responses in Node.js tests, scripts or services | **Yes**, by recording the process at the network layer | **Yes**, by patching `fetch` or axios in that process |
 | Mocked API responses inside a React Native/Expo app on a simulator or device | Not covered by its docs | **Yes**, per docs (Hybrid provider, Metro sync) |
 | E2E scenarios picked at app launch (Detox/Maestro) | No | **Yes**, per docs (`scenario` launch argument) |
-| Separate mock "lanes" per client, device or test run | No | **Yes** (client lanes via `X-Mockifyer-Client-Id`) |
-| A trace of calls across several Node services | Not its focus | **Yes** (request IDs per hop, dashboard) |
+| Separate mock "lanes" per client, device or test run | No | **Yes**, per docs (client lanes via `X-Mockifyer-Client-Id`) |
+| A trace of calls across several Node services | Not its focus | **Yes**, per the dashboard README (request IDs per hop); cross-service request IDs also worked in our October tests |
 | A documented CI flow, paid support, enterprise features | **Yes** | No; one maintainer |
 
 ## Keploy: backend API regression testing
@@ -105,16 +105,19 @@ Things to know before you start (all per Keploy's docs):
 
 ## Mockifyer: record/replay for fetch and axios in Node.js and React Native
 
-Mockifyer (MIT) is a JS/TS library that records `fetch` and axios responses as one JSON file per request in your repo, under `mock-data/<scenario>/`, and replays them. It runs in **Node.js** — backends, tests, scripts and services that call other APIs — and in **React Native/Expo**. In Node you call `setupMockifyer` from `@sgedda/mockifyer-fetch` or `@sgedda/mockifyer-axios`. In a React Native app, in development, its "Hybrid" provider writes mocks to the device **and** to the project's `mock-data/` folder through Metro endpoints. Release builds can load bundled mocks.
+Mockifyer (MIT) is a JS/TS library that records `fetch` and axios responses as one JSON file per request in your repo, under `mock-data/<scenario>/`, and replays them. It runs in **Node.js** — backends, tests, scripts and services that call other APIs — and in **React Native/Expo**. In Node you call `setupMockifyer` from `@sgedda/mockifyer-fetch` or `@sgedda/mockifyer-axios`. In a React Native app, in development, its "Hybrid" provider writes mocks to the device **and** to the project's `mock-data/` folder through Metro endpoints, and release builds can load bundled mocks (per docs; we didn't run it on a device for this page).
 
-A Node setup looks like this (the env vars in the caveats below are also required if you want bodies stored and then replayed):
+A Node setup looks like this. To store response bodies and then replay them, we also needed `MOCKIFYER_RECORD_RESPONSES=true` and `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false` (without those, recordings were empty or replay called the live API):
 
 ```js
 import { setupMockifyer } from '@sgedda/mockifyer-fetch';
 
+process.env.MOCKIFYER_RECORD_RESPONSES = 'true';
+process.env.MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API = 'false';
+
 setupMockifyer({
   mockDataPath: './mock-data',
-  useGlobalFetch: true,
+  useGlobalFetch: true, // axios: useGlobalAxios: true
   recordMode: process.env.MOCKIFYER_RECORD === 'true',
   domainPathRulesMode: 'record_all',
 });
@@ -148,12 +151,12 @@ export async function initializeMockifyer() {
 }
 ```
 
-`MOCKIFYER_MODE` controls when it activates. The modes are `on` (the default), `manual` (a runtime toggle), `launch_client` (only when a Detox/Maestro launch argument is present) and `off` (store builds).
+`MOCKIFYER_MODE` controls when it activates. The modes are `on` (the default), `manual` (a runtime toggle), `launch_client` (only when a Detox/Maestro launch argument is present) and `off` (store builds) (per docs).
 
 ### Where Mockifyer wins
 
-- **Node.js as well as React Native.** In a Node process it patches `fetch` or axios so backends, tests, scripts and services can record and replay their outbound HTTP. On a React Native/Expo simulator or device it mocks the app's own `fetch` calls, syncs recordings back to the repo through Metro, and selects scenarios at launch for [Detox](/tools/detox/) and [Maestro](/tools/maestro/). Keploy's docs don't cover React Native. Keploy's Chrome extension records a web app's browser traffic to generate API tests, but it doesn't serve mocks to the app.
-- **Per-client lanes.** A client or lane ID, sent as `X-Mockifyer-Client-Id`, keeps each client, device, developer or CI run on its own scenario through the optional dashboard proxy.
+- **Node.js as well as React Native.** In a Node process it patches `fetch` or axios so backends, tests, scripts and services can record and replay their outbound HTTP. On a React Native/Expo simulator or device it mocks the app's own `fetch` calls, syncs recordings back to the repo through Metro, and selects scenarios at launch for [Detox](/tools/detox/) and [Maestro](/tools/maestro/) (per docs; we didn't run React Native for this page). Keploy's docs don't cover React Native. Keploy's Chrome extension records a web app's browser traffic to generate API tests, but it doesn't serve mocks to the app.
+- **Per-client lanes.** A client or lane ID, sent as `X-Mockifyer-Client-Id`, keeps each client, device, developer or CI run on its own scenario through the optional dashboard proxy (per docs).
 - **A dashboard, and traffic logging across services.** `@sgedda/mockifyer-dashboard` is a local UI for browsing and editing mock data. In Node, `setupMockifyer` also assigns an `X-Mockifyer-Request-Id` per hop and can pass a parent id downstream; the dashboard can show that chain (per the dashboard README). Cross-service request IDs worked in our [October tests](/comparisons/pollyjs-alternatives/).
 
 ### Mockifyer caveats (re-tested 2026-11-10)
@@ -174,8 +177,8 @@ With all four settings in place (`useGlobalFetch`/`useGlobalAxios`, `record_all`
 Say you have an Expo app that talks to a Node API backed by Postgres and a payments API.
 
 1. **Backend API tests, with Keploy.** Record the API with `keploy record` while you run through the app's main flows against a dev backend. Do this on Linux or in Docker, since Postgres doesn't replay natively on macOS. Commit `keploy/`, and run `keploy test` in CI on every backend PR. If someone changes a response shape the app depends on, the test fails before it ships. Postgres and the payments API are served from `mocks.yaml`, so CI needs neither. Keploy does this at the network layer, with no SDK.
-2. **The Node service's outbound `fetch`/axios, with Mockifyer (optional).** If that Node API itself calls other HTTP APIs, you can also install Mockifyer in the service: record those `fetch` or axios calls, use per-client lanes, and inspect hops in the dashboard. This overlaps with Keploy's HTTP mocks. Prefer Keploy when you also need database and queue mocks or generated API tests with no code changes. Prefer Mockifyer when you want an in-code library, lanes or multi-service request logging in that Node process.
-3. **The React Native app, with Mockifyer.** In dev builds, record the app's `fetch` calls once against the same backend. Commit `mock-data/` with named scenarios (`happy`, `empty-cart`, `payment-declined`). Developers work offline against those scenarios, and Maestro or Detox launches the E2E build with `scenario: "payment-declined"`.
+2. **The Node service's outbound `fetch`/axios, with Mockifyer (optional).** If that Node API itself calls other HTTP APIs, you can also install Mockifyer in the service: record those `fetch` or axios calls, use per-client lanes, and inspect hops in the dashboard (per docs). This overlaps with Keploy's HTTP mocks. Prefer Keploy when you also need database and queue mocks or generated API tests with no code changes. Prefer Mockifyer when you want an in-code library, lanes or multi-service request logging in that Node process.
+3. **The React Native app, with Mockifyer.** In dev builds, record the app's `fetch` calls once against the same backend. Commit `mock-data/` with named scenarios (`happy`, `empty-cart`, `payment-declined`). Developers work offline against those scenarios, and Maestro or Detox launches the E2E build with `scenario: "payment-declined"` (per docs).
 4. **Keep them in step.** When a Keploy test fails because the API changed on purpose, re-record both: Keploy's tests and Mockifyer's Node and app scenarios. To check formally that the app's mocks still match the API, add contract tests (see our [Pact guide](/guides/pact-contract-testing-javascript/)).
 
 Neither tool replaces the other here. Keploy can't patch `fetch` inside the React Native app, and Mockifyer can't mock the backend's Postgres calls. On the Node service's outbound HTTP, pick the one that matches the job, or use both for different purposes.
@@ -183,7 +186,7 @@ Neither tool replaces the other here. Keploy can't patch `fetch` inside the Reac
 ## FAQ
 
 ### Is Mockifyer a Keploy alternative?
-Not really, except for one overlap. Keploy tests a backend service by recording its incoming requests and outgoing dependency calls (HTTP, databases, queues) at the network layer, with no SDK, and it generates API tests. Mockifyer is an in-code library that records and replays `fetch` and axios — in Node.js and in React Native. Both can record and replay outbound HTTP from a Node service. For that case Keploy needs no code changes, while Mockifyer needs setup code, and adds per-client lanes, a dashboard and multi-service logging. Mockifyer does not mock databases or queues, and Keploy does not patch `fetch` inside a React Native app.
+Not really, except for one overlap. Keploy tests a backend service by recording its incoming requests and outgoing dependency calls (HTTP, databases, queues) at the network layer, with no SDK, and it generates API tests. Mockifyer is an in-code library that records and replays `fetch` and axios — in Node.js and in React Native. Both can record and replay outbound HTTP from a Node service. For that case Keploy needs no code changes, while Mockifyer needs setup code, and adds per-client lanes, a dashboard and multi-service logging (per docs). Mockifyer does not mock databases or queues, and Keploy does not patch `fetch` inside a React Native app.
 
 ### Does Keploy work with React Native?
 Keploy's docs don't cover React Native, and it doesn't patch `fetch` inside a mobile app. You can still use it on the backend your app calls. For in-app mocking, see our [React Native mocking guide](/guides/mock-api-react-native/).
