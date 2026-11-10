@@ -162,8 +162,8 @@ test.describe('Stack Picker Accessibility', () => {
     });
     
     test('empty state - no critical/serious violations', async ({ page }) => {
-      // backend+e2e+go yields empty state (no Go E2E testing tools for backend)
-      await page.goto(`${PICKER_URL}?platform=backend&need=e2e&lang=go`);
+      // backend+e2e+go+graphql yields empty state (Keploy matches backend+e2e+go, but no tool in the catalog supports GraphQL for that combo)
+      await page.goto(`${PICKER_URL}?platform=backend&need=e2e&lang=go&spec=graphql`);
       await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
       await page.waitForTimeout(500);
       await page.waitForSelector('#empty-state:not(.hidden)', { timeout: 3000 });

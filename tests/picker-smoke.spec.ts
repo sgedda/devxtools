@@ -45,8 +45,8 @@ test.describe('Stack Picker Smoke Tests', () => {
     const pageErrors: string[] = [];
     page.on('pageerror', err => pageErrors.push(err.message));
     
-    // backend+e2e+go should yield empty state (no Go E2E testing tools for backend)
-    await page.goto(`${PICKER_URL}?platform=backend&need=e2e&lang=go`);
+    // backend+e2e+go+graphql should yield empty state (Keploy matches backend+e2e+go, but no tool in the catalog supports GraphQL for that combo)
+    await page.goto(`${PICKER_URL}?platform=backend&need=e2e&lang=go&spec=graphql`);
     
     await page.waitForSelector('#picker-app:not(.hidden)', { timeout: 5000 });
     expect(pageErrors).toHaveLength(0);
