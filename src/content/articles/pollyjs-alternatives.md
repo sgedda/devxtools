@@ -248,7 +248,7 @@ See [WireMock](/tools/wiremock/) and [Mockoon](/tools/mockoon/).
 Record/replay for `fetch` and axios, with editable JSON, scenarios and date control. In a fresh project, this recorded and replayed only with the env var shown:
 
 ```js
-// run with MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false; set MOCKIFYER_SCENARIO or recordings land in the 24h `_scratch` bucket
+// run with MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false and MOCKIFYER_RECORD_RESPONSES=true; set MOCKIFYER_SCENARIO or recordings land in the 24h `_scratch` bucket
 import { setupMockifyer } from '@sgedda/mockifyer-fetch';
 
 const record = process.env.MOCKIFYER_RECORD === 'true';
@@ -260,6 +260,8 @@ setupMockifyer({
   domainPathRulesMode: 'record_all',  // default 'allowlist' records nothing until you enable paths
 });
 ```
+
+Since Mockifyer core 1.10.187, local recordings store response bodies only when `MOCKIFYER_RECORD_RESPONSES=true` (or `recordResponses: true`) is set.
 
 - **How it records:** patches `fetch`, or uses axios interceptors (axios needed `useGlobalAxios: true` in ESM).
 - **Where it runs:** Node and React Native/Expo (per its docs; we didn't run React Native).

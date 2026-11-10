@@ -100,7 +100,10 @@ For the quick test above I set these env vars to get the "record once, replay im
 MOCKIFYER_SCENARIO=default
 MOCKIFYER_DOMAIN_PATH_RULES_MODE=record_all
 MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false
+MOCKIFYER_RECORD_RESPONSES=true
 ```
+
+Since Mockifyer core 1.10.187, local recordings store response bodies only when `MOCKIFYER_RECORD_RESPONSES=true` (or `recordResponses: true`) is set.
 
 On a real team I'd keep the defaults and enable paths on purpose. I just don't want anyone to try the five-line version and wonder why nothing replays.
 
