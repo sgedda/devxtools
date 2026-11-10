@@ -47,6 +47,11 @@ const guides: Array<{ title: string; url: string; tools: string[] }> = [
     title: "Keeping Mocks Honest with Pact",
     url: "/guides/pact-contract-testing-javascript/",
     tools: ["pact"]
+  },
+  {
+    title: "Keploy and Mockifyer: When to Use Which",
+    url: "/guides/keploy-and-mockifyer/",
+    tools: ["keploy", "mockifyer"]
   }
 ];
 
