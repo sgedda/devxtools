@@ -39,15 +39,16 @@ What we ran on 2026-11-10 on **Linux**, with the official open-source CLI **v3.6
 
 ```bash
 # Install the OSS CLI v3.6.229, for example:
-#   curl -sL https://github.com/keploy/keploy/releases/download/v3.6.229/keploy_linux_amd64.tar.gz | tar -xz
-#   chmod +x keploy
+#   mkdir -p bin
+#   curl -sL https://github.com/keploy/keploy/releases/download/v3.6.229/keploy_linux_amd64.tar.gz | tar -xz -C bin
+#   chmod +x bin/keploy
 
-./keploy --disable-ansi record -c "node app.js" --cmd-type native --record-timer 30s --path .
+./bin/keploy --disable-ansi record -c "node app.js" --cmd-type native --record-timer 30s --path .
 # While record is running, in another terminal:
 ./send-traffic.sh
 # After record exits:
 
-./keploy --disable-ansi test -c "node app.js" --cmd-type native --delay 5 --path .
+./bin/keploy --disable-ansi test -c "node app.js" --cmd-type native --delay 5 --path .
 ```
 
 Expected result from that run:

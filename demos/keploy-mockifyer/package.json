@@ -2,7 +2,6 @@
   "name": "keploy-mockifyer-repro",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
   "description": "Repro of the 2026-11-10 Keploy and Mockifyer guide tests. npm test runs only the Mockifyer record/replay check (not Keploy).",
   "scripts": {
     "test": "node record-replay.mjs"
