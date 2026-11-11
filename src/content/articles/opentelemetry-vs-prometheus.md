@@ -78,7 +78,7 @@ In this picture Prometheus is one **backend** among several, and OpenTelemetry i
 - **Pull (Prometheus' model):** each app exposes `/metrics`, and Prometheus scrapes every N seconds. The `up` metric tells you whether a target is reachable, and Prometheus controls the load. It needs service discovery and network reachability from Prometheus to every target.
 - **Push (OTLP):** the app or Collector sends metrics on its own schedule. This suits short-lived jobs, serverless, and networks where the backend can't reach the app.
 
-Since Prometheus 3.x you can do either. Start Prometheus with `--web.enable-otlp-receiver` and it accepts OTLP/HTTP metrics at `/api/v1/otlp/v1/metrics`. Or keep the Collector in the middle and use its `prometheusremotewrite` exporter (Prometheus needs `--web.enable-remote-write-receiver`). The Collector can also *scrape* existing `/metrics` endpoints with its Prometheus receiver, so it can bridge both models.
+Since Prometheus 3.x you can do either. Start Prometheus with `--web.enable-otlp-receiver` and it accepts OTLP/HTTP metrics at `/api/v1/otlp/v1/metrics`. Or keep the Collector in the middle and use its `prometheusremotewrite` exporter (Prometheus needs `--web.enable-remote-write-receiver`; on `otelcol-contrib` 0.165.0 that name is a deprecated alias for `prometheus_remote_write`, and the alias still worked in our run). The Collector can also *scrape* existing `/metrics` endpoints with its Prometheus receiver, so it can bridge both models.
 
 ## Instrumenting a Node.js app three ways
 
@@ -210,6 +210,8 @@ service:
       exporters: [prometheusremotewrite]
 ```
 
+`otelcol-contrib` 0.165.0 warns that the `prometheusremotewrite` exporter alias is deprecated in favour of `prometheus_remote_write`. The alias still worked in our run; we left the yaml unchanged.
+
 Both paths landed in the same Prometheus. `orders_created_total` showed up as `{job="users-api", service_name="users-api", plan="free"}` from the direct path (thanks to `promote_resource_attributes`) and as `{job="users-api", otel_scope_name="users-api", plan="free"}` via the Collector. In both cases `job` came from `service.name`, and auto-instrumented histograms arrived as `http_server_request_duration_seconds_*`.
 
 ## Gotchas we hit (and how to fix them)
@@ -247,7 +249,7 @@ For a Node.js team starting fresh, we'd use option 3 (OTel SDK → Collector →
 No. OpenTelemetry produces and transports telemetry but has no storage, query language, dashboards or alerting. It can replace Prometheus *client libraries* (such as prom-client) for instrumentation, but you still need a backend, and Prometheus is a common one.
 
 ### Can Prometheus receive OpenTelemetry data?
-Yes. Start Prometheus 3.x with `--web.enable-otlp-receiver` and send OTLP/HTTP metrics to `/api/v1/otlp/v1/metrics`. Alternatively, have the OpenTelemetry Collector push with the `prometheusremotewrite` exporter, or let Prometheus scrape an OTel Prometheus exporter endpoint. We ran all three on Prometheus 3.16.0 (and originally on 3.15.0).
+Yes. Start Prometheus 3.x with `--web.enable-otlp-receiver` and send OTLP/HTTP metrics to `/api/v1/otlp/v1/metrics`. Alternatively, have the OpenTelemetry Collector push with the `prometheusremotewrite` exporter (a deprecated alias for `prometheus_remote_write` on `otelcol-contrib` 0.165.0; the alias still worked in our run), or let Prometheus scrape an OTel Prometheus exporter endpoint. We ran all three on Prometheus 3.16.0 (and originally on 3.15.0).
 
 ### Should I use prom-client or OpenTelemetry in Node.js?
 Use prom-client if you only need Prometheus metrics and want the simplest, mature setup. Use the OpenTelemetry SDK if you also want traces, want auto-instrumentation of HTTP and database calls, or want to switch backends without changing code. You can migrate gradually. They can coexist, but don't instrument the same thing twice.

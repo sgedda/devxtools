@@ -21,7 +21,7 @@ affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also run
 
 > **Disclosure.** Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. It's one of the tools on this page, and it gets the same template, tests and limits list as every other tool, and it isn't ranked as "best". We have no affiliate links and no commercial ties to any other project here.
 
-> **Tested with** @pollyjs/core 6.0.6, nock 15.0.6, msw 3.0.5, @playwright/test 1.65.0, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104; the original record/replay tests remain those of 2026-10-15 on 1.10.181. On 2026-11-11, nock 15.0.6, msw 3.0.5 and Playwright 1.65.0 re-ran those record/replay tests and passed.
+> **Tested with** @pollyjs/core 6.0.6, nock 15.0.6, msw 3.0.5, @playwright/test 1.65.0, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104; the original record/replay tests remain those of 2026-10-15 on 1.10.181. On 2026-11-11 we re-ran those record/replay tests on nock 15.0.6 (released 2026-11-06, Europe/Stockholm), msw 3.0.5 (released 2026-11-11) and Playwright 1.65.0 (released 2026-11-05), and they passed.
 
 ## TL;DR
 
@@ -63,8 +63,8 @@ We compared interception, runtimes, clients, record modes, replay-only CI behavi
 | Tool | Intercepts | Runtimes | Clients | Record modes | Storage | Matching | Scenarios / editing | CI replay-only | Last release | Weekly npm DL | Licence |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Polly.js (baseline) | In-process | Node, browser | `http`, fetch, XHR | record, replay, passthrough | HAR | Method, headers, body, order, URL | Edit HAR | `recordIfMissing: false` | core 6.0.6, 2023-07-20 | ~200K | Apache-2.0 |
-| nock.back | In-process | Node | `http`, fetch, axios | wild, dryrun, record, update, lockdown | JSON per fixture | Host, method, path, body | Edit JSON | `lockdown` | 15.0.6, 2026-11-05 | ~6.3M (nock) | MIT |
-| MSW + fixtures | In-process / Service Worker | Node, browser | `http`, fetch, XHR | None | What you load | Your handlers | In code | `onUnhandledFrame: 'error'` | 3.0.3, 2026-10-10 | ~23.0M | MIT |
+| nock.back | In-process | Node | `http`, fetch, axios | wild, dryrun, record, update, lockdown | JSON per fixture | Host, method, path, body | Edit JSON | `lockdown` | 15.0.6, 2026-11-06 | ~6.3M (nock) | MIT |
+| MSW + fixtures | In-process / Service Worker | Node, browser | `http`, fetch, XHR | None | What you load | Your handlers | In code | `onUnhandledFrame: 'error'` | 3.0.5, 2026-11-11 | ~23.0M | MIT |
 | Playwright `routeFromHAR` | Browser | Browser (E2E) | Page requests | `update` on/off | HAR | URL, method, POST body | Edit HAR | `notFound: 'abort'` | 1.65.0, 2026-11-05 | ~76.2M (@playwright/test) | Apache-2.0 |
 | Talkback | Proxy | Any language | Any HTTP | NEW, OVERWRITE, DISABLED | JSON5 tapes | Method, URL, headers, body | Edit tapes | `DISABLED` | 4.2.0, 2024-07-10 | ~54K | MIT |
 | Proxay | Proxy | Any language | Any HTTP | record, replay, passthrough | YAML tapes | Best-effort or exact | Edit YAML | `--mode replay` | npm 1.9.0, 2024-05-15 | ~3.9K | MIT |
@@ -103,7 +103,7 @@ nockDone();
 - **Storage format:** a JSON array of Nock definitions per fixture.
 - **Matching:** host, method, path and body. Request headers aren't recorded by default.
 - **Re-record workflow:** `update` re-records, `record` adds what's missing, `lockdown` replays and blocks the rest (all tested with `fetch` and axios). Unmatched requests to a recorded host got a **501**.
-- **Maintenance:** 15.0.6, 2026-11-05; ~6.3M weekly downloads.
+- **Maintenance:** 15.0.6, 2026-11-06; ~6.3M weekly downloads.
 - **Best for:** Node services and libraries.
 - **Limits:** no browser or React Native; modes are managed via env var; no HAR import.
 
@@ -138,7 +138,7 @@ The official `@mswjs/source` 0.5.0 has `fromTraffic(har)` and declares `msw ^2.1
 - **Storage format:** your choice.
 - **Matching:** your handlers. This is the most flexible option.
 - **Re-record workflow:** re-capture with your other tool.
-- **Maintenance:** 3.0.3, 2026-10-10; ~23M weekly downloads.
+- **Maintenance:** 3.0.5, 2026-11-11; ~23M weekly downloads.
 - **Best for:** teams already on MSW.
 - **Limits:** no recorder; `@mswjs/source` isn't MSW 3-ready; `@msw/react-native` is a 404 on npm (2026-10-15).
 
