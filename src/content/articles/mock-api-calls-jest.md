@@ -332,6 +332,8 @@ test('msw under jsdom', async () => {
 
 **Nock** is the Node-only alternative at this level. Its scopes assert that each expected request happened. See [MSW vs Nock](/comparisons/msw-vs-nock/) for side-by-side code.
 
+For [traffic-generated regression tests for a Node service](/guides/keploy-and-mockifyer/), Keploy can also wrap an existing Jest suite (`keploy mock record` / `replay`, per Keploy's docs) and generate API tests from traffic.
+
 ## Typing mocks in TypeScript
 
 - `jest.mocked(fn)` turns an imported function into a typed `jest.MockedFunction`, so `mockResolvedValueOnce` checks your return type.
@@ -431,7 +433,7 @@ Use `mockRejectedValueOnce(new Error(...))` for module mocks, `mock.onGet(...).r
 
 ## Related
 
-[MSW](/tools/msw/) · [Nock](/tools/nock/) · [Mirage JS](/tools/miragejs/) · [Polly.JS](/tools/pollyjs/) · [Faker](/tools/faker/) · [Fishery](/tools/fishery/) · [MSW vs Nock](/comparisons/msw-vs-nock/) · [Mocking & test data tools](/mocking-test-data/) · [Testing hub](/testing/)
+[MSW](/tools/msw/) · [Nock](/tools/nock/) · [Mirage JS](/tools/miragejs/) · [Polly.JS](/tools/pollyjs/) · [Faker](/tools/faker/) · [Fishery](/tools/fishery/) · [MSW vs Nock](/comparisons/msw-vs-nock/) · [traffic-generated regression tests for a Node service](/guides/keploy-and-mockifyer/) · [Mocking & test data tools](/mocking-test-data/) · [Testing hub](/testing/)
 
 External docs (no tool pages yet): [Jest](https://jestjs.io/docs/mock-functions) · [Vitest](https://vitest.dev/guide/mocking) · [axios-mock-adapter](https://github.com/ctimmerm/axios-mock-adapter)
 

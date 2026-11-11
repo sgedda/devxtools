@@ -36,7 +36,7 @@ Frontend teams mock APIs for good reasons: fast tests, offline development, dete
 
 Then the backend renames `email` to `emailAddress`. Every frontend test still passes, because the mocks still say `email`. The bug shows up in staging if you're lucky, and in production if you're not.
 
-Mocks aren't the problem. *Unverified* mocks are. Contract testing adds the missing check: the provider must prove it still satisfies what consumers expect.
+Mocks aren't the problem. *Unverified* mocks are. Contract testing adds the missing check: the provider must prove it still satisfies what consumers expect. The same drift shows up when [keeping recorded tests and app mocks in step when the API changes](/guides/keploy-and-mockifyer/).
 
 ## What contract testing is
 
@@ -349,7 +349,7 @@ Spring Cloud Contract (JVM, provider-driven), OpenAPI-based checks (a Prism vali
 
 - [Pact](/tools/pact/) · [MSW](/tools/msw/) · [Prism](/tools/prism/) · [Spectral](/tools/spectral/)
 - [Microcks](/tools/microcks/) · [WireMock](/tools/wiremock/)
-- [MSW vs Nock](/comparisons/msw-vs-nock/) · [Mocking & test data](/mocking-test-data/) · [Testing](/testing/)
+- [MSW vs Nock](/comparisons/msw-vs-nock/) · [keeping recorded tests and app mocks in step when the API changes](/guides/keploy-and-mockifyer/) · [Mocking & test data](/mocking-test-data/) · [Testing](/testing/)
 
 ## Sources
 

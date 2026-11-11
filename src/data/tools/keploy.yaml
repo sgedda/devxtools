@@ -18,6 +18,7 @@ categories:
 bestFor: API regression testing with tests and dependency mocks generated from real application traffic
 description: Open-source API regression testing tool that records real application traffic using eBPF and replays it as tests, with mocks for dependencies such as databases, caches and external services. Replayed responses are compared against the recorded ones, so changes that break existing API behavior are caught before release. Tests run locally or in CI pipelines without code changes.
 whenToUse: When you need a regression suite for existing APIs that runs on every code change in CI, without hand-writing tests or mocks, especially for services that depend on databases and third-party APIs.
+seeAlso: If you also need to record `fetch` or axios in Node or React Native, see [when it sits next to a JS record/replay library](/guides/keploy-and-mockifyer/).
 lastChecked: 2026-11-06
 isOpenSource: true
 affiliation: Submitted by the Keploy team

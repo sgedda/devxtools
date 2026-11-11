@@ -88,7 +88,7 @@ keploy
         └── test-2.yaml
 ```
 
-Keploy can also mock the dependencies of an **existing test suite** with `keploy mock record -c "<your test command>"` and `keploy mock replay -c "<your test command>"`. Its docs mention pytest, `go test` and jest. Your test runner's exit code is passed through, so it works in CI.
+Keploy can also mock the dependencies of an **existing test suite** with `keploy mock record -c "<your test command>"` and `keploy mock replay -c "<your test command>"`. Its docs mention pytest, `go test` and [mocking API calls in Jest](/guides/mock-api-calls-jest/). Your test runner's exit code is passed through, so it works in CI.
 
 Things to know before you start (all per Keploy's docs):
 
@@ -201,8 +201,8 @@ Keploy's README lists Postgres, MySQL and MongoDB, plus Kafka and RabbitMQ for m
 
 ## Related
 
-- [Keploy](/tools/keploy/) · [Mockifyer](/tools/mockifyer/) · [MSW](/tools/msw/) · [WireMock](/tools/wiremock/)
-- [How to Mock APIs in React Native](/guides/mock-api-react-native/) · [Polly.js alternatives](/comparisons/pollyjs-alternatives/) · [Pact contract testing](/guides/pact-contract-testing-javascript/)
+- [Keploy](/tools/keploy/) · [Mockifyer](/tools/mockifyer/) · [MSW](/tools/msw/) · [Nock](/tools/nock/) · [WireMock](/tools/wiremock/)
+- [How to Mock APIs in React Native](/guides/mock-api-react-native/) · [Polly.js alternatives](/comparisons/pollyjs-alternatives/) · [MSW vs Nock vs Polly.js](/comparisons/msw-vs-nock-vs-polly/) · [Pact contract testing](/guides/pact-contract-testing-javascript/)
 - [Record/replay and mocking tools in the catalog](/catalog/) · [Mocking & test data](/mocking-test-data/) · [Testing](/testing/)
 
 ## Sources

@@ -311,7 +311,7 @@ Against our local fixture: about 108,600 requests in 10 s, p95 1.91 ms, 0% error
 Bruno for exploration, with collections in the repo. MSW handlers shared by Vitest, Storybook and dev. Playwright for E2E, with the `request` fixture for setup. Prism mocks when the backend isn't ready. Add Pact if the backend team will verify contracts.
 
 **Node backend team (Express, Fastify, NestJS):**
-Vitest or Jest with supertest for fast in-process regression. Spectral on the spec in CI, plus Schemathesis against a running build to catch spec drift. MSW (or Nock) for outbound dependencies. k6 with thresholds on a staging environment. Pact if you have consumers in other repos.
+Vitest or Jest with supertest for fast in-process regression. Spectral on the spec in CI, plus Schemathesis against a running build to catch spec drift. MSW (or Nock) for outbound dependencies. k6 with thresholds on a staging environment. Pact if you have consumers in other repos. [Keploy](/tools/keploy/) is one option for [generating API regression tests from recorded traffic](/guides/keploy-and-mockifyer/), including dependency mocks.
 
 **Polyglot microservices:**
 Pact with a Broker and `can-i-deploy` as the safety net between services. WireMock in Docker Compose for shared dependency stubs. Schemathesis per service against its spec. Postman or Insomnia for cross-team exploration and docs. k6, Gatling or Locust, depending on the language your team writes load tests in.
@@ -341,7 +341,7 @@ Any tool that exits non-zero on failure and writes JUnit XML. In our tests that 
 - [Testing tools hub](/testing/) · [Mocking & test data](/mocking-test-data/) · [API development](/api-development/)
 - [Postman](/tools/postman/) · [Bruno](/tools/bruno/) · [Insomnia](/tools/insomnia/) · [Hoppscotch](/tools/hoppscotch/)
 - [Playwright](/tools/playwright/) · [Pact](/tools/pact/) · [Prism](/tools/prism/) · [Spectral](/tools/spectral/)
-- [MSW](/tools/msw/) · [WireMock](/tools/wiremock/) · [Mockoon](/tools/mockoon/) · [MSW vs Nock](/comparisons/msw-vs-nock/)
+- [MSW](/tools/msw/) · [WireMock](/tools/wiremock/) · [Mockoon](/tools/mockoon/) · [MSW vs Nock](/comparisons/msw-vs-nock/) · [generating API regression tests from recorded traffic](/guides/keploy-and-mockifyer/)
 - [k6](/tools/k6/) · [Locust](/tools/locust/) · [Gatling](/tools/gatling/) · [Artillery](/tools/artillery/)
 
 ## Sources

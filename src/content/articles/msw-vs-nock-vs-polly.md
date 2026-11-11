@@ -130,11 +130,11 @@ const polly = new Polly('My Test', {
 
 - **MSW** if mocks must work outside Node, or you want one set of handlers across tests, development and Storybook.
 - **Nock** if you only test Node code and want each test to state exactly which calls must happen.
-- **Polly.js** only if you already depend on it. For new record/replay setups, see [maintained Polly.js alternatives](/comparisons/pollyjs-alternatives/).
+- **Polly.js** only if you already depend on it. For new record/replay setups, see [maintained Polly.js alternatives](/comparisons/pollyjs-alternatives/). For [record/replay at the service layer, not only in a JS test](/guides/keploy-and-mockifyer/), that's a different job than the libraries on this page.
 
 ## Related
 
-[MSW](/tools/msw/) · [Nock](/tools/nock/) · [Polly.js](/tools/pollyjs/) · [MSW vs Nock head-to-head, with code](/comparisons/msw-vs-nock/) · [Polly.js alternatives](/comparisons/pollyjs-alternatives/) · [All comparisons](/comparisons/)
+[MSW](/tools/msw/) · [Nock](/tools/nock/) · [Polly.js](/tools/pollyjs/) · [MSW vs Nock head-to-head, with code](/comparisons/msw-vs-nock/) · [Polly.js alternatives](/comparisons/pollyjs-alternatives/) · [record/replay at the service layer, not only in a JS test](/guides/keploy-and-mockifyer/) · [All comparisons](/comparisons/)
 
 ## Sources (checked 2026-10-19)
 

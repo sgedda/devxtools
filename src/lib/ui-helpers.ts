@@ -99,3 +99,29 @@ export const SECTION_ICONS: Record<string, string> = {
   'testing': 'bug',
   'observability': 'eye',
 };
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+const SAFE_HREF = /^(?:\/[\w./?#%=&+-]*|https?:\/\/[^\s]+)$/;
+
+/** Render a small inline-markdown subset (`code`, **bold**, [label](href)) to safe HTML. */
+export function renderInlineMarkdown(markdown: string): string {
+  const tokens: string[] = [];
+  const token = (html: string) => {
+    const i = tokens.length;
+    tokens.push(html);
+    return `\u0000${i}\u0000`;
+  };
+
+  let html = escapeHtml(markdown);
+  html = html.replace(/`([^`]+)`/g, (_m, code: string) => token(`<code>${code}</code>`));
+  html = html.replace(/\*\*([^*]+)\*\*/g, (_m, bold: string) => token(`<strong>${bold}</strong>`));
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, label: string, href: string) => {
+    const decodedHref = href.replace(/&amp;/g, '&');
+    if (!SAFE_HREF.test(decodedHref)) return `[${label}](${href})`;
+    return token(`<a href="${escapeHtml(decodedHref)}">${label}</a>`);
+  });
+  return html.replace(/\u0000(\d+)\u0000/g, (_m, i: string) => tokens[Number(i)]);
+}
