@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.0.4",
+    "releaseDate": "2026-11-06T01:15:42.269Z",
+    "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.4",
+    "source": "npm",
+    "summary": "Bug fixes: prevent the worker from going idle, and treat `.ico` as a common asset.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.0.3",
     "releaseDate": "2026-10-10T01:38:37.376Z",
     "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.3",

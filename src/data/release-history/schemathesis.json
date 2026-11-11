@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.33.1",
+    "releaseDate": "2026-11-04T15:29:16Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.1",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Adds GraphQL coverage, unary gRPC fuzzing and more OpenAPI 3.2 support (XML `nodeType`, cookie style, `itemSchema`). 4.33.1 fixes gRPC, `st replay` and schema-loading bugs."
+  },
+  {
     "version": "4.32.7",
     "releaseDate": "2026-10-27T23:07:07Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.32.7",

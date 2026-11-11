@@ -1,5 +1,13 @@
 [
   {
+    "version": "16.2.1",
+    "releaseDate": "2026-10-28T14:20:32.633Z",
+    "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-1",
+    "source": "npm",
+    "summary": "Tests with `testIsolation` start faster after tests that load no pages. Fixes `cy.contains()` inside `cy.document().within()` and decoding of `x-gzip` responses, plus a 16.0.0 cross-origin hang.",
+    "status": "reviewed"
+  },
+  {
     "version": "16.2.0",
     "releaseDate": "2026-10-14T16:27:58Z",
     "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-0",
