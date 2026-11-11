@@ -9,7 +9,7 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Guides", url: "/guides/" }, {
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-11-10"
-dateModified: "2026-11-10"
+dateModified: "2026-11-11"
 tested_with: "Mockifyer: fetch and axios record/replay on Node 24.22.1 against a local test API, @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x, 2026-11-10. Keploy: keploy record then keploy test, 24 recorded and 24/24 passed on a small Node HTTP app, Linux, native OSS CLI v3.6.229, no account, no Docker, 2026-11-10; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229."
 repro_url: "https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer"
 repro_label: "demos/keploy-mockifyer on GitHub"
@@ -125,7 +125,7 @@ setupMockifyer({
 });
 ```
 
-You can run a small Node record-then-replay example in the browser. It uses the real `@sgedda/mockifyer-fetch` package against the shared demo API at `https://demo.devxtools.dev`. The first request is recorded to a mock file; the second is served from that file. StackBlitz (a third-party service) runs this in a Node WebContainer, not as a rewritten simulation of the library.
+You can run a small Node record-then-replay example in the browser. It uses the real `@sgedda/mockifyer-fetch` package against the shared demo API at `https://demo.devxtools.dev`, with the same non-default settings as the snippet above (`useGlobalFetch`, `record_all`, `MOCKIFYER_RECORD_RESPONSES=true` and `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false`). The first request is recorded to a mock file; the second is served from that file. StackBlitz (a third-party service) runs this in a Node WebContainer, not as a rewritten simulation of the library. There is no equivalent in-browser run for Keploy here: it attaches to the kernel on Linux and is not a JS library we can run in StackBlitz. The commands we ran are in [`demos/keploy-mockifyer`](https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer).
 
 <RunIt project="mockifyer-vitest" file="record-replay.test.js" title="Try Mockifyer + Vitest Live" />
 
