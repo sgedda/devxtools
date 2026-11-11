@@ -35,7 +35,7 @@
       "releaseDate": "2026-11-10T19:29:02.913Z",
       "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-3-0",
       "source": "npm",
-      "summary": "Starts `cypress run` specs sooner, ships a smaller binary, runs every `setupNodeEvents` handler in order, and fixes intercept `Set-Cookie` in Chromium, unsafe ports, and large inline source maps.",
+      "summary": "Starts `cypress run` sooner, runs every `setupNodeEvents` handler in order, fixes intercept `Set-Cookie`, and upgrades Electron, Node, Chromium, systeminformation, node-forge and jimp for CVEs.",
       "status": "reviewed"
     },
     "detox": {
@@ -144,7 +144,7 @@
       "releaseDate": "2026-11-11T05:44:25Z",
       "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.0",
       "source": "github",
-      "summary": "Adds a parser-contract integration so integrations can declare mock-noise and confirm miss reporting.",
+      "summary": "Adds a parser-contract for mock-noise and miss reporting. Reusable mocks now keep the union of learned `req_body_noise`, so saved mock files can change (#4943).",
       "status": "reviewed"
     },
     "locust": {
