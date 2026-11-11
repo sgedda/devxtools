@@ -88,7 +88,7 @@ keploy
         └── test-2.yaml
 ```
 
-Keploy can also mock the dependencies of an **existing test suite** with `keploy mock record -c "<your test command>"` and `keploy mock replay -c "<your test command>"`. Its docs mention pytest, `go test` and [mocking API calls in Jest](/guides/mock-api-calls-jest/). Your test runner's exit code is passed through, so it works in CI.
+Keploy can also mock the dependencies of an **existing test suite** with `keploy mock record -c "<your test command>"` and `keploy mock replay -c "<your test command>"`. Its docs mention pytest, `go test` and [Jest](/guides/mock-api-calls-jest/). Your test runner's exit code is passed through, so it works in CI.
 
 Things to know before you start (all per Keploy's docs):
 
