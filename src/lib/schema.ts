@@ -46,6 +46,8 @@ export const ToolSchema = z.object({
   platforms: z.array(z.enum(['iOS', 'Android', 'Web', 'React Native', 'Flutter'])).optional(),
   bestFor: z.string(),
   description: z.string(),
+  seoTitle: z.string().optional(), // Document title; Layout will not append | DevXTools if already present
+  seoDescription: z.string().optional(), // Meta description override; bestFor remains the on-page blurb
   whenToUse: z.string().optional(),
   githubStars: z.number().optional(),
   lastActivity: z.string().optional(), // ISO date string of last commit/release

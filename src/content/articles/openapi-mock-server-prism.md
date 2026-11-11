@@ -1,6 +1,6 @@
 ---
-title: "OpenAPI Mock Server with Prism: Spec-First Guide (2026)"
-description: "Run an OpenAPI mock server with Prism: static vs dynamic responses, examples, Docker, CI, request validation, proxy mode, and alternatives like Mockoon."
+title: "OpenAPI Mock Server with Prism (2026) | DevXTools"
+description: "Run a Prism OpenAPI mock server from your spec: static vs dynamic examples, Docker, CI, request validation, proxy mode, and when to use Mockoon instead."
 slug: "/guides/openapi-mock-server-prism/"
 canonical: "https://devxtools.dev/guides/openapi-mock-server-prism/"
 h1: "Spec-First API Mocking: Run an OpenAPI Mock Server with Prism"

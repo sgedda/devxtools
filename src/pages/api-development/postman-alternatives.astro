@@ -8,8 +8,8 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "TechArticle",
-      "headline": "Best Postman Alternatives (2026): 8 API Clients Compared",
-      "description": "Postman alternatives for 2026: Bruno, Hoppscotch, Insomnia, HTTPie, Yaak and more, compared by Git storage, CI runners, mock servers, protocols and price.",
+      "headline": "Postman Alternatives: 8 API Clients (2026) | DevXTools",
+      "description": "Postman alternatives, updated Nov 2026: Bruno, Hoppscotch, Insomnia, Yaak and more, compared by Git storage, offline use, CI, mocks and price.",
       "url": "https://devxtools.dev/api-development/postman-alternatives/",
       "datePublished": "2026-10-15",
       "dateModified": "2026-11-11",
@@ -25,10 +25,10 @@ const jsonLd = {
         { "@type": "ListItem", "position": 2, "url": "https://devxtools.dev/tools/hoppscotch/" },
         { "@type": "ListItem", "position": 3, "url": "https://devxtools.dev/tools/insomnia/" },
         { "@type": "ListItem", "position": 4, "url": "https://devxtools.dev/tools/httpie/" },
-        { "@type": "ListItem", "position": 5, "url": "https://yaak.app/" },
-        { "@type": "ListItem", "position": 6, "url": "https://www.thunderclient.com/" },
+        { "@type": "ListItem", "position": 5, "url": "https://devxtools.dev/tools/yaak/" },
+        { "@type": "ListItem", "position": 6, "url": "https://devxtools.dev/tools/thunder-client/" },
         { "@type": "ListItem", "position": 7, "url": "https://marketplace.visualstudio.com/items?itemName=humao.rest-client" },
-        { "@type": "ListItem", "position": 8, "url": "https://apidog.com/" }
+        { "@type": "ListItem", "position": 8, "url": "https://devxtools.dev/tools/apidog/" }
       ]
     },
     {
@@ -98,7 +98,7 @@ const jsonLd = {
 
 <Layout 
   title="Postman Alternatives: 8 API Clients (2026)" 
-  description="Postman alternatives for 2026: Bruno, Hoppscotch, Insomnia, HTTPie, Yaak and more, compared by Git storage, CI runners, mock servers, protocols and price."
+  description="Postman alternatives, updated Nov 2026: Bruno, Hoppscotch, Insomnia, Yaak and more, compared by Git storage, offline use, CI, mocks and price."
   canonicalURL="https://devxtools.dev/api-development/postman-alternatives/"
   jsonLd={jsonLd}
 >
@@ -126,7 +126,7 @@ const jsonLd = {
           <li><strong>Best in the browser, or self-hosted:</strong> <a href="/tools/hoppscotch/" class="text-indigo-600 dark:text-indigo-400">Hoppscotch</a>. MIT-licensed, with a web app and a self-hosted Community Edition.</li>
           <li><strong>Most familiar if you're coming from Postman:</strong> <a href="/tools/insomnia/" class="text-indigo-600 dark:text-indigo-400">Insomnia</a>. A similar desktop app, maintained by Kong.</li>
           <li><strong>Best for the terminal:</strong> <a href="/tools/httpie/" class="text-indigo-600 dark:text-indigo-400">HTTPie</a>. A friendlier curl, plus a desktop/web app in beta.</li>
-          <li><strong>Best inside your editor:</strong> Thunder Client, or the free VS Code REST Client extension.</li>
+          <li><strong>Best inside your editor:</strong> <a href="/tools/thunder-client/" class="text-indigo-600 dark:text-indigo-400">Thunder Client</a>, or the free VS Code REST Client extension.</li>
         </ul>
       </div>
 
@@ -228,7 +228,7 @@ const jsonLd = {
               <td>No public pricing page found</td>
             </tr>
             <tr>
-              <td><strong>Yaak</strong></td>
+              <td><strong><a href="/tools/yaak/">Yaak</a></strong></td>
               <td>MIT (source)</td>
               <td>Local YAML files; Git sync</td>
               <td>Yes</td>
@@ -238,7 +238,7 @@ const jsonLd = {
               <td>$79/yr individual; $149/user/yr business (for work use)</td>
             </tr>
             <tr>
-              <td><strong>Thunder Client</strong></td>
+              <td><strong><a href="/tools/thunder-client/">Thunder Client</a></strong></td>
               <td>Proprietary</td>
               <td>Local (Git Sync on paid plans)</td>
               <td>No (free account required)</td>
@@ -258,7 +258,7 @@ const jsonLd = {
               <td>Free</td>
             </tr>
             <tr>
-              <td><strong>Apidog</strong></td>
+              <td><strong><a href="/tools/apidog/">Apidog</a></strong></td>
               <td>Proprietary</td>
               <td>Cloud-first</td>
               <td>Not listed</td>
@@ -335,7 +335,7 @@ const jsonLd = {
       <p><strong>Best for:</strong> individuals and small teams who want a fast, local-first desktop client with files in Git.</p>
 
       <ul>
-        <li><strong>Storage:</strong> local-first. Yaak stores one YAML file per request, folder and environment, and it has Git sync with a built-in Git UI. Yaak says it doesn't store or sync your data on its servers.</li>
+        <li><strong>Storage:</strong> local-first. <a href="/tools/yaak/">Yaak</a> stores one YAML file per request, folder and environment, and it has Git sync with a built-in Git UI. Yaak says it doesn't store or sync your data on its servers.</li>
         <li><strong>Protocols:</strong> HTTP, GraphQL, gRPC, WebSocket and Server-Sent Events, according to yaak.app.</li>
         <li><strong>Import:</strong> Postman collections and environments, Insomnia, Bruno, OpenAPI/Swagger and curl.</li>
         <li><strong>CLI:</strong> Yaak ships a CLI.</li>
@@ -347,7 +347,7 @@ const jsonLd = {
       <p><strong>Best for:</strong> staying in your editor.</p>
 
       <ul>
-        <li><strong>Thunder Client</strong> is an extension for VS Code (and VS Code-based editors) and JetBrains IDEs. Collection data is stored locally on your machine. Since v3.0.0 (17 Oct 2026), the free plan requires a free Thunder Client account and was limited to 3 collections; it includes WebSocket/SSE/gRPC and OAuth 2.0. Since v3.1.0 (27 Oct 2026), the free plan also includes the CLI, CI/CD integration and the MCP server, and allows up to 50 requests per collection. Since v3.2.0 (3 Nov 2026), the free plan allows 10 collections and 50 local collection runs per month. Git Sync is on paid plans. <strong>Pricing (2026-11-04):</strong> Free, Starter $3, Business $7 and Enterprise $16 per user/month.</li>
+        <li><strong><a href="/tools/thunder-client/">Thunder Client</a></strong> is an extension for VS Code (and VS Code-based editors) and JetBrains IDEs. Collection data is stored locally on your machine. Since v3.0.0 (17 Oct 2026), the free plan requires a free Thunder Client account and was limited to 3 collections; it includes WebSocket/SSE/gRPC and OAuth 2.0. Since v3.1.0 (27 Oct 2026), the free plan also includes the CLI, CI/CD integration and the MCP server, and allows up to 50 requests per collection. Since v3.2.0 (3 Nov 2026), the free plan allows 10 collections and 50 local collection runs per month. Git Sync is on paid plans. <strong>Pricing (2026-11-04):</strong> Free, Starter $3, Business $7 and Enterprise $16 per user/month.</li>
         <li><strong>REST Client</strong> (by Huachao Mao, MIT) takes another approach. You write requests in <code>.http</code> or <code>.rest</code> files and send them from the editor:
           <pre><code class="language-http">{`@baseUrl = http://localhost:4173
 
@@ -362,7 +362,7 @@ Accept: application/json`}</code></pre>
 
       <p><strong>Best for:</strong> teams who want an all-in-one design, test, mock and docs platform and don't mind it being cloud-first.</p>
 
-      <p>Apidog publishes a lot of comparison content about Postman alternatives. Treat that as vendor marketing, not as a neutral source. Its pricing page lists local and cloud mock servers and an Apidog CLI. Multiple paid plans available (see apidog.com/pricing for current rates). 14-day trial.</p>
+      <p><a href="/tools/apidog/">Apidog</a> publishes a lot of comparison content about Postman alternatives. Treat that as vendor marketing, not as a neutral source. Its pricing page lists local and cloud mock servers and an Apidog CLI. Multiple paid plans available (see apidog.com/pricing for current rates). 14-day trial.</p>
 
       <h3 id="curl-http-files">curl + .http files (the minimalist option)</h3>
 

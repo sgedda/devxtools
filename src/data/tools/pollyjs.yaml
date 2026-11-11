@@ -1,5 +1,7 @@
 name: Polly.js
 slug: pollyjs
+seoTitle: "Polly.js: Record & Replay HTTP Mocks | DevXTools"
+seoDescription: "Polly.js records and replays HTTP in Node and browser tests. How it works in 2026, setup, and alternatives like MSW if you need a maintained option."
 website: https://netflix.github.io/pollyjs
 repo: https://github.com/Netflix/pollyjs
 license: Apache-2.0

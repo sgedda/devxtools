@@ -84,8 +84,8 @@ const relatedTools = allTools
 ---
 
 <Layout 
-  title={`${tool.name}: Setup, Example & Alternatives`}
-  description={tool.bestFor}
+  title={tool.seoTitle ?? `${tool.name}: Setup, Example & Alternatives`}
+  description={tool.seoDescription ?? tool.bestFor}
   ogImage={`/og-tools/${tool.slug}.png`}
   jsonLd={jsonLd}
 >

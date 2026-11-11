@@ -1,5 +1,7 @@
 name: Fishery
 slug: fishery
+seoTitle: "Fishery JS: Type-Safe Test Factories | DevXTools"
+seoDescription: "Fishery (fishery on npm) is a TypeScript factory library for type-safe test objects, traits and sequences. Setup, examples, and how it pairs with Faker."
 website: https://github.com/thoughtbot/fishery
 repo: https://github.com/thoughtbot/fishery
 license: MIT

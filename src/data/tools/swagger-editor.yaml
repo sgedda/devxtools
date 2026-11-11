@@ -1,5 +1,7 @@
 name: Swagger Editor
 slug: swagger-editor
+seoTitle: "Swagger Editor: OpenAPI Editor (2026) | DevXTools"
+seoDescription: "Swagger Editor is a browser-based OpenAPI editor with live validation and a docs preview. Setup, example, and alternatives like Stoplight and Scalar."
 website: https://editor.swagger.io
 repo: https://github.com/swagger-api/swagger-editor
 license: Apache-2.0
