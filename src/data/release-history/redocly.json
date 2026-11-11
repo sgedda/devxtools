@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.76.0",
+    "releaseDate": "2026-11-05T15:40:10.433Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.76.0",
+    "source": "npm",
+    "summary": "Patch: fixes Digest auth in `respect` (`cnonce`, missing `opaque`, and `=`/`,` in WWW-Authenticate values).",
+    "status": "reviewed"
+  },
+  {
     "version": "2.75.0",
     "releaseDate": "2026-11-04T15:44:17.666Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.75.0",
