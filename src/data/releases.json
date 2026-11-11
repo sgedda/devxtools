@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-06T07:32:26.717Z",
+  "lastUpdated": "2026-11-11T07:17:28.365Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -31,11 +31,11 @@
       "status": "draft"
     },
     "cypress": {
-      "version": "16.2.1",
-      "releaseDate": "2026-10-28T14:20:32.633Z",
-      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-1",
+      "version": "16.3.0",
+      "releaseDate": "2026-11-10T19:29:02.913Z",
+      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-3-0",
       "source": "npm",
-      "summary": "Tests with `testIsolation` start faster after tests that load no pages. Fixes `cy.contains()` inside `cy.document().within()` and decoding of `x-gzip` responses, plus a 16.0.0 cross-origin hang.",
+      "summary": "Starts `cypress run` specs sooner, ships a smaller binary, runs every `setupNodeEvents` handler in order, and fixes intercept `Set-Cookie` in Chromium, unsafe ports, and large inline source maps.",
       "status": "reviewed"
     },
     "detox": {
@@ -53,11 +53,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.197.0",
-      "releaseDate": "2026-11-05T19:47:55.772Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.197.0",
+      "version": "5.205.1",
+      "releaseDate": "2026-11-10T23:15:26.776Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.205.1",
       "source": "npm",
-      "summary": "5.196.0–5.197.0 add `fern docs export` (html/md/pdf), print guest SDK build IDs and dashboard links, and quiet the guest end-of-run upgrade check.",
+      "summary": "5.198.0–5.205.1 add `fern instructions`, `docs.yml` `remote-paths`, guest docs source upload, locale `search-text`, AI-search `button-text`, and keep OpenAPI `$ref` primitive defaults.",
       "status": "reviewed"
     },
     "fishery": {
@@ -139,6 +139,14 @@
       "source": "github",
       "status": "draft"
     },
+    "keploy": {
+      "version": "3.7.0",
+      "releaseDate": "2026-11-11T05:44:25Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.0",
+      "source": "github",
+      "summary": "Adds a parser-contract integration so integrations can declare mock-noise and confirm miss reporting.",
+      "status": "reviewed"
+    },
     "locust": {
       "version": "2.47.0",
       "releaseDate": "2026-10-21T20:30:45",
@@ -193,11 +201,11 @@
       "status": "draft"
     },
     "msw": {
-      "version": "3.0.4",
-      "releaseDate": "2026-11-06T01:15:42.269Z",
-      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.4",
+      "version": "3.0.5",
+      "releaseDate": "2026-11-11T01:14:49.507Z",
+      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.5",
       "source": "npm",
-      "summary": "Bug fixes: prevent the worker from going idle, and treat `.ico` as a common asset.",
+      "summary": "Bug fixes: update `@mswjs/interceptors` to 0.45.11, and add `handler` to the request:match event.",
       "status": "reviewed"
     },
     "nock": {
@@ -302,19 +310,20 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.76.4",
-      "releaseDate": "2026-10-30T19:21:03.847Z",
+      "version": "1.78.0",
+      "releaseDate": "2026-11-10T14:55:07.067Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "draft"
+      "summary": "1.77.0–1.78.0 add per-document auth overrides, default extension rendering, Avro/RAML/Protobuf schema docs, custom code-sample selection, and SDK tab labels.",
+      "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.33.1",
-      "releaseDate": "2026-11-04T15:29:16Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.1",
+      "version": "4.33.2",
+      "releaseDate": "2026-11-11T00:27:24Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.2",
       "source": "github",
       "status": "reviewed",
-      "summary": "Adds GraphQL coverage, unary gRPC fuzzing and more OpenAPI 3.2 support (XML `nodeType`, cookie style, `itemSchema`). 4.33.1 fixes gRPC, `st replay` and schema-loading bugs."
+      "summary": "4.33.2 fixes inferred links, stateful id reuse, data generation, false-positive checks, CLI/auth config, pytest collection, gRPC retries, and `st replay` request bodies."
     },
     "sentry": {
       "version": "26.10.1",
