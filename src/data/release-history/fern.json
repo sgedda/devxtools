@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.205.1",
+    "releaseDate": "2026-11-10T23:15:26.776Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.205.1",
+    "source": "npm",
+    "summary": "5.198.0–5.205.1 add `fern instructions`, `docs.yml` `remote-paths`, guest docs source upload, locale `search-text`, AI-search `button-text`, and keep OpenAPI `$ref` primitive defaults.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.197.0",
     "releaseDate": "2026-11-05T19:47:55.772Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.197.0",
