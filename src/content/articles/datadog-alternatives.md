@@ -3,7 +3,7 @@ title: "Datadog Alternatives (2026): OSS & Cheaper | DevXTools"
 description: "Independent Datadog alternatives: open-source and cheaper options for APM, logs, metrics and errors, with pricing models and an OpenTelemetry-first plan."
 slug: "/observability/datadog-alternatives/"
 canonical: "https://devxtools.dev/observability/datadog-alternatives/"
-h1: "Datadog Alternatives: Open-Source and Cheaper Options by Job"
+h1: "Datadog Alternatives: Open-Source and Cheaper Options for APM, Logs and Metrics"
 primary_keyword: "datadog alternatives"
 breadcrumbs: [{ name: "Home", url: "/" }, { name: "Observability", url: "/observability/" }, { name: "Datadog Alternatives", url: "/observability/datadog-alternatives/" }]
 schema: ["TechArticle", "ItemList", "BreadcrumbList", "FAQPage"]
@@ -124,7 +124,8 @@ New Relic prices by data and users, not hosts. The free tier gives 100 GB/month 
 
 Honeycomb is event-based tracing and observability with high-cardinality querying, and it's strongly OpenTelemetry-oriented. Free covers up to 20M events and 100M metric data points per month. Pro starts at $150/month for 50M events (up to 750M), with unlimited seats and queries. It's best for debugging distributed systems by arbitrary attributes, not for infrastructure dashboards.
 
-## Replacing Datadog job by job
+<a id="replacing-datadog-job-by-job"></a>
+## Datadog Alternatives for APM, Logs, Metrics and Errors
 
 | Datadog product | Open-source option | SaaS option | Notes |
 |---|---|---|---|
