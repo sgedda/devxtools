@@ -125,6 +125,12 @@ setupMockifyer({
 });
 ```
 
+You can run a small Node record-then-replay example in the browser. It uses the real `@sgedda/mockifyer-fetch` package against the shared demo API at `https://demo.devxtools.dev`. The first request is recorded to a mock file; the second is served from that file. StackBlitz (a third-party service) runs this in a Node WebContainer, not as a rewritten simulation of the library.
+
+<RunIt project="mockifyer-vitest" file="record-replay.test.js" title="Try Mockifyer + Vitest Live" />
+
+_Run this Mockifyer record/replay example in your browser with StackBlitz (a third-party service)._
+
 From Mockifyer's React Native docs (per docs; we didn't run it on a device for this page):
 
 ```typescript

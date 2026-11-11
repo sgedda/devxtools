@@ -15,6 +15,8 @@ npm install
 npm test
 ```
 
+`npm test` runs the pre-recorded replay tests and a record-then-replay test. The latter calls `https://demo.devxtools.dev/tasks/1` once (the live shared demo API), writes a mock file, edits that file, and asserts the second call returns the edited body — so the second call was served from the recording, not the live API. Times for both calls are printed in the test output.
+
 ## What it demonstrates
 
 - Recording HTTP responses as JSON files with Mockifyer
@@ -68,8 +70,8 @@ Tests pass because `failOnMissingMock: true` enforces strict replay mode—reque
 
 ## Packages
 
-- `@sgedda/mockifyer-core` 1.10.181
-- `@sgedda/mockifyer-fetch` 1.8.100
+- `@sgedda/mockifyer-core` 1.10.190
+- `@sgedda/mockifyer-fetch` 1.8.106
 - `vitest` 5.0.5
 
 ## Key configuration
