@@ -9,14 +9,14 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Comparisons", url: "/comparis
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "k6 v2.3.0, Apache JMeter 5.6.3 on Temurin JRE 21.0.12, Locust 2.46.7 on Python 3.13, Artillery 2.0.34 on Node 22.23.3; Linux, 8 vCPU / 16 GB; 2026-10-15"
+dateModified: "2026-11-11"
+tested_with: "k6 v2.3.0, Apache JMeter 5.6.3 on Temurin JRE 21.0.12, Locust 2.47.0 on Python 3.13.5 (re-run 2026-11-11), Artillery 2.0.34 on Node 22.23.3; Linux, 8 vCPU / 16 GB; Locust 2026-11-11, others 2026-10-15"
 tools: ["k6", "jmeter", "locust", "gatling", "artillery"]
 ---
 
 **k6 vs JMeter is mostly a question of who writes the tests and what they hit.** k6 is a single Go binary that runs load tests written in JavaScript or TypeScript. JMeter is a Java application where you build test plans in a GUI, save them as XML (`.jmx`) files and run them headless.
 
-> **Tested with** k6 v2.3.0, Apache JMeter 5.6.3 (Temurin JRE 21), Locust 2.46.7 and Artillery 2.0.34 against the same local JSON endpoint on 2026-10-15. Every script and exit code below comes from those runs, except the Gatling snippet, which we didn't run. devxtools.dev is independent and has no relationship with Grafana Labs, the Apache Software Foundation, Gatling or Artillery.
+> **Tested with** k6 v2.3.0, Apache JMeter 5.6.3 (Temurin JRE 21) and Artillery 2.0.34 against the same local JSON endpoint on 2026-10-15, and Locust 2.47.0 against that same endpoint on 2026-11-11. Every script and exit code below comes from those runs, except the Gatling snippet, which we didn't run. devxtools.dev is independent and has no relationship with Grafana Labs, the Apache Software Foundation, Gatling or Artillery.
 
 ## TL;DR verdict
 
@@ -347,8 +347,8 @@ Not in the single open-source binary. The Apache-2.0 k6-operator distributes a t
 - Apache JMeter features and protocols: https://jmeter.apache.org/ · Java requirement: https://jmeter.apache.org/usermanual/get-started.html
 - Taurus pass/fail criteria: https://gettaurus.org/docs/PassFail/ · jmeter-maven-plugin: https://github.com/jmeter-maven-plugin/jmeter-maven-plugin
 - JMeter remote testing: https://jmeter.apache.org/usermanual/remote-test.html · HTML dashboard: https://jmeter.apache.org/usermanual/generating-dashboard.html
-- Locust CLI (`--master`, `--worker`, `--processes`, `--exit-code-on-error`): `locust --help` on 2.46.7 · https://docs.locust.io/
+- Locust CLI (`--master`, `--worker`, `--processes`, `--exit-code-on-error`): `locust --help` on 2.47.0 · https://docs.locust.io/
 - Gatling protocols: https://docs.gatling.io/reference/script/ · Distributed testing FAQ: https://docs.gatling.io/tutorials/faq/ · https://gatling.io/community-vs-enterprise
 - Artillery engines: https://www.artillery.io/docs/reference/engines · ensure plugin: https://www.artillery.io/docs/reference/extensions/ensure · distributed runs: https://www.artillery.io/docs/load-testing-at-scale
 - GitHub repository metadata (stars, licences), fetched 2026-10-15: grafana/k6, apache/jmeter, locustio/locust, gatling/gatling, artilleryio/artillery
-- Our test runs: k6, JMeter, Locust and Artillery scripts and exit codes on the box, 2026-10-15
+- Our test runs: k6, JMeter and Artillery scripts and exit codes on the box, 2026-10-15; Locust 2.47.0 scripts and exit codes re-run 2026-11-11

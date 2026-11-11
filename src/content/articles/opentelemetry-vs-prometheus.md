@@ -9,14 +9,14 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Comparisons", url: "/comparis
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "Prometheus 3.15.0, OpenTelemetry Collector Contrib 0.162.0, @opentelemetry/sdk-node 0.223.0, @opentelemetry/exporter-prometheus 0.223.0, @opentelemetry/exporter-metrics-otlp-proto 0.223.0, @opentelemetry/auto-instrumentations-node 0.81.0, prom-client 15.1.3, Express 5.3.0, Node 22.23.3; 2026-10-15"
+dateModified: "2026-11-11"
+tested_with: "Prometheus 3.16.0, OpenTelemetry Collector Contrib 0.165.0, @opentelemetry/sdk-node 0.301.1, @opentelemetry/exporter-prometheus 0.301.1, @opentelemetry/exporter-metrics-otlp-proto 0.301.1, @opentelemetry/auto-instrumentations-node 0.83.0, prom-client 15.1.3, Express 5.3.0, Node 24.22.1; re-run 2026-11-11 (original run: Prometheus 3.15.0, Collector 0.162.0, sdk-node 0.223.0 on Node 22.23.3, 2026-10-15)"
 tools: ["opentelemetry", "grafana-loki", "datadog", "sentry", "pino"]
 ---
 
 **OpenTelemetry vs Prometheus isn't really an either/or choice: OpenTelemetry is how your app *produces and ships* telemetry, and Prometheus is a system that *stores, queries and alerts on* metrics.** They overlap in one place, metrics instrumentation and collection, and that's where you have real decisions to make. This guide explains the layers, then wires up a Node.js app three ways and shows the gotchas we hit.
 
-> **Tested with** Prometheus 3.15.0, OpenTelemetry Collector Contrib 0.162.0, the OpenTelemetry JS SDK 0.223.0 and prom-client 15.1.3 on Node 22.23.3 with Express 5.3.0 (2026-10-15). Every config and snippet below ran on our test machine, and the outputs are real. devxtools.dev is independent. Both projects are open source under the CNCF, and nobody sponsored this page.
+> **Tested with** Prometheus 3.16.0, OpenTelemetry Collector Contrib 0.165.0, the OpenTelemetry JS SDK 0.301.1 and prom-client 15.1.3 on Node 24.22.1 with Express 5.3.0 (re-run 2026-11-11; original run was Prometheus 3.15.0, Collector 0.162.0, SDK 0.223.0 on Node 22.23.3, 2026-10-15). Every config and snippet below ran on our test machine, and the outputs are real. devxtools.dev is independent. Both projects are open source under the CNCF, and nobody sponsored this page.
 
 ## TL;DR
 
@@ -78,7 +78,7 @@ In this picture Prometheus is one **backend** among several, and OpenTelemetry i
 - **Pull (Prometheus' model):** each app exposes `/metrics`, and Prometheus scrapes every N seconds. The `up` metric tells you whether a target is reachable, and Prometheus controls the load. It needs service discovery and network reachability from Prometheus to every target.
 - **Push (OTLP):** the app or Collector sends metrics on its own schedule. This suits short-lived jobs, serverless, and networks where the backend can't reach the app.
 
-Since Prometheus 3.x you can do either. Start Prometheus with `--web.enable-otlp-receiver` and it accepts OTLP/HTTP metrics at `/api/v1/otlp/v1/metrics`. Or keep the Collector in the middle and use its `prometheusremotewrite` exporter (Prometheus needs `--web.enable-remote-write-receiver`). The Collector can also *scrape* existing `/metrics` endpoints with its Prometheus receiver, so it can bridge both models.
+Since Prometheus 3.x you can do either. Start Prometheus with `--web.enable-otlp-receiver` and it accepts OTLP/HTTP metrics at `/api/v1/otlp/v1/metrics`. Or keep the Collector in the middle and use its `prometheusremotewrite` exporter (Prometheus needs `--web.enable-remote-write-receiver`; on `otelcol-contrib` 0.165.0 that name is a deprecated alias for `prometheus_remote_write`, and the alias still worked in our run). The Collector can also *scrape* existing `/metrics` endpoints with its Prometheus receiver, so it can bridge both models.
 
 ## Instrumenting a Node.js app three ways
 
@@ -175,7 +175,7 @@ const sdk = new NodeSDK({
 sdk.start();
 ```
 
-> **SDK 0.300 note (2026-10-21):** these examples were tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20 with OpenTelemetry JS 3.0) removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options and requires Node.js 22.15 or later. The examples above use the array form (`metricReaders: […]`), which works on both versions; the old singular key is silently ignored on 0.300, so you get no metrics rather than an error. The Prometheus exporter now listens on localhost (on some systems IPv6 `::1` only) by default and, when constructed directly, no longer reads its host/port environment variables, so add `host: '0.0.0.0'` if Prometheus scrapes from another container or host. We checked that this form serves `/metrics` on localhost with sdk-node 0.300.0 on Node 22.23.3.
+> **SDK 0.300+ note (updated 2026-11-11):** these examples were originally tested on `@opentelemetry/sdk-node` 0.223.0, and we re-ran the array-form snippets on **0.301.1** (Node 24.22.1, 2026-11-11). [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20 with OpenTelemetry JS 3.0) removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options and requires Node.js 22.15 or later. The examples above use the array form (`metricReaders: […]`); the old singular key is silently ignored on 0.300+, so you get no metrics rather than an error. The Prometheus exporter listens on localhost (on this machine IPv6 `::1` only: `127.0.0.1:9464` refused the connection, `[::1]:9464` served `/metrics`) and, when constructed directly, no longer reads its host/port environment variables, so add `host: '0.0.0.0'` if Prometheus scrapes from another container or host.
 
 **Direct to Prometheus:** start Prometheus with the OTLP receiver and set `OTLP_METRICS_URL=http://localhost:9090/api/v1/otlp/v1/metrics`:
 
@@ -189,7 +189,7 @@ otlp:
   promote_resource_attributes: [service.name]
 ```
 
-**Via the Collector** (our recommendation once you also ship traces or logs): set `OTLP_METRICS_URL=http://localhost:4318/v1/metrics` and use this config (validated and run with `otelcol-contrib` 0.162.0):
+**Via the Collector** (our recommendation once you also ship traces or logs): set `OTLP_METRICS_URL=http://localhost:4318/v1/metrics` and use this config (validated and run with `otelcol-contrib` 0.165.0):
 
 ```yaml
 receivers:
@@ -209,6 +209,8 @@ service:
       processors: [batch]
       exporters: [prometheusremotewrite]
 ```
+
+`otelcol-contrib` 0.165.0 warns that the `prometheusremotewrite` exporter alias is deprecated in favour of `prometheus_remote_write`. The alias still worked in our run; we left the yaml unchanged.
 
 Both paths landed in the same Prometheus. `orders_created_total` showed up as `{job="users-api", service_name="users-api", plan="free"}` from the direct path (thanks to `promote_resource_attributes`) and as `{job="users-api", otel_scope_name="users-api", plan="free"}` via the Collector. In both cases `job` came from `service.name`, and auto-instrumented histograms arrived as `http_server_request_duration_seconds_*`.
 
@@ -247,7 +249,7 @@ For a Node.js team starting fresh, we'd use option 3 (OTel SDK → Collector →
 No. OpenTelemetry produces and transports telemetry but has no storage, query language, dashboards or alerting. It can replace Prometheus *client libraries* (such as prom-client) for instrumentation, but you still need a backend, and Prometheus is a common one.
 
 ### Can Prometheus receive OpenTelemetry data?
-Yes. Start Prometheus 3.x with `--web.enable-otlp-receiver` and send OTLP/HTTP metrics to `/api/v1/otlp/v1/metrics`. Alternatively, have the OpenTelemetry Collector push with the `prometheusremotewrite` exporter, or let Prometheus scrape an OTel Prometheus exporter endpoint. We ran all three on Prometheus 3.15.0.
+Yes. Start Prometheus 3.x with `--web.enable-otlp-receiver` and send OTLP/HTTP metrics to `/api/v1/otlp/v1/metrics`. Alternatively, have the OpenTelemetry Collector push with the `prometheusremotewrite` exporter (a deprecated alias for `prometheus_remote_write` on `otelcol-contrib` 0.165.0; the alias still worked in our run), or let Prometheus scrape an OTel Prometheus exporter endpoint. We ran all three on Prometheus 3.16.0 (and originally on 3.15.0).
 
 ### Should I use prom-client or OpenTelemetry in Node.js?
 Use prom-client if you only need Prometheus metrics and want the simplest, mature setup. Use the OpenTelemetry SDK if you also want traces, want auto-instrumentation of HTTP and database calls, or want to switch backends without changing code. You can migrate gradually. They can coexist, but don't instrument the same thing twice.
@@ -272,7 +274,7 @@ OpenTelemetry instruments and ships telemetry. Prometheus stores and queries met
 All accessed 2026-10-15.
 
 - Prometheus, "Using Prometheus as your OpenTelemetry backend" (OTLP receiver, promote_resource_attributes, target_info, translation strategies, delta temporality, out-of-order): https://prometheus.io/docs/guides/opentelemetry/
-- Prometheus CLI flags (`--web.enable-otlp-receiver`, `--web.enable-remote-write-receiver`, feature flags), checked via `prometheus --help` on 3.15.0: https://prometheus.io/docs/prometheus/latest/command-line/prometheus/
+- Prometheus CLI flags (`--web.enable-otlp-receiver`, `--web.enable-remote-write-receiver`, feature flags), checked via `prometheus --help` on 3.16.0: https://prometheus.io/docs/prometheus/latest/command-line/prometheus/
 - OpenTelemetry blog, "Prometheus and OpenTelemetry: Better Together": https://opentelemetry.io/blog/2024/prom-and-otel/
 - OpenTelemetry Prometheus compatibility spec: https://opentelemetry.io/docs/specs/otel/compatibility/prometheus_and_openmetrics/
 - OpenTelemetry JS: https://github.com/open-telemetry/opentelemetry-js; Node getting started: https://opentelemetry.io/docs/languages/js/getting-started/nodejs/

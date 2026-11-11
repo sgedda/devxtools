@@ -9,14 +9,14 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Observability", url: "/observ
 schema: ["TechArticle", "ItemList", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "OpenTelemetry Collector Contrib 0.162.0 (config validation plus a local OTLP → Prometheus run), Prometheus 3.15.0, @opentelemetry/sdk-node 0.223.0, Node 22.23.3; vendor prices and GitHub data checked 2026-10-15"
+dateModified: "2026-11-11"
+tested_with: "OpenTelemetry Collector Contrib 0.165.0 (config validation plus a local OTLP → Prometheus run), Prometheus 3.16.0, @opentelemetry/sdk-node 0.301.1, @opentelemetry/auto-instrumentations-node 0.83.0, Node 24.22.1; Collector/SDK/Prometheus re-run 2026-11-11; vendor prices and GitHub data checked 2026-10-15"
 tools: ["datadog", "opentelemetry", "grafana-loki", "sentry", "betterstack", "pino", "winston"]
 ---
 
 **The best Datadog alternatives depend on which Datadog job you're replacing: APM and tracing, logs, infrastructure metrics, error tracking, RUM or uptime.** No single tool is cheapest at all six. This guide maps an open-source and a SaaS option to each job, explains the pricing models that drive the bill, and shows how to move with OpenTelemetry so you only change backends once.
 
-> **Tested with** OpenTelemetry Collector Contrib 0.162.0, Prometheus 3.15.0 and the OpenTelemetry Node SDK 0.223.0 on Node 22.23.3 (2026-10-15). We validated the Collector configs on this page and sent OTLP metrics from a Node service into Prometheus on our test machine. We did **not** run a production trial of any vendor below. Prices come from vendor pricing pages on 2026-10-15. devxtools.dev is independent, has no affiliate or sponsorship deal with any observability vendor, and none of them reviewed this page.
+> **Tested with** OpenTelemetry Collector Contrib 0.165.0, Prometheus 3.16.0 and the OpenTelemetry Node SDK 0.301.1 on Node 24.22.1 (re-run 2026-11-11; original run was Collector 0.162.0, Prometheus 3.15.0, SDK 0.223.0 on Node 22.23.3, 2026-10-15). We validated the Collector configs on this page and sent OTLP metrics from a Node service into Prometheus on our test machine. We did **not** run a production trial of any vendor below. Prices come from vendor pricing pages on 2026-10-15. devxtools.dev is independent, has no affiliate or sponsorship deal with any observability vendor, and none of them reviewed this page.
 
 ## TL;DR
 
@@ -170,7 +170,7 @@ The safest migration doesn't change two things at once:
 2. **Dual-ship** to a candidate backend for a few weeks and compare dashboards, alerts and cost.
 3. **Cut over** by removing the Datadog exporter. Your application code doesn't change.
 
-A trimmed dual-ship Collector config (validated with `otelcol-contrib validate`, version 0.162.0; not run against a live Datadog account):
+A trimmed dual-ship Collector config (validated with `otelcol-contrib validate`, version 0.165.0, with dummy `DD_SITE`, `DD_API_KEY`, `CANDIDATE_OTLP_ENDPOINT` and `CANDIDATE_AUTH_HEADER` values so the exporter endpoints resolve; not run against a live Datadog account):
 
 ```yaml
 # Dual-ship: keep Datadog running while a candidate backend receives the same data.
@@ -234,9 +234,9 @@ export OTEL_NODE_RESOURCE_DETECTORS=env,host,os            # skips cloud metadat
 node --require @opentelemetry/auto-instrumentations-node/register app.js
 ```
 
-> **SDK 0.300 note (2026-10-21):** this was tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20) requires Node.js 22.15 or later and removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options in favour of the plural `metricReaders`, `spanProcessors` and `logRecordProcessors`. We haven't re-run this page on 0.300 yet.
+> **SDK 0.300+ note (updated 2026-11-11):** the `--require @opentelemetry/auto-instrumentations-node/register` path was originally tested on `@opentelemetry/sdk-node` 0.223.0, and we re-ran it on **0.301.1** with `@opentelemetry/auto-instrumentations-node` 0.83.0 (Node 24.22.1, 2026-11-11). [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20) requires Node.js 22.15 or later and removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options in favour of the plural `metricReaders`, `spanProcessors` and `logRecordProcessors`.
 
-We ran this against a local Collector (0.162.0): spans from an Express 5 app arrived without code changes. Without the `OTEL_NODE_RESOURCE_DETECTORS` line, Node printed a harmless `MetadataLookupWarning` from the GCP detector on our non-cloud machine.
+We ran this against a local Collector (0.165.0): spans from an Express 5 app arrived without code changes. Without the `OTEL_NODE_RESOURCE_DETECTORS` line, Node printed a harmless `MetadataLookupWarning` from the GCP detector on our non-cloud machine.
 
 Things that don't move automatically: Datadog dashboards, monitors and SLOs (rebuild them, ideally as code), DogStatsD custom metrics (replace them with OTel metrics or a Collector `statsd` receiver), and Datadog-specific tags (map them to OTel resource attributes such as `service.name`, `deployment.environment.name` and `service.version`).
 

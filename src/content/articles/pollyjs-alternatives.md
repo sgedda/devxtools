@@ -11,8 +11,8 @@ schema: ["TechArticle", "ItemList", "BreadcrumbList", "FAQPage"]
 itemList: ["https://devxtools.dev/tools/nock/", "https://devxtools.dev/tools/msw/", "https://devxtools.dev/tools/playwright/", "https://github.com/ijpiantanida/talkback", "https://github.com/airtasker/proxay", "https://github.com/asmyshlyaev177/test-proxy-recorder", "https://devxtools.dev/tools/wiremock/", "https://devxtools.dev/tools/mockoon/", "https://devxtools.dev/tools/mockifyer/"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-11-10"
-tested_with: "@pollyjs/core 6.0.6 (+ adapter-fetch 6.0.7), nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1 (Chromium), talkback 4.2.0, proxay 1.9.0, @sgedda/mockifyer-core 1.10.181 / -fetch 1.8.100 / -axios 1.10.32, axios 1.20.0 on Node 22.23.3; 2026-10-15. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104."
+dateModified: "2026-11-11"
+tested_with: "@pollyjs/core 6.0.6 (+ adapter-fetch 6.0.7), nock 15.0.6, msw 3.0.5, @playwright/test 1.65.0 (Chromium), talkback 4.2.0, proxay 1.9.0, @sgedda/mockifyer-core 1.10.181 / -fetch 1.8.100 / -axios 1.10.32, axios 1.20.0 on Node 22.23.3; 2026-10-15. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104. On 2026-11-11, nock 15.0.6, msw 3.0.5 and @playwright/test 1.65.0 re-ran the original record/replay tests and passed (Node 24.22.1 for the upstream API, Playwright via Node 22.23.4)."
 tools: ["pollyjs", "nock", "msw", "playwright", "wiremock", "mockoon", "mockifyer", "miragejs"]
 affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev."
 ---
@@ -21,7 +21,7 @@ affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also run
 
 > **Disclosure.** Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. It's one of the tools on this page, and it gets the same template, tests and limits list as every other tool, and it isn't ranked as "best". We have no affiliate links and no commercial ties to any other project here.
 
-> **Tested with** @pollyjs/core 6.0.6, nock 15.0.1, msw 3.0.3, @playwright/test 1.64.1, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104; the original record/replay tests remain those of 2026-10-15 on 1.10.181.
+> **Tested with** @pollyjs/core 6.0.6, nock 15.0.6, msw 3.0.5, @playwright/test 1.65.0, talkback 4.2.0, proxay 1.9.0 and Mockifyer (core 1.10.181, fetch 1.8.100, axios 1.10.32) on Node 22.23.3, 2026-10-15. For each one, we recorded a local API, changed its responses, and confirmed that the replay returned the recorded data. WireMock, Mockoon and test-proxy-recorder weren't run; those sections cite their docs. On 2026-11-10, record and replay with MOCKIFYER_RECORD_RESPONSES=true stored and replayed response bodies on core 1.10.190 / fetch 1.8.106 and on core 1.10.187 / fetch 1.8.104; the original record/replay tests remain those of 2026-10-15 on 1.10.181. On 2026-11-11 we re-ran those record/replay tests on nock 15.0.6 (released 2026-11-06, Europe/Stockholm), msw 3.0.5 (released 2026-11-11) and Playwright 1.65.0 (released 2026-11-05), and they passed.
 
 ## TL;DR
 
@@ -63,14 +63,14 @@ We compared interception, runtimes, clients, record modes, replay-only CI behavi
 | Tool | Intercepts | Runtimes | Clients | Record modes | Storage | Matching | Scenarios / editing | CI replay-only | Last release | Weekly npm DL | Licence |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | Polly.js (baseline) | In-process | Node, browser | `http`, fetch, XHR | record, replay, passthrough | HAR | Method, headers, body, order, URL | Edit HAR | `recordIfMissing: false` | core 6.0.6, 2023-07-20 | ~200K | Apache-2.0 |
-| nock.back | In-process | Node | `http`, fetch, axios | wild, dryrun, record, update, lockdown | JSON per fixture | Host, method, path, body | Edit JSON | `lockdown` | 15.0.1, 2026-10-06 | ~6.3M (nock) | MIT |
-| MSW + fixtures | In-process / Service Worker | Node, browser | `http`, fetch, XHR | None | What you load | Your handlers | In code | `onUnhandledFrame: 'error'` | 3.0.3, 2026-10-10 | ~23.0M | MIT |
-| Playwright `routeFromHAR` | Browser | Browser (E2E) | Page requests | `update` on/off | HAR | URL, method, POST body | Edit HAR | `notFound: 'abort'` | 1.64.1, 2026-10-14 | ~76.2M (@playwright/test) | Apache-2.0 |
+| nock.back | In-process | Node | `http`, fetch, axios | wild, dryrun, record, update, lockdown | JSON per fixture | Host, method, path, body | Edit JSON | `lockdown` | 15.0.6, 2026-11-06 | ~6.3M (nock) | MIT |
+| MSW + fixtures | In-process / Service Worker | Node, browser | `http`, fetch, XHR | None | What you load | Your handlers | In code | `onUnhandledFrame: 'error'` | 3.0.5, 2026-11-11 | ~23.0M | MIT |
+| Playwright `routeFromHAR` | Browser | Browser (E2E) | Page requests | `update` on/off | HAR | URL, method, POST body | Edit HAR | `notFound: 'abort'` | 1.65.0, 2026-11-05 | ~76.2M (@playwright/test) | Apache-2.0 |
 | Talkback | Proxy | Any language | Any HTTP | NEW, OVERWRITE, DISABLED | JSON5 tapes | Method, URL, headers, body | Edit tapes | `DISABLED` | 4.2.0, 2024-07-10 | ~54K | MIT |
 | Proxay | Proxy | Any language | Any HTTP | record, replay, passthrough | YAML tapes | Best-effort or exact | Edit YAML | `--mode replay` | npm 1.9.0, 2024-05-15 | ~3.9K | MIT |
 | test-proxy-recorder | Proxy + HAR | Playwright, SSR | Server + browser | record, replay, transparent | `.mock.json`, HAR | Method, path, query hash | Edit files | replay | 1.4.1, 2026-10-13 | ~263 | MIT |
 | WireMock record | Mock server (Java) | Any language | Any HTTP | Record, snapshot | JSON mappings | WireMock matchers | Stateful scenarios | Stubs only | 3.13.2, 2025-11-14 | n/a (Java) | Apache-2.0 |
-| Mockoon record | Mock server | Any language | Any HTTP | Record (desktop app) | Environment JSON | Path + method | GUI | CLI, no proxy | 9.9.0, 2026-09-16 | ~47K (@mockoon/cli) | MIT |
+| Mockoon record | Mock server | Any language | Any HTTP | Record (desktop app) | Environment JSON | Path + method | GUI | CLI, no proxy | 9.10.0, 2026-10-29 | ~47K (@mockoon/cli) | MIT |
 | Mockifyer* | In-process | Node, React Native | fetch, axios | `recordMode` on/off | JSON per request | Method + URL | Scenarios, dates | `failOnMissingMock` | core 1.10.190, 2026-10-26 (body default changed in 1.10.187) | ~207 (core) | MIT |
 
 \*Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
@@ -103,7 +103,7 @@ nockDone();
 - **Storage format:** a JSON array of Nock definitions per fixture.
 - **Matching:** host, method, path and body. Request headers aren't recorded by default.
 - **Re-record workflow:** `update` re-records, `record` adds what's missing, `lockdown` replays and blocks the rest (all tested with `fetch` and axios). Unmatched requests to a recorded host got a **501**.
-- **Maintenance:** 15.0.1, 2026-10-06; ~6.3M weekly downloads.
+- **Maintenance:** 15.0.6, 2026-11-06; ~6.3M weekly downloads.
 - **Best for:** Node services and libraries.
 - **Limits:** no browser or React Native; modes are managed via env var; no HAR import.
 
@@ -111,7 +111,7 @@ See [Nock](/tools/nock/) and [MSW vs Nock](/comparisons/msw-vs-nock/).
 
 ### MSW + recorded fixtures/HAR
 
-MSW has **no built-in recorder** (none in msw 3.0.3's exports or docs), but it can replay captured traffic. This loader replayed a Polly HAR in our MSW 3 test:
+MSW has **no built-in recorder** (none in msw 3.0.5's exports or docs), but it can replay captured traffic. This loader replayed a Polly HAR in our MSW 3 test:
 
 ```js
 import fs from 'node:fs';
@@ -138,7 +138,7 @@ The official `@mswjs/source` 0.5.0 has `fromTraffic(har)` and declares `msw ^2.1
 - **Storage format:** your choice.
 - **Matching:** your handlers. This is the most flexible option.
 - **Re-record workflow:** re-capture with your other tool.
-- **Maintenance:** 3.0.3, 2026-10-10; ~23M weekly downloads.
+- **Maintenance:** 3.0.5, 2026-11-11; ~23M weekly downloads.
 - **Best for:** teams already on MSW.
 - **Limits:** no recorder; `@mswjs/source` isn't MSW 3-ready; `@msw/react-native` is a 404 on npm (2026-10-15).
 
@@ -161,7 +161,7 @@ await page.routeFromHAR('./hars/users.har', {
 - **Storage format:** HAR; in our run, the bodies went into sidecar files (`updateContent`).
 - **Matching:** URL and method strictly, plus the POST payload; ties go to the most matching headers.
 - **Re-record workflow:** re-run with `UPDATE_HAR=1`. Our replay returned the recorded body after the API changed.
-- **Maintenance:** 1.64.1, 2026-10-14.
+- **Maintenance:** 1.65.0, 2026-11-05.
 - **Best for:** E2E suites.
 - **Limits:** requests handled by a Service Worker aren't served from the HAR (use `serviceWorkers: 'block'`); browser traffic only.
 
@@ -235,7 +235,7 @@ Out-of-process mock servers that can learn from real traffic. Not run by us.
 - **Storage format:** WireMock JSON mappings; a Mockoon environment file.
 - **Matching:** WireMock matchers (JSON bodies use `equalToJson`); Mockoon route rules.
 - **Re-record workflow:** WireMock: record again; Mockoon: delete the route first.
-- **Maintenance:** WireMock 3.13.2 (2025-11-14), with 4.0 betas through 2026-10-21; Mockoon 9.9.0 (2026-09-16).
+- **Maintenance:** WireMock 3.13.2 (2025-11-14), with 4.0 betas through 2026-10-21; Mockoon 9.10.0 (2026-10-29).
 - **Best for:** shared mock servers: a GUI (Mockoon), or stateful scenarios (WireMock).
 - **Limits:** heavier than in-process libraries; Mockoon doesn't update recorded routes.
 
@@ -376,7 +376,7 @@ Patch `fetch` in dev builds (Mockifyer does this via Metro) or use a proxy like 
 - npm registry (versions, release dates, licences, engines): https://registry.npmjs.org/@pollyjs/core, /nock, /msw, /talkback, /proxay, /test-proxy-recorder, /@sgedda/mockifyer-core (Mockifyer: see disclosure), /@mswjs/source, /@playwright/test, /@mockoon/cli
 - npm downloads, 2026-10-06 to 2026-10-12: `https://api.npmjs.org/downloads/point/2026-10-06:2026-10-12/{package}`
 - Polly.JS repo, commits and docs (modes, `matchRequestsBy`, `beforePersist`): https://github.com/Netflix/pollyjs · https://netflix.github.io/pollyjs/
-- Nock README (Nock Back modes, `afterRecord`) and v15.0.1 release: https://github.com/nock/nock · https://github.com/nock/nock/releases/tag/v15.0.1
+- Nock README (Nock Back modes, `afterRecord`) and v15.0.6 release: https://github.com/nock/nock · https://github.com/nock/nock/releases/tag/v15.0.6
 - MSW v3.0.0 release notes: https://github.com/mswjs/msw/releases/tag/v3.0.0 · `@mswjs/source`: https://github.com/mswjs/source
 - Playwright: https://playwright.dev/docs/mock#replaying-from-har · https://playwright.dev/docs/api/class-page#page-route-from-har
 - Talkback README: https://github.com/ijpiantanida/talkback
