@@ -14,7 +14,7 @@ datePublished: "2026-10-16"
 dateModified: "2026-11-10"
 ---
 
-*By Sebastian Gedda. Written by the creator: I built and maintain [Mockifyer](https://github.com/sgedda/mockifyer), the open-source tool this post is about. devxtools.dev is my own independent guide site, so read this as a maker's account, not a neutral review. If you want the neutral-ish overview, there's a [Mockifyer tool page](/tools/mockifyer/).*
+*By Sebastian Gedda. Written by the creator: I built and maintain [Mockifyer](https://mockifyer.dev), the open-source tool this post is about. devxtools.dev is my own independent guide site, so read this as a maker's account, not a neutral review. If you want the neutral-ish overview, there's a [Mockifyer tool page](/tools/mockifyer/).*
 
 Mockifyer is an MIT-licensed library that lets you record API responses as mocks: it intercepts real HTTP calls made through `fetch` or axios, saves them as JSON, and replays them later. You can group those mocks into named scenarios and switch between them. It grew out of a very specific kind of frustration, so I'll start there.
 

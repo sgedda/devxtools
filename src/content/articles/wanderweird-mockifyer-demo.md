@@ -16,7 +16,7 @@ affiliation: "devxtools.dev is run by Sebastian Gedda, who also builds and maint
 tools: ["mockifyer", "msw", "nock", "pollyjs"]
 ---
 
-*By Sebastian Gedda. **Disclosure:** I build and maintain [Mockifyer](https://github.com/sgedda/mockifyer), the open-source tool this guide uses, and I run devxtools.dev. Read this as a walkthrough of my own demo app, not a comparison. The neutral overview is on the [Mockifyer tool page](/tools/mockifyer/).*
+*By Sebastian Gedda. **Disclosure:** I build and maintain [Mockifyer](https://mockifyer.dev), the open-source tool this guide uses, and I run devxtools.dev. Read this as a walkthrough of my own demo app, not a comparison. The neutral overview is on the [Mockifyer tool page](/tools/mockifyer/).*
 
 **WanderWeird is a demo travel app built to show Mockifyer in a multi-service setup.** You log in, plan made-up trips to places like *Atlantis Boardwalk* or *Moon Base Brunch Bar*, check real weather and exchange rates, stamp a passport and roll chaos dice. Behind it are seven small Node services, an Umbraco CMS and Mockifyer, which records and replays the services' outbound HTTP calls and shows how one request fans out across them.
 
