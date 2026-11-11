@@ -364,4 +364,4 @@ All accessed 2026-10-15. Versions come from the npm registry, PyPI, Maven Centra
 - WireMock standalone: https://wiremock.org/docs/standalone/; Maven metadata: https://repo1.maven.org/maven2/org/wiremock/wiremock-standalone/maven-metadata.xml
 - Mockoon CLI: https://mockoon.com/cli/
 - k6 thresholds: https://grafana.com/docs/k6/latest/using-k6/thresholds/
-- Mockifyer: https://github.com/sgedda/mockifyer (maintained by the site owner)
+- Mockifyer: https://mockifyer.dev (maintained by the site owner)
