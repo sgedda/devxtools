@@ -9,8 +9,8 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Testing", url: "/testing/" },
 schema: ["TechArticle", "ItemList", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "Newman 6.2.3, Bru CLI 4.2.1, Inso 13.3.1, Hoppscotch CLI 0.31.4, @playwright/test 1.64.1, Vitest 5.0.5 + supertest 7.3.1, Spectral CLI 6.17.0, Prism 5.16.0, Schemathesis 4.31.1, k6 2.3.0, WireMock standalone 4.0.0-beta.40 (Java 21), Mockoon CLI 9.9.0, MSW 3.0.3, Express 5.3.0, Node 22.23.3, Python 3.13.5; 2026-10-15"
+dateModified: "2026-11-11"
+tested_with: "Newman 6.2.3, Bru CLI 4.3.0, Inso 13.3.1, Hoppscotch CLI 0.31.4, @playwright/test 1.65.0, Vitest 5.0.5 + supertest 7.3.1, Spectral CLI 6.17.0, Prism 5.16.0, Schemathesis 4.33.2, k6 2.3.0, WireMock standalone 4.0.0-beta.40 (Java 21), Mockoon CLI 9.10.0, MSW 3.0.3, Express 5.3.0, Node 22.23.4 (Bruno, Playwright) and Node 24.22.1 (fixture API, Mockoon), Python 3.13.5; Bru, Playwright, Schemathesis and Mockoon re-run 2026-11-11, others 2026-10-15"
 tools: ["postman", "bruno", "insomnia", "hoppscotch", "httpie", "yaak", "playwright", "pact", "prism", "spectral", "msw", "wiremock", "mockoon", "k6", "locust", "gatling", "artillery"]
 ---
 
@@ -62,13 +62,13 @@ We built one fixture API: `GET /users`, `GET /users/{id}` and `POST /users`, wit
 | Tool | Command we ran in CI | Pass exit / fail exit | JUnit output |
 |---|---|---|---|
 | Newman 6.2.3 | `newman run users-api.postman_collection.json --env-var baseUrl=http://localhost:3000 --reporters cli,junit --reporter-junit-export reports/newman.xml` | 0 / 1 | Yes |
-| Bru CLI 4.2.1 | `bru run --env local --reporter-junit reports/bruno.xml` | 0 / 1 | Yes |
+| Bru CLI 4.3.0 | `bru run --env local --reporter-junit reports/bruno.xml` | 0 / 1 | Yes |
 | Inso 13.3.1 | `inso run collection wrk_usersapi -w insomnia.yaml -e env_base` | 0 / 1 | No (reporters: dot, list, min, progress, spec, tap; JSON via `--output`) |
 | Hoppscotch CLI 0.31.4 | `hopp test users-api.json -e env.json --reporter-junit reports/hopp.xml` | 0 / 1 | Yes |
-| Playwright 1.64.1 | `npx playwright test` (JUnit reporter in config) | 0 / 1 | Yes |
+| Playwright 1.65.0 | `npx playwright test` (JUnit reporter in config) | 0 / 1 | Yes |
 | Vitest 5.0.5 + supertest 7.3.1 | `vitest run --reporter=default --reporter=junit --outputFile.junit=reports/vitest.xml` | 0 / 1 | Yes |
 | Spectral 6.17.0 | `spectral lint openapi.yaml --fail-severity=warn` | 0 / 1 (warnings alone exit 0 without the flag) | Yes (`--format junit`) |
-| Schemathesis 4.31.1 | `schemathesis run openapi.yaml --url http://localhost:3000 --report junit` | exit 1: found real issues (see below) | Yes |
+| Schemathesis 4.33.2 | `schemathesis run openapi.yaml --url http://localhost:3000 --report junit` | exit 1: found real issues (see below) | Yes |
 | k6 2.3.0 | `k6 run -e BASE_URL=http://localhost:3000 load/users.js` | 0 / non-zero when a threshold fails | Via `--out` / summary export |
 
 We didn't run the Postman CLI (we used Newman for Postman collections), REST Assured or Karate (JVM), or Dredd (archived). Those sections cite official docs and say so.
@@ -201,7 +201,7 @@ For Java and Kotlin teams, **REST Assured** (Apache-2.0, 6.1.0 on Maven Central)
 
 ### Schemathesis
 
-[Schemathesis](/tools/schemathesis/) (MIT, Python; we tested 4.31.1, and the current release is on the [tool page](/tools/schemathesis/)) does property-based OpenAPI fuzzing. It reads your OpenAPI spec and generates hundreds of requests, checking that responses match the documented status codes and schemas. It found three real issues in our "finished" fixture API in under 4 seconds (471 generated test cases):
+[Schemathesis](/tools/schemathesis/) (MIT, Python; we tested 4.33.2, and the current release is on the [tool page](/tools/schemathesis/)) does property-based OpenAPI fuzzing. It reads your OpenAPI spec and generates hundreds of requests, checking that responses match the documented status codes and schemas. It found three real issues in our "finished" fixture API in 4.01 seconds (778 generated test cases):
 
 ```text
 GET /users      Undocumented HTTP status code — Received: 400, Documented: 200
@@ -271,7 +271,7 @@ This ran in our Vitest 5 suite, which also covers errors, network failures, dela
 
 ### Mockoon
 
-[Mockoon](/tools/mockoon/) is a desktop app plus CLI for mock servers. `mockoon-cli start --data openapi.yaml` (9.9.0) served our spec with generated data immediately. One caveat: it doesn't validate requests against the spec, so use Prism if you need that.
+[Mockoon](/tools/mockoon/) is a desktop app plus CLI for mock servers. `mockoon-cli start --data openapi.yaml` (9.10.0) served our spec with generated data immediately. One caveat: it doesn't validate requests against the spec, so use Prism if you need that.
 
 **Also:** [Prism](/tools/prism/) mocks straight from OpenAPI (`prism mock openapi.yaml`). [Mockifyer](/tools/mockifyer/) records real axios/fetch responses to JSON files and replays them in Node and React Native tests. *Disclosure: devxtools.dev's owner maintains Mockifyer.*
 

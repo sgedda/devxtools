@@ -9,15 +9,15 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Guides", url: "/guides/" }, {
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "@stoplight/prism-cli 5.16.0 (declares Node >=24.18.0) on Node 22.23.3; Mockoon CLI 9.9.0; Docker image stoplight/prism (tags checked on Docker Hub 2026-10-15, Docker itself not available on the test machine)"
+dateModified: "2026-11-11"
+tested_with: "@stoplight/prism-cli 5.16.0 (declares Node >=24.18.0) on Node 22.23.3 (2026-10-15); Mockoon CLI 9.10.0 on Node 22.23.4 (re-run 2026-11-11); Docker image stoplight/prism (tags checked on Docker Hub 2026-10-15, Docker itself not available on the test machine)"
 tools: ["prism", "stoplight", "spectral", "mockoon", "wiremock", "microcks", "postman-mock-servers", "openapi-generator", "faker", "pact"]
 replaces: "src/pages/guides/spec-first-mocking-prism-openapi.astro (noindex stub); recommend 301 from /guides/spec-first-mocking-prism-openapi/ to this slug"
 ---
 
 **An OpenAPI mock server turns your API description into a running HTTP server** so frontends and tests can call real endpoints before the backend exists. Prism, from Stoplight (Apache-2.0), is the CLI most teams reach for: point it at an OpenAPI or Swagger file, or a Postman collection, and it listens on port 4010.
 
-> **Tested with** `@stoplight/prism-cli` 5.16.0 on Node 22.23.3 (2026-10-15). Every curl response below comes from that run against the `users.yaml` in this guide. Mockoon CLI 9.9.0 was used for the comparison. We couldn't run Docker on the test machine; Docker commands follow Stoplight's docs and the `stoplight/prism` tags on Docker Hub. Lint the spec with [Spectral](/tools/spectral/) first. devxtools.dev is independent and has no relationship with Stoplight or SmartBear.
+> **Tested with** `@stoplight/prism-cli` 5.16.0 on Node 22.23.3 (2026-10-15). Every curl response below comes from that run against the `users.yaml` in this guide. Mockoon CLI 9.10.0 was used for the comparison (re-run 2026-11-11; 9.9.0 was the 2026-10-15 run). We couldn't run Docker on the test machine; Docker commands follow Stoplight's docs and the `stoplight/prism` tags on Docker Hub. Lint the spec with [Spectral](/tools/spectral/) first. devxtools.dev is independent and has no relationship with Stoplight or SmartBear.
 
 ## TL;DR
 
@@ -184,7 +184,7 @@ curl -X POST -H 'content-type: application/json' \
 
 `--errors` (default `false`) also turns *response* schema violations into HTTP errors when Prism is used as a proxy. Leave it off for a pure mock; turn it on in CI against a real upstream.
 
-For comparison, Mockoon CLI 9.9.0 imported the same `users.yaml` and returned **200** for `?limit=500` and **201** for the invalid POST. Mockoon doesn't do request-schema validation out of the box; Prism does. That difference alone is a reason to keep Prism when the OpenAPI document is the contract. Once the real API exists, you can also [fuzz your real API against the same OpenAPI spec with Schemathesis](/tools/schemathesis/).
+For comparison, Mockoon CLI 9.10.0 imported the same `users.yaml` and returned **200** for `?limit=500` and **201** for the invalid POST. Mockoon doesn't do request-schema validation out of the box; Prism does. That difference alone is a reason to keep Prism when the OpenAPI document is the contract. Once the real API exists, you can also [fuzz your real API against the same OpenAPI spec with Schemathesis](/tools/schemathesis/).
 
 ## Running Prism in Docker and CI
 
@@ -322,6 +322,6 @@ Use Prism when OpenAPI is the source of truth and you want request validation (a
 - Microcks supported specs (OpenAPI, AsyncAPI, gRPC, GraphQL, SOAP, Postman, SoapUI): https://github.com/microcks/microcks · https://microcks.io/
 - WireMock OSS vs Cloud (OpenAPI import is Cloud-only): https://wiremock.org/docs/wiremock-cloud/
 - Microcks stateful mocks (1.10+): https://microcks.io/documentation/guides/usage/stateful-mocks/
-- Mockoon CLI: https://github.com/mockoon/mockoon · comparison run with `@mockoon/cli` 9.9.0 on the same `users.yaml`
+- Mockoon CLI: https://github.com/mockoon/mockoon · comparison run with `@mockoon/cli` 9.10.0 on the same `users.yaml` (2026-11-11)
 - npm weekly downloads for `@stoplight/prism-cli` (2026-10-06 to 2026-10-12): https://api.npmjs.org/downloads/point/last-week/@stoplight/prism-cli
 - Our runs: /workspace/prismtest on the box, 2026-10-15
