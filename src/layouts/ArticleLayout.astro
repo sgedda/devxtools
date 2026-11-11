@@ -173,7 +173,7 @@ const displayTitle = frontmatter.h1 || frontmatter.title;
               <strong>Tested with</strong> {frontmatter.tested_with}{frontmatter.repro_url && (
                 <>
                   {' '}
-                  <a href={frontmatter.repro_url}>{frontmatter.repro_label ?? frontmatter.repro_url}</a>
+                  Repro: <a href={frontmatter.repro_url}>{frontmatter.repro_label ?? frontmatter.repro_url}</a>
                 </>
               )}
             </p>
