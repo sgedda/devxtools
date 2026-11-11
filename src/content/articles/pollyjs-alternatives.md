@@ -1,5 +1,5 @@
 ---
-title: "Polly.js Alternatives (2026): Record & Replay HTTP in JS"
+title: "Polly.js Alternatives: Record & Replay | DevXTools"
 description: "Polly.js hasn't had a core release since 2023. Compare record/replay alternatives: nock.back, Talkback, MSW + HAR, Playwright HAR, Mockifyer and more."
 slug: "/comparisons/pollyjs-alternatives/"
 canonical: "https://devxtools.dev/comparisons/pollyjs-alternatives/"

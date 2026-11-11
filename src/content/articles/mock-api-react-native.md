@@ -1,10 +1,10 @@
 ---
-title: "How to Mock APIs in React Native (MSW, Mirage & Mockifyer)"
-description: "How to mock APIs in React Native: MSW for Jest and the simulator, Mirage, record/replay with Mockifyer, Expo setup, and mocking in Detox/Maestro E2E."
+title: "MSW React Native: How to Mock APIs | DevXTools"
+description: "Mock APIs in React Native with MSW (Jest and the simulator), plus Mirage, Expo setup, and how mocking works in Detox and Maestro E2E tests."
 slug: "/guides/mock-api-react-native/"
 canonical: "https://devxtools.dev/guides/mock-api-react-native/"
 replaces: "/guides/react-native-mocking-mockifyer/ (live; 301 to this URL)"
-h1: "How to Mock APIs in React Native"
+h1: "How to Mock APIs in React Native with MSW"
 primary_keyword: "mock api react native"
 breadcrumbs: [{ name: "Home", url: "/" }, { name: "Guides", url: "/guides/" }, { name: "Mock APIs in React Native", url: "/guides/mock-api-react-native/" }]
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]

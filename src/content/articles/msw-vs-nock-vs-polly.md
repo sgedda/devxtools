@@ -1,5 +1,5 @@
 ---
-title: "MSW vs Nock vs Polly.js: Which HTTP Mocking Library?"
+title: "MSW vs Nock vs Polly.js (2026) | DevXTools"
 description: "MSW, Nock and Polly.js compared for JS/TS HTTP mocking: interception model, runtimes, record/replay and 2026 maintenance status, plus which to pick."
 slug: "/comparisons/msw-vs-nock-vs-polly/"
 canonical: "https://devxtools.dev/comparisons/msw-vs-nock-vs-polly/"

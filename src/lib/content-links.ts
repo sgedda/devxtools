@@ -19,6 +19,11 @@ const comparisons: Array<{ title: string; url: string; tools: string[] }> = [
 
 const guides: Array<{ title: string; url: string; tools: string[] }> = [
   {
+    title: "Postman alternatives",
+    url: "/api-development/postman-alternatives/",
+    tools: ["postman"]
+  },
+  {
     title: "MSW vs Nock vs Polly.js",
     url: "/comparisons/msw-vs-nock-vs-polly/",
     tools: ["msw", "nock", "pollyjs"]

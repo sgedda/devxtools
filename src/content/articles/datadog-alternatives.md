@@ -1,6 +1,6 @@
 ---
-title: "Datadog Alternatives (2026): Open-Source & Cheaper Options"
-description: "Independent guide to Datadog alternatives: open-source and SaaS tools for APM, logs, metrics and errors, with pricing models and an OpenTelemetry plan."
+title: "Datadog Alternatives (2026): OSS & Cheaper | DevXTools"
+description: "Independent Datadog alternatives: open-source and cheaper options for APM, logs, metrics and errors, with pricing models and an OpenTelemetry-first plan."
 slug: "/observability/datadog-alternatives/"
 canonical: "https://devxtools.dev/observability/datadog-alternatives/"
 h1: "Datadog Alternatives: Open-Source and Cheaper Options by Job"
