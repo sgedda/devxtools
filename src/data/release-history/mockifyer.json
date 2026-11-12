@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.10.190",
+    "releaseDate": "2026-10-26T10:17:52.843Z",
+    "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.190",
+    "source": "npm",
+    "status": "draft"
+  },
+  {
     "version": "1.10.181",
     "releaseDate": "2026-09-30T09:26:41.146Z",
     "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.181",

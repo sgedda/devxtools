@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.78.0",
+    "releaseDate": "2026-11-10T14:55:07.067Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "summary": "1.77.0–1.78.0 add per-document auth overrides, default extension rendering, Avro/RAML/Protobuf schema docs, custom code-sample selection, and SDK tab labels.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.76.4",
     "releaseDate": "2026-10-30T19:21:03.847Z",
     "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",

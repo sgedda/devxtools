@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.33.2",
+    "releaseDate": "2026-11-11T00:27:24Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.2",
+    "source": "github",
+    "summary": "4.33.2 fixes inferred links, stateful id reuse, data generation, false-positive checks, CLI/auth config, pytest collection, gRPC retries, and `st replay` request bodies.",
+    "status": "reviewed"
+  },
+  {
     "version": "4.33.1",
     "releaseDate": "2026-11-04T15:29:16Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.1",
