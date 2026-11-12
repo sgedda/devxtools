@@ -44,6 +44,9 @@ describe('record then replay', () => {
         userId: 1,
       });
 
+      // Wait for Mockifyer to finish writing the mock file to disk
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
       const mockFiles = [];
       const walk = (dir) => {
         for (const entry of readdirSync(dir, { withFileTypes: true })) {
