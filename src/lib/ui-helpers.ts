@@ -123,5 +123,9 @@ export function renderInlineMarkdown(markdown: string): string {
     if (!SAFE_HREF.test(decodedHref)) return `[${label}](${href})`;
     return token(`<a href="${escapeHtml(decodedHref)}">${label}</a>`);
   });
-  return html.replace(/\u0000(\d+)\u0000/g, (_m, i: string) => tokens[Number(i)]);
+  // Keep replacing placeholders until none remain (handles nesting)
+  while (/\u0000\d+\u0000/.test(html)) {
+    html = html.replace(/\u0000(\d+)\u0000/g, (_m, i: string) => tokens[Number(i)]);
+  }
+  return html;
 }
