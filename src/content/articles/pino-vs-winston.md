@@ -9,8 +9,8 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Comparisons", url: "/comparis
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-10-15"
-tested_with: "pino 10.4.0, pino-pretty 13.2.0, pino-http 11.0.0, winston 3.19.0, winston-daily-rotate-file 5.0.0, express-winston 4.2.0, Fastify 5.12.7, Express 5.3.0, NestJS 12.1.3 with nestjs-pino 5.3.1 and nest-winston 2.0.0, @opentelemetry/sdk-node 0.223.0, Node 22.23.3; 2026-10-15"
+dateModified: "2026-11-12"
+tested_with: "pino 10.4.0, pino-pretty 13.2.0, pino-http 11.0.0, winston 3.19.0, winston-daily-rotate-file 5.0.0, express-winston 4.2.0, Fastify 5.12.7, Express 5.3.0, NestJS 12.1.3 with nestjs-pino 5.3.1 and nest-winston 2.0.0, @opentelemetry/sdk-node 0.301.1, @opentelemetry/instrumentation-pino 0.71.0, @opentelemetry/instrumentation-winston 0.70.0, Node 22.23.5 (OTel log-correlation re-run 2026-11-12); other library versions 2026-10-15 on Node 22.23.3"
 tools: ["pino", "winston", "grafana-loki", "betterstack", "datadog", "opentelemetry"]
 ---
 
@@ -276,7 +276,7 @@ const sdk = new NodeSDK({
 sdk.start();
 ```
 
-> **SDK 0.300 note (2026-10-21):** this was tested on `@opentelemetry/sdk-node` 0.223.0. [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20) requires Node.js 22.15 or later and removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options in favour of the plural `metricReaders`, `spanProcessors` and `logRecordProcessors`. We haven't re-run this page on 0.300 yet.
+> **SDK 0.300+ note (updated 2026-11-12):** this was originally tested on `@opentelemetry/sdk-node` 0.223.0. We re-ran the log-correlation snippet on **0.301.1** with `@opentelemetry/instrumentation-pino` 0.71.0 and `@opentelemetry/instrumentation-winston` 0.70.0 (Node 22.23.5, 2026-11-12). [Version 0.300.0](https://github.com/open-telemetry/opentelemetry-js/releases/tag/experimental%2Fv0.300.0) (released 2026-10-20) requires Node.js 22.15 or later and removes the `metricReader`, `spanProcessor` and `logRecordProcessor` options in favour of the plural `metricReaders`, `spanProcessors` and `logRecordProcessors`. This snippet uses `instrumentations` only, so those option names do not apply here. NestJS, benchmark and transport examples on this page were not re-run.
 
 Inside a span, the output looked like this:
 
@@ -285,7 +285,7 @@ Inside a span, the output looked like this:
 {"level":"info","message":"from winston","span_id":"0307fc804734ac6c","trace_flags":"01","trace_id":"6843f258ee411382922ae22886e367f5"}
 ```
 
-Without the `register(...)` line, our ESM app produced logs with no trace fields at all, and no error. As of 2026-10-15, `@opentelemetry/instrumentation-pino` 0.69.0 supports pino `>=5.14.0 <11`, which covers the current pino 10.4. Both instrumentations can also forward records to the OpenTelemetry Logs SDK ("log sending"); Winston needs `@opentelemetry/winston-transport` installed for that. See [OpenTelemetry](/tools/opentelemetry/).
+Without the `register(...)` line, our ESM app on 0.301.1 produced Pino logs with no trace fields, while Winston logs still included `trace_id`, `span_id` and `trace_flags`; there was no error. As of 2026-11-12, `@opentelemetry/instrumentation-pino` 0.71.0 supports pino `>=5.14.0 <11`, which covers the current pino 10.4. Both instrumentations can also forward records to the OpenTelemetry Logs SDK ("log sending"); Winston needs `@opentelemetry/winston-transport` installed for that. See [OpenTelemetry](/tools/opentelemetry/).
 
 ## Migrating from Winston to Pino
 
@@ -352,4 +352,4 @@ Swap `logger.info('msg', meta)` for `logger.info(meta, 'msg')`, and replace form
 - Datadog Node.js log collection: https://docs.datadoghq.com/logs/log_collection/nodejs/
 - npm weekly downloads (2026-10-06 to 2026-10-12): https://api.npmjs.org/downloads/point/last-week/pino,winston (and per package)
 - GitHub repository metadata (stars, licences), fetched 2026-10-15: pinojs/pino, winstonjs/winston
-- Our runs: /workspace/logtest and /workspace/nestlog on the box, 2026-10-15
+- Our runs: /workspace/logtest and /workspace/nestlog on the box, 2026-10-15; OTel log-correlation re-run with sdk-node 0.301.1 on Node 22.23.5, 2026-11-12
