@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-11T13:56:21.538Z",
+  "lastUpdated": "2026-11-12T07:21:04.920Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -299,11 +299,12 @@
       "status": "draft"
     },
     "rozenite": {
-      "version": "2.5.0",
-      "releaseDate": "2026-10-12T18:42:00.692Z",
-      "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.5.0",
+      "version": "2.6.0",
+      "releaseDate": "2026-11-11T23:06:38.397Z",
+      "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.6.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "Aligns Nitro timestamps in the network-activity plugin with wall time, adds a react-native-keychain storage adapter, supports Expo Router 58, and fixes CLI plugin generation on Rozenite 2.x.",
+      "status": "reviewed"
     },
     "scalar": {
       "version": "1.78.0",
