@@ -49,6 +49,7 @@ export const ToolSchema = z.object({
   seoTitle: z.string().optional(), // Document title; Layout will not append | DevXTools if already present
   seoDescription: z.string().optional(), // Meta description override; bestFor remains the on-page blurb
   whenToUse: z.string().optional(),
+  seeAlso: z.string().optional(), // Optional inline markdown, rendered after When to use it or in the status aside
   githubStars: z.number().optional(),
   lastActivity: z.string().optional(), // ISO date string of last commit/release
   npmPackage: z.string().optional(), // npm package name for download stats

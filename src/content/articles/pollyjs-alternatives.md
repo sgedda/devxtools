@@ -337,6 +337,8 @@ Two things to watch. Polly matches on request **order** by default (`order: true
 
 \*Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
 
+If you need [recording a backend API as regression tests, not just JS client calls](/guides/keploy-and-mockifyer/), that's a different layer than the JS client recorders in this table.
+
 ## FAQ
 
 ### Is Polly.js still maintained?
@@ -365,7 +367,7 @@ Patch `fetch` in dev builds (Mockifyer does this via Metro) or use a proxy like 
 
 ## Related
 
-[Polly.js](/tools/pollyjs/) · [Nock](/tools/nock/) · [MSW](/tools/msw/) · [Playwright](/tools/playwright/) · [WireMock](/tools/wiremock/) · [Mockoon](/tools/mockoon/) · [Mockifyer](/tools/mockifyer/)\* · [Mirage JS](/tools/miragejs/) · [MSW vs Nock vs Polly](/comparisons/msw-vs-nock-vs-polly/) · [MSW vs Nock](/comparisons/msw-vs-nock/) · [Mocking & test data tools](/mocking-test-data/) · [All comparisons](/comparisons/)
+[Polly.js](/tools/pollyjs/) · [Nock](/tools/nock/) · [MSW](/tools/msw/) · [Playwright](/tools/playwright/) · [WireMock](/tools/wiremock/) · [Mockoon](/tools/mockoon/) · [Mockifyer](/tools/mockifyer/)\* · [Mirage JS](/tools/miragejs/) · [MSW vs Nock vs Polly](/comparisons/msw-vs-nock-vs-polly/) · [recording a backend API as regression tests, not just JS client calls](/guides/keploy-and-mockifyer/) · [MSW vs Nock](/comparisons/msw-vs-nock/) · [Mocking & test data tools](/mocking-test-data/) · [All comparisons](/comparisons/)
 
 \*Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev.
 

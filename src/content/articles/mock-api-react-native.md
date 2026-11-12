@@ -220,6 +220,8 @@ Mock servers can record too: [Mockoon](/tools/mockoon/) and [WireMock](/tools/wi
 - `MOCKIFYER_MODE` controls activation (`on`, `manual` with a runtime toggle, `launch_client` for E2E-only, `off` for store builds). Scenarios can be selected by a `scenario` launch argument via `react-native-launch-arguments`, which suits Detox and Maestro.
 - Node and Jest use the separate `setupMockifyer` entry points.
 
+For [recording the backend API your app calls, not just the app's fetch](/guides/keploy-and-mockifyer/), Keploy records the backend service; it does not patch `fetch` inside React Native.
+
 ## Pointing the app at a mock server
 
 A mock server runs on your machine (or in CI), and the app's base URL points at it. No in-app mocking code, works with any HTTP client, and identical in dev and E2E.
@@ -323,7 +325,7 @@ There isn't one tool for every layer. MSW is the strongest default for Jest. A m
 - [MSW](/tools/msw/) · [Mirage JS](/tools/miragejs/) · [Mockifyer](/tools/mockifyer/) · [Polly.js](/tools/pollyjs/)
 - [Mockoon](/tools/mockoon/) · [Prism](/tools/prism/) · [WireMock](/tools/wiremock/)
 - [Detox](/tools/detox/) · [Maestro](/tools/maestro/) · [Reactotron](/tools/reactotron/) · [Proxyman](/tools/proxyman/) · [Charles](/tools/charles/)
-- [MSW vs Nock](/comparisons/msw-vs-nock/) · [Mocking & test data](/mocking-test-data/) · [Testing](/testing/)
+- [MSW vs Nock](/comparisons/msw-vs-nock/) · [recording the backend API your app calls, not just the app's fetch](/guides/keploy-and-mockifyer/) · [Mocking & test data](/mocking-test-data/) · [Testing](/testing/)
 
 ## Sources
 

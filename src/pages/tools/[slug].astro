@@ -5,7 +5,7 @@ import ToolLogo from '../../components/ToolLogo.astro';
 import { getAllTools, getToolBySlug } from '../../lib/tools';
 import { getToolContentLinks } from '../../lib/content-links';
 import { CATEGORY_LABELS, STATUS_LABELS } from '../../lib/schema';
-import { formatTimeAgo, getLicenseBadgeClass } from '../../lib/ui-helpers';
+import { formatTimeAgo, getLicenseBadgeClass, renderInlineMarkdown } from '../../lib/ui-helpers';
 import { getToolRelease, getReleaseHistory } from '../../lib/releases';
 
 export async function getStaticPaths() {
@@ -81,6 +81,9 @@ const relatedTools = allTools
     t.categories.some(c => tool.categories.includes(c))
   )
   .slice(0, 3);
+
+const seeAlsoHtml = tool.seeAlso ? renderInlineMarkdown(tool.seeAlso) : '';
+const seeAlsoInStatus = Boolean(statusLabel && seeAlsoHtml);
 ---
 
 <Layout 
@@ -168,6 +171,9 @@ const relatedTools = allTools
               <a href={`/catalog/?category=${tool.categories[0]}`} class="font-medium text-indigo-700 underline dark:text-indigo-300">All {CATEGORY_LABELS[tool.categories[0]]} tools</a>
             </p>
           )}
+          {seeAlsoInStatus && (
+            <p class="mt-2 text-sm text-zinc-800 dark:text-zinc-200 [&_a]:font-medium [&_a]:text-indigo-700 [&_a]:underline dark:[&_a]:text-indigo-300 [&_code]:font-mono [&_code]:text-[0.9em]" set:html={seeAlsoHtml} />
+          )}
         </aside>
       )}
       {tool.affiliation && (
@@ -194,6 +200,9 @@ const relatedTools = allTools
               {tool.whenToUse}
             </p>
           </div>
+        )}
+        {!seeAlsoInStatus && seeAlsoHtml && (
+          <p class="mt-3 text-[15px] leading-7 text-zinc-600 dark:text-zinc-400 [&_a]:font-medium [&_a]:text-indigo-700 [&_a]:underline dark:[&_a]:text-indigo-300 [&_code]:font-mono [&_code]:text-[0.9em]" set:html={seeAlsoHtml} />
         )}
       </section>
       

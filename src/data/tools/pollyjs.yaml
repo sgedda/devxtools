@@ -29,3 +29,4 @@ platforms:
   - Web
 status: maintenance
 statusNote: No npm release since @pollyjs/core 6.0.6 (July 2023), and the last commit to the repository was in May 2025.
+seeAlso: See [recording a backend service as API tests, not only JS HTTP in tests](/guides/keploy-and-mockifyer/).
