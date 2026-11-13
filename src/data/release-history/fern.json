@@ -1,5 +1,12 @@
 [
   {
+    "version": "5.205.2",
+    "releaseDate": "2026-11-11T08:22:02.157Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.205.2",
+    "source": "npm",
+    "status": "draft"
+  },
+  {
     "version": "5.205.1",
     "releaseDate": "2026-11-10T23:15:26.776Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.205.1",

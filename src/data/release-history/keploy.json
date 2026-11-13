@@ -1,0 +1,10 @@
+[
+  {
+    "version": "3.7.0",
+    "releaseDate": "2026-11-11T05:44:25Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.0",
+    "source": "github",
+    "summary": "Adds a parser-contract for mock-noise and miss reporting. Reusable mocks now keep the union of learned `req_body_noise`, so saved mock files can change (#4943).",
+    "status": "reviewed"
+  }
+]

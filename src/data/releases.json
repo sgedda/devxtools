@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-12T07:21:04.920Z",
+  "lastUpdated": "2026-11-13T07:22:30.000Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,11 +53,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.205.2",
-      "releaseDate": "2026-11-11T08:22:02.157Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.205.2",
+      "version": "5.210.3",
+      "releaseDate": "2026-11-12T22:21:14.168Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.210.3",
       "source": "npm",
-      "status": "draft"
+      "summary": "Adds sticky breadcrumbs, docs tab-menus, an unreferenced-schema Types section, and `fern check` instruction hints. Fixes guest SDK names, link-check stdout, auto-merge warnings, and guest claim help.",
+      "status": "reviewed"
     },
     "fishery": {
       "version": "2.4.0",
@@ -132,18 +133,19 @@
       "status": "draft"
     },
     "k6": {
-      "version": "2.3.0",
-      "releaseDate": "2026-09-21T15:17:03Z",
-      "releaseUrl": "https://github.com/grafana/k6/releases/tag/v2.3.0",
+      "version": "2.4.0",
+      "releaseDate": "2026-11-12T13:27:33Z",
+      "releaseUrl": "https://github.com/grafana/k6/releases/tag/v2.4.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Adds experimental native tracing, Ed25519/X25519 WebCrypto, HTTP/gRPC debug-log redaction, structured gRPC errors, and HTTP QUERY. Deprecates InfluxDB and Prometheus remote-write outputs ahead of v3.",
+      "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.0",
-      "releaseDate": "2026-11-11T05:44:25Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.0",
+      "version": "3.7.2",
+      "releaseDate": "2026-11-12T20:25:15Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.2",
       "source": "github",
-      "summary": "Adds a parser-contract for mock-noise and miss reporting. Reusable mocks now keep the union of learned `req_body_noise`, so saved mock files can change (#4943).",
+      "summary": "3.7.2 uses the Docker CLI's current context (Rancher Desktop) and records HTTP streaming responses. 3.7.1 fixes agent PID mapping, proxy loopback ports, `//path` parsing, and MySQL mock errors.",
       "status": "reviewed"
     },
     "locust": {
@@ -178,11 +180,12 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.190",
-      "releaseDate": "2026-10-26T10:17:52.843Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.190",
+      "version": "1.10.192",
+      "releaseDate": "2026-11-12T09:00:51.042Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.192",
       "source": "npm",
-      "status": "draft"
+      "summary": "Adds selective `recordResponses` pattern matching and a memory provider for browser and Expo, plus Metro web/native export fields. Same-second recordings no longer overwrite each other.",
+      "status": "reviewed"
     },
     "mockoon": {
       "version": "9.10.0",
@@ -292,11 +295,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.77.0",
-      "releaseDate": "2026-11-09T09:58:44.323Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.77.0",
+      "version": "2.78.0",
+      "releaseDate": "2026-11-12T15:05:34.783Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.78.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "Adds an Arazzo `spec-querystring-parameters` rule, `respect` support for the `querystring` parameter location (Arazzo 1.1 / OpenAPI 3.2), a workflow-input schema warning, and several `respect` fixes.",
+      "status": "reviewed"
     },
     "rozenite": {
       "version": "2.6.0",
@@ -307,19 +311,19 @@
       "status": "reviewed"
     },
     "scalar": {
-      "version": "1.78.0",
-      "releaseDate": "2026-11-10T14:55:07.067Z",
+      "version": "1.78.1",
+      "releaseDate": "2026-11-12T14:09:41.953Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "1.77.0–1.78.0 add per-document auth overrides, default extension rendering, Avro/RAML/Protobuf schema docs, custom code-sample selection, and SDK tab labels.",
+      "summary": "Raises the shared YAML alias limit used when rendering RAML and Avro schemas, and parses YAML documents that merge shared anchors into many operations.",
       "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.33.2",
-      "releaseDate": "2026-11-11T00:27:24Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.2",
+      "version": "4.33.4",
+      "releaseDate": "2026-11-12T16:27:07Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.4",
       "source": "github",
-      "summary": "4.33.2 fixes inferred links, stateful id reuse, data generation, false-positive checks, CLI/auth config, pytest collection, gRPC retries, and `st replay` request bodies.",
+      "summary": "4.33.3–4.33.4 fix inferred links, stateful testing, data generation, false-positive checks, CLI/auth, pytest, and multipart/YAML response handling.",
       "status": "reviewed"
     },
     "sentry": {
