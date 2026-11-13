@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-13T07:33:51.416Z",
+  "lastUpdated": "2026-11-13T14:23:21.290Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -53,12 +53,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.210.3",
-      "releaseDate": "2026-11-12T22:21:14.168Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.210.3",
+      "version": "5.211.0",
+      "releaseDate": "2026-11-13T08:18:44.985Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.211.0",
       "source": "npm",
-      "summary": "Adds sticky breadcrumbs, docs tab-menus, an unreferenced-schema Types section, and `fern check` instruction hints. Fixes guest SDK names, link-check stdout, auto-merge warnings, and guest claim help.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -82,12 +81,11 @@
       "status": "draft"
     },
     "grafana-loki": {
-      "version": "3.7.9",
-      "releaseDate": "2026-10-20T22:53:57Z",
-      "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.9",
+      "version": "3.7.10",
+      "releaseDate": "2026-11-13T07:51:25Z",
+      "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.10",
       "source": "github",
-      "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "hoppscotch": {
       "version": "2026.10.1",
@@ -166,9 +164,9 @@
       "status": "reviewed"
     },
     "microcks": {
-      "version": "1.15.0",
-      "releaseDate": "2026-08-05T07:48:13Z",
-      "releaseUrl": "https://github.com/microcks/microcks/releases/tag/1.15.0",
+      "version": "1.16.0",
+      "releaseDate": "2026-11-13T10:19:08Z",
+      "releaseUrl": "https://github.com/microcks/microcks/releases/tag/1.16.0",
       "source": "github",
       "status": "draft"
     },
@@ -180,12 +178,11 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.192",
-      "releaseDate": "2026-11-12T09:00:51.042Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.192",
+      "version": "1.10.193",
+      "releaseDate": "2026-11-13T08:16:56.248Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.193",
       "source": "npm",
-      "summary": "Adds selective `recordResponses` pattern matching and a memory provider for browser and Expo, plus Metro web/native export fields. Same-second recordings no longer overwrite each other.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "mockoon": {
       "version": "9.10.0",
@@ -336,17 +333,16 @@
       "status": "reviewed"
     },
     "signoz": {
-      "version": "0.149.0",
-      "releaseDate": "2026-11-04T06:55:27Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.149.0",
+      "version": "0.150.0",
+      "releaseDate": "2026-11-13T13:47:26Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.150.0",
       "source": "github",
-      "summary": "Starts dual-ingesting log bodies into native JSON (plan for more capacity). Adds rule-view and downtime-schedule FGA, AI observability stats, and bug fixes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "speakeasy": {
-      "version": "1.808.1",
-      "releaseDate": "2026-11-10T14:31:24Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.808.1",
+      "version": "1.809.0",
+      "releaseDate": "2026-11-13T14:02:17Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.809.0",
       "source": "github",
       "status": "draft"
     },
@@ -359,9 +355,9 @@
       "status": "reviewed"
     },
     "swagger-editor": {
-      "version": "5.10.1",
-      "releaseDate": "2026-10-30T13:57:06Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.1",
+      "version": "5.11.0",
+      "releaseDate": "2026-11-13T11:52:22Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",
       "source": "github",
       "status": "draft"
     },
