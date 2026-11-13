@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-13T07:22:30.000Z",
+  "lastUpdated": "2026-11-13T07:33:51.416Z",
   "tools": {
     "appium": {
       "version": "3.9.0",
@@ -145,7 +145,7 @@
       "releaseDate": "2026-11-12T20:25:15Z",
       "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.2",
       "source": "github",
-      "summary": "3.7.2 uses the Docker CLI's current context (Rancher Desktop) and records HTTP streaming responses. 3.7.1 fixes agent PID mapping, proxy loopback ports, `//path` parsing, and MySQL mock errors.",
+      "summary": "3.7.2 uses the Docker CLI's current context (Rancher Desktop) and no longer records HTTP streams as test cases. 3.7.1 fixes agent PID mapping, loopback ports, `//path` parsing, and MySQL mock errors.",
       "status": "reviewed"
     },
     "locust": {
@@ -323,7 +323,7 @@
       "releaseDate": "2026-11-12T16:27:07Z",
       "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.4",
       "source": "github",
-      "summary": "4.33.3–4.33.4 fix inferred links, stateful testing, data generation, false-positive checks, CLI/auth, pytest, and multipart/YAML response handling.",
+      "summary": "4.33.3–4.33.4 speed up pytest plugin loading on large schemas and fix inferred links, stateful testing, data generation, false-positive checks, CLI/auth, pytest, and multipart/YAML response handling.",
       "status": "reviewed"
     },
     "sentry": {
