@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.10.192",
+    "releaseDate": "2026-11-12T09:00:51.042Z",
+    "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.192",
+    "source": "npm",
+    "summary": "Adds selective `recordResponses` pattern matching and a memory provider for browser and Expo, plus Metro web/native export fields. Same-second recordings no longer overwrite each other.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.10.190",
     "releaseDate": "2026-10-26T10:17:52.843Z",
     "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.190",
