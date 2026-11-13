@@ -33,14 +33,14 @@ Expected result: exit 0 and a line
 
 ## Keploy (not run by `npm test`, not in CI)
 
-What we ran on 2026-11-10 on **Linux**, with the official open-source CLI **v3.6.229** (`keploy_linux_amd64.tar.gz` from the GitHub release). No account was created. Docker was not used or installed.
+What we ran on 2026-11-13 on **Linux**, with the official open-source CLI **v3.7.2** (`keploy_linux_amd64.tar.gz` from the GitHub release). No account was created. Docker was not used or installed. The same demo was first recorded on 2026-11-10 with v3.6.229 (24 recorded, 24/24 passed).
 
 `app.js` is a small Node `http` server on `127.0.0.1:8080` with `/hello` and `/health`.
 
 ```bash
-# Install the OSS CLI v3.6.229, for example:
+# Install the OSS CLI v3.7.2, for example:
 #   mkdir -p bin
-#   curl -sL https://github.com/keploy/keploy/releases/download/v3.6.229/keploy_linux_amd64.tar.gz | tar -xz -C bin
+#   curl -sL https://github.com/keploy/keploy/releases/download/v3.7.2/keploy_linux_amd64.tar.gz | tar -xz -C bin
 #   chmod +x bin/keploy
 
 ./bin/keploy --disable-ansi record -c "node app.js" --cmd-type native --record-timer 30s --path .

@@ -9,15 +9,15 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Guides", url: "/guides/" }, {
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-11-10"
-dateModified: "2026-11-11"
-tested_with: "Mockifyer: fetch and axios record/replay on Node 24.22.1 against a local test API, @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x, 2026-11-10. Keploy: keploy record then keploy test, 24 recorded and 24/24 passed on a small Node HTTP app, Linux, native OSS CLI v3.6.229, no account, no Docker, 2026-11-10; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229."
+dateModified: "2026-11-13"
+tested_with: "Mockifyer: fetch and axios record/replay on Node 24.22.1 against a local test API, @sgedda/mockifyer-core 1.10.190, -fetch 1.8.106, -axios 1.10.35, axios 1.x, 2026-11-10. Keploy: keploy record then keploy test, 24 recorded and 24/24 passed on a small Node HTTP app, Linux, native OSS CLI v3.7.2, no account, no Docker, 2026-11-13; docs, README, pricing page and GitHub API also checked 2026-11-10 against v3.6.229."
 repro_url: "https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer"
 repro_label: "demos/keploy-mockifyer on GitHub"
 tools: ["keploy", "mockifyer"]
 affiliation: "Mockifyer is built and maintained by Sebastian Gedda, who also runs devxtools.dev. Keploy was added to the catalog at the Keploy team's request (PR #89); we have no commercial ties to Keploy."
 ---
 
-> We ran `keploy record` and then `keploy test` on Linux with the open-source CLI v3.6.229 against a small Node HTTP app: 24 test cases were recorded and 24/24 passed. No account and no Docker were used. Other Keploy facts come from its docs, README and pricing page. On 2026-11-10 we re-tested Mockifyer `fetch` and axios record/replay on Node 24.22.1 against a local test API (core 1.10.190, fetch 1.8.106, axios 1.10.35): calls were recorded, the live response body was changed, and replay served the recording. That replay needed `useGlobalFetch` or `useGlobalAxios`, `domainPathRulesMode: 'record_all'`, `MOCKIFYER_RECORD_RESPONSES=true` and `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false`. React Native, client lanes, the dashboard and multi-service tracing were not part of that run; those details are from Mockifyer's README and dashboard README, or from our October tests, and are marked "per docs" below. The apps and commands are in [`demos/keploy-mockifyer`](https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer).
+> On 2026-11-13 we re-ran `keploy record` and then `keploy test` on Linux with the open-source CLI v3.7.2 against a small Node HTTP app: 24 test cases were recorded and 24/24 passed. No account and no Docker were used. Other Keploy facts come from its docs, README and pricing page. On 2026-11-10 we re-tested Mockifyer `fetch` and axios record/replay on Node 24.22.1 against a local test API (core 1.10.190, fetch 1.8.106, axios 1.10.35): calls were recorded, the live response body was changed, and replay served the recording. That replay needed `useGlobalFetch` or `useGlobalAxios`, `domainPathRulesMode: 'record_all'`, `MOCKIFYER_RECORD_RESPONSES=true` and `MOCKIFYER_RECORD_DEFAULT_ALWAYS_USE_REAL_API=false`. React Native, client lanes, the dashboard and multi-service tracing were not part of that run; those details are from Mockifyer's README and dashboard README, or from our October tests, and are marked "per docs" below. The apps and commands are in [`demos/keploy-mockifyer`](https://github.com/sgedda/devxtools/tree/main/demos/keploy-mockifyer).
 
 
 **Keploy and Mockifyer aren't really alternatives. They record traffic at different layers, and they overlap for a Node service's outbound HTTP.** [Keploy](/tools/keploy/) wraps your **backend service** and turns the requests it receives, plus the database, queue and API calls it makes, into regression tests with mocks. [Mockifyer](/tools/mockifyer/) is a JS/TS library for `fetch` and axios. It runs in **Node.js** — backends, tests, scripts and services that call other APIs — and in **React Native/Expo**, and it can log a request across several services (per the dashboard README). React Native and on-device work are a strength, not the only use. Both tools can record and replay outbound HTTP from a Node process. If you have a Node backend and a mobile app, you may want one of each.
@@ -94,7 +94,7 @@ Things to know before you start (all per Keploy's docs):
 
 - **macOS needs Apple Silicon** for the native CLI. Intel Macs use a Lima VM. On macOS and Windows, native mode understands HTTP/HTTPS, MySQL and MongoDB. PostgreSQL, Redis, Kafka and gRPC calls are "captured only as raw bytes and usually don't replay", so run those in Docker or on Linux/WSL. Linux needs kernel 5.10+.
 - **On macOS, start the app directly** (`node server.js`, a built Go binary), not through a launcher such as `npm start`.
-- **The open-source Linux CLI v3.6.229 ran `keploy record`/`keploy test` locally with no account.** In CI it signs in with a `KEPLOY_API_KEY` secret (per Keploy's GitHub CI docs).
+- **The open-source Linux CLI v3.7.2 ran `keploy record`/`keploy test` locally with no account.** In CI it signs in with a `KEPLOY_API_KEY` secret (per Keploy's GitHub CI docs).
 - **Pricing:** the open-source core is Apache-2.0 and self-hosted. The free **Playground** plan has 30 test-suite generations and 100 test runs a month. **Pro** is $19/user/month billed yearly or $24 billed monthly, plus usage. **Enterprise** is custom. The pricing comparison table lists Kubernetes recording from Pro (shared with Enterprise). The same page's Enterprise card and FAQ, though, present "Record traffic inside Kubernetes" / "record-replay in Kubernetes clusters" as an Enterprise feature. The page disagrees with itself, so we can't say which tier actually includes it; ask Keploy if this matters for you. Production traffic capture is consistently Enterprise only.
 
 ### Where Keploy wins
@@ -200,7 +200,7 @@ Not really, except for one overlap. Keploy tests a backend service by recording 
 Keploy's docs don't cover React Native, and it doesn't patch `fetch` inside a mobile app. You can still use it on the backend your app calls. For in-app mocking, see our [React Native mocking guide](/guides/mock-api-react-native/).
 
 ### Is Keploy free?
-The core is open source (Apache-2.0). The hosted Playground plan is free, with monthly limits. Pro costs $19/user/month billed yearly ($24 billed monthly) plus usage. The open-source CLI (v3.6.229) recorded and replayed tests locally with no account. Keploy's docs say the keploy.io installer and CI/cloud features need a free account.
+The core is open source (Apache-2.0). The hosted Playground plan is free, with monthly limits. Pro costs $19/user/month billed yearly ($24 billed monthly) plus usage. The open-source CLI (v3.7.2) recorded and replayed tests locally with no account. Keploy's docs say the keploy.io installer and CI/cloud features need a free account.
 
 ### Which databases can Keploy mock?
 Keploy's README lists Postgres, MySQL and MongoDB, plus Kafka and RabbitMQ for messaging. Its pricing table limits some of these by plan, and on native macOS or Windows only HTTP/HTTPS, MySQL and MongoDB replay reliably. Use Docker or Linux for the rest.
@@ -217,6 +217,7 @@ All accessed 2026-11-10.
 
 - Keploy README (eBPF, no SDK, databases and queues, quick start): https://github.com/keploy/keploy/blob/main/README.md
 - Keploy GitHub repo and releases (Apache-2.0, stars, forks, v3.6.226–v3.6.229): https://github.com/keploy/keploy and https://github.com/keploy/keploy/releases
+- Keploy OSS CLI v3.7.2 re-run (2026-11-13, `keploy record` then `keploy test` on `demos/keploy-mockifyer`, 24 recorded, 24/24 passed, no account, no Docker): https://github.com/keploy/keploy/releases/tag/v3.7.2
 - How Keploy works (eBPF on Linux, user space on macOS/Windows, YAML): https://keploy.io/docs/keploy-explained/how-keploy-works/
 - Installing Keploy (Apple Silicon only on macOS, kernel 5.10+, native protocol limits, launcher caveat): https://keploy.io/docs/server/installation/
 - Keploy test and mock layout (`keploy/test-set-0/…`): https://keploy.io/docs/server/sdk-installation/
