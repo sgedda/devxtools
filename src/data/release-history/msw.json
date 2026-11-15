@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.0.5",
+    "releaseDate": "2026-11-11T01:14:49.507Z",
+    "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.5",
+    "source": "npm",
+    "summary": "Bug fixes: update `@mswjs/interceptors` to 0.45.11, and add `handler` to the request:match event.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.0.4",
     "releaseDate": "2026-11-06T01:15:42.269Z",
     "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.4",

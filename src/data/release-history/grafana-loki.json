@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.9",
+    "releaseDate": "2026-10-20T22:53:57Z",
+    "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.9",
+    "source": "github",
+    "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.8",
     "releaseDate": "2026-09-17T15:51:10Z",
     "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.8",
