@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.216.0",
+    "releaseDate": "2026-11-13T22:09:08.216Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.216.0",
+    "source": "npm",
+    "summary": "5.211.0–5.216.0 add docs profiles, type-page schema examples, a coding-agent skills hint, and MCP OAuth detection after generate. The CLI no longer silently hands off to versions older than 5.215.0.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.210.3",
     "releaseDate": "2026-11-12T22:21:14.168Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.210.3",

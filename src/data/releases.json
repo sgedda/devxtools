@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-16T07:40:00.000Z",
+  "lastUpdated": "2026-11-16T15:26:58.539Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,12 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.216.0",
-      "releaseDate": "2026-11-13T22:09:08.216Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.216.0",
+      "version": "5.217.0",
+      "releaseDate": "2026-11-16T15:12:32.499Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.217.0",
       "source": "npm",
-      "summary": "5.211.0–5.216.0 add docs profiles, type-page schema examples, a coding-agent skills hint, and MCP OAuth detection after generate. The CLI no longer silently hands off to versions older than 5.215.0.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -297,28 +296,25 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.78.0",
-      "releaseDate": "2026-11-12T15:05:34.783Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.78.0",
+      "version": "2.79.0",
+      "releaseDate": "2026-11-16T08:18:20.375Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.79.0",
       "source": "npm",
-      "summary": "Adds an Arazzo `spec-querystring-parameters` rule, `respect` support for the `querystring` parameter location (Arazzo 1.1 / OpenAPI 3.2), a workflow-input schema warning, and several `respect` fixes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "rozenite": {
-      "version": "2.6.0",
-      "releaseDate": "2026-11-11T23:06:38.397Z",
-      "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.6.0",
+      "version": "2.7.0",
+      "releaseDate": "2026-11-15T20:36:22.279Z",
+      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.7.0",
       "source": "npm",
-      "summary": "Aligns Nitro timestamps in the network-activity plugin with wall time, adds a react-native-keychain storage adapter, supports Expo Router 58, and fixes CLI plugin generation on Rozenite 2.x.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "scalar": {
-      "version": "1.78.1",
-      "releaseDate": "2026-11-12T14:09:41.953Z",
+      "version": "1.79.0",
+      "releaseDate": "2026-11-16T12:23:44.434Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "Raises the shared YAML alias limit used when rendering RAML and Avro schemas, and parses YAML documents that merge shared anchors into many operations.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "schemathesis": {
       "version": "4.33.4",
@@ -371,12 +367,11 @@
       "status": "reviewed"
     },
     "thunder-client": {
-      "version": "3.2.2",
-      "releaseDate": "2026-11-06T06:20:52Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.2",
+      "version": "3.2.5",
+      "releaseDate": "2026-11-16T10:42:18Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.5",
       "source": "github",
-      "summary": "Improves SSE (Connected on open, split packets, drop reasons), adds MCP Streamable HTTP via the SSE request type, and removes the Free plan monthly import limit.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "winston": {
       "version": "3.19.0",

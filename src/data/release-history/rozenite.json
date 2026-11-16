@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.6.0",
+    "releaseDate": "2026-11-11T23:06:38.397Z",
+    "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.6.0",
+    "source": "npm",
+    "summary": "Aligns Nitro timestamps in the network-activity plugin with wall time, adds a react-native-keychain storage adapter, supports Expo Router 58, and fixes CLI plugin generation on Rozenite 2.x.",
+    "status": "reviewed"
+  },
+  {
     "version": "2.5.0",
     "releaseDate": "2026-10-12T18:42:00.692Z",
     "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.5.0",

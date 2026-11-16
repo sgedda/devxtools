@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.78.1",
+    "releaseDate": "2026-11-12T14:09:41.953Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "summary": "Raises the shared YAML alias limit used when rendering RAML and Avro schemas, and parses YAML documents that merge shared anchors into many operations.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.78.0",
     "releaseDate": "2026-11-10T14:55:07.067Z",
     "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
