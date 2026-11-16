@@ -1,12 +1,14 @@
 {
-  "lastUpdated": "2026-11-13T07:33:51.416Z",
+  "lastUpdated": "2026-11-16T07:20:00.000Z",
   "tools": {
     "appium": {
-      "version": "3.9.0",
-      "releaseDate": "2026-10-27T06:53:31.110Z",
-      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%403.9.0",
+      "version": "4.0.0",
+      "releaseDate": "2026-11-15T13:59:57.287Z",
+      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%404.0.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "Removes --callback-address/-port, --debug-log-spacing, --strict-caps and --trace-dir; rejects non-object POST bodies; case-sensitive caps; Windows driver replaced by WinCore; JSONWP internals dropped.",
+      "breaking": true,
+      "status": "reviewed"
     },
     "artillery": {
       "version": "2.0.34",
@@ -53,12 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.210.3",
-      "releaseDate": "2026-11-12T22:21:14.168Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.210.3",
+      "version": "5.216.0",
+      "releaseDate": "2026-11-13T22:09:08.216Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.216.0",
       "source": "npm",
-      "summary": "Adds sticky breadcrumbs, docs tab-menus, an unreferenced-schema Types section, and `fern check` instruction hints. Fixes guest SDK names, link-check stdout, auto-merge warnings, and guest claim help.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -82,12 +83,11 @@
       "status": "draft"
     },
     "grafana-loki": {
-      "version": "3.7.9",
-      "releaseDate": "2026-10-20T22:53:57Z",
-      "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.9",
+      "version": "3.7.10",
+      "releaseDate": "2026-11-13T07:51:25Z",
+      "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.10",
       "source": "github",
-      "summary": "Patch: fixes concurrent WAL `Append()` calls that could corrupt ingester WAL state, limits request body size for two APIs, and bumps Go to 1.26.10 for security fixes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "hoppscotch": {
       "version": "2026.10.1",
@@ -141,12 +141,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.2",
-      "releaseDate": "2026-11-12T20:25:15Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.2",
+      "version": "3.7.7",
+      "releaseDate": "2026-11-15T10:26:56Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.7",
       "source": "github",
-      "summary": "3.7.2 uses the Docker CLI's current context (Rancher Desktop) and no longer records HTTP streams as test cases. 3.7.1 fixes agent PID mapping, loopback ports, `//path` parsing, and MySQL mock errors.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -166,9 +165,9 @@
       "status": "reviewed"
     },
     "microcks": {
-      "version": "1.15.0",
-      "releaseDate": "2026-08-05T07:48:13Z",
-      "releaseUrl": "https://github.com/microcks/microcks/releases/tag/1.15.0",
+      "version": "1.16.0",
+      "releaseDate": "2026-11-13T10:19:08Z",
+      "releaseUrl": "https://github.com/microcks/microcks/releases/tag/1.16.0",
       "source": "github",
       "status": "draft"
     },
@@ -180,12 +179,11 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.192",
-      "releaseDate": "2026-11-12T09:00:51.042Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.192",
+      "version": "1.10.195",
+      "releaseDate": "2026-11-14T18:49:27.064Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.195",
       "source": "npm",
-      "summary": "Adds selective `recordResponses` pattern matching and a memory provider for browser and Expo, plus Metro web/native export fields. Same-second recordings no longer overwrite each other.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "mockoon": {
       "version": "9.10.0",
@@ -203,12 +201,11 @@
       "status": "draft"
     },
     "msw": {
-      "version": "3.0.5",
-      "releaseDate": "2026-11-11T01:14:49.507Z",
-      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.5",
+      "version": "3.0.6",
+      "releaseDate": "2026-11-15T01:14:50.929Z",
+      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.6",
       "source": "npm",
-      "summary": "Bug fixes: update `@mswjs/interceptors` to 0.45.11, and add `handler` to the request:match event.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "nock": {
       "version": "15.0.6",
@@ -256,13 +253,11 @@
       "status": "draft"
     },
     "playwright": {
-      "version": "1.65.0",
-      "releaseDate": "2026-11-05T18:28:14.786Z",
-      "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.65.0",
+      "version": "1.65.1",
+      "releaseDate": "2026-11-13T21:15:10.738Z",
+      "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.65.1",
       "source": "npm",
-      "summary": "Adds Bun test runner, `failures` reporter and exclusive locks. Breaking: `useDefineForClassFields` for class fields, not-inert waits, RFC 6265 cookies, proxy credentials no longer sent to websites.",
-      "breaking": true,
-      "status": "reviewed"
+      "status": "draft"
     },
     "pollyjs": {
       "version": "6.0.6",
@@ -336,17 +331,16 @@
       "status": "reviewed"
     },
     "signoz": {
-      "version": "0.149.0",
-      "releaseDate": "2026-11-04T06:55:27Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.149.0",
+      "version": "0.150.0",
+      "releaseDate": "2026-11-13T13:47:26Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.150.0",
       "source": "github",
-      "summary": "Starts dual-ingesting log bodies into native JSON (plan for more capacity). Adds rule-view and downtime-schedule FGA, AI observability stats, and bug fixes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "speakeasy": {
-      "version": "1.808.1",
-      "releaseDate": "2026-11-10T14:31:24Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.808.1",
+      "version": "1.809.0",
+      "releaseDate": "2026-11-13T14:02:17Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.809.0",
       "source": "github",
       "status": "draft"
     },
@@ -359,9 +353,9 @@
       "status": "reviewed"
     },
     "swagger-editor": {
-      "version": "5.10.1",
-      "releaseDate": "2026-10-30T13:57:06Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.10.1",
+      "version": "5.11.0",
+      "releaseDate": "2026-11-13T11:52:22Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",
       "source": "github",
       "status": "draft"
     },

@@ -16,6 +16,7 @@ categories:
 bestFor: Developer-centric load testing with JavaScript scripting and Grafana integration
 description: Modern load testing tool built by Grafana Labs. Write tests in JavaScript, run from CLI or CI/CD, and get detailed performance metrics. Supports HTTP, WebSockets, gRPC, and browser testing.
 whenToUse: When you need scriptable load tests that integrate with Grafana, want to test APIs and microservices, or need load testing in CI/CD pipelines.
+seeAlso: The catalog tracks the 2.x line (currently 2.4.0). Users still on 1.x should install [k6 v1.8.3](https://github.com/grafana/k6/releases/tag/v1.8.3) (13 Nov 2026), which updates `golang.org/x/net` and `klauspost/compress` for known vulnerabilities and fixes a browser `click()` panic on a missing element handle.
 githubStars: 31987
 lastActivity: 2026-10-12T15:42:37Z
 lastChecked: 2026-10-14

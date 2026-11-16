@@ -1,7 +1,7 @@
 name: Flipper
 slug: flipper
 website: https://fbflipper.com
-repo: https://github.com/facebook/flipper
+repo: https://github.com/meta/flipper
 license: MIT
 languages:
   - TypeScript
@@ -27,7 +27,7 @@ lastActivity: 2026-09-18T14:52:29Z
 lastChecked: 2026-10-20
 isOpenSource: true
 status: deprecated
-statusNote: The facebook/flipper GitHub repository has been archived and is read-only.
+statusNote: The meta/flipper GitHub repository has been archived and is read-only. The previous facebook/flipper URL redirects there.
 alternatives:
   - rozenite
   - name: React Native DevTools

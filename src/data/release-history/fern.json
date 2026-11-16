@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.210.3",
+    "releaseDate": "2026-11-12T22:21:14.168Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.210.3",
+    "source": "npm",
+    "summary": "Adds sticky breadcrumbs, docs tab-menus, an unreferenced-schema Types section, and `fern check` instruction hints. Fixes guest SDK names, link-check stdout, auto-merge warnings, and guest claim help.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.205.2",
     "releaseDate": "2026-11-11T08:22:02.157Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.205.2",
