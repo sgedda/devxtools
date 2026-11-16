@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-16T07:20:00.000Z",
+  "lastUpdated": "2026-11-16T07:40:00.000Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -59,7 +59,8 @@
       "releaseDate": "2026-11-13T22:09:08.216Z",
       "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.216.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "5.211.0–5.216.0 add docs profiles, type-page schema examples, a coding-agent skills hint, and MCP OAuth detection after generate. The CLI no longer silently hands off to versions older than 5.215.0.",
+      "status": "reviewed"
     },
     "fishery": {
       "version": "2.4.0",
@@ -87,7 +88,8 @@
       "releaseDate": "2026-11-13T07:51:25Z",
       "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.10",
       "source": "github",
-      "status": "draft"
+      "summary": "Adds configurable TLS curve preferences on the server, and updates dependencies on the 3.7.x line.",
+      "status": "reviewed"
     },
     "hoppscotch": {
       "version": "2026.10.1",
@@ -145,7 +147,8 @@
       "releaseDate": "2026-11-15T10:26:56Z",
       "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.7",
       "source": "github",
-      "status": "draft"
+      "summary": "3.7.3–3.7.7 fix IPv6 hosts in test targets and Docker/Compose port maps, installer/sudo Docker retries, MySQL pipelining, and mock-sync drops. Adds named worker-mock rules served to every test.",
+      "status": "reviewed"
     },
     "locust": {
       "version": "2.47.0",
@@ -169,7 +172,8 @@
       "releaseDate": "2026-11-13T10:19:08Z",
       "releaseUrl": "https://github.com/microcks/microcks/releases/tag/1.16.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Adds `envFrom` support to the Helm chart. Fixes native uber-jar snapshot import, request-header overrides, a null-property NPE, and isolates Kafka request-handling failures.",
+      "status": "reviewed"
     },
     "miragejs": {
       "version": "0.1.48",
@@ -183,7 +187,8 @@
       "releaseDate": "2026-11-14T18:49:27.064Z",
       "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.195",
       "source": "npm",
-      "status": "draft"
+      "summary": "Exports the `utils/record-responses-matcher` and `utils/drift` subpaths and adds contract drift detection, including history and accept/snooze. Resolves the drift config path on the server.",
+      "status": "reviewed"
     },
     "mockoon": {
       "version": "9.10.0",
@@ -205,7 +210,8 @@
       "releaseDate": "2026-11-15T01:14:50.929Z",
       "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.6",
       "source": "npm",
-      "status": "draft"
+      "summary": "Preserves optional path parameters and pipes in handler paths.",
+      "status": "reviewed"
     },
     "nock": {
       "version": "15.0.6",
@@ -257,7 +263,8 @@
       "releaseDate": "2026-11-13T21:15:10.738Z",
       "releaseUrl": "https://github.com/microsoft/playwright/releases/tag/v1.65.1",
       "source": "npm",
-      "status": "draft"
+      "summary": "Fixes a 1.65 regression where a decorated class with a static field failed to load (`_initClass is not a function`), and corrects test locations that were one column off under Bun 1.4.4+.",
+      "status": "reviewed"
     },
     "pollyjs": {
       "version": "6.0.6",
@@ -335,14 +342,17 @@
       "releaseDate": "2026-11-13T13:47:26Z",
       "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.150.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Removes the v1 rules APIs after converting existing rules to `v2alpha1` (see the 0.150 guide). Dual-ingests log bodies as native JSON, which needs extra collector, ClickHouse, and disk capacity.",
+      "breaking": true,
+      "status": "reviewed"
     },
     "speakeasy": {
       "version": "1.809.0",
       "releaseDate": "2026-11-13T14:02:17Z",
       "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.809.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Keeps auto-assigned CLI flag shorthands stable across regenerations and adds `preferShorthand` pins. Python base64 file inputs now base64-encode raw bytes. Bumps staticcheck to v0.8.2 for Go 1.27.2.",
+      "status": "reviewed"
     },
     "spectral": {
       "version": "6.17.1",
@@ -357,7 +367,8 @@
       "releaseDate": "2026-11-13T11:52:22Z",
       "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Detects JSON Schema 2020-12 in the editor content type.",
+      "status": "reviewed"
     },
     "thunder-client": {
       "version": "3.2.2",

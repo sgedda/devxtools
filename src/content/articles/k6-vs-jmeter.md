@@ -9,7 +9,7 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Comparisons", url: "/comparis
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-11-11"
+dateModified: "2026-11-16"
 tested_with: "k6 v2.3.0, Apache JMeter 5.6.3 on Temurin JRE 21.0.12, Locust 2.47.0 on Python 3.13.5 (re-run 2026-11-11), Artillery 2.0.34 on Node 22.23.3; Linux, 8 vCPU / 16 GB; Locust 2026-11-11, others 2026-10-15"
 tools: ["k6", "jmeter", "locust", "gatling", "artillery"]
 ---
@@ -268,7 +268,7 @@ That's one run at a trivial load, so treat it as a rough indicator. It isn't a c
 
 **JMeter** produces a complete static HTML dashboard with `-e -o report/`, or later from a results file with `-g results.jtl -o report/`. It includes percentiles, throughput over time and error tables, and you can archive it as a CI artifact.
 
-**k6** prints an end-of-test summary, writes JSON with `--summary-export` or `handleSummary()`, and has a built-in live web dashboard. Set `K6_WEB_DASHBOARD=true`, and add `K6_WEB_DASHBOARD_EXPORT=report.html` for an HTML file. k6 skipped the export on our 3-second run ("not enough data"), so use it on real-length tests. For long-term trends, stream metrics with `--out` to Prometheus remote write, InfluxDB, OpenTelemetry, Datadog, CloudWatch, Kafka and other backends, then chart them in Grafana.
+**k6** prints an end-of-test summary, writes JSON with `--summary-export` or `handleSummary()`, and has a built-in live web dashboard. Set `K6_WEB_DASHBOARD=true`, and add `K6_WEB_DASHBOARD_EXPORT=report.html` for an HTML file. k6 skipped the export on our 3-second run ("not enough data"), so use it on real-length tests. For long-term trends, stream metrics with `--out` to Prometheus remote write, InfluxDB, OpenTelemetry, Datadog, CloudWatch, Kafka and other backends, then chart them in Grafana. As of k6 2.4.0, the built-in `influxdb` and `experimental-prometheus-rw` outputs are deprecated: they still work but log a warning, and removal is planned for v3; the recommended migration path is `--out opentelemetry`.
 
 **Locust** has a live web UI and `--html` reports. **Gatling** writes a static HTML report per run, and Enterprise adds run history and comparisons. **Artillery** writes JSON and can push to several observability backends.
 
@@ -338,9 +338,9 @@ Not in the single open-source binary. The Apache-2.0 k6-operator distributes a t
 
 ## Sources
 
-- k6 releases (v2.0.0 2026-05-11, v2.3.0 2026-09-21) and v2 release notes: https://github.com/grafana/k6/releases
+- k6 releases (v2.0.0 2026-05-11, v2.3.0 2026-09-21, v2.4.0 2026-11-12) and v2 release notes: https://github.com/grafana/k6/releases · v2.4.0 deprecations: https://github.com/grafana/k6/releases/tag/v2.4.0 · https://grafana.com/docs/k6/latest/release-notes/v2.4.0/
 - k6 thresholds, checks, scenarios/executors: https://grafana.com/docs/k6/latest/using-k6/thresholds/ · https://grafana.com/docs/k6/latest/using-k6/scenarios/
-- k6 real-time outputs list: https://grafana.com/docs/k6/latest/results-output/real-time/
+- k6 real-time outputs list: https://grafana.com/docs/k6/latest/results-output/real-time/ · OpenTelemetry output: https://grafana.com/docs/k6/latest/results-output/real-time/opentelemetry/
 - k6-operator (TestRun vs PrivateLoadZone): https://github.com/grafana/k6-operator · xk6: https://github.com/grafana/xk6
 - Grafana licensing (AGPLv3 change, 2021-04-20): https://grafana.com/licensing/ · AGPL text: https://www.gnu.org/licenses/agpl-3.0.html
 - Grafana Cloud pricing (k6: 500 VUh free, $0.15/VUh, $19 platform fee): https://grafana.com/pricing/
