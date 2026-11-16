@@ -4,7 +4,8 @@
     "releaseDate": "2026-11-14T21:50:45.325Z",
     "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%403.9.1",
     "source": "npm",
-    "status": "draft"
+    "summary": "Fixes the execute-driver plugin wrapping non-configurable property descriptors through a shadow target.",
+    "status": "reviewed"
   },
   {
     "version": "3.9.0",
