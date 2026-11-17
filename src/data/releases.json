@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-16T15:26:58.539Z",
+  "lastUpdated": "2026-11-17T15:48:40.930Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,9 +55,9 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.217.0",
-      "releaseDate": "2026-11-16T15:12:32.499Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.217.0",
+      "version": "5.218.2",
+      "releaseDate": "2026-11-16T20:43:25.957Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.218.2",
       "source": "npm",
       "status": "draft"
     },
@@ -76,9 +76,9 @@
       "status": "draft"
     },
     "gatling": {
-      "version": "3.16.0",
-      "releaseDate": "2026-09-29T12:21:15Z",
-      "releaseUrl": "https://github.com/gatling/gatling/releases/tag/v3.16.0",
+      "version": "3.16.1",
+      "releaseDate": "2026-11-16T19:12:20Z",
+      "releaseUrl": "https://github.com/gatling/gatling/releases/tag/v3.16.1",
       "source": "github",
       "status": "draft"
     },
@@ -142,12 +142,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.7",
-      "releaseDate": "2026-11-15T10:26:56Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.7",
+      "version": "3.7.8",
+      "releaseDate": "2026-11-17T13:37:18Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.8",
       "source": "github",
-      "summary": "3.7.3–3.7.7 fix IPv6 hosts in test targets and Docker/Compose port maps, installer/sudo Docker retries, MySQL pipelining, and mock-sync drops. Adds named worker-mock rules served to every test.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -182,12 +181,11 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.195",
-      "releaseDate": "2026-11-14T18:49:27.064Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.195",
+      "version": "1.10.197",
+      "releaseDate": "2026-11-16T18:31:36.809Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.197",
       "source": "npm",
-      "summary": "Exports the `utils/record-responses-matcher` and `utils/drift` subpaths and adds contract drift detection, including history and accept/snooze. Resolves the drift config path on the server.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "mockoon": {
       "version": "9.10.0",
@@ -198,9 +196,9 @@
       "status": "reviewed"
     },
     "mountebank": {
-      "version": "2.9.4",
-      "releaseDate": "2026-04-15T16:22:19Z",
-      "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.9.4",
+      "version": "2.10.0",
+      "releaseDate": "2026-11-16T22:00:56Z",
+      "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.10.0",
       "source": "github",
       "status": "draft"
     },
@@ -310,8 +308,8 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.79.0",
-      "releaseDate": "2026-11-16T12:23:44.434Z",
+      "version": "1.80.0",
+      "releaseDate": "2026-11-17T11:36:19.269Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "draft"

@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.10.195",
+    "releaseDate": "2026-11-14T18:49:27.064Z",
+    "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.195",
+    "source": "npm",
+    "summary": "Exports the `utils/record-responses-matcher` and `utils/drift` subpaths and adds contract drift detection, including history and accept/snooze. Resolves the drift config path on the server.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.10.192",
     "releaseDate": "2026-11-12T09:00:51.042Z",
     "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.192",

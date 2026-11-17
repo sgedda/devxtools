@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.7",
+    "releaseDate": "2026-11-15T10:26:56Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.7",
+    "source": "github",
+    "summary": "3.7.3–3.7.7 fix IPv6 hosts in test targets and Docker/Compose port maps, installer/sudo Docker retries, MySQL pipelining, and mock-sync drops. Adds named worker-mock rules served to every test.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.2",
     "releaseDate": "2026-11-12T20:25:15Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.2",
