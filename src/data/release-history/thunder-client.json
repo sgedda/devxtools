@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.2.2",
+    "releaseDate": "2026-11-06T06:20:52Z",
+    "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.2",
+    "source": "github",
+    "summary": "Improves SSE (Connected on open, split packets, drop reasons), adds MCP Streamable HTTP via the SSE request type, and removes the Free plan monthly import limit.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.2.0",
     "releaseDate": "2026-11-03T21:31:58Z",
     "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.0",
