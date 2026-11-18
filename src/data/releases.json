@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-18T07:25:00.000Z",
+  "lastUpdated": "2026-11-18T15:28:00.007Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -99,12 +99,11 @@
       "status": "draft"
     },
     "hoverfly": {
-      "version": "1.12.17",
-      "releaseDate": "2026-11-01T23:41:34Z",
-      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.17",
+      "version": "1.12.18",
+      "releaseDate": "2026-11-18T10:42:27Z",
+      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.18",
       "source": "github",
-      "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "httpie": {
       "version": "3.2.4",
@@ -143,12 +142,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.9",
-      "releaseDate": "2026-11-17T20:00:23Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.9",
+      "version": "3.7.10",
+      "releaseDate": "2026-11-18T08:46:06Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.10",
       "source": "github",
-      "summary": "3.7.8–3.7.9 stop logging request bytes and credentials, fix a matcher hang on slim DST zone files, and print mock-miss paths in full on the console instead of in receipts.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -296,9 +294,9 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.79.0",
-      "releaseDate": "2026-11-16T08:18:20.375Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.79.0",
+      "version": "2.80.0",
+      "releaseDate": "2026-11-18T13:10:54.495Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.80.0",
       "source": "npm",
       "status": "draft"
     },
@@ -310,8 +308,8 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.80.0",
-      "releaseDate": "2026-11-17T11:36:19.269Z",
+      "version": "1.81.0",
+      "releaseDate": "2026-11-18T12:11:16.676Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "draft"
