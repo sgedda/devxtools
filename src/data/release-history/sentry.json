@@ -1,5 +1,14 @@
 [
   {
+    "version": "26.10.1",
+    "releaseDate": "2026-10-29T00:46:59Z",
+    "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.1",
+    "source": "github",
+    "label": "Sentry self-hosted",
+    "summary": "Security patch for the eMudhra intermediate CA compromise, plus `SENTRY_BUCKET_PROFILES` and uptime checker config fixes. `vroom` now uses Distroless; ClickHouse is still unpatched upstream.",
+    "status": "reviewed"
+  },
+  {
     "version": "26.10.0",
     "releaseDate": "2026-10-16T01:17:30Z",
     "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.0",
