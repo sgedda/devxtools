@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.0.6",
+    "releaseDate": "2026-11-15T01:14:50.929Z",
+    "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.6",
+    "source": "npm",
+    "summary": "Preserves optional path parameters and pipes in handler paths.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.0.5",
     "releaseDate": "2026-11-11T01:14:49.507Z",
     "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.5",

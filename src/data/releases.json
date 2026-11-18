@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-16T15:26:58.539Z",
+  "lastUpdated": "2026-11-18T07:25:00.000Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,11 +55,12 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.217.0",
-      "releaseDate": "2026-11-16T15:12:32.499Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.217.0",
+      "version": "5.222.1",
+      "releaseDate": "2026-11-17T23:35:43.447Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.222.1",
       "source": "npm",
-      "status": "draft"
+      "summary": "5.218.0–5.222.1 add popular-search suggestions, MCP auth page actions, and MCP custom-tool uploads. `fern generate` retries 429s by default, and no longer hangs mid-unpack on Node 26 while exiting 0.",
+      "status": "reviewed"
     },
     "fishery": {
       "version": "2.4.0",
@@ -76,9 +77,9 @@
       "status": "draft"
     },
     "gatling": {
-      "version": "3.16.0",
-      "releaseDate": "2026-09-29T12:21:15Z",
-      "releaseUrl": "https://github.com/gatling/gatling/releases/tag/v3.16.0",
+      "version": "3.16.1",
+      "releaseDate": "2026-11-16T19:12:20Z",
+      "releaseUrl": "https://github.com/gatling/gatling/releases/tag/v3.16.1",
       "source": "github",
       "status": "draft"
     },
@@ -142,11 +143,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.7",
-      "releaseDate": "2026-11-15T10:26:56Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.7",
+      "version": "3.7.9",
+      "releaseDate": "2026-11-17T20:00:23Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.9",
       "source": "github",
-      "summary": "3.7.3–3.7.7 fix IPv6 hosts in test targets and Docker/Compose port maps, installer/sudo Docker retries, MySQL pipelining, and mock-sync drops. Adds named worker-mock rules served to every test.",
+      "summary": "3.7.8–3.7.9 stop logging request bytes and credentials, fix a matcher hang on slim DST zone files, and print mock-miss paths in full on the console instead of in receipts.",
       "status": "reviewed"
     },
     "locust": {
@@ -182,12 +183,11 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.195",
-      "releaseDate": "2026-11-14T18:49:27.064Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.195",
+      "version": "1.10.197",
+      "releaseDate": "2026-11-16T18:31:36.809Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.197",
       "source": "npm",
-      "summary": "Exports the `utils/record-responses-matcher` and `utils/drift` subpaths and adds contract drift detection, including history and accept/snooze. Resolves the drift config path on the server.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "mockoon": {
       "version": "9.10.0",
@@ -198,18 +198,18 @@
       "status": "reviewed"
     },
     "mountebank": {
-      "version": "2.9.4",
-      "releaseDate": "2026-04-15T16:22:19Z",
-      "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.9.4",
+      "version": "2.10.0",
+      "releaseDate": "2026-11-16T22:00:56Z",
+      "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.10.0",
       "source": "github",
       "status": "draft"
     },
     "msw": {
-      "version": "3.0.6",
-      "releaseDate": "2026-11-15T01:14:50.929Z",
-      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.6",
+      "version": "3.0.7",
+      "releaseDate": "2026-11-18T01:16:47.792Z",
+      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.7",
       "source": "npm",
-      "summary": "Preserves optional path parameters and pipes in handler paths.",
+      "summary": "Updates `@msw/url` to 0.1.3 so a handler matches when an optional or `*` parameter after another parameter is omitted.",
       "status": "reviewed"
     },
     "nock": {
@@ -310,8 +310,8 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.79.0",
-      "releaseDate": "2026-11-16T12:23:44.434Z",
+      "version": "1.80.0",
+      "releaseDate": "2026-11-17T11:36:19.269Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "draft"
@@ -325,29 +325,29 @@
       "status": "reviewed"
     },
     "sentry": {
-      "version": "26.10.1",
-      "releaseDate": "2026-10-29T00:46:59Z",
-      "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.10.1",
+      "version": "26.11.0",
+      "releaseDate": "2026-11-18T00:29:50Z",
+      "releaseUrl": "https://github.com/getsentry/self-hosted/releases/tag/26.11.0",
       "source": "github",
       "label": "Sentry self-hosted",
-      "summary": "Security patch for the eMudhra intermediate CA compromise, plus `SENTRY_BUCKET_PROFILES` and uptime checker config fixes. `vroom` now uses Distroless; ClickHouse is still unpatched upstream.",
-      "status": "reviewed"
-    },
-    "signoz": {
-      "version": "0.150.0",
-      "releaseDate": "2026-11-13T13:47:26Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.150.0",
-      "source": "github",
-      "summary": "Removes the v1 rules APIs after converting existing rules to `v2alpha1` (see the 0.150 guide). Dual-ingests log bodies as native JSON, which needs extra collector, ClickHouse, and disk capacity.",
+      "summary": "Bumps ClickHouse to 26.8 to address CVE-2026-116366 (unauthenticated RCE). ClickHouse 26.8 requires AVX1/AVX2, so hosts without those instruction sets cannot upgrade.",
       "breaking": true,
       "status": "reviewed"
     },
-    "speakeasy": {
-      "version": "1.809.0",
-      "releaseDate": "2026-11-13T14:02:17Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.809.0",
+    "signoz": {
+      "version": "0.151.0",
+      "releaseDate": "2026-11-18T06:30:01Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.151.0",
       "source": "github",
-      "summary": "Keeps auto-assigned CLI flag shorthands stable across regenerations and adds `preferShorthand` pins. Python base64 file inputs now base64-encode raw bytes. Bumps staticcheck to v0.8.2 for Go 1.27.2.",
+      "summary": "Upgrades the UI to react-router v7 and adds fine-grained access control for users, org, and preference routes, plus top-list and geo-map dashboard panel schemas.",
+      "status": "reviewed"
+    },
+    "speakeasy": {
+      "version": "1.810.0",
+      "releaseDate": "2026-11-17T16:39:46Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.810.0",
+      "source": "github",
+      "summary": "Adds `--nuget-trusted-publishing` to `configure publishing`, which sets NuGet OIDC trusted publishing instead of a nuget.org API key.",
       "status": "reviewed"
     },
     "spectral": {

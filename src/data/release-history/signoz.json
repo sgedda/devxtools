@@ -1,5 +1,14 @@
 [
   {
+    "version": "0.150.0",
+    "releaseDate": "2026-11-13T13:47:26Z",
+    "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.150.0",
+    "source": "github",
+    "summary": "Removes the v1 rules APIs after converting existing rules to `v2alpha1` (see the 0.150 guide). Dual-ingests log bodies as native JSON, which needs extra collector, ClickHouse, and disk capacity.",
+    "breaking": true,
+    "status": "reviewed"
+  },
+  {
     "version": "0.149.0",
     "releaseDate": "2026-11-04T06:55:27Z",
     "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.149.0",
