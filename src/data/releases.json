@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-18T15:28:00.007Z",
+  "lastUpdated": "2026-11-19T07:20:00.000Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,11 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.222.1",
-      "releaseDate": "2026-11-17T23:35:43.447Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.222.1",
+      "version": "5.223.1",
+      "releaseDate": "2026-11-18T18:20:37.483Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.223.1",
       "source": "npm",
-      "summary": "5.218.0–5.222.1 add popular-search suggestions, MCP auth page actions, and MCP custom-tool uploads. `fern generate` retries 429s by default, and no longer hangs mid-unpack on Node 26 while exiting 0.",
+      "summary": "5.223.0–5.223.1 add `fern sdk add-tool` and `add-hook` to scaffold MCP custom tools and hooks. C/C++ docs keep typedef fidelity and stable URLs for colliding symbols (one-time rename on upgrade).",
       "status": "reviewed"
     },
     "fishery": {
@@ -103,7 +103,8 @@
       "releaseDate": "2026-11-18T10:42:27Z",
       "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.18",
       "source": "github",
-      "status": "draft"
+      "summary": "Updates the Go toolchain to 1.27.4.",
+      "status": "reviewed"
     },
     "httpie": {
       "version": "3.2.4",
@@ -146,7 +147,8 @@
       "releaseDate": "2026-11-18T08:46:06Z",
       "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.10",
       "source": "github",
-      "status": "draft"
+      "summary": "Counts a consumed or spent mock as served in the same locked step that takes it, so a held Redis-style pop no longer hangs after another worker takes the job.",
+      "status": "reviewed"
     },
     "locust": {
       "version": "2.47.0",
@@ -200,7 +202,9 @@
       "releaseDate": "2026-11-16T22:00:56Z",
       "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.10.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Adds a `chaos` behavior for probabilistic errors and latency. Raises the minimum Node version from 20 to 20.19, and resolves a `body-parser` DoS advisory (CVE-2026-111181).",
+      "breaking": true,
+      "status": "reviewed"
     },
     "msw": {
       "version": "3.0.7",
@@ -298,7 +302,8 @@
       "releaseDate": "2026-11-18T13:10:54.495Z",
       "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.80.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "2.79.0–2.80.0 add Arazzo `spec-action-mutually-exclusive-fields` and `spec-outputs-invalid-map-name`, `--extends`/Git revisions on experimental `diff`, and lint, respect, and `multipleOf` fixes.",
+      "status": "reviewed"
     },
     "rozenite": {
       "version": "2.7.0",
@@ -312,7 +317,8 @@
       "releaseDate": "2026-11-18T12:11:16.676Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "draft"
+      "summary": "1.79.0–1.81.0 add a plugin `documentTypes` API, resolve external RAML/Protobuf AsyncAPI deps, substitute auth placeholders in SDK install text, and restyle Scalar cards as a padded shell.",
+      "status": "reviewed"
     },
     "schemathesis": {
       "version": "4.33.4",
@@ -365,11 +371,12 @@
       "status": "reviewed"
     },
     "thunder-client": {
-      "version": "3.2.5",
-      "releaseDate": "2026-11-16T10:42:18Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.5",
+      "version": "3.2.6",
+      "releaseDate": "2026-11-18T17:21:09Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.6",
       "source": "github",
-      "status": "draft"
+      "summary": "Collection-runner SSE requests now save every event with its arrival time, and SSE size and time update live. The Free plan no longer has a 10-collection limit.",
+      "status": "reviewed"
     },
     "winston": {
       "version": "3.19.0",
