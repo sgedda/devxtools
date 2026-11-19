@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.12.17",
+    "releaseDate": "2026-11-01T23:41:34Z",
+    "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.17",
+    "source": "github",
+    "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.12.16",
     "releaseDate": "2026-10-21T20:13:09Z",
     "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.16",
