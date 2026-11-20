@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.223.1",
+    "releaseDate": "2026-11-18T18:20:37.483Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.223.1",
+    "source": "npm",
+    "summary": "5.223.0–5.223.1 add `fern sdk add-tool` and `add-hook` to scaffold MCP custom tools and hooks. C/C++ docs keep typedef fidelity and stable URLs for colliding symbols (one-time rename on upgrade).",
+    "status": "reviewed"
+  },
+  {
     "version": "5.222.1",
     "releaseDate": "2026-11-17T23:35:43.447Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.222.1",

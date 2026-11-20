@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-19T07:20:00.000Z",
+  "lastUpdated": "2026-11-20T07:20:00.000Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,11 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.223.1",
-      "releaseDate": "2026-11-18T18:20:37.483Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.223.1",
+      "version": "5.224.0",
+      "releaseDate": "2026-11-19T20:38:46.710Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.224.0",
       "source": "npm",
-      "summary": "5.223.0–5.223.1 add `fern sdk add-tool` and `add-hook` to scaffold MCP custom tools and hooks. C/C++ docs keep typedef fidelity and stable URLs for colliding symbols (one-time rename on upgrade).",
+      "summary": "5.223.2–5.224.0 raise sdk-gen-api remote upload limits for large APIs (and report 413 sizes), and add a `show-scopes` docs.yml option so API Reference endpoints can list required OAuth scopes.",
       "status": "reviewed"
     },
     "fishery": {
@@ -143,11 +143,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.10",
-      "releaseDate": "2026-11-18T08:46:06Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.10",
+      "version": "3.7.12",
+      "releaseDate": "2026-11-19T21:00:34Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
       "source": "github",
-      "summary": "Counts a consumed or spent mock as served in the same locked step that takes it, so a held Redis-style pop no longer hangs after another worker takes the job.",
+      "summary": "3.7.11–3.7.12 fix Windows socket take accounting, MySQL summary truncation, tzdata zone matching, and a memory-guard GOMEMLIMIT from the container limit. New apps are named from the git repo and path.",
       "status": "reviewed"
     },
     "locust": {
@@ -298,11 +298,11 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.80.0",
-      "releaseDate": "2026-11-18T13:10:54.495Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.80.0",
+      "version": "2.82.0",
+      "releaseDate": "2026-11-19T14:38:28.222Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.82.0",
       "source": "npm",
-      "summary": "2.79.0–2.80.0 add Arazzo `spec-action-mutually-exclusive-fields` and `spec-outputs-invalid-map-name`, `--extends`/Git revisions on experimental `diff`, and lint, respect, and `multipleOf` fixes.",
+      "summary": "2.81.0–2.82.0 add Arazzo rules for action, step, and source-description references, standalone binaries for Linux, macOS, and Windows, and switch built-in rulesets to `spec-example-values`.",
       "status": "reviewed"
     },
     "rozenite": {
@@ -313,11 +313,11 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.81.0",
-      "releaseDate": "2026-11-18T12:11:16.676Z",
+      "version": "1.82.1",
+      "releaseDate": "2026-11-20T05:41:12.190Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "1.79.0–1.81.0 add a plugin `documentTypes` API, resolve external RAML/Protobuf AsyncAPI deps, substitute auth placeholders in SDK install text, and restyle Scalar cards as a padded shell.",
+      "summary": "1.82.0–1.82.1 add an opt-in `showBadgesInSidebar` option for `x-badges`, fix freezes on recursive `$ref` schemas, and switch Markdown highlighting to `@scalar/highlight`.",
       "status": "reviewed"
     },
     "schemathesis": {
@@ -363,11 +363,11 @@
       "status": "reviewed"
     },
     "swagger-editor": {
-      "version": "5.11.0",
-      "releaseDate": "2026-11-13T11:52:22Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",
+      "version": "5.11.1",
+      "releaseDate": "2026-11-19T09:26:33Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.1",
       "source": "github",
-      "summary": "Detects JSON Schema 2020-12 in the editor content type.",
+      "summary": "Bumps the Docker nginx base image to 1.31.9-alpine to address the 18 Nov 2026 nginx security advisories, including CVE-2026-125283.",
       "status": "reviewed"
     },
     "thunder-client": {
