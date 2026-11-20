@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.79.0",
+    "releaseDate": "2026-11-16T08:18:20.375Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.79.0",
+    "source": "npm",
+    "status": "draft"
+  },
+  {
     "version": "2.78.0",
     "releaseDate": "2026-11-12T15:05:34.783Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.78.0",

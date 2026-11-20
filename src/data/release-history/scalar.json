@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.80.0",
+    "releaseDate": "2026-11-17T11:36:19.269Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "status": "draft"
+  },
+  {
     "version": "1.79.0",
     "releaseDate": "2026-11-16T12:23:44.434Z",
     "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",

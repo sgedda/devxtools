@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-18T07:25:00.000Z",
+  "lastUpdated": "2026-11-20T15:13:36.395Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,12 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.222.1",
-      "releaseDate": "2026-11-17T23:35:43.447Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.222.1",
+      "version": "5.226.0",
+      "releaseDate": "2026-11-20T14:34:06.348Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.226.0",
       "source": "npm",
-      "summary": "5.218.0–5.222.1 add popular-search suggestions, MCP auth page actions, and MCP custom-tool uploads. `fern generate` retries 429s by default, and no longer hangs mid-unpack on Node 26 while exiting 0.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -99,12 +98,11 @@
       "status": "draft"
     },
     "hoverfly": {
-      "version": "1.12.17",
-      "releaseDate": "2026-11-01T23:41:34Z",
-      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.17",
+      "version": "1.12.18",
+      "releaseDate": "2026-11-18T10:42:27Z",
+      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.18",
       "source": "github",
-      "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "httpie": {
       "version": "3.2.4",
@@ -143,12 +141,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.9",
-      "releaseDate": "2026-11-17T20:00:23Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.9",
+      "version": "3.7.12",
+      "releaseDate": "2026-11-19T21:00:34Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
       "source": "github",
-      "summary": "3.7.8–3.7.9 stop logging request bytes and credentials, fix a matcher hang on slim DST zone files, and print mock-miss paths in full on the console instead of in receipts.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -296,9 +293,9 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.79.0",
-      "releaseDate": "2026-11-16T08:18:20.375Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.79.0",
+      "version": "2.82.0",
+      "releaseDate": "2026-11-19T14:38:28.222Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.82.0",
       "source": "npm",
       "status": "draft"
     },
@@ -310,8 +307,8 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.80.0",
-      "releaseDate": "2026-11-17T11:36:19.269Z",
+      "version": "1.82.1",
+      "releaseDate": "2026-11-20T05:41:12.190Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
       "status": "draft"
@@ -359,17 +356,16 @@
       "status": "reviewed"
     },
     "swagger-editor": {
-      "version": "5.11.0",
-      "releaseDate": "2026-11-13T11:52:22Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",
+      "version": "5.11.1",
+      "releaseDate": "2026-11-19T09:26:33Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.1",
       "source": "github",
-      "summary": "Detects JSON Schema 2020-12 in the editor content type.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "thunder-client": {
-      "version": "3.2.5",
-      "releaseDate": "2026-11-16T10:42:18Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.5",
+      "version": "3.2.6",
+      "releaseDate": "2026-11-18T17:21:09Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.6",
       "source": "github",
       "status": "draft"
     },
