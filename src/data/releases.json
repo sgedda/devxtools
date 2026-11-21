@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-18T07:25:00.000Z",
+  "lastUpdated": "2026-11-20T07:20:00.000Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,11 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.222.1",
-      "releaseDate": "2026-11-17T23:35:43.447Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.222.1",
+      "version": "5.224.0",
+      "releaseDate": "2026-11-19T20:38:46.710Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.224.0",
       "source": "npm",
-      "summary": "5.218.0–5.222.1 add popular-search suggestions, MCP auth page actions, and MCP custom-tool uploads. `fern generate` retries 429s by default, and no longer hangs mid-unpack on Node 26 while exiting 0.",
+      "summary": "5.223.2–5.224.0 raise sdk-gen-api remote upload limits for large APIs (and report 413 sizes), and add a `show-scopes` docs.yml option so API Reference endpoints can list required OAuth scopes.",
       "status": "reviewed"
     },
     "fishery": {
@@ -99,11 +99,11 @@
       "status": "draft"
     },
     "hoverfly": {
-      "version": "1.12.17",
-      "releaseDate": "2026-11-01T23:41:34Z",
-      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.17",
+      "version": "1.12.18",
+      "releaseDate": "2026-11-18T10:42:27Z",
+      "releaseUrl": "https://github.com/SpectoLabs/hoverfly/releases/tag/v1.12.18",
       "source": "github",
-      "summary": "Security fix for GHSA-p5c5-p2gx-h6q6: verifies upstream certificates for client-auth destinations and matches `bodyFile` URLs exactly against allowed origins. Also moves to Go 1.27.3.",
+      "summary": "Updates the Go toolchain to 1.27.4.",
       "status": "reviewed"
     },
     "httpie": {
@@ -143,11 +143,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.9",
-      "releaseDate": "2026-11-17T20:00:23Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.9",
+      "version": "3.7.12",
+      "releaseDate": "2026-11-19T21:00:34Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
       "source": "github",
-      "summary": "3.7.8–3.7.9 stop logging request bytes and credentials, fix a matcher hang on slim DST zone files, and print mock-miss paths in full on the console instead of in receipts.",
+      "summary": "3.7.11–3.7.12 fix Windows socket take accounting, MySQL summary truncation, tzdata zone matching, and a memory-guard GOMEMLIMIT from the container limit. New apps are named from the git repo and path.",
       "status": "reviewed"
     },
     "locust": {
@@ -202,7 +202,9 @@
       "releaseDate": "2026-11-16T22:00:56Z",
       "releaseUrl": "https://github.com/mountebank-testing/mountebank/releases/tag/v2.10.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Adds a `chaos` behavior for probabilistic errors and latency. Raises the minimum Node version from 20 to 20.19, and resolves a `body-parser` DoS advisory (CVE-2026-111181).",
+      "breaking": true,
+      "status": "reviewed"
     },
     "msw": {
       "version": "3.0.7",
@@ -296,11 +298,12 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.79.0",
-      "releaseDate": "2026-11-16T08:18:20.375Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.79.0",
+      "version": "2.82.0",
+      "releaseDate": "2026-11-19T14:38:28.222Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.82.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "2.81.0–2.82.0 add Arazzo rules for action, step, and source-description references, standalone binaries for Linux, macOS, and Windows, and switch built-in rulesets to `spec-example-values`.",
+      "status": "reviewed"
     },
     "rozenite": {
       "version": "2.7.0",
@@ -310,11 +313,12 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.80.0",
-      "releaseDate": "2026-11-17T11:36:19.269Z",
+      "version": "1.82.1",
+      "releaseDate": "2026-11-20T05:41:12.190Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "status": "draft"
+      "summary": "1.82.0–1.82.1 add an opt-in `showBadgesInSidebar` option for `x-badges`, fix freezes on recursive `$ref` schemas, and switch Markdown highlighting to `@scalar/highlight`.",
+      "status": "reviewed"
     },
     "schemathesis": {
       "version": "4.33.4",
@@ -359,19 +363,20 @@
       "status": "reviewed"
     },
     "swagger-editor": {
-      "version": "5.11.0",
-      "releaseDate": "2026-11-13T11:52:22Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",
+      "version": "5.11.1",
+      "releaseDate": "2026-11-19T09:26:33Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.1",
       "source": "github",
-      "summary": "Detects JSON Schema 2020-12 in the editor content type.",
+      "summary": "Bumps the Docker nginx base image to 1.31.9-alpine to address the 18 Nov 2026 nginx security advisories, including CVE-2026-125283.",
       "status": "reviewed"
     },
     "thunder-client": {
-      "version": "3.2.5",
-      "releaseDate": "2026-11-16T10:42:18Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.5",
+      "version": "3.2.6",
+      "releaseDate": "2026-11-18T17:21:09Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.6",
       "source": "github",
-      "status": "draft"
+      "summary": "Collection-runner SSE requests now save every event with its arrival time, and SSE size and time update live. The Free plan no longer has a 10-collection limit.",
+      "status": "reviewed"
     },
     "winston": {
       "version": "3.19.0",

@@ -1,5 +1,20 @@
 [
   {
+    "version": "1.81.0",
+    "releaseDate": "2026-11-18T12:11:16.676Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "summary": "1.79.0–1.81.0 add a plugin `documentTypes` API, resolve external RAML/Protobuf AsyncAPI deps, substitute auth placeholders in SDK install text, and restyle Scalar cards as a padded shell.",
+    "status": "reviewed"
+  },
+  {
+    "version": "1.80.0",
+    "releaseDate": "2026-11-17T11:36:19.269Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "status": "draft"
+  },
+  {
     "version": "1.79.0",
     "releaseDate": "2026-11-16T12:23:44.434Z",
     "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",

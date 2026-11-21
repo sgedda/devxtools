@@ -1,5 +1,21 @@
 [
   {
+    "version": "3.7.10",
+    "releaseDate": "2026-11-18T08:46:06Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.10",
+    "source": "github",
+    "summary": "Counts a consumed or spent mock as served in the same locked step that takes it, so a held Redis-style pop no longer hangs after another worker takes the job.",
+    "status": "reviewed"
+  },
+  {
+    "version": "3.7.9",
+    "releaseDate": "2026-11-17T20:00:23Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.9",
+    "source": "github",
+    "summary": "3.7.8–3.7.9 stop logging request bytes and credentials, fix a matcher hang on slim DST zone files, and print mock-miss paths in full on the console instead of in receipts.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.8",
     "releaseDate": "2026-11-17T13:37:18Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.8",

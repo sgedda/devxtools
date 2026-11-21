@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.2.5",
+    "releaseDate": "2026-11-16T10:42:18Z",
+    "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.5",
+    "source": "github",
+    "status": "reviewed",
+    "summary": "Makes attaching `.env` files to environments and running collections in Parallel mode available on the Free plan."
+  },
+  {
     "version": "3.2.2",
     "releaseDate": "2026-11-06T06:20:52Z",
     "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.2",
