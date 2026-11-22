@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-20T07:20:00.000Z",
+  "lastUpdated": "2026-11-22T14:24:46.736Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,12 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.224.0",
-      "releaseDate": "2026-11-19T20:38:46.710Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.224.0",
+      "version": "5.227.0",
+      "releaseDate": "2026-11-20T22:53:34.720Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.227.0",
       "source": "npm",
-      "summary": "5.223.2–5.224.0 raise sdk-gen-api remote upload limits for large APIs (and report 413 sizes), and add a `show-scopes` docs.yml option so API Reference endpoints can list required OAuth scopes.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -143,12 +142,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.12",
-      "releaseDate": "2026-11-19T21:00:34Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
+      "version": "3.7.15",
+      "releaseDate": "2026-11-21T23:46:19Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.15",
       "source": "github",
-      "summary": "3.7.11–3.7.12 fix Windows socket take accounting, MySQL summary truncation, tzdata zone matching, and a memory-guard GOMEMLIMIT from the container limit. New apps are named from the git repo and path.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -347,12 +345,11 @@
       "status": "reviewed"
     },
     "speakeasy": {
-      "version": "1.810.0",
-      "releaseDate": "2026-11-17T16:39:46Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.810.0",
+      "version": "1.811.0",
+      "releaseDate": "2026-11-20T15:48:36Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.811.0",
       "source": "github",
-      "summary": "Adds `--nuget-trusted-publishing` to `configure publishing`, which sets NuGet OIDC trusted publishing instead of a nuget.org API key.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "spectral": {
       "version": "6.17.1",

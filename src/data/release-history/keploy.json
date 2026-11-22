@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.12",
+    "releaseDate": "2026-11-19T21:00:34Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
+    "source": "github",
+    "summary": "3.7.11–3.7.12 fix Windows socket take accounting, MySQL summary truncation, tzdata zone matching, and a memory-guard GOMEMLIMIT from the container limit. New apps are named from the git repo and path.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.10",
     "releaseDate": "2026-11-18T08:46:06Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.10",
