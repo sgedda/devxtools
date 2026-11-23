@@ -18,6 +18,7 @@ specSupport:
 bestFor: Comprehensive API development platform with collaboration, testing, and documentation features
 description: Industry-leading API platform for designing, testing, documenting, and monitoring APIs. Features include visual request builder, automated testing, mock servers, team collaboration, and API governance.
 whenToUse: When you need a full-featured API development environment with team collaboration, documentation generation, and enterprise features.
-lastChecked: 2026-10-14
+seeAlso: "In November 2026, Postman [said](https://blog.postman.com/fern-is-postmans-new-home-for-api-dev-portals/) it is consolidating public Developer Portals and SDK generation on [Fern](/tools/fern/), after acquiring Fern and Liblab, and that Postman customers get a dedicated free Fern plan worth $3,000 a year."
+lastChecked: 2026-11-23
 isOpenSource: false
 languageAgnostic: true
