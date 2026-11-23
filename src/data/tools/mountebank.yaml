@@ -12,6 +12,6 @@ sections:
 categories:
   - mock-server
 bestFor: Multi-protocol service virtualization supporting HTTP, HTTPS, TCP, and SMTP
-description: Over-the-wire test doubles with support for HTTP, HTTPS, TCP, and SMTP. Powerful predicates and response behaviors for complex scenarios.
-lastChecked: 2026-10-14
+description: Over-the-wire test doubles with support for HTTP, HTTPS, TCP, and SMTP. Powerful predicates and response behaviors for complex scenarios. Version 2.10.0 adds a `chaos` behavior for probabilistic fault injection and requires Node.js 20.19 or later (a breaking change for Node 20.0–20.18).
+lastChecked: 2026-11-23
 isOpenSource: true

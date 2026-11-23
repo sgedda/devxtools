@@ -9,7 +9,7 @@ breadcrumbs: [{ name: "Home", url: "/" }, { name: "Comparisons", url: "/comparis
 schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
 author: "DevX Tools"
 datePublished: "2026-10-15"
-dateModified: "2026-11-16"
+dateModified: "2026-11-23"
 tested_with: "k6 v2.3.0, Apache JMeter 5.6.3 on Temurin JRE 21.0.12, Locust 2.47.0 on Python 3.13.5 (re-run 2026-11-11), Artillery 2.0.34 on Node 22.23.3; Linux, 8 vCPU / 16 GB; Locust 2026-11-11, others 2026-10-15"
 tools: ["k6", "jmeter", "locust", "gatling", "artillery"]
 ---
@@ -29,7 +29,7 @@ Choose **k6** if your team writes JavaScript or TypeScript and wants load tests 
 | Test format | JS/TS code | GUI + XML (`.jmx`) | Python | Java/Kotlin/Scala DSL, JS/TS SDK | YAML + JS hooks |
 | Runtime | Single Go binary | Java 8+ (JVM) | Python | JVM | Node.js |
 | Virtual-user model | Goroutines running JS VMs | One OS thread per user | gevent greenlets | Asynchronous, non-blocking | Node event loop |
-| Built-in protocols | HTTP, WebSocket, gRPC, browser | HTTP(S), SOAP/REST, FTP, JDBC, LDAP, JMS, SMTP/POP3/IMAP, TCP, shell | HTTP; anything you can call from Python | HTTP, WebSocket, SSE, JMS, MQTT, gRPC | HTTP, WebSocket, Socket.IO, Playwright |
+| Built-in protocols | HTTP, WebSocket, gRPC, browser | HTTP(S), SOAP/REST, FTP, JDBC, LDAP, JMS, SMTP/POP3/IMAP, TCP, shell | HTTP; anything you can call from Python | HTTP, WebSocket, SSE, JMS, MQTT, gRPC, Kafka, JDBC | HTTP, WebSocket, Socket.IO, Playwright |
 | Free distributed load | Yes, with k6-operator `TestRun` in your own Kubernetes (you pay for the nodes); private load zones and managed runs need paid Grafana Cloud k6 | Yes (remote testing, RMI) | Yes (master/workers) | No (Enterprise feature) | Yes, from your own AWS/Azure account |
 | CI pass/fail | Thresholds, exit code 99 | Assertions + results parsing (exits 0 regardless) | Exit 1 on any failure; custom SLOs via hook | Assertions | `ensure` plugin, exit 1 |
 | Licence | AGPL-3.0 | Apache-2.0 | MIT | Apache-2.0 (Community) | MPL-2.0 |
@@ -227,7 +227,7 @@ def enforce_slo(environment, **kwargs):
 
 **k6 covers modern API traffic.** HTTP/1.1 and HTTP/2, WebSockets (`k6/websockets`, with the older `k6/ws` still present), gRPC (`k6/net/grpc`) and a Chromium-driving browser module (`k6/browser`) all ship in the binary. We imported all four on v2.3.0. Anything else comes from **xk6** extensions, such as Kafka, SQL or Redis. You compile those into a custom k6 binary. Note that v2.0 removed the old `k6/experimental/redis` module, so Redis now goes through an extension.
 
-**Gatling** covers HTTP (including HTTP/2), WebSocket, SSE, JMS, MQTT and gRPC, some as add-on modules. **Artillery** has HTTP, WebSocket, Socket.IO and a Playwright engine for real-browser load. **Locust** can load-test anything you can call from Python, as long as you write the client wrapper yourself.
+**Gatling** covers HTTP (including HTTP/2), WebSocket, SSE, JMS, MQTT, gRPC, Kafka and JDBC, some as add-on modules. **Artillery** has HTTP, WebSocket, Socket.IO and a Playwright engine for real-browser load. **Locust** can load-test anything you can call from Python, as long as you write the client wrapper yourself.
 
 Browser-level load (k6 browser, Artillery's Playwright engine) costs far more resources per user than protocol-level load. Use a few browser VUs on top of protocol-level traffic. For functional browser testing, use [Playwright](/tools/playwright/) itself.
 
@@ -305,7 +305,7 @@ Commercial suites such as OpenText LoadRunner still show up in enterprises with 
 
 - **Developers adding a performance gate to a JS/TS service:** k6. Write the test in TypeScript next to the code and let thresholds fail the pipeline.
 - **QA teams with existing `.jmx` plans or non-developer testers:** JMeter. The GUI, the recorder and the HTML dashboard are mature. Add a results-parsing step, Taurus or the Maven plugin to CI.
-- **Database, JMS, LDAP or mail-server load:** JMeter, or Gatling for JMS/MQTT.
+- **Database, JMS, LDAP or mail-server load:** JMeter, or Gatling for JDBC, Kafka, JMS or MQTT.
 - **Python shops:** Locust.
 - **Spring/Kotlin shops:** Gatling.
 - **Large free distributed load:** JMeter remote testing, Locust workers, k6-operator on Kubernetes, or Artillery on your own cloud account.
