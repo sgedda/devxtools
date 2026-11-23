@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.224.0",
+    "releaseDate": "2026-11-19T20:38:46.710Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.224.0",
+    "source": "npm",
+    "summary": "5.223.2–5.224.0 raise sdk-gen-api remote upload limits for large APIs (and report 413 sizes), and add a `show-scopes` docs.yml option so API Reference endpoints can list required OAuth scopes.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.223.1",
     "releaseDate": "2026-11-18T18:20:37.483Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.223.1",

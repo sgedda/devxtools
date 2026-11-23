@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-20T07:20:00.000Z",
+  "lastUpdated": "2026-11-23T07:23:10.065Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,11 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.224.0",
-      "releaseDate": "2026-11-19T20:38:46.710Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.224.0",
+      "version": "5.228.0",
+      "releaseDate": "2026-11-23T05:47:50.632Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.228.0",
       "source": "npm",
-      "summary": "5.223.2–5.224.0 raise sdk-gen-api remote upload limits for large APIs (and report 413 sizes), and add a `show-scopes` docs.yml option so API Reference endpoints can list required OAuth scopes.",
+      "summary": "5.225.0–5.228.0 add a `fern init` setup wizard with guest mode, MCP `instructions`/`appendInstructions` and an opt-in `egress` allow-list, and fix `fern generate` unpacking on Node 24.",
       "status": "reviewed"
     },
     "fishery": {
@@ -143,11 +143,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.12",
-      "releaseDate": "2026-11-19T21:00:34Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
+      "version": "3.7.16",
+      "releaseDate": "2026-11-22T22:13:53Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.16",
       "source": "github",
-      "summary": "3.7.11–3.7.12 fix Windows socket take accounting, MySQL summary truncation, tzdata zone matching, and a memory-guard GOMEMLIMIT from the container limit. New apps are named from the git repo and path.",
+      "summary": "3.7.13–3.7.16 refresh Mozilla TLS roots, fix Postman importer panics and a path-traversal, tighten file permissions, preserve JSON numbers above 2^53, and fix HTTP/1.1 pipelining and IPv6-only pods.",
       "status": "reviewed"
     },
     "locust": {
@@ -313,19 +313,19 @@
       "status": "draft"
     },
     "scalar": {
-      "version": "1.82.1",
-      "releaseDate": "2026-11-20T05:41:12.190Z",
+      "version": "1.83.0",
+      "releaseDate": "2026-11-22T22:48:35.979Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "1.82.0–1.82.1 add an opt-in `showBadgesInSidebar` option for `x-badges`, fix freezes on recursive `$ref` schemas, and switch Markdown highlighting to `@scalar/highlight`.",
+      "summary": "Adds opt-in `multipartNaming: \"indexed-dot\"` for ASP.NET Core-style nested multipart and URL-encoded field names, plus dependency updates, a CSP/Zod eval fix, and a localhost API Hosting beta invite.",
       "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.33.4",
-      "releaseDate": "2026-11-12T16:27:07Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.4",
+      "version": "4.34.0",
+      "releaseDate": "2026-11-22T18:25:23Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.0",
       "source": "github",
-      "summary": "4.33.3–4.33.4 speed up pytest plugin loading on large schemas and fix inferred links, stateful testing, data generation, false-positive checks, CLI/auth, pytest, and multipart/YAML response handling.",
+      "summary": "Adds testing for OpenAPI 3.2 `additionalOperations`, jsonl/ndjson/event-stream and non-form multipart bodies, and an `--app` option for ASGI/WSGI apps, plus setup/teardown hooks and many bug fixes.",
       "status": "reviewed"
     },
     "sentry": {
@@ -347,11 +347,11 @@
       "status": "reviewed"
     },
     "speakeasy": {
-      "version": "1.810.0",
-      "releaseDate": "2026-11-17T16:39:46Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.810.0",
+      "version": "1.811.0",
+      "releaseDate": "2026-11-20T15:48:36Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.811.0",
       "source": "github",
-      "summary": "Adds `--nuget-trusted-publishing` to `configure publishing`, which sets NuGet OIDC trusted publishing instead of a nuget.org API key.",
+      "summary": "Adds CLI continuation primitives (omit, request-shape skips, stall guard). Also TypeScript pattern validation, Java request timeouts, a raised MCP `hono` floor, and a Terraform `const` schema change.",
       "status": "reviewed"
     },
     "spectral": {

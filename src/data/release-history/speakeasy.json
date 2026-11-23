@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.810.0",
+    "releaseDate": "2026-11-17T16:39:46Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.810.0",
+    "source": "github",
+    "summary": "Adds `--nuget-trusted-publishing` to `configure publishing`, which sets NuGet OIDC trusted publishing instead of a nuget.org API key.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.809.0",
     "releaseDate": "2026-11-13T14:02:17Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.809.0",
