@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-23T07:23:10.065Z",
+  "lastUpdated": "2026-11-23T17:50:30.124Z",
   "tools": {
     "appium": {
       "version": "4.0.0",
@@ -55,12 +55,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.228.0",
-      "releaseDate": "2026-11-23T05:47:50.632Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.228.0",
+      "version": "5.228.1",
+      "releaseDate": "2026-11-23T15:56:03.935Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.228.1",
       "source": "npm",
-      "summary": "5.225.0–5.228.0 add a `fern init` setup wizard with guest mode, MCP `instructions`/`appendInstructions` and an opt-in `egress` allow-list, and fix `fern generate` unpacking on Node 24.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "fishery": {
       "version": "2.4.0",
@@ -92,9 +91,9 @@
       "status": "reviewed"
     },
     "hoppscotch": {
-      "version": "2026.10.1",
-      "releaseDate": "2026-11-05T08:15:08Z",
-      "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.10.1",
+      "version": "2026.11.0",
+      "releaseDate": "2026-11-23T12:26:22Z",
+      "releaseUrl": "https://github.com/hoppscotch/hoppscotch/releases/tag/2026.11.0",
       "source": "github",
       "status": "draft"
     },
@@ -143,12 +142,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.16",
-      "releaseDate": "2026-11-22T22:13:53Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.16",
+      "version": "3.7.17",
+      "releaseDate": "2026-11-23T12:54:08Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.17",
       "source": "github",
-      "summary": "3.7.13–3.7.16 refresh Mozilla TLS roots, fix Postman importer panics and a path-traversal, tighten file permissions, preserve JSON numbers above 2^53, and fix HTTP/1.1 pipelining and IPv6-only pods.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -183,9 +181,9 @@
       "status": "draft"
     },
     "mockifyer": {
-      "version": "1.10.197",
-      "releaseDate": "2026-11-16T18:31:36.809Z",
-      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.197",
+      "version": "1.10.199",
+      "releaseDate": "2026-11-23T11:12:52.855Z",
+      "releaseUrl": "https://www.npmjs.com/package/@sgedda/mockifyer-core/v/1.10.199",
       "source": "npm",
       "status": "draft"
     },
@@ -363,20 +361,18 @@
       "status": "reviewed"
     },
     "swagger-editor": {
-      "version": "5.11.1",
-      "releaseDate": "2026-11-19T09:26:33Z",
-      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.1",
+      "version": "5.11.3",
+      "releaseDate": "2026-11-23T13:49:52Z",
+      "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.3",
       "source": "github",
-      "summary": "Bumps the Docker nginx base image to 1.31.9-alpine to address the 18 Nov 2026 nginx security advisories, including CVE-2026-125283.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "thunder-client": {
-      "version": "3.2.6",
-      "releaseDate": "2026-11-18T17:21:09Z",
-      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.6",
+      "version": "3.2.7",
+      "releaseDate": "2026-11-23T12:37:09Z",
+      "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.7",
       "source": "github",
-      "summary": "Collection-runner SSE requests now save every event with its arrival time, and SSE size and time update live. The Free plan no longer has a 10-collection limit.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "winston": {
       "version": "3.19.0",

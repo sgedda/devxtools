@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.2.6",
+    "releaseDate": "2026-11-18T17:21:09Z",
+    "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.6",
+    "source": "github",
+    "summary": "Collection-runner SSE requests now save every event with its arrival time, and SSE size and time update live. The Free plan no longer has a 10-collection limit.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.2.5",
     "releaseDate": "2026-11-16T10:42:18Z",
     "releaseUrl": "https://github.com/thunderclient/thunder-client-support/releases/tag/v3.2.5",
