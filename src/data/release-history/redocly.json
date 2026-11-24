@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.82.0",
+    "releaseDate": "2026-11-19T14:38:28.222Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.82.0",
+    "source": "npm",
+    "summary": "2.81.0–2.82.0 add Arazzo rules for action, step, and source-description references, standalone binaries for Linux, macOS, and Windows, and switch built-in rulesets to `spec-example-values`.",
+    "status": "reviewed"
+  },
+  {
     "version": "2.80.0",
     "releaseDate": "2026-11-18T13:10:54.495Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.80.0",
