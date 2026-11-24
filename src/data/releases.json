@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-24T07:16:51.865Z",
+  "lastUpdated": "2026-11-24T07:28:53.786Z",
   "tools": {
     "appium": {
       "version": "4.0.1",
@@ -368,7 +368,7 @@
       "releaseDate": "2026-11-23T13:49:52Z",
       "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.3",
       "source": "github",
-      "summary": "5.11.2–5.11.3 bump swagger-ui-react and override DOMPurify to 3.4.17.",
+      "summary": "5.11.2–5.11.3 bump swagger-ui-react and override DOMPurify to 3.4.17, patching the 12 Oct 2026 advisories including GHSA-cg2g-xh64-v4q7. Later 3.4.18 and 3.5.0 advisories remain.",
       "status": "reviewed"
     },
     "thunder-client": {
