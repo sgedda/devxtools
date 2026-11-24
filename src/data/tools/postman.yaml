@@ -16,9 +16,9 @@ specSupport:
   - OpenAPI
   - GraphQL
 bestFor: Comprehensive API development platform with collaboration, testing, and documentation features
-description: Industry-leading API platform for designing, testing, documenting, and monitoring APIs. Features include visual request builder, automated testing, mock servers, team collaboration, and API governance.
+description: Industry-leading API platform for designing, testing, documenting, and monitoring APIs. Features include visual request builder, automated testing, mock servers, Postman Simulator, Performance Testing (load tests run from collections), team collaboration, and API governance. The CLI can generate mocks with `postman mock generate --mode ai`.
 whenToUse: When you need a full-featured API development environment with team collaboration, documentation generation, and enterprise features.
 seeAlso: "In November 2026, Postman [said](https://blog.postman.com/fern-is-postmans-new-home-for-api-dev-portals/) it is consolidating public Developer Portals and SDK generation on [Fern](/tools/fern/), after acquiring Fern and Liblab, and that Postman customers get a dedicated free Fern plan worth $3,000 a year."
-lastChecked: 2026-11-23
+lastChecked: 2026-11-24
 isOpenSource: false
 languageAgnostic: true
