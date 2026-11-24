@@ -18,11 +18,11 @@ specSupport:
   - OpenAPI
   - GraphQL
 bestFor: Lightweight, browser-based API client with real-time collaboration and self-hosting options
-description: Open-source API development ecosystem with web, desktop, and CLI clients. Features include real-time collaboration, GraphQL and WebSocket support, and self-hosting.
+description: Open-source API development ecosystem with web, desktop, and CLI clients. Features include real-time collaboration, GraphQL and WebSocket support, and self-hosting. Version 2026.11.0 (23 November 2026) introduces Free, Business, and Enterprise Cloud plans. Personal workspaces stay free; shared workspaces require a Business or Enterprise organization. Business is $8 per user/month when billed monthly, or $72 per user/year; Enterprise is $14 per user/month or $132 per user/year.
 whenToUse: When you want a lightweight browser-based API client, need real-time collaboration, or want to self-host your API testing platform.
 githubStars: 80660
 lastActivity: 2026-10-13T14:28:19Z
-lastChecked: 2026-10-14
+lastChecked: 2026-11-24
 isOpenSource: true
 languageAgnostic: true
 platforms:
