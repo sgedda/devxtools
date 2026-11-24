@@ -1,0 +1,25 @@
+name: MockServer
+slug: mockserver
+website: https://www.mock-server.com
+repo: https://github.com/mock-server/mockserver-monorepo
+license: Apache-2.0
+languages:
+  - Java
+runtimes:
+  - JVM
+  - Docker
+sections:
+  - mocking-test-data
+categories:
+  - mock-server
+  - record-replay
+specSupport:
+  - OpenAPI
+bestFor: HTTP mock server and proxy with record/replay, including streamed and SSE responses
+description: Open-source HTTP(S) mock server and proxy that mocks APIs, inspects and modifies live traffic, and injects failures. It records expectations as JSON or Java, including server-sent events and chunked bodies with chunk timing. Version 9.3.0 (15 November 2026) added opt-in recording for streams that are cut off or still open when MockServer stops; 9.4.0 (20 November 2026) updates Docker images for CVE-2026-114938 and makes customJsonUnitMatchersClass startup-only.
+whenToUse: When you need a language-agnostic mock server or proxy, including record and replay of streamed or SSE responses.
+githubStars: 5013
+lastActivity: 2026-11-24T05:11:50Z
+lastChecked: 2026-11-24
+isOpenSource: true
+languageAgnostic: true

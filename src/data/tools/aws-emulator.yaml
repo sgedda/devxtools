@@ -1,0 +1,22 @@
+name: AWS Emulator
+slug: aws-emulator
+website: https://docs.aws.amazon.com/emulator/latest/userguide/what-is-service.html
+repo: https://github.com/aws/aws-emulator
+license: CC0-1.0
+languages:
+  - Rust
+runtimes:
+  - Local
+  - Docker
+sections:
+  - mocking-test-data
+categories:
+  - mock-server
+bestFor: Locally emulating AWS APIs for development and CI without an AWS account
+description: Local emulator of the AWS APIs, generally available 11 November 2026. Point the AWS SDK or CLI at it with no AWS account or extra fee; state is in-memory and each instance has its own port, keys, and state. Services are generated from AWS's published API models. Unsupported operations return HTTP 501 with the error code NotImplemented, and each release publishes fidelity scores. The project is CC0-1.0, except code in vendor/ which is Apache-2.0.
+whenToUse: When you want to build or test AWS applications locally or in CI without calling AWS, and the operations you need are covered in the published fidelity report.
+githubStars: 10021
+lastActivity: 2026-11-24T06:04:55Z
+lastChecked: 2026-11-24
+isOpenSource: true
+languageAgnostic: true
