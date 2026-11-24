@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.228.0",
+    "releaseDate": "2026-11-23T05:47:50.632Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.228.0",
+    "source": "npm",
+    "summary": "5.225.0–5.228.0 add a `fern init` setup wizard with guest mode, MCP `instructions`/`appendInstructions` and an opt-in `egress` allow-list, and fix `fern generate` unpacking on Node 24.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.224.0",
     "releaseDate": "2026-11-19T20:38:46.710Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.224.0",

@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.11.1",
+    "releaseDate": "2026-11-19T09:26:33Z",
+    "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.1",
+    "source": "github",
+    "summary": "Bumps the Docker nginx base image to 1.31.9-alpine to address the 18 Nov 2026 nginx security advisories, including CVE-2026-125283.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.11.0",
     "releaseDate": "2026-11-13T11:52:22Z",
     "releaseUrl": "https://github.com/swagger-api/swagger-editor/releases/tag/v5.11.0",

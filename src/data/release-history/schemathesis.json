@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.34.0",
+    "releaseDate": "2026-11-22T18:25:23Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.0",
+    "source": "github",
+    "summary": "Adds testing for OpenAPI 3.2 `additionalOperations`, jsonl/ndjson/event-stream and non-form multipart bodies, and an `--app` option for ASGI/WSGI apps, plus setup/teardown hooks and many bug fixes.",
+    "status": "reviewed"
+  },
+  {
     "version": "4.33.4",
     "releaseDate": "2026-11-12T16:27:07Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.33.4",
