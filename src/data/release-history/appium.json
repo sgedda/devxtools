@@ -1,5 +1,14 @@
 [
   {
+    "version": "4.0.0",
+    "releaseDate": "2026-11-15T13:59:57.287Z",
+    "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%404.0.0",
+    "source": "npm",
+    "summary": "Removes --callback-address/-port, --debug-log-spacing, --strict-caps and --trace-dir; rejects non-object POST bodies; case-sensitive caps; Windows driver replaced by WinCore; JSONWP internals dropped.",
+    "breaking": true,
+    "status": "reviewed"
+  },
+  {
     "version": "3.9.1",
     "releaseDate": "2026-11-14T21:50:45.325Z",
     "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%403.9.1",

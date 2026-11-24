@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.16",
+    "releaseDate": "2026-11-22T22:13:53Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.16",
+    "source": "github",
+    "summary": "3.7.13–3.7.16 refresh Mozilla TLS roots, fix Postman importer panics and a path-traversal, tighten file permissions, preserve JSON numbers above 2^53, and fix HTTP/1.1 pipelining and IPv6-only pods.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.12",
     "releaseDate": "2026-11-19T21:00:34Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.12",
