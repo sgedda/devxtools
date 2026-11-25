@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.19",
+    "releaseDate": "2026-11-24T17:22:35Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.19",
+    "source": "github",
+    "summary": "Lists a test's background misses in its evidence, treats undeclared startup-recording calls as that test's miss under `KEPLOY_PROVEN=1`, and spends a once-series recording answered outside tests.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.18",
     "releaseDate": "2026-11-23T20:21:35Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.18",
