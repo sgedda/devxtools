@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-24T07:28:53.786Z",
+  "lastUpdated": "2026-11-25T07:32:23.637Z",
   "tools": {
     "appium": {
       "version": "4.0.1",
@@ -17,11 +17,11 @@
       "status": "draft"
     },
     "bruno": {
-      "version": "4.3.0",
-      "releaseDate": "2026-10-22T12:11:41Z",
-      "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.3.0",
+      "version": "4.4.0",
+      "releaseDate": "2026-11-24T17:37:49Z",
+      "releaseUrl": "https://github.com/usebruno/bruno/releases/tag/v4.4.0",
       "source": "github",
-      "summary": "Bruno 4.3.0 changes response time to measure total time instead of TTFB and turns header import off by default.",
+      "summary": "Adds YAML export, OpenAPI sync (connect a collection to a spec, preserve values, collection-level auth), CLI Postman import, 1Password secret manager support, and secret/variable UI actions.",
       "status": "reviewed"
     },
     "chance": {
@@ -54,11 +54,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.229.0",
-      "releaseDate": "2026-11-23T21:28:30.535Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.229.0",
+      "version": "5.230.2",
+      "releaseDate": "2026-11-24T22:30:07.924Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.230.2",
       "source": "npm",
-      "summary": "5.228.1–5.229.0 preserve OpenAPI `info.version` in docs OpenAPI downloads, forward Maven and crates.io secret names for GitHub SDK Config delivery, and add `--ignore` to `fern docs link check`.",
+      "summary": "5.230.0–5.230.2 let `fern generate --docs` publish from GitHub Actions with the run's OIDC token, fix relative `servers` URLs for hosted MCP specs, and declare inline enums of detected global headers.",
       "status": "reviewed"
     },
     "fishery": {
@@ -143,11 +143,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.18",
-      "releaseDate": "2026-11-23T20:21:35Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.18",
+      "version": "3.7.19",
+      "releaseDate": "2026-11-24T17:22:35Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.19",
       "source": "github",
-      "summary": "3.7.17–3.7.18 reuse MySQL setup probes across tests, serve declared session and @startup mocks to every test, mark background HTTP misses, and honour a No to the Windows CA prompt.",
+      "summary": "Lists a test's background misses in its evidence, treats undeclared startup-recording calls as that test's miss under `KEPLOY_PROVEN=1`, and spends a once-series recording answered outside tests.",
       "status": "reviewed"
     },
     "locust": {
@@ -232,11 +232,12 @@
       "status": "reviewed"
     },
     "openobserve": {
-      "version": "1.1.2",
-      "releaseDate": "2026-10-20T05:26:56Z",
-      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.2",
+      "version": "1.2.0",
+      "releaseDate": "2026-11-24T12:39:41Z",
+      "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.2.0",
       "source": "github",
-      "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)",
+      "summary": "Rebuilt dashboards, metrics explorer v2, Product Analytics and Continuous Profiling on by default. Removes settings and search `query_type` and needs a PromQL staleness-marker rolling upgrade.",
+      "breaking": true,
       "status": "reviewed"
     },
     "opentelemetry": {
@@ -299,19 +300,20 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.82.0",
-      "releaseDate": "2026-11-19T14:38:28.222Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.82.0",
+      "version": "2.83.0",
+      "releaseDate": "2026-11-24T10:07:30.543Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.83.0",
       "source": "npm",
-      "summary": "2.81.0–2.82.0 add Arazzo rules for action, step, and source-description references, standalone binaries for Linux, macOS, and Windows, and switch built-in rulesets to `spec-example-values`.",
+      "summary": "Adds Arazzo `spec-step-parameters-in-required` and 1.1 Selector Objects in `respect`. `bundle --output` now overrides `redocly.yaml`. Running `build-docs`/`stats`/`score` without an API is deprecated.",
       "status": "reviewed"
     },
     "rozenite": {
-      "version": "2.7.0",
-      "releaseDate": "2026-11-15T20:36:22.279Z",
-      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.7.0",
+      "version": "2.8.0",
+      "releaseDate": "2026-11-24T13:44:37.134Z",
+      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.8.0",
       "source": "npm",
-      "status": "draft"
+      "summary": "The 2.8.0 changelog for the `rozenite` package lists only dependency version bumps and no user-facing notes. There is no GitHub release or tag for 2.8.0.",
+      "status": "reviewed"
     },
     "scalar": {
       "version": "1.83.0",
@@ -322,11 +324,11 @@
       "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.34.1",
-      "releaseDate": "2026-11-23T22:28:24Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.1",
+      "version": "4.34.2",
+      "releaseDate": "2026-11-24T11:05:09Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.2",
       "source": "github",
-      "summary": "Fixes false positives in `positive_data_acceptance` and `ensure_resource_availability` when reusing a captured `2.0` as an integer parameter.",
+      "summary": "Fixes `exclude-header-characters` being ignored for negative-mode `If-Match`, `If-*-Since` and `Range` values.",
       "status": "reviewed"
     },
     "sentry": {

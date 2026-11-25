@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.34.1",
+    "releaseDate": "2026-11-23T22:28:24Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.1",
+    "source": "github",
+    "summary": "Fixes false positives in `positive_data_acceptance` and `ensure_resource_availability` when reusing a captured `2.0` as an integer parameter.",
+    "status": "reviewed"
+  },
+  {
     "version": "4.34.0",
     "releaseDate": "2026-11-22T18:25:23Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.0",

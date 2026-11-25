@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.1.2",
+    "releaseDate": "2026-10-20T05:26:56Z",
+    "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.2",
+    "source": "github",
+    "summary": "Patch backporting PromQL streaming and five other fixes to 1.1. (1.1.1 on 16 Oct fixed index-build fsync and metrics indexing.)",
+    "status": "reviewed"
+  },
+  {
     "version": "1.1.0",
     "releaseDate": "2026-10-14T12:47:10Z",
     "releaseUrl": "https://github.com/openobserve/openobserve/releases/tag/v1.1.0",

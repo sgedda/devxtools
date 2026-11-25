@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.229.0",
+    "releaseDate": "2026-11-23T21:28:30.535Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.229.0",
+    "source": "npm",
+    "summary": "5.228.1–5.229.0 preserve OpenAPI `info.version` in docs OpenAPI downloads, forward Maven and crates.io secret names for GitHub SDK Config delivery, and add `--ignore` to `fern docs link check`.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.228.0",
     "releaseDate": "2026-11-23T05:47:50.632Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.228.0",
