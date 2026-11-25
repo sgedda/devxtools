@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.18",
+    "releaseDate": "2026-11-23T20:21:35Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.18",
+    "source": "github",
+    "summary": "3.7.17–3.7.18 reuse MySQL setup probes across tests, serve declared session and @startup mocks to every test, mark background HTTP misses, and honour a No to the Windows CA prompt.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.16",
     "releaseDate": "2026-11-22T22:13:53Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.16",

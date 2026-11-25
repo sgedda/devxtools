@@ -1,5 +1,12 @@
 [
   {
+    "version": "2.7.0",
+    "releaseDate": "2026-11-15T20:36:22.279Z",
+    "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.7.0",
+    "source": "npm",
+    "status": "draft"
+  },
+  {
     "version": "2.6.0",
     "releaseDate": "2026-11-11T23:06:38.397Z",
     "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.6.0",
