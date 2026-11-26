@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.83.0",
+    "releaseDate": "2026-11-24T10:07:30.543Z",
+    "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.83.0",
+    "source": "npm",
+    "summary": "Adds Arazzo `spec-step-parameters-in-required` and 1.1 Selector Objects in `respect`. `bundle --output` now overrides `redocly.yaml`. Running `build-docs`/`stats`/`score` without an API is deprecated.",
+    "status": "reviewed"
+  },
+  {
     "version": "2.82.0",
     "releaseDate": "2026-11-19T14:38:28.222Z",
     "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.82.0",

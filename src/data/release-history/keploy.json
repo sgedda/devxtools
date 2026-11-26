@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.22",
+    "releaseDate": "2026-11-26T06:15:45Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.22",
+    "source": "github",
+    "summary": "3.7.20–3.7.22 clarify default-mode replay, fix MySQL window ownership, omit unconsumed background mocks from obsolete verdicts, fail-closed inverted windows, and compare gRPC bodies by field number.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.19",
     "releaseDate": "2026-11-24T17:22:35Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.19",

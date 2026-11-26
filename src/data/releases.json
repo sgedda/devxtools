@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-26T07:31:02.132Z",
+  "lastUpdated": "2026-11-26T16:42:02.867Z",
   "tools": {
     "appium": {
       "version": "4.0.1",
@@ -14,6 +14,13 @@
       "releaseDate": "2026-08-14T12:18:47.356Z",
       "releaseUrl": "https://www.npmjs.com/package/artillery/v/2.0.34",
       "source": "npm",
+      "status": "draft"
+    },
+    "aws-emulator": {
+      "version": "1.0.629",
+      "releaseDate": "2026-11-26T14:30:58Z",
+      "releaseUrl": "https://github.com/aws/aws-emulator/releases/tag/v1.0.629",
+      "source": "github",
       "status": "draft"
     },
     "bruno": {
@@ -144,12 +151,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.22",
-      "releaseDate": "2026-11-26T06:15:45Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.22",
+      "version": "3.7.26",
+      "releaseDate": "2026-11-26T14:45:56Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.26",
       "source": "github",
-      "summary": "3.7.20–3.7.22 clarify default-mode replay, fix MySQL window ownership, omit unconsumed background mocks from obsolete verdicts, fail-closed inverted windows, and compare gRPC bodies by field number.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "locust": {
       "version": "2.47.0",
@@ -199,6 +205,13 @@
       "summary": "Mockoon Pro, the self-hosted collaboration and deployment server, leaves beta and adds workspaces for multiple teams, mixed local and SSO sign-in, and role changes in the admin portal.",
       "status": "reviewed"
     },
+    "mockserver": {
+      "version": "9.4.0",
+      "releaseDate": "2026-11-20T09:44:58Z",
+      "releaseUrl": "https://github.com/mock-server/mockserver-monorepo/releases/tag/mockserver-9.4.0",
+      "source": "github",
+      "status": "draft"
+    },
     "mountebank": {
       "version": "2.10.0",
       "releaseDate": "2026-11-16T22:00:56Z",
@@ -225,12 +238,11 @@
       "status": "reviewed"
     },
     "openapi-generator": {
-      "version": "7.27.0",
-      "releaseDate": "2026-11-02T05:17:40Z",
-      "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.27.0",
+      "version": "7.28.0",
+      "releaseDate": "2026-11-26T14:25:34Z",
+      "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.28.0",
       "source": "github",
-      "summary": "Minor release with 170+ enhancements and bug fixes; the full list is in the 7.27.0 milestone's merged pull requests.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "openobserve": {
       "version": "1.2.0",
@@ -301,17 +313,16 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.83.0",
-      "releaseDate": "2026-11-24T10:07:30.543Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.83.0",
+      "version": "2.84.0",
+      "releaseDate": "2026-11-26T14:10:04.179Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.84.0",
       "source": "npm",
-      "summary": "Adds Arazzo `spec-step-parameters-in-required` and 1.1 Selector Objects in `respect`. `bundle --output` now overrides `redocly.yaml`. Running `build-docs`/`stats`/`score` without an API is deprecated.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "rozenite": {
       "version": "2.8.0",
       "releaseDate": "2026-11-24T13:44:37.134Z",
-      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.8.0",
+      "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.8.0",
       "source": "npm",
       "summary": "The 2.8.0 changelog for the `rozenite` package lists only dependency version bumps and no user-facing notes. There is no GitHub release or tag for 2.8.0.",
       "status": "reviewed"
@@ -343,20 +354,18 @@
       "status": "reviewed"
     },
     "signoz": {
-      "version": "0.151.0",
-      "releaseDate": "2026-11-18T06:30:01Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.151.0",
+      "version": "0.152.0",
+      "releaseDate": "2026-11-26T09:28:27Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.152.0",
       "source": "github",
-      "summary": "Upgrades the UI to react-router v7 and adds fine-grained access control for users, org, and preference routes, plus top-list and geo-map dashboard panel schemas.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "speakeasy": {
-      "version": "1.812.0",
-      "releaseDate": "2026-11-25T13:43:30Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.0",
+      "version": "1.812.1",
+      "releaseDate": "2026-11-26T13:51:28Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.1",
       "source": "github",
-      "summary": "Adds `--rubygems-trusted-publishing` to configure RubyGems trusted publishing.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "spectral": {
       "version": "6.17.1",

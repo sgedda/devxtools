@@ -1,5 +1,13 @@
 [
   {
+    "version": "7.27.0",
+    "releaseDate": "2026-11-02T05:17:40Z",
+    "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.27.0",
+    "source": "github",
+    "summary": "Minor release with 170+ enhancements and bug fixes; the full list is in the 7.27.0 milestone's merged pull requests.",
+    "status": "reviewed"
+  },
+  {
     "version": "7.26.0",
     "releaseDate": "2026-10-06T09:33:32Z",
     "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.26.0",
