@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.83.0",
+    "releaseDate": "2026-11-22T22:48:35.979Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "summary": "Adds opt-in `multipartNaming: \"indexed-dot\"` for ASP.NET Core-style nested multipart and URL-encoded field names, plus dependency updates, a CSP/Zod eval fix, and a localhost API Hosting beta invite.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.82.1",
     "releaseDate": "2026-11-20T05:41:12.190Z",
     "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",

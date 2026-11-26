@@ -1,5 +1,13 @@
 [
   {
+    "version": "16.3.0",
+    "releaseDate": "2026-11-10T19:29:02.913Z",
+    "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-3-0",
+    "source": "npm",
+    "summary": "Starts `cypress run` sooner, runs every `setupNodeEvents` handler in order, fixes intercept `Set-Cookie`, and upgrades Electron, Node, Chromium, systeminformation, node-forge and jimp for CVEs.",
+    "status": "reviewed"
+  },
+  {
     "version": "16.2.1",
     "releaseDate": "2026-10-28T14:20:32.633Z",
     "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-2-1",

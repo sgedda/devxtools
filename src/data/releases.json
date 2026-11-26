@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-25T07:32:23.637Z",
+  "lastUpdated": "2026-11-26T07:31:02.132Z",
   "tools": {
     "appium": {
       "version": "4.0.1",
@@ -32,11 +32,11 @@
       "status": "draft"
     },
     "cypress": {
-      "version": "16.3.0",
-      "releaseDate": "2026-11-10T19:29:02.913Z",
-      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-3-0",
+      "version": "16.4.0",
+      "releaseDate": "2026-11-25T16:55:02.350Z",
+      "releaseUrl": "https://docs.cypress.io/app/references/changelog#16-4-0",
       "source": "npm",
-      "summary": "Starts `cypress run` sooner, runs every `setupNodeEvents` handler in order, fixes intercept `Set-Cookie`, and upgrades Electron, Node, Chromium, systeminformation, node-forge and jimp for CVEs.",
+      "summary": "Adds `cypress open --headless` for `cypress tap`, webpack-dev-server 6 support (webpack 5.101+), faster/leaner startup, and fixes a 16.0.0 Chromium slowdown on pages that load large files.",
       "status": "reviewed"
     },
     "detox": {
@@ -54,11 +54,11 @@
       "status": "draft"
     },
     "fern": {
-      "version": "5.230.2",
-      "releaseDate": "2026-11-24T22:30:07.924Z",
-      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.230.2",
+      "version": "5.230.4",
+      "releaseDate": "2026-11-25T19:48:31.663Z",
+      "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.230.4",
       "source": "npm",
-      "summary": "5.230.0–5.230.2 let `fern generate --docs` publish from GitHub Actions with the run's OIDC token, fix relative `servers` URLs for hosted MCP specs, and declare inline enums of detected global headers.",
+      "summary": "5.230.3–5.230.4 fix the docs starter's Open Fern Editor button to use `Button href`, and make `fern check` broken-links respect `<If versions/products>` so gated links are not false positives.",
       "status": "reviewed"
     },
     "fishery": {
@@ -114,11 +114,12 @@
       "status": "draft"
     },
     "insomnia": {
-      "version": "13.4.0",
-      "releaseDate": "2026-10-29T11:54:41Z",
-      "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.4.0",
+      "version": "13.5.0",
+      "releaseDate": "2026-11-25T08:35:45Z",
+      "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.5.0",
       "source": "github",
-      "status": "draft"
+      "summary": "Adds collection-level auth, headers, scripts, environment and docs, local field encryption (inso `--encryption-key`), a debugger pane, and OpenAPI 3.2 importer and design-preview support.",
+      "status": "reviewed"
     },
     "jmeter": {
       "version": "5.6.3",
@@ -143,11 +144,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.19",
-      "releaseDate": "2026-11-24T17:22:35Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.19",
+      "version": "3.7.22",
+      "releaseDate": "2026-11-26T06:15:45Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.22",
       "source": "github",
-      "summary": "Lists a test's background misses in its evidence, treats undeclared startup-recording calls as that test's miss under `KEPLOY_PROVEN=1`, and spends a once-series recording answered outside tests.",
+      "summary": "3.7.20–3.7.22 clarify default-mode replay, fix MySQL window ownership, omit unconsumed background mocks from obsolete verdicts, fail-closed inverted windows, and compare gRPC bodies by field number.",
       "status": "reviewed"
     },
     "locust": {
@@ -208,11 +209,11 @@
       "status": "reviewed"
     },
     "msw": {
-      "version": "3.0.7",
-      "releaseDate": "2026-11-18T01:16:47.792Z",
-      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.7",
+      "version": "3.0.8",
+      "releaseDate": "2026-11-26T01:15:45.559Z",
+      "releaseUrl": "https://github.com/mswjs/msw/releases/tag/v3.0.8",
       "source": "npm",
-      "summary": "Updates `@msw/url` to 0.1.3 so a handler matches when an optional or `*` parameter after another parameter is omitted.",
+      "summary": "Resets generators on `.resetHandlers()`, so they no longer keep state after handlers are reset.",
       "status": "reviewed"
     },
     "nock": {
@@ -316,11 +317,11 @@
       "status": "reviewed"
     },
     "scalar": {
-      "version": "1.83.0",
-      "releaseDate": "2026-11-22T22:48:35.979Z",
+      "version": "1.84.0",
+      "releaseDate": "2026-11-25T11:43:23.557Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "Adds opt-in `multipartNaming: \"indexed-dot\"` for ASP.NET Core-style nested multipart and URL-encoded field names, plus dependency updates, a CSP/Zod eval fix, and a localhost API Hosting beta invite.",
+      "summary": "Adds a searchable Messages section for reusable AsyncAPI `components.messages` (hidden with `hideModels`), keeps response media-type pickers visible, and shows explicit zero string/array bounds.",
       "status": "reviewed"
     },
     "schemathesis": {
@@ -350,11 +351,11 @@
       "status": "reviewed"
     },
     "speakeasy": {
-      "version": "1.811.0",
-      "releaseDate": "2026-11-20T15:48:36Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.811.0",
+      "version": "1.812.0",
+      "releaseDate": "2026-11-25T13:43:30Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.0",
       "source": "github",
-      "summary": "Adds CLI continuation primitives (omit, request-shape skips, stall guard). Also TypeScript pattern validation, Java request timeouts, a raised MCP `hono` floor, and a Terraform `const` schema change.",
+      "summary": "Adds `--rubygems-trusted-publishing` to configure RubyGems trusted publishing.",
       "status": "reviewed"
     },
     "spectral": {

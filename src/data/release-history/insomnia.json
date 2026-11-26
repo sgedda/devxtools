@@ -1,5 +1,12 @@
 [
   {
+    "version": "13.4.0",
+    "releaseDate": "2026-10-29T11:54:41Z",
+    "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.4.0",
+    "source": "github",
+    "status": "draft"
+  },
+  {
     "version": "13.3.1",
     "releaseDate": "2026-10-09T07:35:39Z",
     "releaseUrl": "https://github.com/Kong/insomnia/releases/tag/core%4013.3.1",
