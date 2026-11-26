@@ -1,5 +1,13 @@
 [
   {
+    "version": "5.230.2",
+    "releaseDate": "2026-11-24T22:30:07.924Z",
+    "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.230.2",
+    "source": "npm",
+    "summary": "5.230.0–5.230.2 let `fern generate --docs` publish from GitHub Actions with the run's OIDC token, fix relative `servers` URLs for hosted MCP specs, and declare inline enums of detected global headers.",
+    "status": "reviewed"
+  },
+  {
     "version": "5.229.0",
     "releaseDate": "2026-11-23T21:28:30.535Z",
     "releaseUrl": "https://www.npmjs.com/package/fern-api/v/5.229.0",

@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.811.0",
+    "releaseDate": "2026-11-20T15:48:36Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.811.0",
+    "source": "github",
+    "summary": "Adds CLI continuation primitives (omit, request-shape skips, stall guard). Also TypeScript pattern validation, Java request timeouts, a raised MCP `hono` floor, and a Terraform `const` schema change.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.810.0",
     "releaseDate": "2026-11-17T16:39:46Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.810.0",
