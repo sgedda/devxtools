@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.0.1",
+    "releaseDate": "2026-11-23T18:13:12.777Z",
+    "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%404.0.1",
+    "source": "npm",
+    "summary": "Gives each createSession its own plugin instances, releases the manifest lock during driver/plugin scripts, removes a session before its driver finishes deletion, and bounds BiDi subscription state.",
+    "status": "reviewed"
+  },
+  {
     "version": "4.0.0",
     "releaseDate": "2026-11-15T13:59:57.287Z",
     "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%404.0.0",

@@ -1,19 +1,25 @@
 {
-  "lastUpdated": "2026-11-27T07:24:23.583Z",
+  "lastUpdated": "2026-11-27T16:28:03.134Z",
   "tools": {
     "appium": {
-      "version": "4.0.1",
-      "releaseDate": "2026-11-23T18:13:12.777Z",
-      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%404.0.1",
+      "version": "4.0.2",
+      "releaseDate": "2026-11-27T07:35:18.584Z",
+      "releaseUrl": "https://github.com/appium/appium/releases/tag/appium%404.0.2",
       "source": "npm",
-      "summary": "Gives each createSession its own plugin instances, releases the manifest lock during driver/plugin scripts, removes a session before its driver finishes deletion, and bounds BiDi subscription state.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "artillery": {
       "version": "2.0.34",
       "releaseDate": "2026-08-14T12:18:47.356Z",
       "releaseUrl": "https://www.npmjs.com/package/artillery/v/2.0.34",
       "source": "npm",
+      "status": "draft"
+    },
+    "aws-emulator": {
+      "version": "1.0.665",
+      "releaseDate": "2026-11-27T15:47:53Z",
+      "releaseUrl": "https://github.com/aws/aws-emulator/releases/tag/v1.0.665",
+      "source": "github",
       "status": "draft"
     },
     "bruno": {
@@ -83,12 +89,11 @@
       "status": "draft"
     },
     "grafana-loki": {
-      "version": "3.7.10",
-      "releaseDate": "2026-11-13T07:51:25Z",
-      "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.10",
+      "version": "3.7.11",
+      "releaseDate": "2026-11-27T15:03:37Z",
+      "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.11",
       "source": "github",
-      "summary": "Adds configurable TLS curve preferences on the server, and updates dependencies on the 3.7.x line.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "hoppscotch": {
       "version": "2026.11.0",
@@ -161,12 +166,11 @@
       "status": "reviewed"
     },
     "maestro": {
-      "version": "2.12.1",
-      "releaseDate": "2026-11-02T08:05:48Z",
-      "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.12.1",
+      "version": "2.13.0",
+      "releaseDate": "2026-11-27T09:23:26Z",
+      "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.13.0",
       "source": "github",
-      "summary": "Fixes `tapOn`/`openLink` sending a literal interpolated `appId` to the driver. Updates OkHttp to 4.12.1, which rejects eight compromised eMudhra intermediate CA certificates.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "microcks": {
       "version": "1.16.0",
@@ -198,6 +202,13 @@
       "source": "npm",
       "summary": "Mockoon Pro, the self-hosted collaboration and deployment server, leaves beta and adds workspaces for multiple teams, mixed local and SSO sign-in, and role changes in the admin portal.",
       "status": "reviewed"
+    },
+    "mockserver": {
+      "version": "9.4.0",
+      "releaseDate": "2026-11-20T09:44:58Z",
+      "releaseUrl": "https://github.com/mock-server/mockserver-monorepo/releases/tag/mockserver-9.4.0",
+      "source": "github",
+      "status": "draft"
     },
     "mountebank": {
       "version": "2.10.0",
@@ -311,7 +322,7 @@
     "rozenite": {
       "version": "2.8.0",
       "releaseDate": "2026-11-24T13:44:37.134Z",
-      "releaseUrl": "https://www.npmjs.com/package/rozenite/v/2.8.0",
+      "releaseUrl": "https://github.com/callstackincubator/rozenite/releases/tag/v2.8.0",
       "source": "npm",
       "summary": "The 2.8.0 changelog for the `rozenite` package lists only dependency version bumps and no user-facing notes. There is no GitHub release or tag for 2.8.0.",
       "status": "reviewed"
@@ -325,12 +336,11 @@
       "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.34.3",
-      "releaseDate": "2026-11-27T00:03:14Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.3",
+      "version": "4.34.4",
+      "releaseDate": "2026-11-27T12:09:12Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.4",
       "source": "github",
-      "summary": "Speeds up fuzzing up to 1.9x, generates field values independently, and fixes `st replay` false-fixed cases, false positives, `--max-time`/`--seed` repeats, and DELETE of pre-existing resources.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "sentry": {
       "version": "26.11.0",
@@ -352,12 +362,11 @@
       "status": "reviewed"
     },
     "speakeasy": {
-      "version": "1.812.1",
-      "releaseDate": "2026-11-26T13:51:28Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.1",
+      "version": "1.813.0",
+      "releaseDate": "2026-11-27T11:55:59Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.813.0",
       "source": "github",
-      "summary": "Masks sensitive values in error output, verifies installer downloads, writes config atomically with tighter permissions, and fixes C# union/form bodies and Terraform discriminated-union generation.",
-      "status": "reviewed"
+      "status": "draft"
     },
     "spectral": {
       "version": "6.17.1",
