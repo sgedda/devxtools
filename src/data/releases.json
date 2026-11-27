@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-26T07:31:02.132Z",
+  "lastUpdated": "2026-11-27T07:24:23.583Z",
   "tools": {
     "appium": {
       "version": "4.0.1",
@@ -144,11 +144,11 @@
       "status": "reviewed"
     },
     "keploy": {
-      "version": "3.7.22",
-      "releaseDate": "2026-11-26T06:15:45Z",
-      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.22",
+      "version": "3.7.27",
+      "releaseDate": "2026-11-27T03:04:11Z",
+      "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.27",
       "source": "github",
-      "summary": "3.7.20–3.7.22 clarify default-mode replay, fix MySQL window ownership, omit unconsumed background mocks from obsolete verdicts, fail-closed inverted windows, and compare gRPC bodies by field number.",
+      "summary": "3.7.23–3.7.27 resolve well-known `--proto-dir` imports, bound replay memory, backfill startup mocks after a cut, let you ignore a response field for one endpoint, and quiet normal-mode replay output.",
       "status": "reviewed"
     },
     "locust": {
@@ -225,11 +225,11 @@
       "status": "reviewed"
     },
     "openapi-generator": {
-      "version": "7.27.0",
-      "releaseDate": "2026-11-02T05:17:40Z",
-      "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.27.0",
+      "version": "7.28.0",
+      "releaseDate": "2026-11-26T14:25:34Z",
+      "releaseUrl": "https://github.com/OpenAPITools/openapi-generator/releases/tag/v7.28.0",
       "source": "github",
-      "summary": "Minor release with 170+ enhancements and bug fixes; the full list is in the 7.27.0 milestone's merged pull requests.",
+      "summary": "Keeps enum var names unique after renaming duplicates, maps unknown C# enums to a default, keeps Go credentials on same-origin redirects, and fixes path, query and JSON encoding in several generators.",
       "status": "reviewed"
     },
     "openobserve": {
@@ -301,11 +301,11 @@
       "status": "draft"
     },
     "redocly": {
-      "version": "2.83.0",
-      "releaseDate": "2026-11-24T10:07:30.543Z",
-      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.83.0",
+      "version": "2.84.0",
+      "releaseDate": "2026-11-26T14:10:04.179Z",
+      "releaseUrl": "https://github.com/Redocly/redocly-cli/releases/tag/%40redocly/cli%402.84.0",
       "source": "npm",
-      "summary": "Adds Arazzo `spec-step-parameters-in-required` and 1.1 Selector Objects in `respect`. `bundle --output` now overrides `redocly.yaml`. Running `build-docs`/`stats`/`score` without an API is deprecated.",
+      "summary": "Adds OAuth2 `clientCredentials` and `password` flows to Respect `x-security`, and fixes Respect, `drift` and `proxy` stack overflows on large discriminators and recursive schemas.",
       "status": "reviewed"
     },
     "rozenite": {
@@ -317,19 +317,19 @@
       "status": "reviewed"
     },
     "scalar": {
-      "version": "1.84.0",
-      "releaseDate": "2026-11-25T11:43:23.557Z",
+      "version": "1.85.0",
+      "releaseDate": "2026-11-26T17:13:41.872Z",
       "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
       "source": "npm",
-      "summary": "Adds a searchable Messages section for reusable AsyncAPI `components.messages` (hidden with `hideModels`), keeps response media-type pickers visible, and shows explicit zero string/array bounds.",
+      "summary": "Adds `httpClients` to configure available HTTP clients, switches defaults to system fonts and stops loading Inter and JetBrains Mono, and adds property `x-badges` plus response-description search.",
       "status": "reviewed"
     },
     "schemathesis": {
-      "version": "4.34.2",
-      "releaseDate": "2026-11-24T11:05:09Z",
-      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.2",
+      "version": "4.34.3",
+      "releaseDate": "2026-11-27T00:03:14Z",
+      "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.3",
       "source": "github",
-      "summary": "Fixes `exclude-header-characters` being ignored for negative-mode `If-Match`, `If-*-Since` and `Range` values.",
+      "summary": "Speeds up fuzzing up to 1.9x, generates field values independently, and fixes `st replay` false-fixed cases, false positives, `--max-time`/`--seed` repeats, and DELETE of pre-existing resources.",
       "status": "reviewed"
     },
     "sentry": {
@@ -343,19 +343,20 @@
       "status": "reviewed"
     },
     "signoz": {
-      "version": "0.151.0",
-      "releaseDate": "2026-11-18T06:30:01Z",
-      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.151.0",
+      "version": "0.152.0",
+      "releaseDate": "2026-11-26T09:28:27Z",
+      "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.152.0",
       "source": "github",
-      "summary": "Upgrades the UI to react-router v7 and adds fine-grained access control for users, org, and preference routes, plus top-list and geo-map dashboard panel schemas.",
+      "summary": "Removes Saved view V1 APIs (migrate to v2 if you call them) and dual-ingests logs for native JSON storage, needing more collector/ClickHouse capacity. Adds AI alerts, distribution and heatmap charts.",
+      "breaking": true,
       "status": "reviewed"
     },
     "speakeasy": {
-      "version": "1.812.0",
-      "releaseDate": "2026-11-25T13:43:30Z",
-      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.0",
+      "version": "1.812.1",
+      "releaseDate": "2026-11-26T13:51:28Z",
+      "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.1",
       "source": "github",
-      "summary": "Adds `--rubygems-trusted-publishing` to configure RubyGems trusted publishing.",
+      "summary": "Masks sensitive values in error output, verifies installer downloads, writes config atomically with tighter permissions, and fixes C# union/form bodies and Terraform discriminated-union generation.",
       "status": "reviewed"
     },
     "spectral": {
