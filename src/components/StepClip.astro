@@ -1,0 +1,244 @@
+---
+/**
+ * <StepClip> — a short, silent screen recording placed directly under a tutorial step.
+ *
+ * Usage (MDX guides get it automatically; .astro pages import it):
+ *   <StepClip
+ *     src="/videos/tutorials/msw-react-checkout/step-2-auth-expired-session"
+ *     step={2}
+ *     label="Orders page renewing an expired session, then loading the orders"
+ *     duration={7}
+ *   >
+ *     The API answers <code>401 token_expired</code>, the client refreshes and replays the request.
+ *   </StepClip>
+ *
+ * Performance: nothing downloads until the reader presses play (`preload="none"`); the WebP
+ * poster is the only request. Explicit width/height + aspect-ratio reserve space (no CLS).
+ * No JS needed: native controls work without it. The tiny script only stops other clips when
+ * one starts and drops `loop` under prefers-reduced-motion.
+ */
+import {
+  describeStepClip,
+  resolveStepClipSources,
+  stepClipId,
+  stepLabel,
+} from '../lib/step-clip';
+
+export interface Props {
+  /** Base path without extension; expands to `.webm`, `.mp4` and `.webp` (poster). */
+  src?: string;
+  /** Explicit MP4 (H.264) file. Overrides `src`. */
+  mp4?: string;
+  /** Explicit WebM (VP9) file. Overrides `src`. Optional when `mp4` + `poster` are given. */
+  webm?: string;
+  /** Explicit poster image. Overrides `src`. */
+  poster?: string;
+  /** Accessible name for the video: what it shows, in one sentence. Required. */
+  label: string;
+  /** Caption text. Rich captions (code, links) go in the default slot instead. */
+  caption?: string;
+  /** Step number or label shown before the caption ("Step 3."). */
+  step?: number | string;
+  /** Clip length in seconds, shown in the caption as "(Video, 9 s, no audio.)". */
+  duration?: number;
+  /** Clips have no audio track, so they are muted by default. */
+  muted?: boolean;
+  /** Loop playback (ignored under prefers-reduced-motion). Default false. */
+  loop?: boolean;
+  /** Intrinsic size of the recording. Defaults to 1280x720. */
+  width?: number;
+  height?: number;
+  /** Override the generated id (only needed if the same clip appears twice on a page). */
+  id?: string;
+  class?: string;
+}
+
+const {
+  src,
+  mp4: mp4Prop,
+  webm: webmProp,
+  poster: posterProp,
+  label,
+  caption,
+  step,
+  duration,
+  muted = true,
+  loop = false,
+  width = 1280,
+  height = 720,
+  id,
+  class: className,
+} = Astro.props;
+
+if (!label?.trim()) throw new Error('<StepClip> needs a `label` describing what the clip shows.');
+
+const sources = resolveStepClipSources({ src, mp4: mp4Prop, webm: webmProp, poster: posterProp });
+const figureId = id ?? stepClipId(sources, step);
+const captionId = `${figureId}-caption`;
+const prefix = stepLabel(step);
+const meta = describeStepClip({ duration, muted });
+const hasSlot = Astro.slots.has('default');
+---
+
+<figure
+  class:list={['dx-figure', 'dx-step-clip', className]}
+  id={figureId}
+  data-step-clip
+  data-step={step}
+  style={`--dx-step-clip-ratio: ${width} / ${height};`}
+>
+  <div class="dx-figure__frame dx-step-clip__frame">
+    <video
+      class="dx-step-clip__video aspect-video"
+      controls
+      playsinline
+      preload="none"
+      muted={muted}
+      loop={loop}
+      width={width}
+      height={height}
+      poster={sources.poster}
+      aria-label={label}
+      aria-describedby={captionId}
+    >
+      {sources.webm && <source src={sources.webm} type="video/webm" />}
+      <source src={sources.mp4} type="video/mp4" />
+      <p class="dx-step-clip__fallback">
+        Your browser can't play this video. <a href={sources.mp4}>Download the clip (MP4)</a>.
+      </p>
+    </video>
+  </div>
+  <figcaption id={captionId} class="dx-step-clip__caption">
+    {prefix && <strong class="dx-step-clip__step">{prefix}</strong>}
+    {hasSlot ? <slot /> : caption}
+    <em class="dx-step-clip__meta">{meta}</em>
+    <noscript>
+      <a class="dx-step-clip__download" href={sources.mp4}>Download MP4</a>
+    </noscript>
+  </figcaption>
+</figure>
+
+<script>
+  // Progressive enhancement only; clips are fully usable without it.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const clips = () => document.querySelectorAll<HTMLVideoElement>('[data-step-clip] video');
+  const applyMotionPreference = () => {
+    for (const video of clips()) {
+      if (!video.dataset.loop) video.dataset.loop = String(video.loop);
+      video.loop = !reduceMotion.matches && video.dataset.loop === 'true';
+    }
+  };
+  applyMotionPreference();
+  reduceMotion.addEventListener('change', applyMotionPreference);
+  // One clip at a time: starting a clip pauses the others on the page.
+  document.addEventListener(
+    'play',
+    (event) => {
+      if (!(event.target instanceof HTMLVideoElement) || !event.target.closest('[data-step-clip]')) return;
+      for (const video of clips()) if (video !== event.target && !video.paused) video.pause();
+    },
+    true,
+  );
+</script>
+
+<style>
+  .dx-step-clip {
+    /* Fallbacks so the component also looks right outside .dx-prose. */
+    --sc-border: var(--dx-border, #e4e4e7);
+    --sc-surface: var(--dx-surface-2, #fafafa);
+    --sc-muted: var(--dx-muted, #52525b);
+    --sc-text: var(--dx-text, #27272a);
+    --sc-accent: var(--dx-accent, #4f46e5);
+    --sc-accent-soft: var(--dx-accent-soft, #eef2ff);
+    --sc-shadow: var(--dx-shadow, rgb(9 9 11 / 0.1));
+    margin-inline: 0;
+    min-width: 0;
+  }
+  :global(.dark) .dx-step-clip {
+    --sc-border: var(--dx-border, #27272a);
+    --sc-surface: var(--dx-surface-2, #18181b);
+    --sc-muted: var(--dx-muted, #a1a1aa);
+    --sc-text: var(--dx-text, #d4d4d8);
+    --sc-accent: var(--dx-accent, #818cf8);
+    --sc-accent-soft: var(--dx-accent-soft, rgb(99 102 241 / 0.1));
+    --sc-shadow: var(--dx-shadow, rgb(0 0 0 / 0.45));
+  }
+  /* Outside .dx-prose there is no flow spacing; give the figure its own. */
+  :global(:not(.dx-prose)) > .dx-step-clip {
+    margin-block: 1.5rem;
+  }
+
+  .dx-step-clip__frame {
+    position: relative;
+    aspect-ratio: var(--dx-step-clip-ratio, 16 / 9);
+    border: 1px solid var(--sc-border);
+    border-radius: 0.75rem;
+    background: var(--sc-surface);
+    overflow: hidden;
+    box-shadow: 0 1px 2px var(--sc-shadow);
+  }
+  /* Recordings are light UI: in dark mode keep a faint inner ring so the edge stays visible. */
+  :global(.dark) .dx-step-clip__frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.06);
+  }
+  .dx-step-clip__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: var(--dx-step-clip-ratio, 16 / 9);
+    object-fit: contain;
+    background: var(--sc-surface);
+  }
+  .dx-step-clip__video:focus-visible {
+    outline: 2px solid var(--sc-accent);
+    outline-offset: -2px;
+  }
+  .dx-step-clip__fallback {
+    padding: 1rem;
+    color: var(--sc-text);
+  }
+
+  .dx-step-clip__caption {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--sc-muted);
+  }
+  .dx-step-clip__step {
+    display: inline-block;
+    margin-right: 0.375rem;
+    padding: 0.0625rem 0.5rem;
+    border-radius: 9999px;
+    background: var(--sc-accent-soft);
+    color: var(--sc-accent);
+    font-weight: 600;
+    font-size: 0.8125rem;
+  }
+  .dx-step-clip__meta {
+    margin-left: 0.25rem;
+    white-space: nowrap;
+  }
+  .dx-step-clip__download {
+    margin-left: 0.5rem;
+    color: var(--sc-accent);
+  }
+
+  @media (min-width: 1024px) {
+    .dx-step-clip__frame {
+      border-radius: 0.875rem;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .dx-step-clip__frame {
+      transition: box-shadow 0.2s ease;
+    }
+    .dx-step-clip__frame:hover {
+      box-shadow: 0 6px 20px var(--sc-shadow);
+    }
+  }
+</style>
