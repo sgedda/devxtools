@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.812.0",
+    "releaseDate": "2026-11-25T13:43:30Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.0",
+    "source": "github",
+    "summary": "Adds `--rubygems-trusted-publishing` to configure RubyGems trusted publishing.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.811.0",
     "releaseDate": "2026-11-20T15:48:36Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.811.0",

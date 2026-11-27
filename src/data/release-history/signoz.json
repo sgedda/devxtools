@@ -1,5 +1,13 @@
 [
   {
+    "version": "0.151.0",
+    "releaseDate": "2026-11-18T06:30:01Z",
+    "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.151.0",
+    "source": "github",
+    "summary": "Upgrades the UI to react-router v7 and adds fine-grained access control for users, org, and preference routes, plus top-list and geo-map dashboard panel schemas.",
+    "status": "reviewed"
+  },
+  {
     "version": "0.150.0",
     "releaseDate": "2026-11-13T13:47:26Z",
     "releaseUrl": "https://github.com/SigNoz/signoz/releases/tag/v0.150.0",

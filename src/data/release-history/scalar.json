@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.84.0",
+    "releaseDate": "2026-11-25T11:43:23.557Z",
+    "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
+    "source": "npm",
+    "summary": "Adds a searchable Messages section for reusable AsyncAPI `components.messages` (hidden with `hideModels`), keeps response media-type pickers visible, and shows explicit zero string/array bounds.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.83.0",
     "releaseDate": "2026-11-22T22:48:35.979Z",
     "releaseUrl": "https://github.com/scalar/scalar/blob/main/packages/api-reference/CHANGELOG.md",
