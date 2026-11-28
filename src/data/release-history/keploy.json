@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.27",
+    "releaseDate": "2026-11-27T03:04:11Z",
+    "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.27",
+    "source": "github",
+    "summary": "3.7.23–3.7.27 resolve well-known `--proto-dir` imports, bound replay memory, backfill startup mocks after a cut, let you ignore a response field for one endpoint, and quiet normal-mode replay output.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.22",
     "releaseDate": "2026-11-26T06:15:45Z",
     "releaseUrl": "https://github.com/keploy/keploy/releases/tag/v3.7.22",

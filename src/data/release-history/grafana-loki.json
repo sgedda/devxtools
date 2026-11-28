@@ -1,5 +1,13 @@
 [
   {
+    "version": "3.7.10",
+    "releaseDate": "2026-11-13T07:51:25Z",
+    "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.10",
+    "source": "github",
+    "summary": "Adds configurable TLS curve preferences on the server, and updates dependencies on the 3.7.x line.",
+    "status": "reviewed"
+  },
+  {
     "version": "3.7.9",
     "releaseDate": "2026-10-20T22:53:57Z",
     "releaseUrl": "https://github.com/grafana/loki/releases/tag/v3.7.9",

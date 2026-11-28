@@ -1,5 +1,13 @@
 [
   {
+    "version": "2.12.1",
+    "releaseDate": "2026-11-02T08:05:48Z",
+    "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.12.1",
+    "source": "github",
+    "summary": "Fixes `tapOn`/`openLink` sending a literal interpolated `appId` to the driver. Updates OkHttp to 4.12.1, which rejects eight compromised eMudhra intermediate CA certificates.",
+    "status": "reviewed"
+  },
+  {
     "version": "2.12.0",
     "releaseDate": "2026-10-26T11:52:10Z",
     "releaseUrl": "https://github.com/mobile-dev-inc/Maestro/releases/tag/cli-2.12.0",

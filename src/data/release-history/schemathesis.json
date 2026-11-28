@@ -1,5 +1,13 @@
 [
   {
+    "version": "4.34.3",
+    "releaseDate": "2026-11-27T00:03:14Z",
+    "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.3",
+    "source": "github",
+    "summary": "Speeds up fuzzing up to 1.9x, generates field values independently, and fixes `st replay` false-fixed cases, false positives, `--max-time`/`--seed` repeats, and DELETE of pre-existing resources.",
+    "status": "reviewed"
+  },
+  {
     "version": "4.34.2",
     "releaseDate": "2026-11-24T11:05:09Z",
     "releaseUrl": "https://github.com/schemathesis/schemathesis/releases/tag/v4.34.2",
