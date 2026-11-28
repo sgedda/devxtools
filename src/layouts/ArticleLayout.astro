@@ -4,6 +4,7 @@ import NewsletterSignup from '../components/NewsletterSignup.astro';
 import ReportError from '../components/ReportError.astro';
 import StackPickerWidget from '../components/StackPickerWidget.astro';
 import PollCard from '../components/PollCard.astro';
+import { buildFaqPageSchema, type FaqItem } from '../lib/faq';
 
 interface Props {
   frontmatter: {
@@ -25,9 +26,11 @@ interface Props {
     section?: string; // e.g., 'mocking-test-data', 'testing', 'api-development', 'observability'
   };
   headings?: Array<{ depth: number; slug: string; text: string }>;
+  /** FAQ entries from the article body (see src/lib/faq.ts), used for FAQPage JSON-LD. */
+  faq?: FaqItem[];
 }
 
-const { frontmatter, headings } = Astro.props;
+const { frontmatter, headings, faq } = Astro.props;
 
 // Pages about React Native / API mocking end with the RN API-mocking poll card
 const POLL_CARD_PATHS = new Set([
@@ -93,33 +96,11 @@ function buildJsonLd(frontmatter: Props['frontmatter']) {
     });
   }
   
-  if (frontmatter.schema.includes('FAQPage') && headings) {
-    const faqHeadings = headings.filter(h => 
-      h.depth === 2 && (
-        h.text.toLowerCase().includes('?') ||
-        h.text.toLowerCase().startsWith('how') ||
-        h.text.toLowerCase().startsWith('what') ||
-        h.text.toLowerCase().startsWith('why') ||
-        h.text.toLowerCase().startsWith('when') ||
-        h.text.toLowerCase().startsWith('where') ||
-        h.text.toLowerCase().startsWith('can') ||
-        h.text.toLowerCase().startsWith('should')
-      )
-    );
-    
-    if (faqHeadings.length > 0) {
-      graph.push({
-        "@type": "FAQPage",
-        "mainEntity": faqHeadings.map(h => ({
-          "@type": "Question",
-          "name": h.text,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `Detailed answer provided in the ${frontmatter.title} guide.`
-          }
-        }))
-      });
-    }
+  // Built from the article's own "## FAQ" section (real questions and answers).
+  // Articles without one simply get no FAQPage node.
+  if (frontmatter.schema.includes('FAQPage')) {
+    const faqPage = buildFaqPageSchema(faq ?? []);
+    if (faqPage) graph.push(faqPage);
   }
   
   return {

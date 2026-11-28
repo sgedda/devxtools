@@ -1,0 +1,597 @@
+---
+title: "MSW in React: Mock APIs & Test with Playwright | DevXTools"
+description: "Step-by-step React + MSW tutorial using a real checkout and order flow. Mock API states, run Playwright E2E tests, and watch each step's recording."
+slug: "/guides/msw-react-playwright-tutorial/"
+canonical: "https://devxtools.dev/guides/msw-react-playwright-tutorial/"
+h1: "MSW in React: Mock a Checkout API and Test It with Playwright"
+primary_keyword: "msw react tutorial"
+secondary_keywords: ["mock service worker react", "mock api in react with msw", "msw with playwright", "react checkout e2e test playwright"]
+breadcrumbs: [{ name: "Home", url: "/" }, { name: "Guides", url: "/guides/" }, { name: "MSW in React with Playwright", url: "/guides/msw-react-playwright-tutorial/" }]
+schema: ["TechArticle", "BreadcrumbList", "FAQPage"]
+author: "DevX Tools"
+datePublished: "2026-11-27"
+dateModified: "2026-11-27"
+tested_with: "msw 3.0.8, @playwright/test 1.65.1 (Chromium), React and React DOM 19.3.1, Vite 8.4.0, TypeScript 7.0.2 on Node 22.23.5; 6/6 Playwright tests passing, 2026-11-27"
+repro_url: "https://github.com/sgedda/devxtools-tutorials"
+repro_label: "sgedda/devxtools-tutorials (msw-react-checkout)"
+tools: ["msw", "playwright"]
+---
+
+**This [MSW](/tools/msw/) React tutorial mocks a real checkout and order-management API in the browser, then proves every failure mode with a Playwright end-to-end suite you can run yourself.** Treat it as a bug hunt: each of the five steps targets one bug that usually only shows up in production, shows how to reproduce it, and pins the fix with a Playwright spec. Every step has a one-line checkpoint command and a short recording of that spec running. Every snippet below is copied from the sample app, and the production JavaScript bundle contains no MSW code. devxtools.dev is independent and has no relationship with MSW or Playwright.
+
+## What you'll build (and how MSW + Playwright fit together)
+
+The sample is **Northwind Supply**, a small Vite + React + TypeScript order-management app with three pages: sign-in, a searchable orders table and a checkout form. The code lives in the `msw-react-checkout/` folder of the [sgedda/devxtools-tutorials](https://github.com/sgedda/devxtools-tutorials) repository.
+
+The two tools do different jobs:
+
+- **MSW runs inside the app.** A service worker intercepts `fetch` calls to `/api/*` and answers them from handlers in `src/mocks/handlers.ts`. The sample uses them in the dev server. The same handlers can also be reused in Storybook or, through `setupServer`, in Node unit tests.
+- **Playwright runs outside the app.** It starts the dev servers, drives a real Chromium browser and asserts on what users see: banners, tables, disabled buttons, URLs.
+
+Why not mock in Playwright directly? You can, and we cover [mocking APIs directly with Playwright `page.route`](/guides/mock-api-playwright/) separately. Here MSW owns the mocks because they're part of the app: `npm run dev` serves the same fake API the E2E tests run against. For a wider look at the library, see [how MSW compares to Nock and Polly.js](/comparisons/msw-vs-nock-vs-polly/).
+
+| Step | What it shows | Spec |
+| --- | --- | --- |
+| [1](#step-1-start-with-an-unmocked-baseline) | Unmocked baseline: no backend, a clean error state with Retry | `e2e/step-1-unmocked-baseline.spec.ts` |
+| [2](#step-2-mock-authenticated-fetch-and-an-expired-session) | Authenticated fetch, `401 token_expired`, token refresh and request replay | `e2e/step-2-auth-expired-session.spec.ts` |
+| [3](#step-3-mock-paginated-search-with-loading-and-empty-states) | Paginated search and status filter with `delay()`, a loading skeleton and an empty state | `e2e/step-3-paginated-search.spec.ts` |
+| [4](#step-4-mock-a-checkout-error-and-test-inline-recovery) | `POST /api/checkout` returns `500`; inline recovery keeps the cart and form | `e2e/step-4-checkout-error-recovery.spec.ts` |
+| [5](#step-5-override-a-handler-for-one-test-with-workeruse) | One test overrides a handler at runtime with `worker.use()` to return `409 out_of_stock` | `e2e/step-5-runtime-override.spec.ts` |
+
+## Prerequisites and project setup
+
+You need Node.js 22 or later: MSW 3 dropped older versions, and the sample's `package.json` sets `"engines": { "node": ">=22" }`. It pins exact versions: `react` and `react-dom` 19.3.1, `msw` 3.0.8, `@playwright/test` 1.65.1, `vite` 8.4.0, `@vitejs/plugin-react` 6.3.0 and `typescript` 7.0.2.
+
+To run the finished sample:
+
+```bash
+npm install
+npx playwright install chromium
+
+npm run dev            # http://localhost:5173, API mocked by MSW
+npm run dev:unmocked   # http://localhost:5174, no MSW, so /api/* fails (Step 1)
+npm run test:e2e       # the Playwright suite (starts both dev servers itself)
+npm run build          # type-check and production build (MSW is not included)
+```
+
+Demo sign-in: `maya.chen@northwind.example` with any password of 8 or more characters.
+
+### Install MSW and its service worker
+
+In your own Vite app, install MSW and copy `mockServiceWorker.js` into `public/`. `--save` records the folder in `package.json` so the worker file is updated on upgrades:
+
+```bash
+npm install --save-dev msw
+npx msw init public --save
+```
+
+That left this entry in the sample's `package.json`:
+
+```json
+"msw": {
+  "workerDirectory": [
+    "public"
+  ]
+}
+```
+
+The worker itself is one line in `src/mocks/browser.ts`:
+
+```ts
+import { setupWorker } from 'msw/browser'
+import { handlers } from './handlers'
+
+export const worker = setupWorker(...handlers)
+```
+
+### Start MSW only in development
+
+`src/main.tsx` starts the worker before React renders, so the first request is already mocked. The guard is written inline so Vite can drop the whole branch, and with it every MSW import, from production builds:
+
+```tsx
+async function enableMocking() {
+  // Checked inline (not via mockingEnabled) so production builds drop MSW entirely.
+  if (!import.meta.env.DEV || import.meta.env.VITE_ENABLE_MSW === 'false') return
+
+  const { worker } = await import('./mocks/browser')
+  await worker.start({
+    // Assets and Vite's own requests pass straight through; warn about API calls we forgot to mock.
+    onUnhandledFrame({ frame, defaults }) {
+      if (frame.protocol !== 'http') return
+      const { request } = frame.data as { request: Request }
+      if (new URL(request.url).pathname.startsWith('/api/')) defaults.warn()
+    },
+  })
+
+  const { exposeMswBridge } = await import('./mocks/bridge')
+  exposeMswBridge(worker)
+}
+
+enableMocking().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App mocked={mockingEnabled} />
+    </StrictMode>,
+  )
+})
+```
+
+Coming from MSW 2? `onUnhandledRequest` is now `onUnhandledFrame`, and its callback gets one `{ frame, defaults }` object instead of `(request, print)`. Frames include WebSocket connections, so check `frame.protocol` first. A custom callback also turns off MSW's built-in skipping of static assets, which is why this one only warns for `/api/` paths.
+
+### Set up Playwright as a real E2E suite
+
+[Playwright](/tools/playwright/) is the test runner here, not just a screen recorder. The important parts of `playwright.config.ts` are `baseURL`, the recording and trace flags, and the two dev servers. The rest of the file (projects, reporters, retries) is in the [sample's playwright.config.ts](https://github.com/sgedda/devxtools-tutorials/blob/main/msw-react-checkout/playwright.config.ts):
+
+```ts
+import { defineConfig } from '@playwright/test'
+
+const RECORDING = Boolean(process.env.RECORD_CLIPS)
+const CI = Boolean(process.env.CI)
+
+export default defineConfig({
+  use: {
+    // The mocked dev server. Step 1 overrides this with the unmocked one.
+    baseURL: 'http://localhost:5173',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    video: RECORDING ? { mode: 'on', size: { width: 1280, height: 720 } } : 'retain-on-failure',
+    // A small delay between actions makes recordings easy to follow. Never slow down the real suite.
+    launchOptions: { slowMo: RECORDING ? 200 : 0 },
+  },
+
+  // Playwright starts (or reuses) both dev servers before the tests and stops them afterwards.
+  webServer: [
+    {
+      // Vite dev server with MSW intercepting /api/* in the browser.
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: !CI,
+    },
+    {
+      // Same app with VITE_ENABLE_MSW=false: /api/* goes to a backend that isn't running.
+      command: 'npm run dev:unmocked',
+      url: 'http://localhost:5174',
+      reuseExistingServer: !CI,
+      stdout: 'ignore',
+      stderr: 'ignore',
+    },
+  ],
+})
+```
+
+Specs import `test` and `expect` from `e2e/support/fixtures.ts`, which adds a `session` option (`'none'`, `'valid'`, `'expired'` or `'revoked'`) that is written to `localStorage` before the app loads:
+
+```ts
+export const test = base.extend<Fixtures>({
+  session: ['valid', { option: true }],
+  // ...
+})
+```
+
+Run the whole suite with `npx playwright test` (or `npm run test:e2e`). It should end with `6 passed`, in under 10 seconds on our machine. Each step below also has a checkpoint that runs only its own spec. Playwright treats the argument as a filter on the spec file path.
+
+## Step 1: Start with an unmocked baseline
+
+**The prod bug:** the API is down and the page crashes or renders an empty table, so users think they have no orders.
+
+Before mocking anything, see what the app does with no API. `npm run dev:unmocked` runs `vite --mode unmocked --port 5174`, which loads `.env.unmocked`:
+
+```bash
+# `vite --mode unmocked`: same app, no MSW. /api/* is proxied to a backend that isn't running.
+VITE_ENABLE_MSW=false
+```
+
+`vite.config.ts` proxies `/api` to `http://127.0.0.1:4010`, where nothing is listening, so every request fails. The spec points `baseURL` at that server and demands a clear error with a working Retry:
+
+```ts
+test.use({ baseURL: 'http://localhost:5174' })
+
+test('shows a clear, retryable error when the orders API is unreachable', { tag: '@clip' }, async ({ page, pace }) => {
+  // Real network traffic (no service worker), so Playwright can observe the failed response.
+  const firstResponse = page.waitForResponse('**/api/orders?*')
+  await page.goto('/orders')
+
+  expect((await firstResponse).status()).toBeGreaterThanOrEqual(500)
+  await expect(page.getByText('API: live backend')).toBeVisible()
+
+  const error = page.getByRole('alert')
+  await expect(error.getByRole('heading', { name: "Can't reach the orders API" })).toBeVisible()
+  await expect(error).toContainText('attempt 1')
+  await expect(page.getByRole('table')).toHaveCount(0)
+  await pace(2600)
+
+  await test.step('retry hits the network again and fails the same way', async () => {
+    const retryResponse = page.waitForResponse('**/api/orders?*')
+    await error.getByRole('button', { name: 'Retry' }).click()
+    expect((await retryResponse).status()).toBeGreaterThanOrEqual(500)
+    await expect(error).toContainText('attempt 2')
+  })
+  await pace(1800)
+})
+```
+
+`pace()` waits only while recording clips, so a normal run stays fast.
+
+**Checkpoint:** `npx playwright test step-1` should report `1 passed`.
+
+<StepClip src="/videos/tutorials/msw-react-checkout/step-1-unmocked-baseline" step={1} duration={6} label="Orders page with MSW disabled showing the 'Can't reach the orders API' error, then failing again after Retry">Watch the API: live backend label and the "attempt 1" line change to "attempt 2" after Retry. Those are the assertions in the spec above.</StepClip>
+
+## Step 2: Mock authenticated fetch and an expired session
+
+**The prod bug:** an access token expires mid-session, and the app either shows an error or refreshes the token but never retries the request it was making.
+
+Now turn MSW on. Every protected handler calls `requireAuth()`. Tokens starting with `at_live_` are valid, and tokens starting with `at_expired_` get `401 token_expired`:
+
+```ts
+function requireAuth(request: Request) {
+  const token = request.headers.get('Authorization')?.replace(/^Bearer /, '')
+  if (!token) {
+    return errorResponse(401, { error: 'unauthorized', message: 'Sign in to continue.' })
+  }
+  if (token.startsWith('at_expired_')) {
+    return errorResponse(401, { error: 'token_expired', message: 'Your access token has expired.' })
+  }
+  return null
+}
+```
+
+The refresh endpoint swaps a refresh token for new tokens after 1.5 seconds, or returns `401` for a revoked one:
+
+```ts
+http.post('/api/auth/refresh', async ({ request }) => {
+  const { refreshToken } = (await request.json()) as { refreshToken: string }
+  await delay(1500) // token refresh is a separate round-trip, keep it visible
+  if (!refreshToken?.startsWith('rt_') || refreshToken === 'rt_revoked') {
+    return errorResponse(401, { error: 'refresh_token_invalid', message: 'Please sign in again.' })
+  }
+  return HttpResponse.json({
+    accessToken: `at_live_${crypto.randomUUID().slice(0, 8)}`,
+    refreshToken: `rt_${crypto.randomUUID().slice(0, 8)}`,
+    user: demoUser,
+  })
+}),
+```
+
+`apiFetch()` in `src/api/client.ts` refreshes once on `token_expired` and replays the original request. If the refresh fails, it clears the session and the app redirects to sign-in:
+
+```ts
+export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const session = loadSession()
+  let response = await send(path, init, session)
+
+  if (response.status === 401 && session) {
+    const error = await parseError(response.clone())
+    if (error.code === 'token_expired') {
+      const refreshed = await refreshSession(session)
+      response = await send(path, init, refreshed)
+    }
+  }
+
+  if (!response.ok) throw await parseError(response)
+  return (await response.json()) as T
+}
+```
+
+One test starts with an expired access token and expects a silent renewal. The other starts with a revoked refresh token and expects the sign-in redirect:
+
+```ts
+test.describe('expired access token', () => {
+  test.use({ session: 'expired' })
+
+  test('renews the session silently and loads the orders', { tag: '@clip' }, async ({ page, pace }) => {
+    await page.goto('/orders')
+    await pace(600)
+
+    const banner = page.getByRole('status')
+    await expect(banner).toHaveText('Session expired (401). Renewing your access token…')
+    await expect(banner).toHaveText('Session renewed. You are still signed in.')
+
+    await expect(page.getByRole('row', { name: /NW-10423/ })).toBeVisible()
+    await expect(page.getByTestId('signed-in-user')).toHaveText('Maya Chen')
+    // ...also checks the stored token now starts with at_live_, and that the next page needs no refresh
+  })
+})
+
+test.describe('revoked refresh token', () => {
+  test.use({ session: 'revoked' })
+
+  test('redirects to sign-in and returns to the orders afterwards', async ({ page }) => {
+    await page.goto('/orders')
+
+    await expect(page).toHaveURL(/\/sign-in\?reason=expired/)
+    await expect(page.getByRole('alert')).toContainText('Your session has ended')
+
+    await page.getByLabel('Password').fill('correct-horse-battery')
+    await page.getByRole('button', { name: 'Sign in' }).click()
+
+    await expect(page).toHaveURL(/\/orders/)
+    await expect(page.getByRole('row', { name: /NW-10423/ })).toBeVisible()
+  })
+})
+```
+
+**Checkpoint:** `npx playwright test step-2` should report `2 passed`.
+
+**Try breaking it:** in `apiFetch()`, delete the line `response = await send(path, init, refreshed)`. The token still refreshes, but the original request is never replayed, so the expired-token test fails at `getByRole('row', { name: /NW-10423/ })`.
+
+<StepClip src="/videos/tutorials/msw-react-checkout/step-2-auth-expired-session" step={2} duration={7} label="Orders page renewing an expired session, then loading the orders">Watch the status banner go from "Session expired (401). Renewing your access token…" to "Session renewed" during the 1.5 s delay in the refresh handler, then the orders load.</StepClip>
+
+## Step 3: Mock paginated search with loading and empty states
+
+**The prod bug:** on localhost every response is instant, so nobody notices the missing loading state or the blank screen when a search matches nothing.
+
+`GET /api/orders?q=&status=&page=` filters and paginates 23 deterministic orders, six per page. Every response waits `delay(650)` first, so the loading skeleton is visible the way it would be on a real network:
+
+```ts
+// GET /api/orders?q=&status=&page=
+http.get('/api/orders', async ({ request }) => {
+  const unauthorized = requireAuth(request)
+  if (unauthorized) return unauthorized
+
+  const url = new URL(request.url)
+  const q = (url.searchParams.get('q') ?? '').trim().toLowerCase()
+  const status = (url.searchParams.get('status') ?? 'all') as OrderStatus | 'all'
+  const page = Math.max(1, Number(url.searchParams.get('page') ?? '1'))
+
+  await delay(API_LATENCY_MS)
+
+  const matches = orders.filter(
+    (order) =>
+      (status === 'all' || order.status === status) &&
+      (!q || [order.id, order.customer, order.email].some((field) => field.toLowerCase().includes(q))),
+  )
+  const totalPages = Math.max(1, Math.ceil(matches.length / PAGE_SIZE))
+  return HttpResponse.json({
+    orders: matches.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    page,
+    pageSize: PAGE_SIZE,
+    total: matches.length,
+    totalPages,
+  })
+}),
+```
+
+Because the data is fixed, the spec can assert exact counts. This excerpt shows paging and the empty state:
+
+```ts
+test('searches, filters and paginates orders with loading and empty states', { tag: '@clip' }, async ({ page, pace }) => {
+  const skeleton = page.getByTestId('skeleton-row').first()
+  const summary = page.getByTestId('results-summary')
+
+  await page.goto('/orders')
+  await expect(skeleton).toBeVisible()
+  await expect(summary).toHaveText('Showing 1–6 of 23 orders')
+  await pace(600)
+
+  await test.step('paginate', async () => {
+    await page.getByRole('button', { name: 'Next' }).click()
+    await expect(skeleton).toBeVisible()
+    await expect(summary).toHaveText('Showing 7–12 of 23 orders')
+    await expect(page).toHaveURL(/page=2/)
+  })
+  await pace(500)
+
+  // ...then 'filter by status' ('Showing 1–6 of 7 orders') and 'search' for Elin ('Showing 1–1 of 1 order')
+
+  await test.step('no matches shows the empty state', async () => {
+    await page.getByLabel('Search orders').fill('acme')
+    const empty = page.getByTestId('orders-empty')
+    await expect(empty).toContainText('No orders match your filters')
+    await pace(800)
+    await empty.getByRole('button', { name: 'Clear filters' }).click()
+    await expect(summary).toHaveText('Showing 1–6 of 23 orders')
+  })
+  await pace(600)
+})
+```
+
+**Checkpoint:** `npx playwright test step-3` should report `1 passed`.
+
+<StepClip src="/videos/tutorials/msw-react-checkout/step-3-paginated-search" step={3} duration={10} label="Orders table paginating, filtering by Shipped, searching for Elin, then showing the empty state and clearing filters">Watch the skeleton rows flash on every page, filter and search: that's the 650 ms delay. Then "acme" matches nothing and the empty state's Clear filters button appears.</StepClip>
+
+## Step 4: Mock a checkout error and test inline recovery
+
+**The prod bug:** the payment provider times out, the form resets, and the customer's retry is treated as a brand-new order.
+
+The default `POST /api/checkout` handler treats the test card ending in `0119` as a payment-provider timeout: the first attempt gets a `500`, and a retry with the same idempotency key succeeds:
+
+```ts
+http.post('/api/checkout', async ({ request }) => {
+  const unauthorized = requireAuth(request)
+  if (unauthorized) return unauthorized
+
+  const body = (await request.json()) as CheckoutRequest
+  await delay(900)
+
+  if (body.payment.last4 === TRANSIENT_FAILURE_CARD_LAST4 && !failedOnce.has(body.idempotencyKey)) {
+    failedOnce.add(body.idempotencyKey)
+    return errorResponse(500, {
+      error: 'payment_provider_timeout',
+      message: 'The payment provider timed out before confirming the charge.',
+    })
+  }
+
+  for (const item of body.items) {
+    if ((inventory[item.sku] ?? 0) < item.quantity) {
+      return errorResponse(409, {
+        error: 'out_of_stock',
+        message: 'An item in your cart is no longer available.',
+        sku: item.sku,
+        available: inventory[item.sku] ?? 0,
+      })
+    }
+  }
+  // ...otherwise 201 with an order ID, total and estimated delivery
+}),
+```
+
+The checkout page keeps one idempotency key per cart, so **Try again** can't charge twice. The spec checks the inline error, that the cart and form survive, and that the retry confirms the order:
+
+```ts
+test('recovers from a 500 at checkout without losing the cart', { tag: '@clip' }, async ({ page, pace }) => {
+  await page.goto('/checkout')
+  await expect(page.getByRole('heading', { name: 'Checkout' })).toBeVisible()
+
+  await fillShippingAndPayment(page, '4000 0000 0000 0119')
+  await pace(400)
+
+  const placeOrder = page.getByRole('button', { name: /Place order/ })
+  await placeOrder.click()
+  await expect(page.getByRole('button', { name: 'Placing order…' })).toBeDisabled()
+
+  const banner = page.getByTestId('checkout-error')
+  await expect(banner).toContainText("We couldn't confirm your payment")
+  await expect(banner).toContainText('HTTP 500 · payment_provider_timeout')
+
+  await test.step('cart and form state survive the error', async () => {
+    await expect(page.getByLabel('Street address')).toHaveValue('Sveavägen 44')
+    await expect(page.getByLabel('Card number')).toHaveValue('4000 0000 0000 0119')
+    await expect(page.getByRole('list', { name: 'Cart' }).getByRole('listitem')).toHaveCount(3)
+    await expect(page.getByTestId('order-total')).toHaveText('$568.00')
+  })
+  await pace(2600)
+
+  await banner.getByRole('button', { name: 'Try again' }).click()
+  const confirmation = page.getByTestId('order-confirmation')
+  await expect(confirmation.getByRole('heading')).toHaveText(/Order NW-\d+ confirmed/)
+  await expect(confirmation).toContainText('4 items · $568.00')
+  await pace(1200)
+})
+```
+
+**Checkpoint:** `npx playwright test step-4` should report `1 passed`.
+
+**Try breaking it:** in `CheckoutPage.tsx`, send `idempotencyKey: crypto.randomUUID()` instead of the per-cart key. The mock now treats every retry as a new payment, so Try again hits the `500` again and the test fails at `toHaveText(/Order NW-\d+ confirmed/)`.
+
+The handler's `409 out_of_stock` branch never fires with the default stock levels in `src/mocks/data.ts`, so Step 5 triggers it from one test.
+
+<StepClip src="/videos/tutorials/msw-react-checkout/step-4-checkout-error-recovery" step={4} duration={9} label="Checkout failing with an HTTP 500 payment timeout, keeping the cart and form, then succeeding on Try again">Watch the button switch to Placing order…, then the HTTP 500 payment_provider_timeout banner, with the address and card still filled in. Try again confirms the same $568.00 order.</StepClip>
+
+## Step 5: Override a handler for one test with worker.use()
+
+**The prod bug:** an item sells out between page load and checkout, and the `409` path nobody could trigger locally has never been tested.
+
+Changing `handlers.ts` for a state only one test needs would affect every test. Instead, `src/mocks/bridge.ts` exposes the running worker on `window.msw`, only when MSW runs on the dev server:
+
+```ts
+export function exposeMswBridge(worker: SetupWorker): void {
+  window.msw = { worker, http, HttpResponse, delay }
+}
+```
+
+The worker lives in the browser, so the spec calls `worker.use()` inside `page.evaluate()`. The prepended handler returns `409` only when the cart contains the sold-out SKU. Otherwise it returns nothing, and MSW falls through to the default handler:
+
+```ts
+const SOLD_OUT_SKU = 'NW-HDPHN-02'
+
+test('shows out-of-stock recovery when checkout returns 409 for one SKU', { tag: '@clip' }, async ({ page, pace }) => {
+  await page.goto('/checkout')
+  await waitForMockWorker(page)
+
+  // This callback runs in the browser, where the app exposed the worker on window.msw.
+  await page.evaluate((sku) => {
+    const { worker, http, HttpResponse } = window.msw!
+    worker.use(
+      http.post('/api/checkout', async ({ request }) => {
+        const body = (await request.clone().json()) as CheckoutRequest
+        // No sold-out item in this cart? Return nothing and MSW falls through to the default handler.
+        if (!body.items.some((item) => item.sku === sku)) return
+        return HttpResponse.json(
+          { error: 'out_of_stock', message: 'An item in your cart is no longer available.', sku, available: 0 },
+          { status: 409 },
+        )
+      }),
+    )
+  }, SOLD_OUT_SKU)
+
+  await fillShippingAndPayment(page, '4242 4242 4242 4242')
+  await page.getByRole('button', { name: /Place order/ }).click()
+
+  const banner = page.getByTestId('out-of-stock')
+  await expect(banner).toContainText('Noise-cancelling headphones just sold out')
+  const soldOutLine = page.getByRole('listitem').filter({ hasText: SOLD_OUT_SKU })
+  await expect(soldOutLine).toContainText('Out of stock')
+  await expect(page.getByRole('button', { name: /Place order/ })).toBeDisabled()
+  await pace(2400)
+
+  await banner.getByRole('button', { name: 'Remove item' }).click()
+  await expect(soldOutLine).toHaveCount(0)
+  await expect(page.getByTestId('order-total')).toHaveText('$319.00')
+  await pace(1000)
+
+  // The cart no longer contains the SKU, so this request falls through to the default handler.
+  await page.getByRole('button', { name: 'Place order · $319.00' }).click()
+  const confirmation = page.getByTestId('order-confirmation')
+  await expect(confirmation.getByRole('heading')).toHaveText(/Order NW-\d+ confirmed/)
+  await expect(confirmation).toContainText('3 items · $319.00')
+  await pace(400)
+})
+```
+
+`waitForMockWorker()` waits until `window.msw !== undefined`. `worker.use()` never changes `src/mocks/handlers.ts`, and every test gets a fresh page, so the override can't leak.
+
+**Checkpoint:** `npx playwright test step-5` should report `1 passed`.
+
+**Try breaking it:** delete the `if (!body.items.some((item) => item.sku === sku)) return` line from the override. Now it answers `409` even after the headphones are removed, so the final order is never confirmed and the test fails at the confirmation heading.
+
+<StepClip src="/videos/tutorials/msw-react-checkout/step-5-runtime-override" step={5} duration={8} label="Checkout returning 409 out of stock for the headphones, removing the item, then placing the order for the rest of the cart">Watch the headphones line turn "Out of stock" and Place order disable. After Remove item, the total drops to $319.00 and the order goes through the default handler.</StepClip>
+
+## Running the suite in CI (and debugging with recordings)
+
+The config already behaves differently when `CI` is set: `forbidOnly` fails the run if someone left a `test.only` in a spec, failed tests get two retries, and the reporters switch to GitHub annotations plus an HTML report. Playwright also starts fresh dev servers instead of reusing existing ones. The CI job itself only needs these commands (Playwright runs Chromium headless by default):
+
+```bash
+npm ci
+npx playwright install --with-deps chromium
+CI=true npx playwright test
+```
+
+Upload `playwright-report/` and `test-results/` as build artifacts. When a test fails:
+
+- **Videos and screenshots** are kept only for failed tests (`video: 'retain-on-failure'`, `screenshot: 'only-on-failure'`).
+- **Traces** are recorded on the first retry (`trace: 'on-first-retry'`). Open one with `npx playwright show-trace <path-to-trace.zip>`, or open the HTML report with `npx playwright show-report` and click into the test.
+- **Locally**, `npm run test:e2e:ui` opens Playwright's UI mode, where you can step through each action and watch the DOM.
+
+The clips on this page come from the same specs: `npm run record:clips` sets `RECORD_CLIPS=1` (1280×720 video, 200 ms `slowMo`, `pace()` waits), and `scripts/encode-clips.sh` encodes the `@clip` tests' videos with ffmpeg.
+
+### Keep MSW out of the production bundle
+
+The inline `import.meta.env.DEV` check in `main.tsx` means Vite removes the dynamic imports of `./mocks/browser` and `./mocks/bridge` from production builds. To check, build and search the JavaScript output:
+
+```bash
+npm run build
+grep -c "setupWorker\|mockServiceWorker\|HttpResponse" dist/assets/*.js   # prints 0
+```
+
+On our build it printed `0`. Vite still copies `public/mockServiceWorker.js` into `dist/`, because everything in `public/` is copied. Production code never registers it, but you can delete it after the build if you'd rather not deploy the file.
+
+## FAQ
+
+### Should I mock APIs with MSW or Playwright page.route?
+
+Use MSW when the mocks should live with the app and can also be reused in development, Storybook, and unit tests. Use `page.route` when only the E2E suite needs them, or when you can't change the app. Many teams combine the two. This tutorial stays on the MSW side in Step 5, overriding a handler at runtime with `worker.use()` instead of `page.route`. Our guide to [mocking APIs directly with Playwright `page.route`](/guides/mock-api-playwright/) covers that approach, including HAR replay.
+
+### Does MSW's service worker work in headless Playwright CI runs?
+
+Yes. This suite runs in headless Chromium, and all six tests pass. Service workers need a secure context, and `http://localhost` counts as one. Don't set Playwright's `serviceWorkers: 'block'` option for these tests, because that stops MSW from registering. We only tested Chromium for this tutorial.
+
+### How do I override MSW handlers per Playwright test without leaking state?
+
+Expose the worker on `window` in development only, then call `worker.use()` inside `page.evaluate()`, as in Step 5. Runtime handlers belong to the page they were added in, and Playwright gives every test a fresh browser context, so nothing carries over. To reset within one test, call `worker.resetHandlers()` the same way.
+
+### Can I reuse the same MSW handlers in Jest or Vitest unit tests?
+
+Yes. Handlers are plain request/response functions. Pass the same `handlers` array to `setupServer` from `msw/node` in your test setup. Note that MSW 3 is ESM-only and needs Node 22 or later. See [how to mock API calls in Jest](/guides/mock-api-calls-jest/) for the setup.
+
+## Related
+
+[MSW](/tools/msw/) · [Playwright](/tools/playwright/) · [How to mock API calls in Playwright](/guides/mock-api-playwright/) · [Mock API calls in Jest](/guides/mock-api-calls-jest/) · [MSW vs Nock vs Polly.js](/comparisons/msw-vs-nock-vs-polly/) · [Playwright vs Cypress](/comparisons/playwright-vs-cypress/) · [Mocking & test data tools](/mocking-test-data/)
+
+---
+
+## Sources (checked 2026-11-27)
+
+- Sample app: `msw-react-checkout/` in [sgedda/devxtools-tutorials](https://github.com/sgedda/devxtools-tutorials) (commit `33ddf0b`), run on Node 22.23.5 with 6/6 Playwright tests passing.
+- MSW 2.x → 3.x migration guide (`onUnhandledFrame`, `{ frame, defaults }`, Node 22+): https://mswjs.io/docs/migrations/2.x-to-3.x
+- MSW `worker.start()` options: https://mswjs.io/api/setup-worker/start
+- Playwright test configuration and `webServer`: https://playwright.dev/docs/test-configuration · https://playwright.dev/docs/test-webserver
