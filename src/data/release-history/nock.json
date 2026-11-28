@@ -1,5 +1,13 @@
 [
   {
+    "version": "15.0.6",
+    "releaseDate": "2026-11-05T23:36:42.235Z",
+    "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.6",
+    "source": "npm",
+    "summary": "Patch: supports `@mswjs/interceptors` 0.45 by streaming delayed bodies.",
+    "status": "reviewed"
+  },
+  {
     "version": "15.0.5",
     "releaseDate": "2026-10-20T18:14:57.721Z",
     "releaseUrl": "https://github.com/nock/nock/releases/tag/v15.0.5",

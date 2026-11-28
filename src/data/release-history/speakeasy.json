@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.812.1",
+    "releaseDate": "2026-11-26T13:51:28Z",
+    "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.1",
+    "source": "github",
+    "summary": "Masks sensitive values in error output, verifies installer downloads, writes config atomically with tighter permissions, and fixes C# union/form bodies and Terraform discriminated-union generation.",
+    "status": "reviewed"
+  },
+  {
     "version": "1.812.0",
     "releaseDate": "2026-11-25T13:43:30Z",
     "releaseUrl": "https://github.com/speakeasy-api/speakeasy/releases/tag/v1.812.0",
